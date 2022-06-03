@@ -2,9 +2,14 @@ html, body {
     margin: 0;
 }
 
+.simulator {
+    display: flex;
+}
+
 #stage {
     position: relative;
     height: 100vh;
+    width: 100%;
 }
 
 canvas {
@@ -17,4 +22,10 @@ canvas {
 
 #aeroplanes {
     z-index: 2;
+}
+
+.side-panel {
+    display: flex;
+    justify-content: center;
+    width: 480px;
 }

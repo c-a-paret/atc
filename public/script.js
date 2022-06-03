@@ -1,3 +1,6 @@
+import {parseCommand} from "./CommandParser/CommandParser";
+
+
 const initBackgroundLayer = () => {
     const background = document.getElementById("background");
     const ctx = background.getContext('2d');
@@ -21,7 +24,7 @@ const initAeroplaneLayer = () => {
 }
 
 
-COLOURS = {
+const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
     MINT: 'rgb(0,213,170)'
 }
@@ -105,3 +108,9 @@ plane2.draw()
 plane3.draw()
 plane4.draw()
 
+const sendCommand = () => {
+    const rawCommand = document.getElementById("command-entry-field").value
+    const command = parseCommand(rawCommand)
+    console.log(command)
+
+}
