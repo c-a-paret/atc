@@ -1,39 +1,17 @@
-import {parseCommand} from "./CommandParser";
-
-
-console.log("Script called...")
-const initBackgroundLayer = () => {
-    const background = document.getElementById("background");
-    const ctx = background.getContext('2d');
-    ctx.fillStyle = 'rgb(6,17,30)';
-
-    background.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
-    background.height = document.body.clientHeight;
-
-    ctx.fillRect(0, 0, background.width, background.height)
-}
-
-const initAeroplaneLayer = () => {
-    const aeroplanesLayer = document.getElementById("aeroplanes");
-    const planeContext = aeroplanesLayer.getContext('2d');
-
-    aeroplanesLayer.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
-    aeroplanesLayer.height = document.body.clientHeight;
-
-    return planeContext
-}
-
-const clearAeroplaneLayer = () => {
-    const aeroplanesLayer = document.getElementById("aeroplanes");
-    const planeContext = aeroplanesLayer.getContext('2d');
-
-    planeContext.clearRect(0, 0, document.body.clientWidth - (document.body.clientWidth * 0.2), document.body.clientHeight);
-}
+import {parseCommand} from "./CommandParser/CommandParser";
+import {
+    clearAeroplaneLayer,
+    initAeroplaneLayer,
+    initBackgroundLayer,
+    initFeaturesLayer
+} from "./Interface/UIController";
 
 
 const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
-    MINT: 'rgb(0,213,170)'
+    MINT: 'rgb(0,213,170)',
+    RED: 'rgb(208,19,55)',
+    BACKGROUND: 'rgb(18,19,49)'
 }
 
 class Aeroplane {
@@ -115,12 +93,25 @@ const sendCommand = () => {
 
 
 const setupInterface = () => {
-    console.log("Adding event listener to submit button")
     document.getElementById("send-command").addEventListener("click", sendCommand)
 }
 
-initBackgroundLayer()
+
+const drawExclusionZone = (ctx) => {
+    ctx.strokeStyle = COLOURS.RED;
+    ctx.beginPath();
+    ctx.moveTo(500, 600)
+    ctx.lineTo(550, 500)
+    ctx.lineTo(600, 500)
+    ctx.lineTo(600, 600)
+    ctx.closePath()
+    ctx.stroke();
+}
+
 setupInterface()
+initBackgroundLayer()
+const featuresContext = initFeaturesLayer()
+drawExclusionZone(featuresContext)
 const planeCtx = initAeroplaneLayer()
 
 

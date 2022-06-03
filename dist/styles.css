@@ -20,8 +20,12 @@ canvas {
     z-index: 1;
 }
 
-#aeroplanes {
+#features {
     z-index: 2;
+}
+
+#aeroplanes {
+    z-index: 3;
 }
 
 .side-panel {

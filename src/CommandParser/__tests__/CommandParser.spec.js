@@ -1,4 +1,4 @@
-import {parseCommand, parseSpeed} from "../../CommandParser";
+import {parseCommand, parseSpeed} from "../CommandParser";
 
 describe("Parse Command", () => {
     test("Extracts the call sign", () => {
