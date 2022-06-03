@@ -1,13 +1,14 @@
+html, body {
+    margin: 0;
+}
+
 #stage {
-    width: 800px;
-    height: 800px;
     position: relative;
-    border: 2px solid black;
+    height: 100vh;
 }
 
 canvas {
     position: absolute;
-    border: 1px solid black;
 }
 
 #background {

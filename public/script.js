@@ -1,9 +1,23 @@
-const initBackground = () => {
+const initBackgroundLayer = () => {
     const background = document.getElementById("background");
     const ctx = background.getContext('2d');
     ctx.fillStyle = 'rgb(6,17,30)';
-    ctx.fillRect(0, 0, 800, 800)
 
+    background.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
+    background.height = document.body.clientHeight;
+
+    console.log(background.width, background.height)
+    ctx.fillRect(0, 0, background.width, background.height)
+}
+
+const initAeroplaneLayer = () => {
+    const aeroplanesLayer = document.getElementById("aeroplanes");
+    const planeContext = aeroplanesLayer.getContext('2d');
+
+    aeroplanesLayer.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
+    aeroplanesLayer.height = document.body.clientHeight;
+
+    return planeContext
 }
 
 
@@ -78,17 +92,14 @@ class Aeroplane {
 }
 
 
-const aeroplanesLayer = document.getElementById("aeroplanes");
-const planeCtx = aeroplanesLayer.getContext('2d');
-
+initBackgroundLayer()
+const planeCtx = initAeroplaneLayer()
 
 const plane1 = new Aeroplane(planeCtx, 400, 400, 100, 135)
 const plane2 = new Aeroplane(planeCtx, 230, 320, 120, 97)
 const plane3 = new Aeroplane(planeCtx, 600, 500, 240, 270)
 const plane4 = new Aeroplane(planeCtx, 300, 700, 220, 350)
 
-
-initBackground()
 plane1.draw()
 plane2.draw()
 plane3.draw()
