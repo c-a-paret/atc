@@ -21,7 +21,6 @@ const initBackgroundLayer = () => {
     background.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
     background.height = document.body.clientHeight;
 
-    console.log(background.width, background.height)
     ctx.fillRect(0, 0, background.width, background.height)
 }
 
