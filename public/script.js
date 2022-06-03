@@ -1,4 +1,5 @@
 import {parseCommand} from "./CommandParser/CommandParser";
+// const {parseCommand} = require("./CommandParser/CommandParser");
 
 
 const initBackgroundLayer = () => {
