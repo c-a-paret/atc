@@ -8,11 +8,15 @@ export class Aeroplane {
     }
 
     setSpeed = (speed) => {
-        console.log(`${this.callSign} setting speed to ${speed}`)
-        this.speed = speed
+        if (speed) {
+            console.log(`${this.callSign} setting speed to ${speed}`)
+            this.speed = speed
+        }
     }
 
     setHeading = (heading) => {
-        this.heading = heading
+        if (heading && heading >= 0 && heading <= 360) {
+            this.heading = heading
+        }
     }
 }
