@@ -1,3 +1,5 @@
+export const MIN_SPEED = 120;
+
 export const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
     MINT: 'rgb(0,213,170)',
@@ -32,3 +34,12 @@ export const AIRCRAFT = [
 export const getRandomNumberBetween = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export const toRadians = (degrees) => {
+    return (Math.PI / 180) * degrees
+}
+
+export const round = (number, n) => {
+    return Math.round(number * Math.pow(10, n)) / Math.pow(10, n)
+}
+

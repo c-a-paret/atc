@@ -65,6 +65,7 @@ export class UIController {
 
     _drawAeroplanePosition = (aeroplane) => {
         this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        this.featuresContext.lineWidth = 2;
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.arc(aeroplane.x, aeroplane.y, 5, 0, Math.PI * 2, false);
         this.aeroplaneContext.stroke();
@@ -72,6 +73,7 @@ export class UIController {
 
     _drawAeroplaneSpeedTail = (aeroplane) => {
         this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        this.featuresContext.lineWidth = 2;
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.moveTo(aeroplane.x, aeroplane.y)
 

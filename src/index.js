@@ -14,16 +14,17 @@ const setupCommandInterface = () => {
 
 setupCommandInterface()
 
-for (let x = 0; x < 10; x++) {
-    aeroplaneService.initArrival()
-}
+// for (let x = 0; x < 5; x++) {
+//     aeroplaneService.initArrival()
+// }
+aeroplaneService.initTestAeroplanes()
 aeroplaneService.aeroplanes.forEach(plane => ui.drawAeroplane(plane))
 
 
 setInterval(() => {
     ui.clearAeroplaneLayer()
     aeroplaneService.aeroplanes.forEach(plane => {
+        plane.applyActions()
         ui.drawAeroplane(plane)
-        console.log(plane.actions)
     })
-}, 5000)
+}, 1000)
