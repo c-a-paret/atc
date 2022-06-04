@@ -1,4 +1,4 @@
-import {Aeroplane} from "../Elements/Aeroplane";
+import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {AIRCRAFT, getRandomNumberBetween} from "../common";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 

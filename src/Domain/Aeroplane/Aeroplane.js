@@ -1,3 +1,5 @@
+import {Speed} from "../Action/Action";
+
 export class Aeroplane {
     constructor(callSign, x, y, speed, hdg) {
         this.callSign = callSign;
@@ -5,12 +7,12 @@ export class Aeroplane {
         this.y = y;
         this.speed = speed;
         this.heading = hdg;
+        this.actions = []
     }
 
     setSpeed = (speed) => {
-        if (speed) {
-            console.log(`${this.callSign} setting speed to ${speed}`)
-            this.speed = speed
+        if (speed && speed !== this.speed) {
+            this.actions.push(new Speed(this.speed, speed))
         }
     }
 

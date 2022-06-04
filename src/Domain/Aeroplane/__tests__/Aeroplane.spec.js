@@ -7,16 +7,28 @@ describe("Speed", () => {
         aeroplane = new Aeroplane("AB123", 100, 200, 300, 90)
     })
 
-    test("Sets speed when defined", () => {
-        expect(aeroplane.speed).toBe(300)
-        aeroplane.setSpeed(240)
-        expect(aeroplane.speed).toBe(240)
+    test("Sets speed action when valid", () => {
+        let desiredSpeed = 290;
+
+        aeroplane.setSpeed(desiredSpeed)
+
+        expect(aeroplane.actions.length).toBe(1)
+        expect(aeroplane.actions[0].type).toBe("speed")
+        expect(aeroplane.actions[0].concurrent).toBeTruthy()
+        expect(aeroplane.actions[0].targetValue).toBe(desiredSpeed)
+        expect(aeroplane.actions[0].tickValues).toStrictEqual([299, 298, 297, 296, 295, 294, 293, 292, 291, 290])
+    })
+
+    test("Does not set speed when same as current speed", () => {
+        expect(aeroplane.actions.length).toBe(0)
+        aeroplane.setSpeed(300)
+        expect(aeroplane.actions.length).toBe(0)
     })
 
     test("Does not set speed when null", () => {
-        expect(aeroplane.speed).toBe(300)
+        expect(aeroplane.actions.length).toBe(0)
         aeroplane.setSpeed(null)
-        expect(aeroplane.speed).toBe(300)
+        expect(aeroplane.actions.length).toBe(0)
     })
 })
 

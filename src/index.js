@@ -17,9 +17,13 @@ setupCommandInterface()
 for (let x = 0; x < 10; x++) {
     aeroplaneService.initArrival()
 }
-
 aeroplaneService.aeroplanes.forEach(plane => ui.drawAeroplane(plane))
 
-// setInterval(() => {
-//     ui.clearAeroplaneLayer()
-// }, 2000)
+
+setInterval(() => {
+    ui.clearAeroplaneLayer()
+    aeroplaneService.aeroplanes.forEach(plane => {
+        ui.drawAeroplane(plane)
+        console.log(plane.actions)
+    })
+}, 5000)

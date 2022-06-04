@@ -56,7 +56,6 @@ export class UIController {
     }
 
     drawAeroplane = (aeroplane) => {
-        console.log("Drawing aeroplane...")
         this._drawAeroplanePosition(aeroplane)
         this._drawAeroplaneSpeedTail(aeroplane)
         this._drawSpeedLabel(aeroplane)
