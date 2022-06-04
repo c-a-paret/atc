@@ -41,13 +41,17 @@ export class UIController {
 
     drawExclusionZone = () => {
         this.featuresContext.strokeStyle = COLOURS.RED;
-        console.log(COLOURS.RED)
+        this.featuresContext.lineWidth = 2;
+
         this.featuresContext.beginPath();
         this.featuresContext.moveTo(500, 600)
-        this.featuresContext.lineTo(550, 500)
-        this.featuresContext.lineTo(600, 500)
-        this.featuresContext.lineTo(600, 600)
+        this.featuresContext.lineTo(530, 550)
+        this.featuresContext.lineTo(640, 500)
+        this.featuresContext.lineTo(700, 500)
+        this.featuresContext.lineTo(660, 550)
+        this.featuresContext.lineTo(530, 630)
         this.featuresContext.closePath()
+
         this.featuresContext.stroke();
     }
 
