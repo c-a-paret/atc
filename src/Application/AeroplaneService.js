@@ -18,18 +18,22 @@ export class AeroplaneService {
     }
 
     initTestAeroplanes = () => {
+
+        // for (let x = 0; x < 360; x++) {
+        //     this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
+        // }
         this.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 90),
-            new Aeroplane("BA456", 500, 300, 120, 91),
-            new Aeroplane("BA789", 500, 300, 120, 92),
-            new Aeroplane("BA789", 500, 300, 120, 93),
-            new Aeroplane("BA789", 500, 300, 120, 94),
-            new Aeroplane("BA789", 500, 300, 120, 95),
-            new Aeroplane("BA789", 500, 300, 120, 96),
-            new Aeroplane("BA789", 500, 300, 120, 97),
-            new Aeroplane("BA789", 500, 300, 120, 98),
-            new Aeroplane("BA789", 500, 300, 120, 99),
-            new Aeroplane("BA789", 500, 300, 120, 100),
+            // new Aeroplane("BA456", 500, 300, 120, 90),
+            // new Aeroplane("BA789", 500, 300, 120, 92),
+            // new Aeroplane("BA789", 500, 300, 120, 93),
+            // new Aeroplane("BA789", 500, 300, 120, 94),
+            // new Aeroplane("BA789", 500, 300, 120, 95),
+            // new Aeroplane("BA789", 500, 300, 120, 96),
+            // new Aeroplane("BA789", 500, 300, 120, 97),
+            // new Aeroplane("BA789", 500, 300, 120, 98),
+            // new Aeroplane("BA789", 500, 300, 120, 99),
+            // new Aeroplane("BA789", 500, 300, 120, 100),
         ]
     }
 

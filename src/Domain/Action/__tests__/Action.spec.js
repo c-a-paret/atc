@@ -10,7 +10,7 @@ describe("Speed", () => {
         expect(action.type).toBe("speed")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredSpeed)
-        expect(action.tickValues).toStrictEqual([299, 298, 297, 296, 295, 294, 293, 292, 291, 290])
+        expect(action.tickValues).toStrictEqual([290, 291, 292, 293, 294, 295, 296, 297, 298, 299])
     })
 
     test("Creates speed action with increasing speed", () => {
@@ -22,7 +22,7 @@ describe("Speed", () => {
         expect(action.type).toBe("speed")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredSpeed)
-        expect(action.tickValues).toStrictEqual([296, 297, 298, 299, 300])
+        expect(action.tickValues).toStrictEqual([300, 299, 298, 297, 296])
     })
 
     test("Throws an error is the target speed is below 0", () => {

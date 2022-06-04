@@ -30,22 +30,34 @@ export class Aeroplane {
         }
     }
 
+    _clean_actions = () => {
+        this.actions = this.actions.filter(action => action.tickValues.length > 0)
+    }
+
     applyActions() {
-        if (this.actions.length === 0) {
-            const headingRadians = toRadians(this.heading)
-            let newX;
-            let newY;
-            if (this.speed <= 100) {
-                newX = this.x + Math.sin(headingRadians);
-                newY = this.y - Math.cos(headingRadians);
-            } else {
-                const distancePerTick = 1 + ((this.speed - 100) / 10 * 0.5)
-                newX = round(this.x + distancePerTick * Math.sin(headingRadians), 2);
-                newY = round(this.y - distancePerTick * Math.cos(headingRadians), 2);
+        this.actions.forEach(action => {
+            if (action.type === "speed") {
+                if (action.tickValues.length > 0) {
+                    this.speed = action.tickValues.pop()
+                } else {
+                    this._clean_actions()
+                }
             }
-            this.x = newX;
-            this.y = newY;
+        })
+
+        const headingRadians = toRadians(this.heading)
+        let newX;
+        let newY;
+        if (this.speed <= 100) {
+            newX = this.x + Math.sin(headingRadians);
+            newY = this.y - Math.cos(headingRadians);
+        } else {
+            const distancePerTick = 1 + ((this.speed - 100) / 10 * 0.5)
+            newX = round(this.x + distancePerTick * Math.sin(headingRadians), 2);
+            newY = round(this.y - distancePerTick * Math.cos(headingRadians), 2);
         }
+        this.x = newX;
+        this.y = newY;
     }
 
 

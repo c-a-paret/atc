@@ -18,7 +18,7 @@ describe("Speed", () => {
         expect(aeroplane.actions[0].type).toBe("speed")
         expect(aeroplane.actions[0].concurrent).toBeTruthy()
         expect(aeroplane.actions[0].targetValue).toBe(desiredSpeed)
-        expect(aeroplane.actions[0].tickValues).toStrictEqual([299, 298, 297, 296, 295, 294, 293, 292, 291, 290])
+        expect(aeroplane.actions[0].tickValues).toStrictEqual([290, 291, 292, 293, 294, 295, 296, 297, 298, 299])
     })
 
     test("Does not set speed when same as current speed", () => {

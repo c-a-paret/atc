@@ -14,7 +14,8 @@ export class Speed extends Action {
         if (targetSpeed < 0) { throw `Invalid target speed [${targetSpeed}]` }
         const startTickSpeed = targetSpeed > currentSpeed ? currentSpeed + 1 : currentSpeed - 1
         const finalTickSpeed = targetSpeed > currentSpeed ? targetSpeed + 1 : targetSpeed - 1
-        const tickValues = range(startTickSpeed, finalTickSpeed)
+        // Set reversed tick values for better performance with .pop() when applying the action
+        const tickValues = range(startTickSpeed, finalTickSpeed).reverse()
         super("speed", true, targetSpeed, tickValues);
     }
 }
