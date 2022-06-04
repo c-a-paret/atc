@@ -21,6 +21,6 @@ export class GameLoop {
                 plane.applyActions()
                 this.uiController.drawAeroplane(plane)
             })
-        }, 1000)
+        }, 900)
     }
 }

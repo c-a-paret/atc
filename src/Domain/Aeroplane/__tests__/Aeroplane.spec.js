@@ -41,28 +41,34 @@ describe("Heading", () => {
         aeroplane = new Aeroplane("AB123", 100, 200, 300, 90)
     })
 
-    test("Sets heading when defined correctly", () => {
-        expect(aeroplane.heading).toBe(90)
-        aeroplane.setHeading(182)
-        expect(aeroplane.heading).toBe(182)
+    test("Sets heading action when valid", () => {
+        let desiredHeading = 100;
+
+        aeroplane.setHeading(desiredHeading)
+
+        expect(aeroplane.actions.length).toBe(1)
+        expect(aeroplane.actions[0].type).toBe("heading")
+        expect(aeroplane.actions[0].concurrent).toBeTruthy()
+        expect(aeroplane.actions[0].targetValue).toBe(desiredHeading)
+        expect(aeroplane.actions[0].tickValues).toStrictEqual([100, 99, 98, 97, 96, 95, 94, 93, 92, 91])
     })
 
-    test("Does not set speed when over 360", () => {
-        expect(aeroplane.heading).toBe(90)
-        aeroplane.setHeading(361)
-        expect(aeroplane.heading).toBe(90)
+    test("Does not set heading when over 360", () => {
+        let desiredHeading = 361;
+        aeroplane.setHeading(desiredHeading)
+        expect(aeroplane.actions.length).toBe(0)
     })
 
     test("Does not set speed when below 0", () => {
-        expect(aeroplane.heading).toBe(90)
-        aeroplane.setHeading(-2)
-        expect(aeroplane.heading).toBe(90)
+        let desiredHeading = 0;
+        aeroplane.setHeading(desiredHeading)
+        expect(aeroplane.actions.length).toBe(0)
     })
 
-    test("Does not set speed when null", () => {
-        expect(aeroplane.heading).toBe(90)
-        aeroplane.setHeading(null)
-        expect(aeroplane.heading).toBe(90)
+    test("Does not set heading when null", () => {
+        let desiredHeading = null;
+        aeroplane.setHeading(desiredHeading)
+        expect(aeroplane.actions.length).toBe(0)
     })
 })
 
@@ -226,4 +232,5 @@ describe("Apply Actions", () => {
             expect(aeroplane.y).toBe(97.53)
         })
     })
+
 })

@@ -1,4 +1,4 @@
-import {Speed} from "../Action/Action";
+import {Heading, Speed} from "../Action/Action";
 import {MIN_SPEED, round, toRadians} from "../../common";
 
 export class Aeroplane {
@@ -25,9 +25,16 @@ export class Aeroplane {
     }
 
     setHeading = (heading) => {
-        if (heading && heading >= 0 && heading <= 360) {
-            this.heading = heading
+        if (this._valid_heading(heading)) {
+            this.actions.push(new Heading(this.heading, heading))
         }
+    }
+
+    _valid_heading = (heading) => {
+        return heading
+            && heading !== this.heading
+            && heading >= 0
+            && heading <= 360
     }
 
     _clean_actions = () => {
@@ -36,11 +43,15 @@ export class Aeroplane {
 
     applyActions() {
         this.actions.forEach(action => {
+            if (action.type === "heading") {
+                if (action.tickValues.length > 0) {
+                    this.heading = action.tickValues.pop()
+                }
+            }
+
             if (action.type === "speed") {
                 if (action.tickValues.length > 0) {
                     this.speed = action.tickValues.pop()
-                } else {
-                    this._clean_actions()
                 }
             }
         })
@@ -58,6 +69,8 @@ export class Aeroplane {
         }
         this.x = newX;
         this.y = newY;
+
+        this._clean_actions()
     }
 
 

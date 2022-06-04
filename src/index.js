@@ -9,6 +9,5 @@ const aeroplaneService = new AeroplaneService()
 const interfaceController = new InterfaceController(aeroplaneService)
 const gameLoop = new GameLoop(ui, interfaceController, aeroplaneService)
 
-
 gameLoop.init()
 gameLoop.start()

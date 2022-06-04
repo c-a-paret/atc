@@ -42,6 +42,7 @@ export class AeroplaneService {
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
                 plane.setSpeed(command.speed)
+                plane.setHeading(command.heading)
             }
         })
     }

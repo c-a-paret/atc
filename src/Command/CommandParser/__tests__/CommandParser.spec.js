@@ -1,4 +1,4 @@
-import {parseCommand, parseSpeed} from "../CommandParser";
+import {parseCommand, parseHeading, parseSpeed} from "../CommandParser";
 
 describe("Parse Command", () => {
     test("Extracts the call sign", () => {
@@ -10,13 +10,22 @@ describe("Parse Command", () => {
         expect(result["callSign"]).toBe(expectedCallSign)
     })
 
-    test("Extracts the desired speed sign", () => {
+    test("Extracts the desired speed", () => {
         const command = "BA423S200"
         const expectedSpeed = 200
 
         const result = parseCommand(command)
 
         expect(result["speed"]).toBe(expectedSpeed)
+    })
+
+    test("Extracts the desired heading", () => {
+        const command = "BA423H342S200"
+        const expectedSpeed = 342
+
+        const result = parseCommand(command)
+
+        expect(result["heading"]).toBe(expectedSpeed)
     })
 
 })
@@ -53,6 +62,25 @@ describe("Speed Commands", () => {
         const command = "J123H678"
 
         const result = parseSpeed(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Heading Commands", () => {
+    test("Extracts heading inside larger command", () => {
+        const command = "BA423S200H070WLAM"
+        const expectedHeading = 70
+
+        const result = parseHeading(command)
+
+        expect(result).toBe(expectedHeading)
+    })
+
+    test("Returns null if no heading command found", () => {
+        const command = "J123S150"
+
+        const result = parseHeading(command)
 
         expect(result).toBeNull()
     })
