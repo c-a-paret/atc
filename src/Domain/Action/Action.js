@@ -1,4 +1,5 @@
-import {range} from "lodash";
+
+import {MAX_ALTITUDE, MIN_ALTITUDE, range} from "../../utils/common";
 
 class Action {
     constructor(type, concurrent, targetValue, tickValues) {
@@ -11,22 +12,30 @@ class Action {
 
 export class Speed extends Action {
     constructor(currentSpeed, targetSpeed) {
-        if (targetSpeed < 0) { throw `Invalid target speed [${targetSpeed}]` }
-        const startTickSpeed = targetSpeed > currentSpeed ? currentSpeed + 1 : currentSpeed - 1
-        const finalTickSpeed = targetSpeed > currentSpeed ? targetSpeed + 1 : targetSpeed - 1
-        // Set reversed tick values for better performance with .pop() when applying the action
-        const tickValues = range(startTickSpeed, finalTickSpeed).reverse()
+        if (targetSpeed < 0) {
+            throw `Invalid target speed [${targetSpeed}]`
+        }
+        const tickValues = range(targetSpeed, currentSpeed, 1)
         super("speed", true, targetSpeed, tickValues);
     }
 }
 
 export class Heading extends Action {
     constructor(currentHeading, targetHeading) {
-        if (targetHeading < 0 || targetHeading > 360) { throw `Invalid target heading [${targetHeading}]` }
-        const startTickHeading = targetHeading > currentHeading ? currentHeading + 1 : currentHeading - 1
-        const finalTickHeading = targetHeading > currentHeading ? targetHeading + 1 : targetHeading - 1
-        // Set reversed tick values for better performance with .pop() when applying the action
-        const tickValues = range(startTickHeading, finalTickHeading).reverse()
+        if (targetHeading < 0 || targetHeading > 360) {
+            throw `Invalid target heading [${targetHeading}]`
+        }
+        const tickValues = range(targetHeading, currentHeading, 1)
         super("heading", true, targetHeading, tickValues);
+    }
+}
+
+export class Altitude extends Action {
+    constructor(currentAltitude, targetAltitude) {
+        if (targetAltitude < MIN_ALTITUDE || targetAltitude > MAX_ALTITUDE) {
+            throw `Invalid target altitude [${targetAltitude}]`
+        }
+        const tickValues = range(targetAltitude, currentAltitude, 20)
+        super("altitude", true, targetAltitude, tickValues);
     }
 }

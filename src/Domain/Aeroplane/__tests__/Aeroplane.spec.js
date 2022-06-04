@@ -1,6 +1,6 @@
 import {Aeroplane} from "../Aeroplane";
 import {Speed} from "../../Action/Action";
-import {MIN_SPEED} from "../../../common";
+import {MIN_SPEED} from "../../../utils/common";
 
 describe("Speed", () => {
     let aeroplane;

@@ -1,4 +1,6 @@
 export const MIN_SPEED = 120;
+export const MIN_ALTITUDE = 1000;
+export const MAX_ALTITUDE = 40000;
 
 export const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
@@ -43,3 +45,25 @@ export const round = (number, n) => {
     return Math.round(number * Math.pow(10, n)) / Math.pow(10, n)
 }
 
+export const range = (a, b, step) => {
+    if (!step) {
+        throw 'Step cannot be 0'
+    }
+    let array = []
+
+    if (b > a) {
+        for (let x = a; x < b; x += step) {
+            array.push(x)
+        }
+        return array
+    }
+
+    if (a > b) {
+        for (let x = a; x > b; x -= step) {
+            array.push(x)
+        }
+        return array
+    }
+
+    return []
+}

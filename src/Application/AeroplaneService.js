@@ -1,5 +1,5 @@
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
-import {AIRCRAFT, getRandomNumberBetween} from "../common";
+import {AIRCRAFT, getRandomNumberBetween} from "../utils/common";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 
 export class AeroplaneService {
@@ -23,8 +23,8 @@ export class AeroplaneService {
         //     this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 90),
-            new Aeroplane("BA456", 500, 350, 120, 90),
+            new Aeroplane("BA123", 500, 300, 120, 90, 5000),
+            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
             // new Aeroplane("BA789", 500, 300, 120, 92),
             // new Aeroplane("BA789", 500, 300, 120, 93),
             // new Aeroplane("BA789", 500, 300, 120, 94),
@@ -43,6 +43,7 @@ export class AeroplaneService {
             if (plane.callSign === command.callSign) {
                 plane.setSpeed(command.speed)
                 plane.setHeading(command.heading)
+                plane.setAltitude(command.altitude)
             }
         })
     }

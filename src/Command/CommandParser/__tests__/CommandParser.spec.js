@@ -1,4 +1,4 @@
-import {parseCommand, parseHeading, parseSpeed} from "../CommandParser";
+import {parseAltitude, parseCommand, parseHeading, parseSpeed} from "../CommandParser";
 
 describe("Parse Command", () => {
     test("Extracts the call sign", () => {
@@ -26,6 +26,15 @@ describe("Parse Command", () => {
         const result = parseCommand(command)
 
         expect(result["heading"]).toBe(expectedSpeed)
+    })
+
+    test("Extracts the desired heading", () => {
+        const command = "BA423H342D13S200"
+        const expectedAltitude = 13000
+
+        const result = parseCommand(command)
+
+        expect(result["altitude"]).toBe(expectedAltitude)
     })
 
 })
@@ -81,6 +90,34 @@ describe("Heading Commands", () => {
         const command = "J123S150"
 
         const result = parseHeading(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Altitude Commands", () => {
+    test("Extracts one digit flight level altitude inside larger command", () => {
+        const command = "BA423S200C2WLAM"
+        const expectedAltitude = 2000
+
+        const result = parseAltitude(command)
+
+        expect(result).toBe(expectedAltitude)
+    })
+
+    test("Extracts two digit flight level altitude inside larger command", () => {
+        const command = "BA423S200C31WLAM"
+        const expectedAltitude = 31000
+
+        const result = parseAltitude(command)
+
+        expect(result).toBe(expectedAltitude)
+    })
+
+    test("Returns null if no heading command found", () => {
+        const command = "J123S150"
+
+        const result = parseAltitude(command)
 
         expect(result).toBeNull()
     })

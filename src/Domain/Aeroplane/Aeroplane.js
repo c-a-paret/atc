@@ -1,13 +1,14 @@
-import {Heading, Speed} from "../Action/Action";
-import {MIN_SPEED, round, toRadians} from "../../common";
+import {Altitude, Heading, Speed} from "../Action/Action";
+import {MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED, round, toRadians} from "../../utils/common";
 
 export class Aeroplane {
-    constructor(callSign, x, y, speed, hdg) {
+    constructor(callSign, x, y, speed, hdg, altitude) {
         this.callSign = callSign;
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.heading = hdg;
+        this.altitude = altitude;
         this.actions = []
     }
 
@@ -37,6 +38,20 @@ export class Aeroplane {
             && heading <= 360
     }
 
+    setAltitude = (altitude) => {
+        if (this._valid_altitude(altitude)) {
+            this.actions.push(new Altitude(this.altitude, altitude))
+        }
+    }
+
+    _valid_altitude = (altitude) => {
+        return altitude
+            && altitude !== this.altitude
+            && altitude >= MIN_ALTITUDE
+            && altitude <= MAX_ALTITUDE
+            && altitude % 100 === 0  // Is multiple of 100
+    }
+
     _clean_actions = () => {
         this.actions = this.actions.filter(action => action.tickValues.length > 0)
     }
@@ -52,6 +67,14 @@ export class Aeroplane {
             if (action.type === "speed") {
                 if (action.tickValues.length > 0) {
                     this.speed = action.tickValues.pop()
+                }
+            }
+
+            if (action.type === "altitude") {
+                if (action.tickValues.length > 0) {
+                    let newAlt = action.tickValues.pop();
+                    console.log(`New altitude ${newAlt}`)
+                    this.altitude = newAlt
                 }
             }
         })

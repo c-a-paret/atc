@@ -1,4 +1,4 @@
-import {COLOURS} from '../common'
+import {COLOURS} from '../utils/common'
 
 export class UIController {
     constructor() {
@@ -58,8 +58,9 @@ export class UIController {
     drawAeroplane = (aeroplane) => {
         this._drawAeroplanePosition(aeroplane)
         this._drawAeroplaneSpeedTail(aeroplane)
-        this._drawSpeedLabel(aeroplane)
         this._drawHeadingLabel(aeroplane)
+        this._drawSpeedLabel(aeroplane)
+        this._drawAltitudeLabel(aeroplane)
         this._drawCallSignLabel(aeroplane)
     }
 
@@ -90,19 +91,28 @@ export class UIController {
         this.aeroplaneContext.stroke();
     }
 
-    _drawSpeedLabel = (aeroplane) => {
+    _drawHeadingLabel = (aeroplane) => {
         this.aeroplaneContext.fillStyle = COLOURS.MINT;
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.fillText(`${aeroplane.heading}`, aeroplane.x - 20, aeroplane.y - 20);
     }
 
-    _drawHeadingLabel = (aeroplane) => {
+    _drawSpeedLabel = (aeroplane) => {
         this.aeroplaneContext.fillStyle = COLOURS.YELLOW;
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         const headingLabelWidth = this.aeroplaneContext.measureText(`${aeroplane.heading}`).width;
         this.aeroplaneContext.fillText(`${aeroplane.speed}`, aeroplane.x - 20 + headingLabelWidth + 5, aeroplane.y - 20);
+    }
+
+    _drawAltitudeLabel = (aeroplane) => {
+        this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        this.aeroplaneContext.font = "bold 12px Courier New";
+        this.aeroplaneContext.beginPath();
+        const headingLabelWidth = this.aeroplaneContext.measureText(`${aeroplane.heading}`).width;
+        const speedLabelWidth = this.aeroplaneContext.measureText(`${aeroplane.speed}`).width;
+        this.aeroplaneContext.fillText(`${Math.round(aeroplane.altitude / 100)}`, aeroplane.x - 20 + (headingLabelWidth + 5) + (speedLabelWidth + 5), aeroplane.y - 20);
     }
 
     _drawCallSignLabel = (aeroplane) => {
