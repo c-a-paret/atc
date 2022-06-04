@@ -4,3 +4,31 @@ export const COLOURS = {
     RED: 'rgb(208,19,55)',
     BACKGROUND: 'rgb(18,19,49)'
 }
+
+export const AIRCRAFT = [
+    {
+        "operator": "British Airways",
+        "operatorIATA": "BA",
+        "type": "Airbus",
+        "class": "A340-400",
+        "weight": 3,
+    },
+    {
+        "operator": "Lufthansa",
+        "operatorIATA": "LH",
+        "type": "Airbus",
+        "class": "A321",
+        "weight": 2,
+    },
+    {
+        "operator": "Virgin Atlantic",
+        "operatorIATA": "VS",
+        "type": "Boeing",
+        "class": "B747-400",
+        "weight": 3,
+    }
+]
+
+export const getRandomNumberBetween = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}

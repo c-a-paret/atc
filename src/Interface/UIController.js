@@ -11,7 +11,9 @@ export class UIController {
 
         this.initBackgroundLayer()
         this.initFeaturesLayer()
-        this.initFeaturesLayer()
+        this.initAeroplaneLayer()
+
+        this.initFeatures()
     }
 
     initBackgroundLayer = () => {
@@ -103,5 +105,9 @@ export class UIController {
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.fillText(`${aeroplane.callSign}`, aeroplane.x - 20, aeroplane.y - 30);
+    }
+
+    initFeatures = () => {
+        this.drawExclusionZone()
     }
 }
