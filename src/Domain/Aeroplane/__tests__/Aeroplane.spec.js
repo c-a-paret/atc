@@ -233,6 +233,22 @@ describe("Apply Actions", () => {
         })
     })
 
+    describe("When actions available", () => {
+        test("Applies all actions and moves forward", () => {
+            const aeroplane = new Aeroplane("AB123", 50, 100, 150, 90, 5000)
+
+            aeroplane.setSpeed(160)
+            aeroplane.setHeading(100)
+            aeroplane.setAltitude(10000)
+
+            aeroplane.applyActions()
+
+            expect(aeroplane.x).toBe(53.55)
+            expect(aeroplane.y).toBe(100.06)
+            expect(aeroplane.heading).toBe(91)
+            expect(aeroplane.altitude).toBe(5020)
+        })
+    })
 })
 
 describe("Sequential Actions", () => {
