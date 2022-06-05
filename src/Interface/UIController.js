@@ -41,25 +41,32 @@ export class UIController {
         this.aeroplaneContext.clearRect(0, 0, document.body.clientWidth - (document.body.clientWidth * 0.2), document.body.clientHeight);
     }
 
-    _drawExclusionZone = () => {
-        this.featuresContext.strokeStyle = COLOURS.RED;
-        this.featuresContext.lineWidth = 2;
+    _drawExclusionZone = (exclusionZones) => {
+        exclusionZones.forEach(zone => {
+            const severityColourMap = {
+                critical: COLOURS.RED,
+                moderate: COLOURS.ORANGE
+            }
+            this.featuresContext.strokeStyle = severityColourMap[zone.level];
+            this.featuresContext.lineWidth = 2;
+            this.featuresContext.beginPath();
+            for (let x = 0; x < zone.boundaries.length; x++) {
+                let boundary =  zone.boundaries[x]
+                if (x === 0) {
+                    this.featuresContext.moveTo(boundary.x, boundary.y)
+                } else {
+                    this.featuresContext.lineTo(boundary.x, boundary.y)
+                }
 
-        this.featuresContext.beginPath();
-        this.featuresContext.moveTo(500, 600)
-        this.featuresContext.lineTo(530, 550)
-        this.featuresContext.lineTo(640, 500)
-        this.featuresContext.lineTo(700, 500)
-        this.featuresContext.lineTo(660, 550)
-        this.featuresContext.lineTo(530, 630)
-        this.featuresContext.closePath()
-
-        this.featuresContext.stroke();
+            }
+            this.featuresContext.closePath()
+            this.featuresContext.stroke();
+        })
     }
 
     initFeatures = () => {
-        this._drawExclusionZone()
-        this._drawVOR(this.mapConfig.features.vor)
+        this._drawExclusionZone(this.mapConfig.features.exclusionZones)
+        this._drawVOR(this.mapConfig.features.vors)
     }
 
     drawAeroplane = (aeroplane) => {

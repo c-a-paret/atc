@@ -8,6 +8,8 @@ export const COLOURS = {
     RED: 'rgb(220,46,78)',
     BACKGROUND: 'rgb(18,19,49)',
     WHITE: 'rgb(218,219,243)',
+    ORANGE: 'rgb(194,127,6)',
+
 }
 
 export const AIRCRAFT = [
