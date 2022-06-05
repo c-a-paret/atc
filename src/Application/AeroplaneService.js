@@ -23,8 +23,8 @@ export class AeroplaneService {
         //     this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 90, 5000),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA123", 500, 300, 120, 5, 5000),
+            // new Aeroplane("BA456", 500, 350, 120, 90, 10000),
             // new Aeroplane("BA789", 500, 300, 120, 92),
             // new Aeroplane("BA789", 500, 300, 120, 93),
             // new Aeroplane("BA789", 500, 300, 120, 94),

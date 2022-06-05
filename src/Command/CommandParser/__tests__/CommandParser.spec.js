@@ -86,6 +86,15 @@ describe("Heading Commands", () => {
         expect(result).toBe(expectedHeading)
     })
 
+    test("Extracts heading of 000 to 360", () => {
+        const command = "BA423S200H000WLAM"
+        const expectedHeading = 360
+
+        const result = parseHeading(command)
+
+        expect(result).toBe(expectedHeading)
+    })
+
     test("Returns null if no heading command found", () => {
         const command = "J123S150"
 

@@ -25,7 +25,20 @@ export class Heading extends Action {
         if (targetHeading < 0 || targetHeading > 360) {
             throw `Invalid target heading [${targetHeading}]`
         }
-        const tickValues = range(targetHeading, currentHeading, 1)
+        let tickValues;
+        if (Math.abs(targetHeading - currentHeading) === 180 && currentHeading === 360) {
+            tickValues = range(targetHeading, 0, 1)
+        } else if (targetHeading - currentHeading > 180) {
+            const tickToNorth = range(1, currentHeading, 1)
+            const tickToTarget = range(targetHeading, 361, 1)
+            tickValues = tickToTarget.concat(tickToNorth)
+        } else if (currentHeading - targetHeading > 180) {
+            const tickToNorth = range(360, currentHeading, 1)
+            const tickToTarget = range(targetHeading, 0, 1)
+            tickValues = tickToTarget.concat(tickToNorth)
+        } else {
+            tickValues = range(targetHeading, currentHeading, 1)
+        }
         super("heading", true, targetHeading, tickValues);
     }
 }

@@ -59,6 +59,82 @@ describe("Heading", () => {
         expect(action.tickValues).toStrictEqual([300, 301, 302, 303, 304])
     })
 
+    test("Turns shortest distance to the right within circle", () => {
+        let currentHeading = 300;
+        let desiredHeading = 305;
+
+        const action = new Heading(currentHeading, desiredHeading)
+
+        expect(action.type).toBe("heading")
+        expect(action.concurrent).toBe(true)
+        expect(action.targetValue).toBe(desiredHeading)
+        expect(action.tickValues).toStrictEqual([305, 304, 303, 302, 301])
+    })
+
+    test("Turns shortest distance to the right outside circle", () => {
+        let currentHeading = 355;
+        let desiredHeading = 5;
+
+        const action = new Heading(currentHeading, desiredHeading)
+
+        expect(action.type).toBe("heading")
+        expect(action.concurrent).toBe(true)
+        expect(action.targetValue).toBe(desiredHeading)
+        expect(action.tickValues).toStrictEqual([5, 4, 3, 2, 1, 360, 359, 358, 357, 356])
+    })
+
+    test("Turns shortest distance to the left within circle", () => {
+        let currentHeading = 90;
+        let desiredHeading = 85;
+
+        const action = new Heading(currentHeading, desiredHeading)
+
+        expect(action.type).toBe("heading")
+        expect(action.concurrent).toBe(true)
+        expect(action.targetValue).toBe(desiredHeading)
+        expect(action.tickValues).toStrictEqual([85, 86, 87, 88, 89])
+    })
+
+    test("Turns shortest distance to the left outside circle", () => {
+        let currentHeading = 5;
+        let desiredHeading = 355;
+
+        const action = new Heading(currentHeading, desiredHeading)
+
+        expect(action.type).toBe("heading")
+        expect(action.concurrent).toBe(true)
+        expect(action.targetValue).toBe(desiredHeading)
+        expect(action.tickValues).toStrictEqual([355, 356, 357, 358, 359, 360, 1, 2, 3, 4])
+    })
+
+    test("Defaults to right turn", () => {
+        let currentHeading = 90;
+        let desiredHeading = 270;
+
+        const action = new Heading(currentHeading, desiredHeading)
+
+        expect(action.type).toBe("heading")
+        expect(action.concurrent).toBe(true)
+        expect(action.targetValue).toBe(desiredHeading)
+        expect(action.tickValues[action.tickValues.length - 1]).toBe(91)
+        expect(action.tickValues[action.tickValues.length - 2]).toBe(92)
+        expect(action.tickValues[action.tickValues.length - 3]).toBe(93)
+    })
+
+    test("Defaults to right turn from 360 to 180", () => {
+        let currentHeading = 360;
+        let desiredHeading = 180;
+
+        const action = new Heading(currentHeading, desiredHeading)
+
+        expect(action.type).toBe("heading")
+        expect(action.concurrent).toBe(true)
+        expect(action.targetValue).toBe(desiredHeading)
+        expect(action.tickValues[action.tickValues.length - 1]).toBe(1)
+        expect(action.tickValues[action.tickValues.length - 2]).toBe(2)
+        expect(action.tickValues[action.tickValues.length - 3]).toBe(3)
+    })
+
     test("Throws an error is the target heading is below 0", () => {
         let currentHeading = 300;
         let desiredHeading = -12;
