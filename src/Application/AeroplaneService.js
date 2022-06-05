@@ -46,5 +46,6 @@ export class AeroplaneService {
                 plane.setAltitude(command.altitude)
             }
         })
+        return command
     }
 }
