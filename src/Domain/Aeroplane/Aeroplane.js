@@ -67,7 +67,7 @@ export class Aeroplane {
         this.actions = this.actions.filter(action => action.tickValues.length > 0)
     }
 
-    applyActions() {
+    applyActions = () => {
         this.actions.forEach(action => {
             if (action.type === "heading") {
                 if (action.tickValues.length > 0) {
@@ -105,5 +105,14 @@ export class Aeroplane {
         this._clean_actions()
     }
 
+    withinPosition = (x, y) => {
+        const minX = x - 30
+        const maxX = x + 30
+        const minY = y - 30
+        const maxY = y + 30
+        const withinX = (minX < this.x && this.x < maxX)
+        const withinY = (minY < this.y && this.y < maxY)
+        return withinX && withinY
+    }
 
 }

@@ -6,6 +6,7 @@ export class InterfaceController {
 
     init = () => {
         this._setupCommandInterface()
+        this._setupClickInterface()
         this._focusCommandEntry()
     }
 
@@ -37,6 +38,20 @@ export class InterfaceController {
 
     _focusCommandEntry = () => {
         document.getElementById("command-entry-field").focus()
+    }
+
+    _setupClickInterface = () => {
+        document.addEventListener('click', (e) => {
+            const clickedX = e.clientX
+            const clickedY =  e.clientY
+            const callSign = this.aeroplaneService.getCallSignByPosition(clickedX, clickedY)
+            if (callSign) {
+                let commandField = document.getElementById("command-entry-field");
+                commandField.value = callSign
+                this.lastCallSign = callSign
+                this._focusCommandEntry()
+            }
+        });
     }
 
 }

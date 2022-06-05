@@ -24,7 +24,7 @@ export class AeroplaneService {
         // }
         this.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 5, 5000),
-            // new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
             // new Aeroplane("BA789", 500, 300, 120, 92),
             // new Aeroplane("BA789", 500, 300, 120, 93),
             // new Aeroplane("BA789", 500, 300, 120, 94),
@@ -47,5 +47,15 @@ export class AeroplaneService {
             }
         })
         return command
+    }
+
+    getCallSignByPosition = (x, y) => {
+        for (let n = 0; n < this.aeroplanes.length; n++) {
+            let plane = this.aeroplanes[n]
+            if (plane.withinPosition(x, y)) {
+                return plane.callSign
+            }
+        }
+        return null
     }
 }
