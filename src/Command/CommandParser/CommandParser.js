@@ -7,6 +7,10 @@ export const parseCommand = (command) => {
     }
 }
 
+export const commandMessage = (parsedCommand) => {
+    return `${parsedCommand.callSign}\n${parsedCommand.speed ? ' Speed: ' + parsedCommand.speed + '\n' : ''}${parsedCommand.heading ? ' Heading: ' + parsedCommand.heading + '\n' : ''}${parsedCommand.altitude ? ' Altitude: ' + parsedCommand.altitude + '' : ''}`
+}
+
 export const parseSpeed = (command) => {
     const match = command.match(/S(\d{2,3})/g);
     if (match && match.length === 1) {

@@ -1,3 +1,5 @@
+import {commandMessage} from "../Command/CommandParser/CommandParser";
+
 export class InterfaceController {
     constructor(aeroplaneService) {
         this.aeroplaneService = aeroplaneService
@@ -15,7 +17,20 @@ export class InterfaceController {
         const parsedCommand = this.aeroplaneService.sendCommand(commandField.value)
         this.lastCallSign = parsedCommand.callSign
         commandField.value = ""
+        this._displayMessage(commandMessage(parsedCommand))
+        setTimeout(() => {
+            this._clearMessage()
+        }, 2000)
     };
+
+    _displayMessage = (message) => {
+        let messageField = document.getElementById("message-display");
+        messageField.innerText = message
+    }
+
+    _clearMessage = () => {
+        document.getElementById("message-display").innerText = ""
+    }
 
     _previousCallSignHandler = () => {
         let commandField = document.getElementById("command-entry-field");
@@ -43,7 +58,7 @@ export class InterfaceController {
     _setupClickInterface = () => {
         document.addEventListener('click', (e) => {
             const clickedX = e.clientX
-            const clickedY =  e.clientY
+            const clickedY = e.clientY
             const callSign = this.aeroplaneService.getCallSignByPosition(clickedX, clickedY)
             if (callSign) {
                 let commandField = document.getElementById("command-entry-field");
