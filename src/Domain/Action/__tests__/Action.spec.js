@@ -3,10 +3,11 @@ import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../utils/common";
 
 describe("Speed", () => {
     test("Creates speed action with decreasing speed", () => {
+        let weight = 3;
         let currentSpeed = 300;
         let desiredSpeed = 290;
 
-        const action = new Speed(currentSpeed, desiredSpeed)
+        const action = new Speed(currentSpeed, desiredSpeed, weight)
 
         expect(action.type).toBe("speed")
         expect(action.concurrent).toBe(true)
@@ -15,10 +16,11 @@ describe("Speed", () => {
     })
 
     test("Creates speed action with increasing speed", () => {
+        let weight = 3;
         let currentSpeed = 295;
         let desiredSpeed = 300;
 
-        const action = new Speed(currentSpeed, desiredSpeed)
+        const action = new Speed(currentSpeed, desiredSpeed, weight)
 
         expect(action.type).toBe("speed")
         expect(action.concurrent).toBe(true)
@@ -44,7 +46,7 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([305, 304, 303, 302, 301])
+        expect(action.tickValues).toStrictEqual([305, 303, 301])
     })
 
     test("Creates heading action with decreasing heading", () => {
@@ -56,19 +58,19 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([300, 301, 302, 303, 304])
+        expect(action.tickValues).toStrictEqual([300, 302, 304])
     })
 
     test("Turns shortest distance to the right within circle", () => {
         let currentHeading = 300;
-        let desiredHeading = 305;
+        let desiredHeading = 303;
 
         const action = new Heading(currentHeading, desiredHeading)
 
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([305, 304, 303, 302, 301])
+        expect(action.tickValues).toStrictEqual([303, 301])
     })
 
     test("Turns shortest distance to the right outside circle", () => {
@@ -80,7 +82,7 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([5, 4, 3, 2, 1, 360, 359, 358, 357, 356])
+        expect(action.tickValues).toStrictEqual([5, 3, 1, 360, 358, 356])
     })
 
     test("Turns shortest distance to the left within circle", () => {
@@ -92,7 +94,7 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([85, 86, 87, 88, 89])
+        expect(action.tickValues).toStrictEqual([85, 87, 89])
     })
 
     test("Turns shortest distance to the left outside circle", () => {
@@ -104,7 +106,7 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([355, 356, 357, 358, 359, 360, 1, 2, 3, 4])
+        expect(action.tickValues).toStrictEqual([355, 357, 359, 1, 3])
     })
 
     test("Defaults to right turn", () => {
@@ -116,9 +118,9 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues[action.tickValues.length - 1]).toBe(91)
-        expect(action.tickValues[action.tickValues.length - 2]).toBe(92)
-        expect(action.tickValues[action.tickValues.length - 3]).toBe(93)
+        expect(action.tickValues[action.tickValues.length - 1]).toBe(92)
+        expect(action.tickValues[action.tickValues.length - 2]).toBe(94)
+        expect(action.tickValues[action.tickValues.length - 3]).toBe(96)
     })
 
     test("Defaults to right turn from 360 to 180", () => {
@@ -130,9 +132,9 @@ describe("Heading", () => {
         expect(action.type).toBe("heading")
         expect(action.concurrent).toBe(true)
         expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues[action.tickValues.length - 1]).toBe(1)
-        expect(action.tickValues[action.tickValues.length - 2]).toBe(2)
-        expect(action.tickValues[action.tickValues.length - 3]).toBe(3)
+        expect(action.tickValues[action.tickValues.length - 1]).toBe(2)
+        expect(action.tickValues[action.tickValues.length - 2]).toBe(4)
+        expect(action.tickValues[action.tickValues.length - 3]).toBe(6)
     })
 
     test("Throws an error is the target heading is below 0", () => {

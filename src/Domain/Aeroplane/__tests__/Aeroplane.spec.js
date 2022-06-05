@@ -6,7 +6,7 @@ describe("Speed", () => {
     let aeroplane;
 
     beforeEach(() => {
-        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90)
+        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets speed action when valid", () => {
@@ -38,7 +38,7 @@ describe("Heading", () => {
     let aeroplane;
 
     beforeEach(() => {
-        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90)
+        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets heading action when valid", () => {
@@ -50,7 +50,7 @@ describe("Heading", () => {
         expect(aeroplane.actions[0].type).toBe("heading")
         expect(aeroplane.actions[0].concurrent).toBeTruthy()
         expect(aeroplane.actions[0].targetValue).toBe(desiredHeading)
-        expect(aeroplane.actions[0].tickValues).toStrictEqual([100, 99, 98, 97, 96, 95, 94, 93, 92, 91])
+        expect(aeroplane.actions[0].tickValues).toStrictEqual([100, 98, 96, 94, 92])
     })
 
     test("Does not set heading when over 360", () => {
@@ -80,11 +80,11 @@ describe("Apply Actions", () => {
         let aeroplane;
 
         beforeEach(() => {
-            aeroplane = new Aeroplane("AB123", startX, startY, 150, 0)
+            aeroplane = new Aeroplane("AB123", startX, startY, 150, 0, 3000, 3)
         })
 
         test("Change in position responsive at minimum speed and 1 degree heading", () => {
-            aeroplane = new Aeroplane("AB123", 100, 100, MIN_SPEED, 91)
+            aeroplane = new Aeroplane("AB123", 100, 100, MIN_SPEED, 91, 3000, 3)
 
             expect(aeroplane.x).toBe(100)
             expect(aeroplane.y).toBe(100)
@@ -93,22 +93,22 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(102)
+            expect(aeroplane.x).toBe(101.5)
             expect(aeroplane.y).toBe(100.03)
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(104)
+            expect(aeroplane.x).toBe(103)
             expect(aeroplane.y).toBe(100.06)
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(106)
+            expect(aeroplane.x).toBe(104.5)
             expect(aeroplane.y).toBe(100.09)
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(108)
+            expect(aeroplane.x).toBe(106)
             expect(aeroplane.y).toBe(100.12)
         })
 
@@ -124,7 +124,7 @@ describe("Apply Actions", () => {
             aeroplane.applyActions()
 
             expect(aeroplane.x).toBe(100)
-            expect(aeroplane.y).toBe(96.5)
+            expect(aeroplane.y).toBe(97.75)
         })
 
         test("Continues east if no actions available", () => {
@@ -138,7 +138,7 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(103.5)
+            expect(aeroplane.x).toBe(102.25)
             expect(aeroplane.y).toBe(100)
         })
 
@@ -154,7 +154,7 @@ describe("Apply Actions", () => {
             aeroplane.applyActions()
 
             expect(aeroplane.x).toBe(100)
-            expect(aeroplane.y).toBe(103.5)
+            expect(aeroplane.y).toBe(102.25)
         })
 
         test("Continues west if no actions available", () => {
@@ -168,7 +168,7 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(96.5)
+            expect(aeroplane.x).toBe(97.75)
             expect(aeroplane.y).toBe(100)
         })
 
@@ -183,8 +183,8 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(102.47)
-            expect(aeroplane.y).toBe(97.53)
+            expect(aeroplane.x).toBe(101.59)
+            expect(aeroplane.y).toBe(98.41)
         })
 
         test("Continues south east if no actions available", () => {
@@ -198,8 +198,8 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(102.47)
-            expect(aeroplane.y).toBe(102.47)
+            expect(aeroplane.x).toBe(101.59)
+            expect(aeroplane.y).toBe(101.59)
         })
 
         test("Continues south west if no actions available", () => {
@@ -213,8 +213,8 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(97.53)
-            expect(aeroplane.y).toBe(102.47)
+            expect(aeroplane.x).toBe(98.41)
+            expect(aeroplane.y).toBe(101.59)
         })
 
         test("Continues north west if no actions available", () => {
@@ -228,14 +228,14 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(97.53)
-            expect(aeroplane.y).toBe(97.53)
+            expect(aeroplane.x).toBe(98.41)
+            expect(aeroplane.y).toBe(98.41)
         })
     })
 
     describe("When actions available", () => {
         test("Applies all actions and moves forward", () => {
-            const aeroplane = new Aeroplane("AB123", 50, 100, 150, 90, 5000)
+            const aeroplane = new Aeroplane("AB123", 50, 100, 150, 90, 5000, 3)
 
             aeroplane.setSpeed(160)
             aeroplane.setHeading(100)
@@ -243,9 +243,9 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(53.55)
-            expect(aeroplane.y).toBe(100.06)
-            expect(aeroplane.heading).toBe(91)
+            expect(aeroplane.x).toBe(52.27)
+            expect(aeroplane.y).toBe(100.2)
+            expect(aeroplane.heading).toBe(95)
             expect(aeroplane.altitude).toBe(5020)
         })
     })
@@ -257,7 +257,7 @@ describe("Sequential Actions", () => {
         let aeroplane;
 
         beforeEach(() => {
-            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000)
+            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
         })
 
         test("Speed", () => {
@@ -301,7 +301,7 @@ describe("Sequential Actions", () => {
         let aeroplane;
 
         beforeEach(() => {
-            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000)
+            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
         })
 
         test("Speed", () => {
@@ -381,7 +381,7 @@ describe("Outside boundaries", () => {
         test("Too far north", () => {
             const x = 50
             const y = -1
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -389,7 +389,7 @@ describe("Outside boundaries", () => {
         test("Too far east", () => {
             const x = 101
             const y = 50
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -397,7 +397,7 @@ describe("Outside boundaries", () => {
         test("Too far south", () => {
             const x = 50
             const y = 101
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -405,7 +405,7 @@ describe("Outside boundaries", () => {
         test("Too far west", () => {
             const x = -1
             const y = 50
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })

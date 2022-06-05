@@ -6,8 +6,8 @@ describe('Send command', () => {
     test('Sends command to relevant aeroplane', () => {
         const service = new AeroplaneService()
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
         ]
 
         const rawCommand = "BA456S140C12H070"
@@ -33,8 +33,8 @@ describe('Send command', () => {
     test('All aeroplanes unaffected if command not valid', () => {
         const service = new AeroplaneService()
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
         ]
 
         const rawCommand = "BA456X140Y12P070"

@@ -146,7 +146,7 @@ export class UIController {
         const oppositeHeading = aeroplane.heading + 180
 
         const headingRadians = (Math.PI / 180) * oppositeHeading
-        const normalisedSpeed = aeroplane.speed / 4
+        const normalisedSpeed = aeroplane.speed / 8
 
         let tailEndX = aeroplane.x + normalisedSpeed * Math.sin(headingRadians);
         let tailEndY = aeroplane.y - normalisedSpeed * Math.cos(headingRadians);

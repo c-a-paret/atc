@@ -2,8 +2,9 @@ import {Altitude, Heading, Speed} from "../Action/Action";
 import {MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED, round, toRadians} from "../../utils/common";
 
 export class Aeroplane {
-    constructor(callSign, x, y, speed, hdg, altitude) {
+    constructor(callSign, x, y, speed, hdg, altitude, weight) {
         this.callSign = callSign;
+        this.weight = weight;
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -26,7 +27,7 @@ export class Aeroplane {
 
     setSpeed = (speed) => {
         if (this._valid_speed(speed)) {
-            this.addAction(new Speed(this.speed, speed))
+            this.addAction(new Speed(this.speed, speed, this.weight))
         }
     }
 
@@ -39,7 +40,7 @@ export class Aeroplane {
 
     setHeading = (heading) => {
         if (this._valid_heading(heading)) {
-            this.addAction(new Heading(this.heading, heading))
+            this.addAction(new Heading(this.heading, heading, this.speed))
         }
     }
 
@@ -90,7 +91,7 @@ export class Aeroplane {
         })
 
         const headingRadians = toRadians(this.heading)
-        const distancePerTick = 1 + ((this.speed - 100) / 10 * 0.5)
+        const distancePerTick = 1 + ((this.speed - 100) / 20 * 0.5)
         this.x = round(this.x + distancePerTick * Math.sin(headingRadians), 2);
         this.y = round(this.y - distancePerTick * Math.cos(headingRadians), 2);
 
