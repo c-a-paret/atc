@@ -346,3 +346,53 @@ describe("Sequential Actions", () => {
     })
 
 })
+
+describe("Outside boundaries", () => {
+
+    describe("Determines when outside boundaries", () => {
+        let aeroplane;
+        let mapBoundaries;
+
+        beforeEach(() => {
+            mapBoundaries = {
+                minX: 0,
+                maxX: 100,
+                minY: 0,
+                maxY: 100,
+            }
+        })
+
+        test("Too far north", () => {
+            const x = 50
+            const y = -1
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            expect(result).toBeTruthy()
+        })
+
+        test("Too far east", () => {
+            const x = 101
+            const y = 50
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            expect(result).toBeTruthy()
+        })
+
+        test("Too far south", () => {
+            const x = 50
+            const y = 101
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            expect(result).toBeTruthy()
+        })
+
+        test("Too far west", () => {
+            const x = -1
+            const y = 50
+            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000)
+            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            expect(result).toBeTruthy()
+        })
+    })
+})
+

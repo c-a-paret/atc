@@ -120,7 +120,7 @@ export class Aeroplane {
         this.active = false
     }
 
-    outsideBoundaries = (mapBoundaries) => {
+    isOutsideBoundaries = (mapBoundaries) => {
         const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
         const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
         return outsideX || outsideY

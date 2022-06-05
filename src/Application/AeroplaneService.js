@@ -62,7 +62,7 @@ export class AeroplaneService {
 
     deactivateAeroplanes = () => {
         this.aeroplanes.forEach(plane => {
-            if (plane.outsideBoundaries(this.mapBoundaries)) {
+            if (plane.isOutsideBoundaries(this.mapBoundaries)) {
                 plane.makeInactive()
             }
         })
