@@ -1,9 +1,9 @@
 export const parseCommand = (command) => {
     return {
-        "callSign": command.substring(0, 5),
-        "speed": parseSpeed(command),
-        "heading": parseHeading(command),
-        "altitude": parseAltitude(command)
+        callSign: command.substring(0, 5),
+        speed: parseSpeed(command),
+        heading: parseHeading(command),
+        altitude: parseAltitude(command)
     }
 }
 
