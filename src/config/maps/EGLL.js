@@ -2,6 +2,32 @@ export const EGLL = {
     name: "London Heathrow",
     shortCode: "LHR",
     features: {
+        runways: [
+            {
+                start: {
+                    label: "9L",
+                    x: 700,
+                    y: 450
+                },
+                end: {
+                    label: "27R",
+                    x: 760,
+                    y: 450
+                }
+            },
+            {
+                start: {
+                    label: "9R",
+                    x: 700,
+                    y: 470
+                },
+                end: {
+                    label: "27L",
+                    x: 760,
+                    y: 470
+                }
+            }
+        ],
         vors: [
             {id: "OCK", name: "Ockham", x: 600, y: 600},
             {id: "LAM", name: "Lambourne", x: 900, y: 300},

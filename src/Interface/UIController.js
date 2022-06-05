@@ -41,7 +41,13 @@ export class UIController {
         this.aeroplaneContext.clearRect(0, 0, document.body.clientWidth - (document.body.clientWidth * 0.2), document.body.clientHeight);
     }
 
-    _drawExclusionZone = (exclusionZones) => {
+    initFeatures = () => {
+        this._drawExclusionZones(this.mapConfig.features.exclusionZones)
+        this._drawVORs(this.mapConfig.features.vors)
+        this._drawRunways(this.mapConfig.features.runways)
+    }
+
+    _drawExclusionZones = (exclusionZones) => {
         exclusionZones.forEach(zone => {
             const severityColourMap = {
                 critical: COLOURS.RED,
@@ -64,9 +70,23 @@ export class UIController {
         })
     }
 
-    initFeatures = () => {
-        this._drawExclusionZone(this.mapConfig.features.exclusionZones)
-        this._drawVOR(this.mapConfig.features.vors)
+    _drawRunways = (runways) => {
+        runways.forEach(runway => {
+            this.featuresContext.strokeStyle = COLOURS.MINT;
+            this.featuresContext.lineWidth = 4;
+            this.featuresContext.setLineDash([]);
+            this.featuresContext.beginPath();
+            this.featuresContext.moveTo(runway.start.x, runway.start.y)
+            this.featuresContext.lineTo(runway.end.x, runway.end.y)
+            this.featuresContext.stroke();
+            // Labels
+            this.featuresContext.fillStyle = COLOURS.WHITE;
+            this.featuresContext.beginPath();
+            this.featuresContext.font = "12px Courier New";
+            this.featuresContext.fillText(runway.start.label, runway.start.x - 20, runway.start.y - 5);
+            this.featuresContext.fillText(runway.end.label, runway.end.x + 10, runway.end.y - 5);
+
+        })
     }
 
     drawAeroplane = (aeroplane) => {
@@ -136,7 +156,7 @@ export class UIController {
         this.aeroplaneContext.fillText(`${aeroplane.callSign}`, aeroplane.x - 20, aeroplane.y - 30);
     }
 
-    _drawVOR = (vors) => {
+    _drawVORs = (vors) => {
         vors.forEach(vor => {
             this.featuresContext.strokeStyle = COLOURS.WHITE;
             this.featuresContext.lineWidth = 2;

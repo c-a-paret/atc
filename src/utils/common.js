@@ -5,6 +5,7 @@ export const MAX_ALTITUDE = 40000;
 export const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
     MINT: 'rgb(0,213,170)',
+    BLUE: 'rgb(0,151,255)',
     RED: 'rgb(220,46,78)',
     BACKGROUND: 'rgb(18,19,49)',
     WHITE: 'rgb(218,219,243)',
