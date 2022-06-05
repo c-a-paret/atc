@@ -234,3 +234,115 @@ describe("Apply Actions", () => {
     })
 
 })
+
+describe("Sequential Actions", () => {
+
+    describe("Overwrites existing action when one same action exits", () => {
+        let aeroplane;
+
+        beforeEach(() => {
+            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000)
+        })
+
+        test("Speed", () => {
+            aeroplane.setSpeed(160)
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(160)
+
+            aeroplane.setSpeed(170)
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(170)
+        })
+
+        test("Heading", () => {
+            aeroplane.setHeading(90)
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type).toBe("heading")
+            expect(aeroplane.actions[0].targetValue).toBe(90)
+
+            aeroplane.setHeading(180)
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type).toBe("heading")
+            expect(aeroplane.actions[0].targetValue).toBe(180)
+        })
+
+        test("Altitude", () => {
+            aeroplane.setAltitude(5000)
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type).toBe("altitude")
+            expect(aeroplane.actions[0].targetValue).toBe(5000)
+
+            aeroplane.setAltitude(10000)
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type).toBe("altitude")
+            expect(aeroplane.actions[0].targetValue).toBe(10000)
+        })
+    })
+
+    describe("Overwrites existing action when multiple different actions exist", () => {
+        let aeroplane;
+
+        beforeEach(() => {
+            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000)
+        })
+
+        test("Speed", () => {
+            aeroplane.setSpeed(160)
+            aeroplane.setHeading(90)
+            expect(aeroplane.actions.length).toBe(2)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(160)
+            expect(aeroplane.actions[1].type).toBe("heading")
+            expect(aeroplane.actions[1].targetValue).toBe(90)
+
+            aeroplane.setSpeed(170)
+            expect(aeroplane.actions.length).toBe(2)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(170)
+            expect(aeroplane.actions[1].type).toBe("heading")
+            expect(aeroplane.actions[1].targetValue).toBe(90)
+        })
+
+        test("Heading", () => {
+            aeroplane.setSpeed(160)
+            aeroplane.setHeading(90)
+            expect(aeroplane.actions.length).toBe(2)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(160)
+            expect(aeroplane.actions[1].type).toBe("heading")
+            expect(aeroplane.actions[1].targetValue).toBe(90)
+
+            aeroplane.setHeading(180)
+            expect(aeroplane.actions.length).toBe(2)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(160)
+            expect(aeroplane.actions[1].type).toBe("heading")
+            expect(aeroplane.actions[1].targetValue).toBe(180)
+        })
+
+        test("Altitude", () => {
+            aeroplane.setSpeed(160)
+            aeroplane.setAltitude(5000)
+            aeroplane.setHeading(90)
+            expect(aeroplane.actions.length).toBe(3)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(160)
+            expect(aeroplane.actions[1].type).toBe("altitude")
+            expect(aeroplane.actions[1].targetValue).toBe(5000)
+            expect(aeroplane.actions[2].type).toBe("heading")
+            expect(aeroplane.actions[2].targetValue).toBe(90)
+
+            aeroplane.setAltitude(12000)
+            expect(aeroplane.actions[0].type).toBe("speed")
+            expect(aeroplane.actions[0].targetValue).toBe(160)
+            expect(aeroplane.actions[1].type).toBe("altitude")
+            expect(aeroplane.actions[1].targetValue).toBe(12000)
+            expect(aeroplane.actions[2].type).toBe("heading")
+            expect(aeroplane.actions[2].targetValue).toBe(90)
+        })
+
+    })
+
+})

@@ -12,9 +12,20 @@ export class Aeroplane {
         this.actions = []
     }
 
+    addAction = (action) => {
+        for (let x = 0; x < this.actions.length; x++) {
+            if (this.actions[x].type === action.type) {
+                this.actions[x].targetValue = action.targetValue
+                this.actions[x].tickValues = action.tickValues
+                return
+            }
+        }
+        this.actions.push(action)
+    }
+
     setSpeed = (speed) => {
         if (this._valid_speed(speed)) {
-            this.actions.push(new Speed(this.speed, speed))
+            this.addAction(new Speed(this.speed, speed))
         }
     }
 
@@ -27,7 +38,7 @@ export class Aeroplane {
 
     setHeading = (heading) => {
         if (this._valid_heading(heading)) {
-            this.actions.push(new Heading(this.heading, heading))
+            this.addAction(new Heading(this.heading, heading))
         }
     }
 
@@ -40,7 +51,7 @@ export class Aeroplane {
 
     setAltitude = (altitude) => {
         if (this._valid_altitude(altitude)) {
-            this.actions.push(new Altitude(this.altitude, altitude))
+            this.addAction(new Altitude(this.altitude, altitude))
         }
     }
 
@@ -72,9 +83,7 @@ export class Aeroplane {
 
             if (action.type === "altitude") {
                 if (action.tickValues.length > 0) {
-                    let newAlt = action.tickValues.pop();
-                    console.log(`New altitude ${newAlt}`)
-                    this.altitude = newAlt
+                    this.altitude = action.tickValues.pop()
                 }
             }
         })
