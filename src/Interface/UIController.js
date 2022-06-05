@@ -54,14 +54,32 @@ export class UIController {
         this._drawRunways(this.mapConfig.features.runways)
     }
 
+    drawAeroplane = (aeroplane) => {
+        this._drawAeroplanePosition(aeroplane)
+        this._drawAeroplaneSpeedTail(aeroplane)
+        this._drawHeadingLabel(aeroplane)
+        this._drawSpeedLabel(aeroplane)
+        this._drawAltitudeLabel(aeroplane)
+        this._drawCallSignLabel(aeroplane)
+    }
+
     _drawExclusionZones = (exclusionZones) => {
         exclusionZones.forEach(zone => {
             const severityColourMap = {
-                critical: COLOURS.RED,
-                moderate: COLOURS.ORANGE
+                critical: {
+                    solid: COLOURS.RED,
+                    transparent: COLOURS.RED_TRANSPARENT
+                },
+                moderate: {
+                    solid: COLOURS.ORANGE,
+                    transparent: COLOURS.ORANGE_TRANSPARENT
+                }
             }
-            this.featuresContext.strokeStyle = severityColourMap[zone.level];
+            // Border
+            this.featuresContext.strokeStyle = severityColourMap[zone.level].solid;
             this.featuresContext.lineWidth = 2;
+            this.featuresContext.lineJoin = 'round';
+            this.featuresContext.setLineDash([2]);
             this.featuresContext.beginPath();
             for (let x = 0; x < zone.boundaries.length; x++) {
                 let boundary =  zone.boundaries[x]
@@ -74,6 +92,21 @@ export class UIController {
             }
             this.featuresContext.closePath()
             this.featuresContext.stroke();
+
+            // Fill
+            this.featuresContext.fillStyle = severityColourMap[zone.level].transparent;
+            this.featuresContext.beginPath();
+            for (let x = 0; x < zone.boundaries.length; x++) {
+                let boundary =  zone.boundaries[x]
+                if (x === 0) {
+                    this.featuresContext.moveTo(boundary.x, boundary.y)
+                } else {
+                    this.featuresContext.lineTo(boundary.x, boundary.y)
+                }
+
+            }
+            this.featuresContext.closePath()
+            this.featuresContext.fill();
         })
     }
 
@@ -94,15 +127,6 @@ export class UIController {
             this.featuresContext.fillText(runway.end.label, runway.end.x + 10, runway.end.y - 5);
 
         })
-    }
-
-    drawAeroplane = (aeroplane) => {
-        this._drawAeroplanePosition(aeroplane)
-        this._drawAeroplaneSpeedTail(aeroplane)
-        this._drawHeadingLabel(aeroplane)
-        this._drawSpeedLabel(aeroplane)
-        this._drawAltitudeLabel(aeroplane)
-        this._drawCallSignLabel(aeroplane)
     }
 
     _drawAeroplanePosition = (aeroplane) => {

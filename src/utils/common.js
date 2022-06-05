@@ -7,9 +7,11 @@ export const COLOURS = {
     MINT: 'rgb(0,213,170)',
     BLUE: 'rgb(0,151,255)',
     RED: 'rgb(220,46,78)',
+    RED_TRANSPARENT: 'rgba(220,46,78,0.2)',
     BACKGROUND: 'rgb(18,19,49)',
     WHITE: 'rgb(218,219,243)',
     ORANGE: 'rgb(194,127,6)',
+    ORANGE_TRANSPARENT: 'rgb(194,127,6,0.2)',
 
 }
 
