@@ -1,7 +1,9 @@
 import {COLOURS} from '../utils/common'
 
 export class UIController {
-    constructor() {
+    constructor(mapConfig) {
+        this.mapConfig = mapConfig
+
         this.backgroundCanvas = document.getElementById("background");
         this.backgroundContext = this.backgroundCanvas.getContext('2d');
         this.featuresCanvas = document.getElementById("features");
@@ -39,7 +41,7 @@ export class UIController {
         this.aeroplaneContext.clearRect(0, 0, document.body.clientWidth - (document.body.clientWidth * 0.2), document.body.clientHeight);
     }
 
-    drawExclusionZone = () => {
+    _drawExclusionZone = () => {
         this.featuresContext.strokeStyle = COLOURS.RED;
         this.featuresContext.lineWidth = 2;
 
@@ -53,6 +55,11 @@ export class UIController {
         this.featuresContext.closePath()
 
         this.featuresContext.stroke();
+    }
+
+    initFeatures = () => {
+        this._drawExclusionZone()
+        this._drawVOR(this.mapConfig.features.vor)
     }
 
     drawAeroplane = (aeroplane) => {
@@ -122,7 +129,25 @@ export class UIController {
         this.aeroplaneContext.fillText(`${aeroplane.callSign}`, aeroplane.x - 20, aeroplane.y - 30);
     }
 
-    initFeatures = () => {
-        this.drawExclusionZone()
+    _drawVOR = (vors) => {
+        vors.forEach(vor => {
+            this.featuresContext.strokeStyle = COLOURS.WHITE;
+            this.featuresContext.lineWidth = 2;
+            this.featuresContext.setLineDash([2]);
+            this.featuresContext.beginPath();
+            this.featuresContext.arc(vor.x, vor.y, 12, 0, Math.PI * 2, false);
+            this.featuresContext.stroke();
+
+            this.featuresContext.fillStyle = COLOURS.WHITE;
+            this.featuresContext.beginPath();
+            this.featuresContext.arc(vor.x, vor.y, 2, 0, Math.PI * 2, false);
+            this.featuresContext.fill();
+
+            this.featuresContext.fillStyle = COLOURS.WHITE;
+            this.featuresContext.font = "14px Courier New";
+            this.featuresContext.beginPath();
+            this.featuresContext.fillText(vor.id, vor.x - 12, vor.y - 20);
+
+        })
     }
 }

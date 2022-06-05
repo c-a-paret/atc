@@ -6,7 +6,8 @@ export const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
     MINT: 'rgb(0,213,170)',
     RED: 'rgb(220,46,78)',
-    BACKGROUND: 'rgb(18,19,49)'
+    BACKGROUND: 'rgb(18,19,49)',
+    WHITE: 'rgb(218,219,243)',
 }
 
 export const AIRCRAFT = [
