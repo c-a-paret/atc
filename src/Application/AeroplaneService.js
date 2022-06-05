@@ -3,8 +3,9 @@ import {AIRCRAFT, getRandomNumberBetween} from "../utils/common";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 
 export class AeroplaneService {
-    constructor() {
+    constructor(mapBoundaries) {
         this.aeroplanes = []
+        this.mapBoundaries = mapBoundaries
     }
 
     initArrival = () => {
@@ -57,5 +58,13 @@ export class AeroplaneService {
             }
         }
         return null
+    }
+
+    deactivateAeroplanes = () => {
+        this.aeroplanes.forEach(plane => {
+            if (plane.outsideBoundaries(this.mapBoundaries)) {
+                plane.makeInactive()
+            }
+        })
     }
 }

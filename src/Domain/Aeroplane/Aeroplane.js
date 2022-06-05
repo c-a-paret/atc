@@ -10,6 +10,7 @@ export class Aeroplane {
         this.heading = hdg;
         this.altitude = altitude;
         this.actions = []
+        this.active = true
     }
 
     addAction = (action) => {
@@ -113,6 +114,16 @@ export class Aeroplane {
         const withinX = (minX < this.x && this.x < maxX)
         const withinY = (minY < this.y && this.y < maxY)
         return withinX && withinY
+    }
+
+    makeInactive = () => {
+        this.active = false
+    }
+
+    outsideBoundaries = (mapBoundaries) => {
+        const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
+        const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
+        return outsideX || outsideY
     }
 
 }

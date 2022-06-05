@@ -11,6 +11,13 @@ export class UIController {
         this.aeroplaneCanvas = document.getElementById("aeroplanes");
         this.aeroplaneContext = this.aeroplaneCanvas.getContext('2d');
 
+        this.mapBoundaries = {
+            minX: 0,
+            maxX: document.body.clientWidth - (document.body.clientWidth * 0.2),
+            minY: 0,
+            maxY: document.body.clientHeight,
+        }
+
         this.initBackgroundLayer()
         this.initFeaturesLayer()
         this.initAeroplaneLayer()
