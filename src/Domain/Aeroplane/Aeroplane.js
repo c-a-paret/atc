@@ -16,9 +16,8 @@ export class Aeroplane {
 
     addAction = (action) => {
         for (let x = 0; x < this.actions.length; x++) {
-            if (this.actions[x].type === action.type) {
+            if (this.actions[x].type() === action.type()) {
                 this.actions[x].targetValue = action.targetValue
-                this.actions[x].tickValues = action.tickValues
                 return
             }
         }
@@ -26,68 +25,33 @@ export class Aeroplane {
     }
 
     setSpeed = (speed) => {
-        if (this._valid_speed(speed)) {
-            this.addAction(new Speed(this.speed, speed, this.weight))
+        const newSpeed = new Speed(this, speed);
+        if (newSpeed.isValid()) {
+            this.addAction(newSpeed)
         }
-    }
-
-    _valid_speed = (speed) => {
-        return speed
-            && speed !== this.speed
-            && speed % 10 === 0  // Is multiple of 10
-            && speed >= MIN_SPEED
     }
 
     setHeading = (heading) => {
-        if (this._valid_heading(heading)) {
-            this.addAction(new Heading(this.heading, heading, this.speed))
+        const newHeading = new Heading(this, heading);
+        if (newHeading.isValid()) {
+            this.addAction(newHeading)
         }
-    }
-
-    _valid_heading = (heading) => {
-        return heading
-            && heading !== this.heading
-            && heading >= 0
-            && heading <= 360
     }
 
     setAltitude = (altitude) => {
-        if (this._valid_altitude(altitude)) {
-            this.addAction(new Altitude(this.altitude, altitude))
+        const newAltitude = new Altitude(this, altitude);
+        if (newAltitude.isValid()) {
+            this.addAction(newAltitude)
         }
     }
 
-    _valid_altitude = (altitude) => {
-        return altitude
-            && altitude !== this.altitude
-            && altitude >= MIN_ALTITUDE
-            && altitude <= MAX_ALTITUDE
-            && altitude % 100 === 0  // Is multiple of 100
-    }
-
     _clean_actions = () => {
-        this.actions = this.actions.filter(action => action.tickValues.length > 0)
+        this.actions = this.actions.filter(action => action.isActionable())
     }
 
     applyActions = () => {
         this.actions.forEach(action => {
-            if (action.type === "heading") {
-                if (action.tickValues.length > 0) {
-                    this.heading = action.tickValues.pop()
-                }
-            }
-
-            if (action.type === "speed") {
-                if (action.tickValues.length > 0) {
-                    this.speed = action.tickValues.pop()
-                }
-            }
-
-            if (action.type === "altitude") {
-                if (action.tickValues.length > 0) {
-                    this.altitude = action.tickValues.pop()
-                }
-            }
+            action.apply()
         })
 
         const headingRadians = toRadians(this.heading)

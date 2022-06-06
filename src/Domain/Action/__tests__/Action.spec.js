@@ -1,5 +1,6 @@
 import {Altitude, Heading, Speed} from "../Action";
 import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../utils/common";
+import {Aeroplane} from "../../Aeroplane/Aeroplane";
 
 describe("Speed", () => {
     test("Creates speed action with decreasing speed", () => {
@@ -7,12 +8,15 @@ describe("Speed", () => {
         let currentSpeed = 300;
         let desiredSpeed = 290;
 
-        const action = new Speed(currentSpeed, desiredSpeed, weight)
+        const aeroplane = new Aeroplane("BA123", 500, 500, currentSpeed, 90, 5000, weight)
 
-        expect(action.type).toBe("speed")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredSpeed)
-        expect(action.tickValues).toStrictEqual([290, 291, 292, 293, 294, 295, 296, 297, 298, 299])
+        const action = new Speed(aeroplane, desiredSpeed)
+
+        expect(aeroplane.speed).toBe(300)
+        action.apply()
+        expect(aeroplane.speed).toBe(299)
+        action.apply()
+        expect(aeroplane.speed).toBe(298)
     })
 
     test("Creates speed action with increasing speed", () => {
@@ -20,135 +24,159 @@ describe("Speed", () => {
         let currentSpeed = 295;
         let desiredSpeed = 300;
 
-        const action = new Speed(currentSpeed, desiredSpeed, weight)
+        const aeroplane = new Aeroplane("BA123", 500, 500, currentSpeed, 90, 5000, weight)
 
-        expect(action.type).toBe("speed")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredSpeed)
-        expect(action.tickValues).toStrictEqual([300, 299, 298, 297, 296])
+        const action = new Speed(aeroplane, desiredSpeed)
+
+        expect(aeroplane.speed).toBe(295)
+        action.apply()
+        expect(aeroplane.speed).toBe(296)
+        action.apply()
+        expect(aeroplane.speed).toBe(297)
     })
 
-    test("Throws an error is the target speed is below 0", () => {
-        let currentSpeed = 300;
+    test("Is not valid if the target speed is below 0", () => {
         let desiredSpeed = -12;
 
-        expect(() => new Speed(currentSpeed, desiredSpeed)).toThrow('Invalid target speed [-12]')
+        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the target speed is not multiple of 10", () => {
+        let desiredSpeed = 207;
+
+        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the target speed is same as current speed", () => {
+        let desiredSpeed = 200;
+
+        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the target speed is lower than the minimum speed", () => {
+        let desiredSpeed = 10;
+
+        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
     })
 })
 
 describe("Heading", () => {
-    test("Creates heading action with increasing heading", () => {
-        let currentHeading = 300;
-        let desiredHeading = 305;
+    test("Turning right within circle", () => {
+        let currentHeading = 5;
+        let desiredHeading = 10;
 
-        const action = new Heading(currentHeading, desiredHeading)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
 
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([305, 303, 301])
+        const action = new Heading(aeroplane, desiredHeading)
+
+        expect(aeroplane.heading).toBe(5)
+        action.apply()
+        expect(aeroplane.heading).toBe(8)
+        action.apply()
+        expect(aeroplane.heading).toBe(10)
     })
 
-    test("Creates heading action with decreasing heading", () => {
-        let currentHeading = 305;
-        let desiredHeading = 300;
-
-        const action = new Heading(currentHeading, desiredHeading)
-
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([300, 302, 304])
-    })
-
-    test("Turns shortest distance to the right within circle", () => {
-        let currentHeading = 300;
-        let desiredHeading = 303;
-
-        const action = new Heading(currentHeading, desiredHeading)
-
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([303, 301])
-    })
-
-    test("Turns shortest distance to the right outside circle", () => {
-        let currentHeading = 355;
+    test("Turning left within circle", () => {
+        let currentHeading = 10;
         let desiredHeading = 5;
 
-        const action = new Heading(currentHeading, desiredHeading)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
 
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([5, 3, 1, 360, 358, 356])
+        const action = new Heading(aeroplane, desiredHeading)
+
+        expect(aeroplane.heading).toBe(10)
+        action.apply()
+        expect(aeroplane.heading).toBe(7)
+        action.apply()
+        expect(aeroplane.heading).toBe(5)
     })
 
-    test("Turns shortest distance to the left within circle", () => {
-        let currentHeading = 90;
-        let desiredHeading = 85;
-
-        const action = new Heading(currentHeading, desiredHeading)
-
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([85, 87, 89])
-    })
-
-    test("Turns shortest distance to the left outside circle", () => {
+    test("Turning left outside circle", () => {
         let currentHeading = 5;
         let desiredHeading = 355;
 
-        const action = new Heading(currentHeading, desiredHeading)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
 
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues).toStrictEqual([355, 357, 359, 1, 3])
+        const action = new Heading(aeroplane, desiredHeading)
+
+        expect(aeroplane.heading).toBe(5)
+        action.apply()
+        expect(aeroplane.heading).toBe(2)
+        action.apply()
+        expect(aeroplane.heading).toBe(359)
+        action.apply()
+        expect(aeroplane.heading).toBe(356)
+        action.apply()
+        expect(aeroplane.heading).toBe(355)
     })
 
-    test("Defaults to right turn", () => {
+    test("Turning right outside circle", () => {
+        let currentHeading = 355;
+        let desiredHeading = 5;
+
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+
+        const action = new Heading(aeroplane, desiredHeading)
+
+        expect(aeroplane.heading).toBe(355)
+        action.apply()
+        expect(aeroplane.heading).toBe(358)
+        action.apply()
+        expect(aeroplane.heading).toBe(1)
+        action.apply()
+        expect(aeroplane.heading).toBe(4)
+        action.apply()
+        expect(aeroplane.heading).toBe(5)
+    })
+
+    test("Defaults to right turn within circle", () => {
         let currentHeading = 90;
         let desiredHeading = 270;
 
-        const action = new Heading(currentHeading, desiredHeading)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
 
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues[action.tickValues.length - 1]).toBe(92)
-        expect(action.tickValues[action.tickValues.length - 2]).toBe(94)
-        expect(action.tickValues[action.tickValues.length - 3]).toBe(96)
+        const action = new Heading(aeroplane, desiredHeading)
+
+        expect(aeroplane.heading).toBe(90)
+        action.apply()
+        expect(aeroplane.heading).toBe(93)
+        action.apply()
+        expect(aeroplane.heading).toBe(96)
+        // etc.
     })
 
     test("Defaults to right turn from 360 to 180", () => {
         let currentHeading = 360;
         let desiredHeading = 180;
 
-        const action = new Heading(currentHeading, desiredHeading)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
 
-        expect(action.type).toBe("heading")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredHeading)
-        expect(action.tickValues[action.tickValues.length - 1]).toBe(2)
-        expect(action.tickValues[action.tickValues.length - 2]).toBe(4)
-        expect(action.tickValues[action.tickValues.length - 3]).toBe(6)
+        const action = new Heading(aeroplane, desiredHeading)
+
+        expect(aeroplane.heading).toBe(360)
+        action.apply()
+        expect(aeroplane.heading).toBe(3)
+        action.apply()
+        expect(aeroplane.heading).toBe(6)
+        // etc.
     })
 
-    test("Throws an error is the target heading is below 0", () => {
-        let currentHeading = 300;
-        let desiredHeading = -12;
+    test("Is not valid if the target heading is same as current heading", () => {
+        let desiredAltitude = 243;
 
-        expect(() => new Heading(currentHeading, desiredHeading)).toThrow('Invalid target heading [-12]')
+        expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
     })
 
-    test("Throws an error is the target heading is above 360", () => {
-        let currentHeading = 300;
-        let desiredHeading = 361;
+    test("Is not valid if the target heading is less than zero", () => {
+        let desiredAltitude = -1;
 
-        expect(() => new Heading(currentHeading, desiredHeading)).toThrow('Invalid target heading [361]')
+        expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the target heading is greater than 360", () => {
+        let desiredAltitude = 361;
+
+        expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
     })
 })
 
@@ -157,38 +185,54 @@ describe("Altitude", () => {
         let currentAltitude = 1000;
         let desiredAltitude = 1100;
 
-        const action = new Altitude(currentAltitude, desiredAltitude)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 200, 90, currentAltitude, 3)
 
-        expect(action.type).toBe("altitude")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredAltitude)
-        expect(action.tickValues).toStrictEqual([1100, 1080, 1060, 1040, 1020])
+        const action = new Altitude(aeroplane, desiredAltitude)
+
+        expect(aeroplane.altitude).toBe(1000)
+        action.apply()
+        expect(aeroplane.altitude).toBe(1020)
+        action.apply()
+        expect(aeroplane.altitude).toBe(1040)
     })
 
     test("Creates altitude action with decreasing altitude", () => {
         let currentAltitude = 1100;
         let desiredAltitude = 1000;
 
-        const action = new Altitude(currentAltitude, desiredAltitude)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 200, 90, currentAltitude, 3)
 
-        expect(action.type).toBe("altitude")
-        expect(action.concurrent).toBe(true)
-        expect(action.targetValue).toBe(desiredAltitude)
-        expect(action.tickValues).toStrictEqual([1000, 1020, 1040, 1060, 1080])
+        const action = new Altitude(aeroplane, desiredAltitude)
+
+        expect(aeroplane.altitude).toBe(1100)
+        action.apply()
+        expect(aeroplane.altitude).toBe(1080)
+        action.apply()
+        expect(aeroplane.altitude).toBe(1060)
     })
 
-    test("Throws an error is the target altitude is below minimum altitude", () => {
-        let currentAltitude = 2000;
+    test("Is not valid if the target altitude is below minimum altitude", () => {
         let desiredAltitude = MIN_ALTITUDE - 1;
 
-        expect(() => new Altitude(currentAltitude, desiredAltitude)).toThrow(`Invalid target altitude [${desiredAltitude}]`)
+        expect(new Altitude({altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
     })
 
-    test("Throws an error is the target altitude is above max altitude", () => {
-        let currentAltitude = 2000;
+    test("Is not valid if the target altitude is above max altitude", () => {
         let desiredAltitude = MAX_ALTITUDE + 1;
 
-        expect(() => new Altitude(currentAltitude, desiredAltitude)).toThrow(`Invalid target altitude [${desiredAltitude}]`)
+        expect(new Altitude({altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the target altitude is same as current altitude", () => {
+        let currentAltitude = 2000;
+
+        expect(new Altitude({altitude: currentAltitude}, currentAltitude).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the target altitude is not multiple of 100", () => {
+        let desiredAltitude = 2116;
+
+        expect(new Altitude({altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
     })
 })
 

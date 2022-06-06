@@ -22,12 +22,12 @@ export class AeroplaneService {
 
     initTestAeroplanes = () => {
 
-        for (let x = 0; x < 8; x++) {
+        // for (let x = 0; x < 8; x++) {
             // this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
-            this.initArrival()
-        }
-        // this.aeroplanes = [
-        // new Aeroplane("BA123", 500, 120, 260, 90, 5000, 3),
+            // this.initArrival()
+        // }
+        this.aeroplanes = [
+        new Aeroplane("BA123", 500, 500, 260, 355, 5000, 2),
         // new Aeroplane("BA456", 500, 130, 260, 90, 5000, 1),
         // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
         // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
@@ -46,7 +46,7 @@ export class AeroplaneService {
         // new Aeroplane("BA888", 500, 280, 280, 107, 6000),
         // new Aeroplane("BA888", 500, 290, 290, 108, 6000),
         // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
-        // ]
+        ]
 
         // this.aeroplanes.forEach(plane => {
         //     plane.setSpeed(220)
@@ -57,9 +57,15 @@ export class AeroplaneService {
         const command = parseCommand(rawCommand)
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
-                plane.setSpeed(command.speed)
-                plane.setHeading(command.heading)
-                plane.setAltitude(command.altitude)
+                if (command.speed) {
+                    plane.setSpeed(command.speed)
+                }
+                if (command.heading) {
+                    plane.setHeading(command.heading)
+                }
+                if (command.altitude) {
+                    plane.setAltitude(command.altitude)
+                }
             }
         })
         return command
