@@ -1,4 +1,4 @@
-import {parseAltitude, parseCommand, parseHeading, parseSpeed} from "../CommandParser";
+import {parseAltitude, parseCommand, parseHeading, parseSpeed, parseWaypoint} from "../CommandParser";
 
 describe("Parse Command", () => {
     test("Extracts the call sign", () => {
@@ -7,7 +7,7 @@ describe("Parse Command", () => {
 
         const result = parseCommand(command)
 
-        expect(result["callSign"]).toBe(expectedCallSign)
+        expect(result.callSign).toBe(expectedCallSign)
     })
 
     test("Extracts the desired speed", () => {
@@ -16,7 +16,7 @@ describe("Parse Command", () => {
 
         const result = parseCommand(command)
 
-        expect(result["speed"]).toBe(expectedSpeed)
+        expect(result.speed).toBe(expectedSpeed)
     })
 
     test("Extracts the desired heading", () => {
@@ -25,7 +25,7 @@ describe("Parse Command", () => {
 
         const result = parseCommand(command)
 
-        expect(result["heading"]).toBe(expectedSpeed)
+        expect(result.heading).toBe(expectedSpeed)
     })
 
     test("Extracts the desired heading", () => {
@@ -34,9 +34,26 @@ describe("Parse Command", () => {
 
         const result = parseCommand(command)
 
-        expect(result["altitude"]).toBe(expectedAltitude)
+        expect(result.altitude).toBe(expectedAltitude)
     })
 
+    test("Extracts the desired heading", () => {
+        const command = "BA423:OCKD13S200"
+        const expectedAltitude = "OCK"
+
+        const result = parseCommand(command)
+
+        expect(result.waypoint).toBe(expectedAltitude)
+    })
+
+    test("Sets heading and waypoint null if both supplied", () => {
+        const command = "BA423:OCKD13H200"
+
+        const result = parseCommand(command)
+
+        expect(result.heading).toBeNull()
+        expect(result.waypoint).toBeNull()
+    })
 })
 
 describe("Speed Commands", () => {
@@ -127,6 +144,25 @@ describe("Altitude Commands", () => {
         const command = "J123S150"
 
         const result = parseAltitude(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Waypoint Commands", () => {
+    test("Extracts waypoint inside larger command", () => {
+        const command = "BA423:LAMS200C2"
+        const expectedWaypoint = "LAM"
+
+        const result = parseWaypoint(command)
+
+        expect(result).toBe(expectedWaypoint)
+    })
+
+    test("Returns null if no heading command found", () => {
+        const command = "J123S150"
+
+        const result = parseWaypoint(command)
 
         expect(result).toBeNull()
     })

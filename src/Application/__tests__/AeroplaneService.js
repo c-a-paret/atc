@@ -18,7 +18,8 @@ describe('Send command', () => {
             callSign: "BA456",
             speed: 140,
             heading: 70,
-            altitude: 12000
+            altitude: 12000,
+            waypoint: null
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -45,7 +46,8 @@ describe('Send command', () => {
             callSign: "BA456",
             speed: null,
             heading: null,
-            altitude: null
+            altitude: null,
+            waypoint: null
         })
 
         const unaffectedAeroplane1 = service.aeroplanes[0]
