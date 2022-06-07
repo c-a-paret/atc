@@ -1,4 +1,4 @@
-import {parseAltitude, parseCommand, parseHeading, parseSpeed, parseWaypoint} from "../CommandParser";
+import {parseAltitude, parseCommand, parseHeading, parseRunway, parseSpeed, parseWaypoint} from "../CommandParser";
 
 describe("Parse Command", () => {
     test("Extracts the call sign", () => {
@@ -53,6 +53,26 @@ describe("Parse Command", () => {
 
         expect(result.heading).toBeNull()
         expect(result.waypoint).toBeNull()
+    })
+
+    test("Sets heading null if runway supplied", () => {
+        const command = "BA423.9L.H200"
+
+        const result = parseCommand(command)
+
+        expect(result.heading).toBeNull()
+        expect(result.waypoint).toBeNull()
+        expect(result.runway).toBe("9L")
+    })
+
+    test("Sets waypoint null if runway supplied", () => {
+        const command = "BA423>OCK.27R.S200"
+
+        const result = parseCommand(command)
+
+        expect(result.heading).toBeNull()
+        expect(result.waypoint).toBeNull()
+        expect(result.runway).toBe("27R")
     })
 })
 
@@ -163,6 +183,25 @@ describe("Waypoint Commands", () => {
         const command = "J123S150"
 
         const result = parseWaypoint(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Landing Commands", () => {
+    test("Extracts runway inside larger command", () => {
+        const command = "BA423.9L.S200"
+        const expectedRunway = "9L"
+
+        const result = parseRunway(command)
+
+        expect(result).toBe(expectedRunway)
+    })
+
+    test("Returns null if no landing command found", () => {
+        const command = "J123S150"
+
+        const result = parseRunway(command)
 
         expect(result).toBeNull()
     })

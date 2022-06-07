@@ -19,7 +19,8 @@ describe('Send command', () => {
             speed: 140,
             heading: 70,
             altitude: 12000,
-            waypoint: null
+            waypoint: null,
+            runway: null
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -47,7 +48,8 @@ describe('Send command', () => {
             speed: null,
             heading: null,
             altitude: null,
-            waypoint: null
+            waypoint: null,
+            runway: null
         })
 
         const unaffectedAeroplane1 = service.aeroplanes[0]

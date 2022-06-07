@@ -3,14 +3,18 @@ export const parseCommand = (command) => {
     let actionCommands = command.substring(5);
     let parsedHeading = parseHeading(actionCommands);
     let parsedWaypoint = parseWaypoint(actionCommands);
-    const heading = parsedWaypoint ? null : parsedHeading
-    const waypoint = parsedHeading ? null : parsedWaypoint
+    let parsedRunway = parseRunway(actionCommands)
+
+    const heading = parsedWaypoint || parsedRunway ? null : parsedHeading
+    const waypoint = parsedHeading || parsedRunway ? null : parsedWaypoint
+
     return {
         callSign: callSign,
         speed: parseSpeed(actionCommands),
         heading: heading,
         altitude: parseAltitude(actionCommands),
-        waypoint: waypoint
+        waypoint: waypoint,
+        runway: parsedRunway
     }
 }
 
@@ -47,6 +51,14 @@ export const parseWaypoint = (command) => {
     const match = command.match(/[>](\w{3})/g);
     if (match && match.length === 1) {
         return match[0].substring(1)
+    }
+    return null
+}
+
+export const parseRunway = (command) => {
+    const match = command.match(/\.\d{1,2}[LRC]\./g);
+    if (match && match.length === 1) {
+        return match[0].substring(1, match[0].length - 1)
     }
     return null
 }

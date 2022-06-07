@@ -5,7 +5,7 @@ build:
 	npm run build
 
 test:
-	jest
+	jest --collect-coverage
 
 push: test
 	git push
