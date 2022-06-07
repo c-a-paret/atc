@@ -12,9 +12,9 @@ export class AeroplaneService {
         const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
         const startX = getRandomNumberBetween(100, 1100)
         const startY = getRandomNumberBetween(100, 800)
-        const startSpeed = getRandomNumberBetween(100, 300)
+        const startSpeed = getRandomNumberBetween(180, 260)
         const startHeading = getRandomNumberBetween(0, 359)
-        const startAltitude = getRandomNumberBetween(0, 359)
+        const startAltitude = getRandomNumberBetween(5000, 10000)
         const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
         const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
         this.aeroplanes.push(plane)
@@ -22,12 +22,12 @@ export class AeroplaneService {
 
     initTestAeroplanes = () => {
 
-        // for (let x = 0; x < 8; x++) {
+        for (let x = 0; x < 8; x++) {
             // this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
-            // this.initArrival()
-        // }
-        this.aeroplanes = [
-        new Aeroplane("BA123", 500, 500, 260, 355, 5000, 2),
+            this.initArrival()
+        }
+        // this.aeroplanes = [
+        // new Aeroplane("BA123", 1100, 250, 160, 270, 5000, 2),
         // new Aeroplane("BA456", 500, 130, 260, 90, 5000, 1),
         // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
         // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
@@ -46,7 +46,7 @@ export class AeroplaneService {
         // new Aeroplane("BA888", 500, 280, 280, 107, 6000),
         // new Aeroplane("BA888", 500, 290, 290, 108, 6000),
         // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
-        ]
+        // ]
 
         // this.aeroplanes.forEach(plane => {
         //     plane.setSpeed(220)
@@ -65,6 +65,9 @@ export class AeroplaneService {
                 }
                 if (command.altitude) {
                     plane.setAltitude(command.altitude)
+                }
+                if (command.waypoint) {
+                    plane.setWaypoint(command.waypoint)
                 }
             }
         })

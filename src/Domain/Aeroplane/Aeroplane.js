@@ -1,4 +1,4 @@
-import {Altitude, Heading, Speed} from "../Action/Action";
+import {Altitude, Heading, Speed, Waypoint} from "../Action/Action";
 import {MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED, round, toRadians} from "../../utils/common";
 
 export class Aeroplane {
@@ -16,7 +16,19 @@ export class Aeroplane {
 
     addAction = (action) => {
         for (let x = 0; x < this.actions.length; x++) {
-            if (this.actions[x].type() === action.type()) {
+            if (this.actions[x].type() === "Waypoint" && action.type() === "Heading") { // heading overwrites waypoint
+                this.actions[x] = action
+                return
+            }
+            if (this.actions[x].type() === "Heading" && action.type() === "Waypoint") { // waypoint overwrites heading
+                this.actions[x] = action
+                return
+            }
+            if (this.actions[x].type() === "Waypoint" && action.type() === "Waypoint") { // waypoint overwrites waypoint
+                this.actions[x] = action
+                return
+            }
+            if (this.actions[x].type() === action.type()) { // update target value // TODO: Could just replace the action here too
                 this.actions[x].targetValue = action.targetValue
                 return
             }
@@ -42,6 +54,13 @@ export class Aeroplane {
         const newAltitude = new Altitude(this, altitude);
         if (newAltitude.isValid()) {
             this.addAction(newAltitude)
+        }
+    }
+
+    setWaypoint = (waypoint) => {
+        const newWaypoint = new Waypoint(this, waypoint);
+        if (newWaypoint.isValid()) {
+            this.addAction(newWaypoint)
         }
     }
 

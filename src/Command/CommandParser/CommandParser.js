@@ -15,7 +15,7 @@ export const parseCommand = (command) => {
 }
 
 export const commandMessage = (parsedCommand) => {
-    return `${parsedCommand.callSign}\n${parsedCommand.speed ? ' Speed: ' + parsedCommand.speed + '\n' : ''}${parsedCommand.heading ? ' Heading: ' + parsedCommand.heading + '\n' : ''}${parsedCommand.altitude ? ' Altitude: ' + parsedCommand.altitude + '' : ''}`
+    return `${parsedCommand.callSign}\n${parsedCommand.speed ? ' Speed: ' + parsedCommand.speed + '\n' : ''}${parsedCommand.heading ? ' Heading: ' + parsedCommand.heading + '\n' : ''}${parsedCommand.altitude ? ' Altitude: ' + parsedCommand.altitude + '' : ''}${parsedCommand.waypoint ? ' Waypoint: ' + parsedCommand.waypoint + '' : ''}`
 }
 
 export const parseSpeed = (command) => {

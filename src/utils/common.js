@@ -47,8 +47,16 @@ export const toRadians = (degrees) => {
     return (Math.PI / 180) * degrees
 }
 
+export const toDegrees = (radians) => {
+    return (180 * radians) / Math.PI
+}
+
 export const round = (number, n) => {
     return Math.round(number * Math.pow(10, n)) / Math.pow(10, n)
+}
+
+export const distance = (currentX, currentY, targetX, targetY) => {
+    return Math.sqrt(Math.pow((currentX - targetX), 2) + Math.pow((currentY - targetY), 2))
 }
 
 export const range = (a, b, step) => {

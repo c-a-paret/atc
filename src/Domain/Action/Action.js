@@ -1,4 +1,5 @@
-import {MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED} from "../../utils/common";
+import {distance, MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED, toDegrees} from "../../utils/common";
+import {EGLL} from "../../config/maps/EGLL";
 
 class Action {
     constructor(aeroplane, targetValue) {
@@ -71,41 +72,18 @@ export class Heading extends Action {
             return
         }
 
-        if (this._isFacingRightSemiCircle(currentHeading)) {
-            if (this._targetIsToTheRight(targetHeading, currentHeading)) {
-                // turn right
-                this.aeroplane.heading = (this.aeroplane.heading + this._change_rate()) % 360;
-            } else {
-                // turn left
-                let newHeading = this.aeroplane.heading - this._change_rate();
-                this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
-            }
+        if (shortestAngle(currentHeading, targetHeading) > 0) {
+            // turn right
+            this.aeroplane.heading = (this.aeroplane.heading + this._change_rate()) % 360;
         } else {
-            if (this._targetIsToTheLeft(targetHeading, currentHeading)) {
-                // turn left
-                this.aeroplane.heading = (this.aeroplane.heading - this._change_rate()) % 360;
-            } else {
-                // turn right
-                let newHeading = this.aeroplane.heading + this._change_rate();
-                this.aeroplane.heading = newHeading > 0 ? newHeading % 360 : newHeading;
-            }
+            // turn left
+            let newHeading = this.aeroplane.heading - this._change_rate();
+            this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
         }
     };
 
     _wouldEndUpBeyondTarget(targetHeading, currentHeading) {
         return Math.abs(targetHeading - currentHeading) < this._change_rate();
-    }
-
-    _targetIsToTheLeft(targetHeading, currentHeading) {
-        return targetHeading < currentHeading && (targetHeading > Math.abs((currentHeading + 180) % 360));
-    }
-
-    _isFacingRightSemiCircle(currentHeading) {
-        return currentHeading >= 0 && currentHeading <= 180;
-    }
-
-    _targetIsToTheRight(targetHeading, currentHeading) {
-        return targetHeading > currentHeading && (targetHeading <= Math.abs(currentHeading + 180) % 360);
     }
 
     _change_rate = () => {
@@ -157,4 +135,101 @@ export class Altitude extends Action {
             && this.targetValue <= MAX_ALTITUDE
             && this.targetValue % 100 === 0
     }
+}
+
+export class Waypoint extends Action {
+    constructor(aeroplane, targetWaypoint) {
+        super(aeroplane, null);
+        EGLL.features.vors.forEach(vor => {
+            if (vor.id === targetWaypoint) {
+                this.targetX = vor.x
+                this.targetY = vor.y
+            }
+        })
+
+        this.targetValue = this._determine_heading()
+    }
+
+    _determine_heading = () => {
+        const opposite = Math.abs(this.targetY - this.aeroplane.y)
+        const adjacent = Math.abs(this.targetX - this.aeroplane.x)
+        const theta = Math.round(toDegrees(Math.atan((opposite / adjacent))))
+
+        let heading;
+        if (this.targetX > this.aeroplane.x) {
+            if (this.targetY < this.aeroplane.y) {
+                heading = 90 - theta
+            } else {
+                heading = 90 + theta
+            }
+        } else {
+            if (this.targetY < this.aeroplane.y) {
+                heading = 270 + theta
+            } else {
+                heading = 270 - theta
+            }
+        }
+        return heading
+    }
+
+    isActionable = () => {
+        const distanceToWaypoint = distance(this.aeroplane.x, this.aeroplane.y, this.targetX, this.targetY)
+        const arrived = distanceToWaypoint <= 8
+        return !arrived
+    }
+
+    apply = () => {
+        const currentHeading = this.aeroplane.heading
+        const targetHeading = this._determine_heading()
+
+        if (this._wouldEndUpBeyondTarget(targetHeading, currentHeading)) {
+            this.aeroplane.heading = targetHeading
+            return
+        }
+
+        if (shortestAngle(currentHeading, targetHeading) > 0) {
+            // turn right
+            this.aeroplane.heading = (this.aeroplane.heading + this._change_rate()) % 360;
+        } else {
+            // turn left
+            let newHeading = this.aeroplane.heading - this._change_rate();
+            this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
+        }
+    };
+
+    _wouldEndUpBeyondTarget(targetHeading, currentHeading) {
+        return Math.abs(targetHeading - currentHeading) < this._change_rate();
+    }
+
+    _change_rate = () => {
+        if (this.aeroplane.speed < 200) {
+            return 5
+        } else if (this.aeroplane.speed < 300) {
+            return 3
+        } else {
+            return 2
+        }
+    }
+
+    isValid = () => {
+        // TODO: Implement this
+        return true;
+    }
+}
+
+
+export const shortestAngle = (currentHeading, targetHeading) => {
+    if (currentHeading === 180 && targetHeading === 0) {
+        return 180
+    }
+    if (currentHeading === 0 && (targetHeading < 360 && targetHeading > 180)) {
+        return targetHeading - 360
+    }
+    if (currentHeading - targetHeading < -180) {
+        return -(currentHeading + 360 - targetHeading)
+    }
+    if (currentHeading - targetHeading > 180) {
+        return targetHeading + 360 - currentHeading
+    }
+    return targetHeading - currentHeading
 }
