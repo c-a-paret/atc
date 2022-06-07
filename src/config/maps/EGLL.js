@@ -6,25 +6,57 @@ export const EGLL = {
             {
                 start: {
                     label: "9L",
-                    x: 700,
-                    y: 450
+                    ILS: {
+                        innerMarker: {
+                            x: 700,
+                            y: 450,
+                        },
+                        outerMarker: {
+                            x: 550,
+                            y: 450,
+                        }
+                    }
                 },
                 end: {
                     label: "27R",
-                    x: 760,
-                    y: 450
+                    ILS: {
+                        innerMarker: {
+                            x: 760,
+                            y: 450,
+                        },
+                        outerMarker: {
+                            x: 910,
+                            y: 450,
+                        }
+                    }
                 }
             },
             {
                 start: {
                     label: "9R",
-                    x: 700,
-                    y: 470
+                    ILS: {
+                        innerMarker: {
+                            x: 700,
+                            y: 470,
+                        },
+                        outerMarker: {
+                            x: 550,
+                            y: 470,
+                        }
+                    }
                 },
                 end: {
                     label: "27L",
-                    x: 760,
-                    y: 470
+                    ILS: {
+                        innerMarker: {
+                            x: 760,
+                            y: 470,
+                        },
+                        outerMarker: {
+                            x: 910,
+                            y: 470,
+                        }
+                    }
                 }
             }
         ],

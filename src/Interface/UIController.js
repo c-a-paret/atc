@@ -116,15 +116,15 @@ export class UIController {
             this.featuresContext.lineWidth = 4;
             this.featuresContext.setLineDash([]);
             this.featuresContext.beginPath();
-            this.featuresContext.moveTo(runway.start.x, runway.start.y)
-            this.featuresContext.lineTo(runway.end.x, runway.end.y)
+            this.featuresContext.moveTo(runway.start.ILS.innerMarker.x, runway.start.ILS.innerMarker.y)
+            this.featuresContext.lineTo(runway.end.ILS.innerMarker.x, runway.end.ILS.innerMarker.y)
             this.featuresContext.stroke();
             // Labels
             this.featuresContext.fillStyle = COLOURS.WHITE;
             this.featuresContext.beginPath();
             this.featuresContext.font = "12px Courier New";
-            this.featuresContext.fillText(runway.start.label, runway.start.x - 20, runway.start.y - 5);
-            this.featuresContext.fillText(runway.end.label, runway.end.x + 10, runway.end.y - 5);
+            this.featuresContext.fillText(runway.start.label, runway.start.ILS.innerMarker.x - 20, runway.start.ILS.innerMarker.y - 5);
+            this.featuresContext.fillText(runway.end.label, runway.end.ILS.innerMarker.x + 10, runway.end.ILS.innerMarker.y - 5);
 
         })
     }
