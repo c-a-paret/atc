@@ -44,7 +44,7 @@ export const parseAltitude = (command) => {
 }
 
 export const parseWaypoint = (command) => {
-    const match = command.match(/[:](\w{3})/g);
+    const match = command.match(/[>](\w{3})/g);
     if (match && match.length === 1) {
         return match[0].substring(1)
     }

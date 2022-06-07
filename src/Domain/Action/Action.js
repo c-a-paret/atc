@@ -231,5 +231,8 @@ export const shortestAngle = (currentHeading, targetHeading) => {
     if (currentHeading - targetHeading > 180) {
         return targetHeading + 360 - currentHeading
     }
+    if (targetHeading - currentHeading === -180) {
+        return 180
+    }
     return targetHeading - currentHeading
 }

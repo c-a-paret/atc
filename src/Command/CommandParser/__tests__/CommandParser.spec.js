@@ -28,7 +28,7 @@ describe("Parse Command", () => {
         expect(result.heading).toBe(expectedSpeed)
     })
 
-    test("Extracts the desired heading", () => {
+    test("Extracts the desired altitude", () => {
         const command = "BA423H342D13S200"
         const expectedAltitude = 13000
 
@@ -37,17 +37,17 @@ describe("Parse Command", () => {
         expect(result.altitude).toBe(expectedAltitude)
     })
 
-    test("Extracts the desired heading", () => {
-        const command = "BA423:OCKD13S200"
-        const expectedAltitude = "OCK"
+    test("Extracts the desired waypoint", () => {
+        const command = "BA423>OCKD13S200"
+        const expectedWaypoint = "OCK"
 
         const result = parseCommand(command)
 
-        expect(result.waypoint).toBe(expectedAltitude)
+        expect(result.waypoint).toBe(expectedWaypoint)
     })
 
     test("Sets heading and waypoint null if both supplied", () => {
-        const command = "BA423:OCKD13H200"
+        const command = "BA423>OCKD13H200"
 
         const result = parseCommand(command)
 
@@ -151,7 +151,7 @@ describe("Altitude Commands", () => {
 
 describe("Waypoint Commands", () => {
     test("Extracts waypoint inside larger command", () => {
-        const command = "BA423:LAMS200C2"
+        const command = "BA423>LAMS200C2"
         const expectedWaypoint = "LAM"
 
         const result = parseWaypoint(command)
