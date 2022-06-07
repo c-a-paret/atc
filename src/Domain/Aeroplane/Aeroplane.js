@@ -1,5 +1,5 @@
-import {Altitude, Heading, Speed, Waypoint} from "../Action/Action";
-import {MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED, round, toRadians} from "../../utils/common";
+import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
+import {round, toRadians} from "../../utils/common";
 
 export class Aeroplane {
     constructor(callSign, x, y, speed, hdg, altitude, weight) {
@@ -15,6 +15,10 @@ export class Aeroplane {
     }
 
     addAction = (action) => {
+        if (action.type() === "Landing") { // landing overwrites everything
+            this.actions = [action]
+            return
+        }
         for (let x = 0; x < this.actions.length; x++) {
             if (this.actions[x].type() === "Waypoint" && action.type() === "Heading") { // heading overwrites waypoint
                 this.actions[x] = action
@@ -28,8 +32,8 @@ export class Aeroplane {
                 this.actions[x] = action
                 return
             }
-            if (this.actions[x].type() === action.type()) { // update target value // TODO: Could just replace the action here too
-                this.actions[x].targetValue = action.targetValue
+            if (this.actions[x].type() === action.type()) { // replace action
+                this.actions[x] = action
                 return
             }
         }
@@ -61,6 +65,13 @@ export class Aeroplane {
         const newWaypoint = new Waypoint(this, waypoint);
         if (newWaypoint.isValid()) {
             this.addAction(newWaypoint)
+        }
+    }
+
+    setLanding = (runway) => {
+        const newLanding = new Landing(this, runway);
+        if (newLanding.isValid()) {
+            this.addAction(newLanding)
         }
     }
 

@@ -222,6 +222,29 @@ export class Waypoint extends Action {
     }
 }
 
+export class Landing extends Action {
+    constructor(aeroplane, targetRunway) {
+        super(aeroplane, null);
+        this.targetRunway = targetRunway
+        this.executed = false
+    }
+
+    isActionable = () => {
+        return !this.executed
+    }
+
+    apply = () => {
+        this.aeroplane.setSpeed(120)
+        this.aeroplane.actions.push(new Waypoint(this.aeroplane, this.targetRunway))
+        this.aeroplane.actions.push(new Altitude(this.aeroplane, 0))
+        this.executed = true
+    };
+
+    isValid = () => {
+        return EGLL.runwayExists(this.targetRunway)
+        // TODO implement aeroplane proximity
+    }
+}
 
 export const shortestAngle = (currentHeading, targetHeading) => {
     if (currentHeading === 180 && targetHeading === 0) {
