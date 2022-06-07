@@ -708,5 +708,10 @@ describe("Waypoint", () => {
         expect(aeroplane.heading).toBe(1)
     })
 
+    test("Is not valid if the waypoint does not exist", () => {
+        let incorrectWaypoint = "BIP";
+
+        expect(new Waypoint({}, incorrectWaypoint).isValid()).toBeFalsy()
+    })
 })
 

@@ -147,6 +147,7 @@ export class Waypoint extends Action {
             }
         })
 
+        this.targetWaypoint = targetWaypoint
         this.targetValue = this._determine_heading()
     }
 
@@ -212,8 +213,12 @@ export class Waypoint extends Action {
     }
 
     isValid = () => {
-        // TODO: Implement this
-        return true;
+        EGLL.features.vors.forEach(vor => {
+            if (vor.id === this.targetWaypoint) {
+                return true
+            }
+        })
+        return false;
     }
 }
 
