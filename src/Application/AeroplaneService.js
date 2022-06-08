@@ -26,9 +26,9 @@ export class AeroplaneService {
         //     // this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
         //     this.initArrival()
         // }
-        this.aeroplanes = [
-        new Aeroplane("BA123", 420, 450, 160, 90, 3000, 2),
-        new Aeroplane("BA456", 510, 450, 160, 90, 3000, 1),
+        // this.aeroplanes = [
+        // new Aeroplane("BA123", 420, 450, 160, 90, 3000, 2),
+        // new Aeroplane("BA456", 510, 450, 160, 90, 3000, 1),
         // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
         // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
         // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
@@ -46,7 +46,7 @@ export class AeroplaneService {
         // new Aeroplane("BA888", 500, 280, 280, 107, 6000),
         // new Aeroplane("BA888", 500, 290, 290, 108, 6000),
         // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
-        ]
+        // ]
 
         // this.aeroplanes.forEach(plane => {
         //     plane.setSpeed(220)

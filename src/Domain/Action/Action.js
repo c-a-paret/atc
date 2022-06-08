@@ -152,7 +152,7 @@ export class Altitude extends Action {
 export class Waypoint extends Action {
     constructor(aeroplane, targetWaypoint) {
         super(aeroplane, null);
-        EGLL.features.vors.forEach(vor => {
+        EGLL.features.waypoints.forEach(vor => {
             if (vor.id === targetWaypoint) {
                 this.targetX = vor.x
                 this.targetY = vor.y
@@ -225,8 +225,8 @@ export class Waypoint extends Action {
     }
 
     isValid = () => {
-        for (let x = 0; x < EGLL.features.vors.length; x++) {
-            if ( EGLL.features.vors[x].id === this.targetWaypoint) {
+        for (let x = 0; x < EGLL.features.waypoints.length; x++) {
+            if ( EGLL.features.waypoints[x].id === this.targetWaypoint) {
                 return true
             }
         }

@@ -50,7 +50,7 @@ export class UIController {
 
     initFeatures = () => {
         this._drawExclusionZones(this.mapConfig.features.exclusionZones)
-        this._drawVORs(this.mapConfig.features.vors)
+        this._drawVORs(this.mapConfig.features.waypoints)
         this._drawRunways(this.mapConfig.features.runways)
     }
 
@@ -187,25 +187,27 @@ export class UIController {
         this.aeroplaneContext.fillText(`${aeroplane.callSign}`, aeroplane.x - 20, aeroplane.y - 30);
     }
 
-    _drawVORs = (vors) => {
-        vors.forEach(vor => {
-            this.featuresContext.strokeStyle = COLOURS.WHITE;
-            this.featuresContext.lineWidth = 2;
-            this.featuresContext.setLineDash([2]);
-            this.featuresContext.beginPath();
-            this.featuresContext.arc(vor.x, vor.y, 12, 0, Math.PI * 2, false);
-            this.featuresContext.stroke();
+    _drawVORs = (waypoints) => {
+        for (let x = 0; x < waypoints.length; x++) {
+            const waypoint = waypoints[x]
+            if (waypoint.type === "VOR") {
+                this.featuresContext.strokeStyle = COLOURS.WHITE;
+                this.featuresContext.lineWidth = 2;
+                this.featuresContext.setLineDash([2]);
+                this.featuresContext.beginPath();
+                this.featuresContext.arc(waypoint.x, waypoint.y, 12, 0, Math.PI * 2, false);
+                this.featuresContext.stroke();
 
-            this.featuresContext.fillStyle = COLOURS.WHITE;
-            this.featuresContext.beginPath();
-            this.featuresContext.arc(vor.x, vor.y, 2, 0, Math.PI * 2, false);
-            this.featuresContext.fill();
+                this.featuresContext.fillStyle = COLOURS.WHITE;
+                this.featuresContext.beginPath();
+                this.featuresContext.arc(waypoint.x, waypoint.y, 2, 0, Math.PI * 2, false);
+                this.featuresContext.fill();
 
-            this.featuresContext.fillStyle = COLOURS.WHITE;
-            this.featuresContext.font = "14px Courier New";
-            this.featuresContext.beginPath();
-            this.featuresContext.fillText(vor.id, vor.x - 12, vor.y - 20);
-
-        })
+                this.featuresContext.fillStyle = COLOURS.WHITE;
+                this.featuresContext.font = "14px Courier New";
+                this.featuresContext.beginPath();
+                this.featuresContext.fillText(waypoint.id, waypoint.x - 12, waypoint.y - 20);
+            }
+        }
     }
 }

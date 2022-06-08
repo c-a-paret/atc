@@ -68,11 +68,10 @@ export const EGLL = {
                 }
             }
         ],
-        vors: [ // TODO: Change to be more generic
+        waypoints: [
             {type: "VOR", id: "OCK", name: "Ockham", x: 600, y: 600},
             {type: "VOR", id: "LAM", name: "Lambourne", x: 900, y: 300},
             {type: "VOR", id: "EPM", name: "Epsom", x: 650, y: 580},
-            // TODO: Don't render RWY type
             {type: "RWY", id: "9L", name: "Runway 9L", x: 700, y: 450},
             {type: "RWY", id: "9R", name: "Runway 9R", x: 700, y: 470},
             {type: "RWY", id: "27L", name: "Runway 27L", x: 760, y: 470},
