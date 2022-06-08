@@ -425,7 +425,7 @@ describe("Heading", () => {
     ${359} | ${369} | ${2}
     ${360} | ${370} | ${3}    
   `("Turns to $firstNewHeading when facing $startHeading aiming for $targetHeading", ({startHeading, targetHeading, firstNewHeading }) => {
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, startHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, startHeading, 5000, 1)
 
         const action = new Heading(aeroplane, targetHeading)
 
@@ -476,7 +476,7 @@ describe("Heading", () => {
         let currentHeading = 5;
         let desiredHeading = 10;
 
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
         const action = new Heading(aeroplane, desiredHeading)
 
@@ -491,7 +491,7 @@ describe("Heading", () => {
         let currentHeading = 10;
         let desiredHeading = 5;
 
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
         const action = new Heading(aeroplane, desiredHeading)
 
@@ -506,7 +506,7 @@ describe("Heading", () => {
         let currentHeading = 5;
         let desiredHeading = 355;
 
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
         const action = new Heading(aeroplane, desiredHeading)
 
@@ -525,7 +525,7 @@ describe("Heading", () => {
         let currentHeading = 355;
         let desiredHeading = 5;
 
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
         const action = new Heading(aeroplane, desiredHeading)
 
@@ -544,7 +544,7 @@ describe("Heading", () => {
         let currentHeading = 90;
         let desiredHeading = 270;
 
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
         const action = new Heading(aeroplane, desiredHeading)
 
@@ -560,7 +560,7 @@ describe("Heading", () => {
         let currentHeading = 0;
         let desiredHeading = 180;
 
-        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 2)
+        const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
         const action = new Heading(aeroplane, desiredHeading)
 
@@ -588,6 +588,30 @@ describe("Heading", () => {
         let desiredAltitude = 361;
 
         expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+    })
+
+    test.each`
+    weight | speed | currentHeading | targetHeadingAfterFirstApply
+    ${1} | ${180} | ${90} | ${95}}
+    ${1} | ${220} | ${90} | ${93}}
+    ${1} | ${320} | ${90} | ${93}}
+    
+    ${2} | ${180} | ${90} | ${93}}
+    ${2} | ${220} | ${90} | ${92}}
+    ${2} | ${320} | ${90} | ${92}}
+    
+    ${3} | ${180} | ${90} | ${92}}
+    ${3} | ${220} | ${90} | ${92}}
+    ${3} | ${320} | ${90} | ${92}}
+  `("Aeroplane with weight $weight and speed $speed heading $currentHeading should head to $targetHeadingAfterFirstApply", ({weight, speed, currentHeading, targetHeadingAfterFirstApply}) => {
+        const aeroplane = new Aeroplane("BA123", 500, 500, speed, currentHeading, 3000, weight)
+        aeroplane.setHeading(180)
+
+        expect(aeroplane.heading).toBe(currentHeading)
+
+        aeroplane.applyActions()
+
+        expect(aeroplane.heading).toBe(targetHeadingAfterFirstApply)
     })
 })
 

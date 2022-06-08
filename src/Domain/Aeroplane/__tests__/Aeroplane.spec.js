@@ -238,8 +238,8 @@ describe("Apply Actions", () => {
             aeroplane.applyActions()
 
             expect(aeroplane.x).toBe(52.27)
-            expect(aeroplane.y).toBe(100.2)
-            expect(aeroplane.heading).toBe(95)
+            expect(aeroplane.y).toBe(100.08)
+            expect(aeroplane.heading).toBe(92)
             expect(aeroplane.altitude).toBe(5020)
         })
     })

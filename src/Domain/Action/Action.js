@@ -88,11 +88,23 @@ export class Heading extends Action {
 
     _change_rate = () => {
         if (this.aeroplane.speed < 200) {
-            return 5
+            return {
+                1: 5,
+                2: 3,
+                3: 2,
+            }[this.aeroplane.weight]
         } else if (this.aeroplane.speed < 300) {
-            return 3
+            return {
+                1: 3,
+                2: 2,
+                3: 2,
+            }[this.aeroplane.weight]
         } else {
-            return 2
+            return {
+                1: 3,
+                2: 2,
+                3: 2,
+            }[this.aeroplane.weight]
         }
     }
 
