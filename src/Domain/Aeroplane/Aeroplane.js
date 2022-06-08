@@ -112,4 +112,8 @@ export class Aeroplane {
         return outsideX || outsideY
     }
 
+    hasLanded = () => {
+        return this.altitude < 20
+    }
+
 }
