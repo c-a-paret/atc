@@ -1,5 +1,6 @@
-export const parseCommand = (command) => {
-    let callSign = command.substring(0, 5);
+export const parseCommand = (rawCommand) => {
+    const command = rawCommand.toUpperCase()
+    let callSign = command.substring(0, 5).toUpperCase();
     let actionCommands = command.substring(5);
     let parsedHeading = parseHeading(actionCommands);
     let parsedWaypoint = parseWaypoint(actionCommands);
@@ -44,9 +45,9 @@ export const parseHeading = (command) => {
 }
 
 export const parseAltitude = (command) => {
-    const match = command.match(/[CD](\d{1,2})/g);
+    const match = command.match(/[CDcd](\d{1,3})/g);
     if (match && match.length === 1) {
-        return parseInt(match[0].substring(1)) * 1000
+        return parseInt(match[0].substring(1)) * 100
     }
     return null
 }

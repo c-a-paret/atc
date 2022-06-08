@@ -144,7 +144,7 @@ describe("Heading Commands", () => {
 describe("Altitude Commands", () => {
     test("Extracts one digit flight level altitude inside larger command", () => {
         const command = "BA423S200C2WLAM"
-        const expectedAltitude = 2000
+        const expectedAltitude = 200
 
         const result = parseAltitude(command)
 
@@ -153,7 +153,7 @@ describe("Altitude Commands", () => {
 
     test("Extracts two digit flight level altitude inside larger command", () => {
         const command = "BA423S200C31WLAM"
-        const expectedAltitude = 31000
+        const expectedAltitude = 3100
 
         const result = parseAltitude(command)
 
