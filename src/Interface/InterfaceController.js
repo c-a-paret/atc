@@ -4,12 +4,14 @@ export class InterfaceController {
     constructor(aeroplaneService) {
         this.aeroplaneService = aeroplaneService
         this.lastCallSign = null
+        this.gamePaused = false;
     }
 
     init = () => {
         this._setupCommandInterface()
         this._setupClickInterface()
         this._focusCommandEntry()
+        this._setupPlayPauseInterface()
     }
 
     _newCommandHandler = () => {
@@ -52,6 +54,19 @@ export class InterfaceController {
                 this._previousCallSignHandler()
             }
         });
+    }
+
+    _setupPlayPauseInterface = () => {
+        document.getElementById("pause-play").addEventListener("click", this._play_pause_handler)
+    }
+
+    _play_pause_handler = () => {
+        if (this.gamePaused) {
+            document.getElementById("pause-play").style.backgroundColor = 'rgba(22, 145, 203, 0.5)'
+        } else {
+            document.getElementById("pause-play").style.backgroundColor = 'rgba(255,2,109,0.5)'
+        }
+        this.gamePaused = !this.gamePaused
     }
 
     _focusCommandEntry = () => {

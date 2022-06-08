@@ -32,6 +32,29 @@ canvas {
     z-index: 3;
 }
 
+#pause-play {
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 2rem;
+    background-color: rgba(22, 145, 203, 0.5);
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+#pause-play > .symbol {
+    text-align: center;
+    color: white;
+}
+
+#pause-play {
+    cursor: pointer;
+}
+
 .side-panel {
     display: flex;
     flex-direction: column;

@@ -16,14 +16,16 @@ export class GameLoop {
 
     start() {
         setInterval(() => {
-            this.uiController.clearAeroplaneLayer()
-            this.aeroplaneService.deactivateAeroplanes()
-            this.aeroplaneService.aeroplanes.forEach(plane => {
-                if (plane.active) {
-                    plane.applyActions()
-                    this.uiController.drawAeroplane(plane)
-                }
-            })
+            if (!this.interfaceController.gamePaused) {
+                this.uiController.clearAeroplaneLayer()
+                this.aeroplaneService.deactivateAeroplanes()
+                this.aeroplaneService.aeroplanes.forEach(plane => {
+                    if (plane.active) {
+                        plane.applyActions()
+                        this.uiController.drawAeroplane(plane)
+                    }
+                })
+            }
         }, 900)
     }
 }
