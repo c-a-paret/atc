@@ -4,6 +4,10 @@ html, body {
 
 .simulator {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 #stage {
@@ -37,10 +41,52 @@ canvas {
     background-color: rgb(1, 20, 28);
 }
 
+.command-entry {
+    z-index: 4;
+    margin-bottom: 1rem;
+}
+
+#command-entry-field {
+    color: white;
+    width: 500px;
+    font-size: 1.5rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    text-align: center;
+    backdrop-filter: blur(2px);
+}
+
+#command-entry-field:focus {
+    outline: none;
+}
+
+#send-command {
+    display: none;
+}
+
+#message-container {
+    z-index: 5;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    min-width: 500px;
+    height: 35px;
+    border-radius: 1rem;
+    backdrop-filter: blur(2px);
+}
+
+#message-display {
+    width: fit-content;
+
+    text-align: center;
+}
+
 .message {
     font-family: Helvetica, sans-serif;
-    font-size: 1.5rem;
-    width: 100%;
-    height: 5rem;
-    color: #c9c9c9;
+    font-size: 1.25rem;
+    color: #5b5b5b;
 }

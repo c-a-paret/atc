@@ -7,6 +7,7 @@ export class InterfaceController {
     }
 
     init = () => {
+        this._styleInterfaceElements()
         this._setupCommandInterface()
         this._setupClickInterface()
         this._focusCommandEntry()
@@ -24,12 +25,15 @@ export class InterfaceController {
     };
 
     _displayMessage = (message) => {
+        let messageContainer = document.getElementById("message-container");
         let messageField = document.getElementById("message-display");
+        messageContainer.style.display = "flex"
         messageField.innerText = message
     }
 
     _clearMessage = () => {
         document.getElementById("message-display").innerText = ""
+        document.getElementById("message-container").style.display = "none"
     }
 
     _previousCallSignHandler = () => {

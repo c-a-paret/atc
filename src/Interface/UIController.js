@@ -13,7 +13,7 @@ export class UIController {
 
         this.mapBoundaries = {
             minX: 0,
-            maxX: document.body.clientWidth - (document.body.clientWidth * 0.2),
+            maxX: document.body.clientWidth,
             minY: 0,
             maxY: document.body.clientHeight,
         }
@@ -28,24 +28,24 @@ export class UIController {
     initBackgroundLayer = () => {
         this.backgroundContext.fillStyle = COLOURS.BACKGROUND;
 
-        this.backgroundCanvas.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
+        this.backgroundCanvas.width = document.body.clientWidth;
         this.backgroundCanvas.height = document.body.clientHeight;
 
         this.backgroundContext.fillRect(0, 0, this.backgroundCanvas.width, this.backgroundCanvas.height)
     }
 
     initFeaturesLayer = () => {
-        this.featuresCanvas.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
+        this.featuresCanvas.width = document.body.clientWidth;
         this.featuresCanvas.height = document.body.clientHeight;
     }
 
     initAeroplaneLayer = () => {
-        this.aeroplaneCanvas.width = document.body.clientWidth - (document.body.clientWidth * 0.2);
+        this.aeroplaneCanvas.width = document.body.clientWidth;
         this.aeroplaneCanvas.height = document.body.clientHeight;
     }
 
     clearAeroplaneLayer = () => {
-        this.aeroplaneContext.clearRect(0, 0, document.body.clientWidth - (document.body.clientWidth * 0.2), document.body.clientHeight);
+        this.aeroplaneContext.clearRect(0, 0, document.body.clientWidth, document.body.clientHeight);
     }
 
     initFeatures = () => {
