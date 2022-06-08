@@ -1,4 +1,4 @@
-import {Altitude, Heading, shortestAngle, Speed, Waypoint} from "../Action";
+import {Altitude, Heading, Landing, shortestAngle, Speed, Waypoint} from "../Action";
 import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../utils/common";
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 
@@ -712,6 +712,90 @@ describe("Waypoint", () => {
         let incorrectWaypoint = "BIP";
 
         expect(new Waypoint({}, incorrectWaypoint).isValid()).toBeFalsy()
+    })
+})
+
+describe("Landing", () => {
+    test("Is valid if aeroplane is in correct landing configuration", () => {
+        const correctRunway = "27L";
+        const speed = 190;
+        const heading = 272;
+        const altitude = 2800;
+        const x = 890;
+        const y = 480;
+
+        expect(new Landing({
+            speed: speed,
+            heading: heading,
+            altitude: altitude,
+            x: x,
+            y: y
+        }, correctRunway).isValid()).toBeTruthy()
+    })
+
+    test("Is not valid if the runway does not exist", () => {
+        let incorrectRunway = "66C";
+
+        expect(new Landing({}, incorrectRunway).isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not within maximum X range of inner marker", () => {
+        let currentX = 549;
+        let currentY = 450;
+
+        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not outside minimum X range of inner marker", () => {
+        let currentX = 601;
+        let currentY = 450;
+
+        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is to the other side of the runway", () => {
+        let currentX = 800;
+        let currentY = 450;
+
+        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not within negative Y range of inner marker", () => {
+        let currentX = 575;
+        let currentY = 429;
+
+        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not within positive Y range of inner marker", () => {
+        let currentX = 575;
+        let currentY = 471;
+
+        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not within minimum angle of runway heading", () => {
+        let currentHeading = 101;
+
+        expect(new Landing({x: 575, y: 450, heading: currentHeading}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not below maximum altitude for runway altitude", () => {
+        let currentAltitude = 3001;
+
+        expect(new Landing({x: 575, y: 450, heading: 90, altitude: currentAltitude}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not above minimum altitude for runway altitude", () => {
+        let currentAltitude = 999;
+
+        expect(new Landing({x: 575, y: 450, heading: 90, altitude: currentAltitude}, "9L").isValid()).toBeFalsy()
+    })
+
+    test("Is not valid if the aeroplane is not below minimum approach speed", () => {
+        let currentSpeed = 201;
+
+        expect(new Landing({x: 575, y: 450, heading: 90, altitude: 2000, speed: currentSpeed}, "9L").isValid()).toBeFalsy()
     })
 })
 

@@ -1,4 +1,5 @@
 export const MIN_SPEED = 120;
+export const MIN_APPROACH_SPEED = 200
 export const MIN_ALTITUDE = 1000;
 export const MAX_ALTITUDE = 40000;
 

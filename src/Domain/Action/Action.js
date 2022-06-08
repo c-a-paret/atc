@@ -1,4 +1,4 @@
-import {distance, MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED, toDegrees} from "../../utils/common";
+import {distance, MAX_ALTITUDE, MIN_ALTITUDE, MIN_APPROACH_SPEED, MIN_SPEED, toDegrees} from "../../utils/common";
 import {EGLL} from "../../config/maps/EGLL";
 
 class Action {
@@ -241,8 +241,33 @@ export class Landing extends Action {
     };
 
     isValid = () => {
-        return EGLL.runwayExists(this.targetRunway)
-        // TODO implement aeroplane proximity
+        if (EGLL.runwayExists(this.targetRunway)) {
+            const runway = EGLL.getRunwayInfo(this.targetRunway)
+
+            const withinMaximumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) <= 220;
+            const withinMinimumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) >= 100;
+            const withinY = Math.abs(this.aeroplane.y - runway.ILS.innerMarker.y) <= 20;
+            const withinMaximumAltitude = Math.abs(this.aeroplane.altitude - runway.altitude) <= 3000;
+            const withinMaximumSpeed = this.aeroplane.speed <= MIN_APPROACH_SPEED;
+            const withinRunwayHeading = Math.abs(runway.heading - this.aeroplane.heading) <= 10;
+
+            return this._onCorrectSideOfRunway(this.aeroplane, runway)
+                && withinMaximumX
+                && withinMinimumX
+                && withinY
+                && withinMaximumAltitude
+                && withinMaximumSpeed
+                && withinRunwayHeading
+        }
+        return false
+    }
+
+    _onCorrectSideOfRunway = (aeroplane, runway) => {
+        if (runway.heading <= 180 && runway.heading >= 0) {
+            return aeroplane.x < runway.ILS.innerMarker.x
+        } else {
+            return aeroplane.x > runway.ILS.innerMarker.x
+        }
     }
 }
 
