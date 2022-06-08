@@ -226,6 +226,8 @@ export class Landing extends Action {
     constructor(aeroplane, targetRunway) {
         super(aeroplane, null);
         this.targetRunway = targetRunway
+        this.waypointSet = false
+        this.speedSet = false
         this.executed = false
     }
 
@@ -234,10 +236,19 @@ export class Landing extends Action {
     }
 
     apply = () => {
-        this.aeroplane.setSpeed(120)
-        this.aeroplane.actions.push(new Waypoint(this.aeroplane, this.targetRunway))
-        this.aeroplane.actions.push(new Altitude(this.aeroplane, 0))
-        this.executed = true
+        if (!this.speedSet && !this.waypointSet) {
+            this.aeroplane.setSpeed(MIN_SPEED)
+            this.aeroplane.actions.push(new Waypoint(this.aeroplane, this.targetRunway))
+        }
+        const runway = EGLL.getRunwayInfo(this.targetRunway)
+        const distanceToRunway = distance(this.aeroplane.x, this.aeroplane.y, runway.ILS.innerMarker.x, runway.ILS.innerMarker.y)
+
+        if (distanceToRunway < 5 && this.aeroplane.altitude < 50) {
+            this.executed = true
+        }
+
+        const rateOfDescent = (this.aeroplane.altitude - runway.altitude) / distanceToRunway * 2
+        this.aeroplane.altitude -= rateOfDescent
     };
 
     isValid = () => {

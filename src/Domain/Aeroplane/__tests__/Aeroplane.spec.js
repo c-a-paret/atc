@@ -336,14 +336,14 @@ describe("Sequential Actions", () => {
     })
 
     describe("Landing action clears all other actions", () => {
-        const aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
+        const aeroplane = new Aeroplane("AB123", 550, 450, 150, 91, 3000, 3)
 
         aeroplane.setSpeed(160)
-        aeroplane.setAltitude(5000)
+        aeroplane.setAltitude(2000)
         aeroplane.setHeading(90)
         expect(aeroplane.actions.length).toBe(3)
         expect(aeroplane.actions[0].targetValue).toBe(160)
-        expect(aeroplane.actions[1].targetValue).toBe(5000)
+        expect(aeroplane.actions[1].targetValue).toBe(2000)
         expect(aeroplane.actions[2].targetValue).toBe(90)
 
         aeroplane.setLanding("9L")
