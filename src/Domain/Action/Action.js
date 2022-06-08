@@ -213,11 +213,11 @@ export class Waypoint extends Action {
     }
 
     isValid = () => {
-        EGLL.features.vors.forEach(vor => {
-            if (vor.id === this.targetWaypoint) {
+        for (let x = 0; x < EGLL.features.vors.length; x++) {
+            if ( EGLL.features.vors[x].id === this.targetWaypoint) {
                 return true
             }
-        })
+        }
         return false;
     }
 }
