@@ -7,7 +7,6 @@ export class InterfaceController {
     }
 
     init = () => {
-        this._styleInterfaceElements()
         this._setupCommandInterface()
         this._setupClickInterface()
         this._focusCommandEntry()
