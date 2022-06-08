@@ -6,17 +6,26 @@ export class AeroplaneService {
     constructor(mapBoundaries) {
         this.aeroplanes = []
         this.mapBoundaries = mapBoundaries
+        this.spawnLocations = [
+            {x: 0.33 * this.mapBoundaries.maxX, y: 1, heading: 135},
+            {x: 0.5 * this.mapBoundaries.maxX, y: 1, heading: 135},
+            {x: 0.8 * this.mapBoundaries.maxX, y: 1, heading: 225},
+            {x: 1, y: 0.33 * this.mapBoundaries.maxY, heading: 110},
+            {x: this.mapBoundaries.maxX - 1, y: 0.66 * this.mapBoundaries.maxY, heading: 300},
+        ]
     }
 
     initArrival = () => {
         const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
-        const startX = getRandomNumberBetween(100, 1100)
-        const startY = getRandomNumberBetween(100, 800)
+        const location = this.spawnLocations[Math.floor(Math.random() * this.spawnLocations.length)];
+        const startX = location.x
+        const startY = location.y
+        const startHeading = location.heading
         const startSpeed = getRandomNumberBetween(180, 260)
-        const startHeading = getRandomNumberBetween(0, 359)
         const startAltitude = getRandomNumberBetween(5000, 10000)
         const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
         const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
+        plane.setWaypoint("LON")
         this.aeroplanes.push(plane)
     }
 

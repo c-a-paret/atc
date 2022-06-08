@@ -7,14 +7,16 @@ export class GameLoop {
 
     init() {
         this.interfaceController.init()
-        // for (let x = 0; x < 5; x++) {
-        //     aeroplaneService.initArrival()
-        // }
-        this.aeroplaneService.initTestAeroplanes()
+        this.aeroplaneService.initArrival()
+        // this.aeroplaneService.initTestAeroplanes()
         this.aeroplaneService.aeroplanes.forEach(plane => this.uiController.drawAeroplane(plane))
     }
 
     start() {
+        setInterval(() => {
+            this.aeroplaneService.initArrival()
+        }, 60000)
+
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
                 this.uiController.clearAeroplaneLayer()
