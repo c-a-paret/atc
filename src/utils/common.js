@@ -1,7 +1,10 @@
 export const MIN_SPEED = 120;
+export const LANDING_SPEED = 140;
 export const MIN_APPROACH_SPEED = 200
 export const MIN_ALTITUDE = 1000;
 export const MAX_ALTITUDE = 40000;
+export const ILS_MAX_X = 220
+export const ILS_MIN_X = 100
 
 export const COLOURS = {
     YELLOW: 'rgb(252,210,100)',
@@ -13,6 +16,9 @@ export const COLOURS = {
     WHITE: 'rgb(218,219,243)',
     ORANGE: 'rgb(194,127,6)',
     ORANGE_TRANSPARENT: 'rgb(194,127,6,0.2)',
+    GREY: 'rgba(197,197,197,0.25)',
+    GREY_TRANSPARENT: 'rgba(197,197,197,0.05)',
+
 
 }
 

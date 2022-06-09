@@ -1,4 +1,12 @@
-import {distance, MAX_ALTITUDE, MIN_ALTITUDE, MIN_APPROACH_SPEED, MIN_SPEED, toDegrees} from "../../utils/common";
+import {
+    distance, ILS_MAX_X,
+    ILS_MIN_X, LANDING_SPEED,
+    MAX_ALTITUDE,
+    MIN_ALTITUDE,
+    MIN_APPROACH_SPEED,
+    MIN_SPEED,
+    toDegrees
+} from "../../utils/common";
 import {EGLL} from "../../config/maps/EGLL";
 
 class Action {
@@ -249,7 +257,7 @@ export class Landing extends Action {
 
     apply = () => {
         if (!this.speedSet && !this.waypointSet) {
-            this.aeroplane.setSpeed(MIN_SPEED)
+            this.aeroplane.setSpeed(LANDING_SPEED)
             this.aeroplane.actions.push(new Waypoint(this.aeroplane, this.targetRunway))
         }
         const runway = EGLL.getRunwayInfo(this.targetRunway)
@@ -267,8 +275,8 @@ export class Landing extends Action {
         if (EGLL.runwayExists(this.targetRunway)) {
             const runway = EGLL.getRunwayInfo(this.targetRunway)
 
-            const withinMaximumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) <= 220;
-            const withinMinimumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) >= 100;
+            const withinMaximumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) <= ILS_MAX_X;
+            const withinMinimumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) >= ILS_MIN_X;
             const withinY = Math.abs(this.aeroplane.y - runway.ILS.innerMarker.y) <= 20;
             const withinMaximumAltitude = Math.abs(this.aeroplane.altitude - runway.altitude) <= 3000;
             const withinMaximumSpeed = this.aeroplane.speed <= MIN_APPROACH_SPEED;

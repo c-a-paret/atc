@@ -1,4 +1,4 @@
-import {COLOURS} from '../utils/common'
+import {COLOURS, ILS_MAX_X, ILS_MIN_X} from '../utils/common'
 
 export class UIController {
     constructor(mapConfig) {
@@ -52,6 +52,7 @@ export class UIController {
         this._drawExclusionZones(this.mapConfig.features.exclusionZones)
         this._drawVORs(this.mapConfig.features.waypoints)
         this._drawRunways(this.mapConfig.features.runways)
+        this._drawILSFeathers(this.mapConfig.features.runways)
     }
 
     drawAeroplane = (aeroplane) => {
@@ -82,7 +83,7 @@ export class UIController {
             this.featuresContext.setLineDash([2]);
             this.featuresContext.beginPath();
             for (let x = 0; x < zone.boundaries.length; x++) {
-                let boundary =  zone.boundaries[x]
+                let boundary = zone.boundaries[x]
                 if (x === 0) {
                     this.featuresContext.moveTo(boundary.x, boundary.y)
                 } else {
@@ -97,7 +98,7 @@ export class UIController {
             this.featuresContext.fillStyle = severityColourMap[zone.level].transparent;
             this.featuresContext.beginPath();
             for (let x = 0; x < zone.boundaries.length; x++) {
-                let boundary =  zone.boundaries[x]
+                let boundary = zone.boundaries[x]
                 if (x === 0) {
                     this.featuresContext.moveTo(boundary.x, boundary.y)
                 } else {
@@ -126,6 +127,43 @@ export class UIController {
             this.featuresContext.fillText(runway.start.label, runway.start.ILS.innerMarker.x - 20, runway.start.ILS.innerMarker.y - 5);
             this.featuresContext.fillText(runway.end.label, runway.end.ILS.innerMarker.x + 10, runway.end.ILS.innerMarker.y - 5);
 
+        })
+    }
+
+    _drawILSFeathers = (runways) => {
+        runways.forEach(runway => {
+            this.featuresContext.strokeStyle = COLOURS.GREY;
+            this.featuresContext.fillStyle = COLOURS.GREY_TRANSPARENT
+
+            const spikiness = 15
+            const spread = 20;
+
+            // Feathers
+            this.featuresContext.lineWidth = 1;
+            this.featuresContext.setLineDash([4]);
+            this.featuresContext.beginPath();
+            this.featuresContext.moveTo(runway.start.ILS.innerMarker.x, runway.start.ILS.innerMarker.y)
+            this.featuresContext.lineTo(runway.start.ILS.outerMarker.x - spikiness, runway.start.ILS.outerMarker.y - spread)
+            this.featuresContext.lineTo(runway.start.ILS.outerMarker.x, runway.start.ILS.outerMarker.y)
+            this.featuresContext.lineTo(runway.start.ILS.outerMarker.x - spikiness, runway.start.ILS.outerMarker.y + spread)
+            this.featuresContext.lineTo(runway.start.ILS.innerMarker.x, runway.start.ILS.innerMarker.y)
+
+            this.featuresContext.moveTo(runway.end.ILS.innerMarker.x, runway.end.ILS.innerMarker.y)
+            this.featuresContext.lineTo(runway.end.ILS.outerMarker.x + spikiness, runway.end.ILS.outerMarker.y - spread)
+            this.featuresContext.lineTo(runway.end.ILS.outerMarker.x, runway.end.ILS.outerMarker.y)
+            this.featuresContext.lineTo(runway.end.ILS.outerMarker.x + spikiness, runway.end.ILS.outerMarker.y + spread)
+            this.featuresContext.lineTo(runway.end.ILS.innerMarker.x, runway.end.ILS.innerMarker.y)
+            this.featuresContext.stroke();
+
+            // Landing command limits indicator
+            this.featuresContext.lineWidth = 2;
+            this.featuresContext.setLineDash([1]);
+            this.featuresContext.beginPath();
+            this.featuresContext.moveTo(runway.start.ILS.outerMarker.x, runway.start.ILS.outerMarker.y)
+            this.featuresContext.lineTo(runway.start.ILS.innerMarker.x - ILS_MIN_X, runway.start.ILS.innerMarker.y)
+            this.featuresContext.moveTo(runway.end.ILS.outerMarker.x, runway.end.ILS.outerMarker.y)
+            this.featuresContext.lineTo(runway.end.ILS.innerMarker.x + ILS_MIN_X, runway.end.ILS.innerMarker.y)
+            this.featuresContext.stroke();
         })
     }
 

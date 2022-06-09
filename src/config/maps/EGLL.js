@@ -1,7 +1,9 @@
+import {ILS_MAX_X} from "../../utils/common";
+
 const x = document.body.clientWidth
 const y = document.body.clientHeight
 const runwayWidth = x/25
-const runwayGap = x/70
+const runwayGap = x/60
 
 export const EGLL = {
     name: "London Heathrow",
@@ -19,8 +21,8 @@ export const EGLL = {
                             y: y/2,
                         },
                         outerMarker: {
-                            x: undefined,
-                            y: undefined,
+                            x: x/2 - (runwayWidth / 2) - ILS_MAX_X,
+                            y: y/2,
                         }
                     }
                 },
@@ -34,8 +36,8 @@ export const EGLL = {
                             y: y/2,
                         },
                         outerMarker: {
-                            x: undefined,
-                            y: undefined,
+                            x: x/2 + (runwayWidth / 2) + ILS_MAX_X,
+                            y: y/2,
                         }
                     }
                 }
@@ -51,8 +53,8 @@ export const EGLL = {
                             y: y/2 + runwayGap,
                         },
                         outerMarker: {
-                            x: undefined,
-                            y: undefined,
+                            x: x/2 - (runwayWidth / 2) - ILS_MAX_X,
+                            y: y/2 + runwayGap,
                         }
                     }
                 },
@@ -66,8 +68,8 @@ export const EGLL = {
                             y: y/2 + runwayGap,
                         },
                         outerMarker: {
-                            x: undefined,
-                            y: undefined,
+                            x: x/2 + (runwayWidth / 2) + ILS_MAX_X,
+                            y: y/2 + runwayGap,
                         }
                     }
                 }

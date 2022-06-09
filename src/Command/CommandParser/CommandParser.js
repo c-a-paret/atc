@@ -24,7 +24,8 @@ export const commandMessage = (parsedCommand) => {
         `${parsedCommand.speed ? ' Speed: ' + parsedCommand.speed : ''}` +
         `${parsedCommand.heading ? ' Heading: ' + parsedCommand.heading : ''}` +
         `${parsedCommand.altitude ? ' Altitude: ' + parsedCommand.altitude + 'ft' : ''}` +
-        `${parsedCommand.waypoint ? ' Waypoint: ' + parsedCommand.waypoint : ''}`
+        `${parsedCommand.waypoint ? ' Waypoint: ' + parsedCommand.waypoint : ''}` +
+        `${parsedCommand.runway ? ' Land: ' + parsedCommand.runway : ''}`
 }
 
 export const parseSpeed = (command) => {
