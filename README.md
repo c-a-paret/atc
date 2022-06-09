@@ -1,5 +1,11 @@
 # ATC Simulator
 
+# Gameplay
+
+- Your goal is to direct as many aeroplanes as possible to land safely.
+- If an aeroplane is directed outside the map it will be removed from the game play.
+- There is currently no penalty for breaching aircraft proximity limits or landing at incorrect locations.
+
 # Interface
 
 ## Aeroplanes
@@ -191,6 +197,9 @@ The aeroplane must conform to certain requirements to accept a landing clearance
 3. At or below 3000ft
 4. At or below 200 knots
 5. Facing within 10 degrees of the runway heading (e.g.: 90 ±10degrees for runway `9L` or `9R`)
+
+A landing clearance overrides all other current actions and the aeroplane will manage the approach heading, speed and
+altitude on its own. Once the aeroplane has landed it will be removed from the map.
 
 Examples:
 
