@@ -1,6 +1,48 @@
 # ATC Simulator
 
+# Interface
+
+## Aeroplanes
+
+![Aeroplane Info](images/aeroplane_info.png?raw=true)
+
+Aeroplanes are shown as a circle with a line trailing their direction of travel, i.e.: the line points away from the
+direction the aeroplane is facing.
+
+The length of the trailing line shows the speed of the aeroplane. The longer the line, the faster the speed.
+
+There are four informational elements that accompany the aeroplane:
+
+1. The call sign (`BA123`)
+2. The current heading (`90`)
+3. The current heading (`200`)
+4. The current altitude as flight level (see below) (`30`)
+
+## Runways
+
+![Runway](images/runway.png?raw=true)
+
+Runways are shown as mint green lines with their runway labels on each end. For example :
+
+- `9L` means the runway has a heading of `90` degrees and is to the `left` of other runways
+- `27R` means the runway has a heading of `270` degrees and is to the `right` of other runways
+
+One runway line comprises two available runways; each accessible from each end of the runway line (`9R` and `27L` are
+the same runway, just approached from different ends).
+
+![Runway](images/ils_feather.png?raw=true)
+The end of each runway has a 'feather' extending from it. This denotes the approach vector and acts as a guide to
+position an aeroplane for landing.
+
+The far end of each feather has a straight line down its centre pointing at the runway, extending about halfway along
+the feather. This is provided for your convenience and a visual representation of the zone within which an aeroplane can
+accept a 'Cleared to Land' command. Note that other constraints to accepting a landing clearance also apply (see below).
+
 # Controls
+
+Pause the game by pressing this button in the top right corner:
+
+![Play/Pause](images/play_pause.png?raw=true)
 
 ## Overview
 
