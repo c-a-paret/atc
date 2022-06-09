@@ -38,25 +38,25 @@ export class AeroplaneService {
         // console.log(document.body.clientWidth / 2)
 
         this.aeroplanes = [
-        new Aeroplane("BA123", 500, 411, 200, 90, 3000, 1),
-        // new Aeroplane("BA456", 510, 450, 160, 90, 3000, 1),
-        // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
-        // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
-        // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
-        // new Aeroplane("BA333", 500, 170, 170, 96, 6000),
-        // new Aeroplane("BA444", 500, 180, 180, 97, 6000),
-        // new Aeroplane("BA555", 500, 190, 190, 98, 6000),
-        // new Aeroplane("BA666", 500, 200, 200, 99, 6000),
-        // new Aeroplane("BA777", 500, 210, 210, 100, 6000),
-        // new Aeroplane("BA888", 500, 220, 220, 101, 6000),
-        // new Aeroplane("BA888", 500, 230, 230, 102, 6000),
-        // new Aeroplane("BA888", 500, 240, 240, 103, 6000),
-        // new Aeroplane("BA888", 500, 250, 250, 104, 6000),
-        // new Aeroplane("BA888", 500, 260, 260, 105, 6000),
-        // new Aeroplane("BA888", 500, 270, 270, 106, 6000),
-        // new Aeroplane("BA888", 500, 280, 280, 107, 6000),
-        // new Aeroplane("BA888", 500, 290, 290, 108, 6000),
-        // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
+            new Aeroplane("BA123", 500, 411, 200, 90, 3000, 1),
+            // new Aeroplane("BA456", 510, 450, 160, 90, 3000, 1),
+            // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
+            // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
+            // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
+            // new Aeroplane("BA333", 500, 170, 170, 96, 6000),
+            // new Aeroplane("BA444", 500, 180, 180, 97, 6000),
+            // new Aeroplane("BA555", 500, 190, 190, 98, 6000),
+            // new Aeroplane("BA666", 500, 200, 200, 99, 6000),
+            // new Aeroplane("BA777", 500, 210, 210, 100, 6000),
+            // new Aeroplane("BA888", 500, 220, 220, 101, 6000),
+            // new Aeroplane("BA888", 500, 230, 230, 102, 6000),
+            // new Aeroplane("BA888", 500, 240, 240, 103, 6000),
+            // new Aeroplane("BA888", 500, 250, 250, 104, 6000),
+            // new Aeroplane("BA888", 500, 260, 260, 105, 6000),
+            // new Aeroplane("BA888", 500, 270, 270, 106, 6000),
+            // new Aeroplane("BA888", 500, 280, 280, 107, 6000),
+            // new Aeroplane("BA888", 500, 290, 290, 108, 6000),
+            // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
         ]
 
         // this.aeroplanes.forEach(plane => {
@@ -66,26 +66,41 @@ export class AeroplaneService {
 
     sendCommand = (rawCommand) => {
         const command = parseCommand(rawCommand)
+        let callSign;
+        let speedSet;
+        let headingSet;
+        let altitudeSet;
+        let waypointSet;
+        let runwaySet;
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
+                callSign = plane.callSign
+
                 if (command.speed) {
-                    plane.setSpeed(command.speed)
+                    speedSet = plane.setSpeed(command.speed)
                 }
                 if (command.heading) {
-                    plane.setHeading(command.heading)
+                    headingSet = plane.setHeading(command.heading)
                 }
                 if (command.altitude) {
-                    plane.setAltitude(command.altitude)
+                    altitudeSet = plane.setAltitude(command.altitude)
                 }
                 if (command.waypoint) {
-                    plane.setWaypoint(command.waypoint)
+                    waypointSet = plane.setWaypoint(command.waypoint)
                 }
                 if (command.runway) {
-                    plane.setLanding(command.runway)
+                    runwaySet = plane.setLanding(command.runway)
                 }
             }
         })
-        return command
+        return {
+            "callSign": callSign,
+            "speed": speedSet,
+            "heading": headingSet,
+            "altitude": altitudeSet,
+            "waypoint": waypointSet,
+            "runway": runwaySet
+        }
     }
 
     getCallSignByPosition = (x, y) => {

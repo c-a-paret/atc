@@ -44,6 +44,7 @@ export class Aeroplane {
         const newSpeed = new Speed(this, speed);
         if (newSpeed.isValid()) {
             this.addAction(newSpeed)
+            return speed
         }
     }
 
@@ -51,6 +52,7 @@ export class Aeroplane {
         const newHeading = new Heading(this, heading);
         if (newHeading.isValid()) {
             this.addAction(newHeading)
+            return heading
         }
     }
 
@@ -58,6 +60,7 @@ export class Aeroplane {
         const newAltitude = new Altitude(this, altitude);
         if (newAltitude.isValid()) {
             this.addAction(newAltitude)
+            return altitude
         }
     }
 
@@ -65,6 +68,7 @@ export class Aeroplane {
         const newWaypoint = new Waypoint(this, waypoint);
         if (newWaypoint.isValid()) {
             this.addAction(newWaypoint)
+            return waypoint
         }
     }
 
@@ -72,6 +76,7 @@ export class Aeroplane {
         const newLanding = new Landing(this, runway);
         if (newLanding.isValid()) {
             this.addAction(newLanding)
+            return runway
         }
     }
 

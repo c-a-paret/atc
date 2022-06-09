@@ -4,7 +4,7 @@ export const MIN_APPROACH_SPEED = 200
 export const MIN_ALTITUDE = 1000;
 export const MAX_ALTITUDE = 40000;
 export const ILS_MAX_X = 220
-export const ILS_MIN_X = 100
+export const ILS_MIN_X = 140
 
 export const COLOURS = {
     YELLOW: 'rgb(252,210,100)',

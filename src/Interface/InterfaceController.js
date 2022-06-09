@@ -16,10 +16,10 @@ export class InterfaceController {
 
     _newCommandHandler = () => {
         let commandField = document.getElementById("command-entry-field");
-        const parsedCommand = this.aeroplaneService.sendCommand(commandField.value)
-        this.lastCallSign = parsedCommand.callSign
+        const acceptedCommands = this.aeroplaneService.sendCommand(commandField.value)
+        this.lastCallSign = acceptedCommands.callSign
         commandField.value = ""
-        this._displayMessage(commandMessage(parsedCommand))
+        this._displayMessage(commandMessage(acceptedCommands))
         setTimeout(() => {
             this._clearMessage()
         }, 2000)

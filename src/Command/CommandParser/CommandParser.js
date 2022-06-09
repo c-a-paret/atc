@@ -19,13 +19,19 @@ export const parseCommand = (rawCommand) => {
     }
 }
 
-export const commandMessage = (parsedCommand) => {
-    return `${parsedCommand.callSign}` +
-        `${parsedCommand.speed ? ' Speed: ' + parsedCommand.speed : ''}` +
-        `${parsedCommand.heading ? ' Heading: ' + parsedCommand.heading : ''}` +
-        `${parsedCommand.altitude ? ' Altitude: ' + parsedCommand.altitude + 'ft' : ''}` +
-        `${parsedCommand.waypoint ? ' Waypoint: ' + parsedCommand.waypoint : ''}` +
-        `${parsedCommand.runway ? ' Land: ' + parsedCommand.runway : ''}`
+export const commandMessage = (acceptedCommands) => {
+    if ([acceptedCommands.callSign, acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway].every(value => value === undefined)) {
+        return 'Unrecognised command'
+    }
+    if ([acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway].every(value => value === undefined)) {
+        return 'No valid commands'
+    }
+    return `${acceptedCommands.callSign}` +
+        `${acceptedCommands.speed ? ' Speed: ' + acceptedCommands.speed : ''}` +
+        `${acceptedCommands.heading ? ' Heading: ' + acceptedCommands.heading : ''}` +
+        `${acceptedCommands.altitude ? ' Altitude: ' + acceptedCommands.altitude + 'ft' : ''}` +
+        `${acceptedCommands.waypoint ? ' Waypoint: ' + acceptedCommands.waypoint : ''}` +
+        `${acceptedCommands.runway ? ' cleared to land runway ' + acceptedCommands.runway : ''}`
 }
 
 export const parseSpeed = (command) => {
