@@ -1,3 +1,5 @@
+import {getRandomNumberBetween} from "../utils/common";
+
 export class GameLoop {
     constructor(uiController, interfaceController, aeroplaneService) {
         this.uiController = uiController
@@ -7,15 +9,15 @@ export class GameLoop {
 
     init() {
         this.interfaceController.init()
-        // this.aeroplaneService.initArrival()
-        this.aeroplaneService.initTestAeroplanes()
+        this.aeroplaneService.initArrival()
+        // this.aeroplaneService.initTestAeroplanes()
         this.aeroplaneService.aeroplanes.forEach(plane => this.uiController.drawAeroplane(plane))
     }
 
     start() {
-        // setInterval(() => {
-        //     this.aeroplaneService.initArrival()
-        // }, 60000)
+        setInterval(() => {
+            this.aeroplaneService.initArrival()
+        }, getRandomNumberBetween(90000, 240000))
 
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
