@@ -44,6 +44,8 @@ Pause the game by pressing this button in the top right corner:
 
 ![Play/Pause](images/play_pause.png?raw=true)
 
+# Commands
+
 ## Overview
 
 Control aeroplanes by typing command strings into the command input and pressing `Enter` to submit them.
@@ -61,6 +63,11 @@ Commands follow this structure:
 ```text
 [CallSign][[CommandPrefix][TargetValue]|[StandaloneCommand]]
 ```
+
+### Sequential commands
+Sequential commands for the same action (speed, altitude, heading, etc.) override previously set, active actions. So if
+you have directed an aeroplane to turn to heading 265, and it is in the process of doing so, but then you issue a new
+command to head to the Ockham waypoint, the aeroplane will comply with the new command.
 
 ## Call signs
 
@@ -116,7 +123,7 @@ Examples:
 Heading commands follow the structure:
 
 ```text
-[H][TargetHeading]
+H[TargetHeading]
 ```
 
 Headings are specified in **three digit** degrees around a compass rose.
@@ -136,11 +143,37 @@ slower it turns.
 The aeroplane will always turn the shortest distance to the desired heading unless there is ambiguity, in which case it
 will default to right.
 
+Specifying a heading will override an existing heading command and cancel an existing waypoint command (see below).
+
 Examples:
 
 - `H097` to turn and maintain 97 degrees (slightly South East)
 - `H225` to turn and maintain 225 degrees (directly South West)
 - `H004` to turn and maintain 4 degrees (slightly North East)
+
+## Waypoint Commands
+
+Waypoint commands follow the structure:
+
+```text
+>[TargetWaypoint]
+```
+
+Waypoints are specified by their **three character** IDs.
+
+![Waypoint Example](images/waypoint.png?raw=true)
+
+The aeroplane will always turn the shortest angular distance to the heading required to point to the waypoint unless
+there is ambiguity, in which case it will default to right.
+
+Specifying a waypoint will override an existing waypoint command and cancel an existing heading command.
+
+Examples:
+
+- `>LAM` -> Fly directly to Lambourne
+- `>EPM` -> Fly directly to Epsom
+- `>CPT` -> Fly directly to Compton
+- `>OCK` -> Fly directly to Ockham
 
 ## Example commands
 
