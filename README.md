@@ -65,6 +65,7 @@ Commands follow this structure:
 ```
 
 ### Sequential commands
+
 Sequential commands for the same action (speed, altitude, heading, etc.) override previously set, active actions. So if
 you have directed an aeroplane to turn to heading 265, and it is in the process of doing so, but then you issue a new
 command to head to the Ockham waypoint, the aeroplane will comply with the new command.
@@ -174,6 +175,27 @@ Examples:
 - `>EPM` -> Fly directly to Epsom
 - `>CPT` -> Fly directly to Compton
 - `>OCK` -> Fly directly to Ockham
+
+## Landing clearance commands
+
+Landing clearance is issued in the following structure:
+
+```text
+.[Targetrunway].
+```
+
+The aeroplane must conform to certain requirements to accept a landing clearance. It must be:
+
+1. Within the horizontal zone shown by the inner line of the runway feather (see above)
+2. At least within the width of the landing feather
+3. At or below 3000ft
+4. At or below 200 knots
+5. Facing within 10 degrees of the runway heading (e.g.: 90 ±10degrees for runway `9L` or `9R`)
+
+Examples:
+
+- `.9L.` -> Cleared to land runway 9L
+- `.24R.` -> Cleared to land runway 24L
 
 ## Example commands
 
