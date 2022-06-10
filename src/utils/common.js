@@ -7,7 +7,7 @@ export const ILS_MAX_X = 220
 export const ILS_MIN_X = 140
 
 export const COLOURS = {
-    YELLOW: 'rgb(252,210,100)',
+    YELLOW: 'rgb(255,186,0)',
     MINT: 'rgb(0,213,170)',
     BLUE: 'rgb(4,230,255)',
     BLUE_TRANSPARENT: 'rgb(0,151,255,0.5)',

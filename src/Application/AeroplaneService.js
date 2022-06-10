@@ -39,7 +39,7 @@ export class AeroplaneService {
         // console.log(document.body.clientWidth / 2)
 
         this.aeroplanes = [
-            new Aeroplane("BA123", 500, 411, 200, 90, 2800, 1),
+            new Aeroplane("BA123", 800, 503, 200, 90, 2800, 1),
             // new Aeroplane("BA456", 10, 450, 160, 270, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
             // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
