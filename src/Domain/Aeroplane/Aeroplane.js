@@ -121,6 +121,10 @@ export class Aeroplane {
         return outside
     }
 
+    isLanding = () => {
+        return this.actions.length > 0 && this.actions[0].type() === "Landing"
+    }
+
     hasLanded = (landedCallback) => {
         const landed = this.altitude < 40;
         if (landed && landedCallback) {

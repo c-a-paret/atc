@@ -221,7 +221,7 @@ export class UIController {
         this.aeroplaneContext.fillStyle = COLOURS.MINT;
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.fillText(`${aeroplane.callSign}`, aeroplane.x - 20, aeroplane.y - 30);
+        this.aeroplaneContext.fillText(`${aeroplane.callSign}${aeroplane.isLanding() ? '↘︎︎' : ''}`, aeroplane.x - 20, aeroplane.y - 30);
     }
 
     _drawVORs = (waypoints) => {

@@ -206,6 +206,10 @@ Examples:
 - `.9L.` -> Cleared to land runway 9L
 - `.24R.` -> Cleared to land runway 24L
 
+When an aeroplane accepts a landing command, a small arrow will be displayed to the right of the call sign:
+
+![Landing Indicator](images/landing_indicator.png?raw=true)
+
 ## Example commands
 
 Direct BA123 to maintain speed of 200 knots, fly heading 200 degrees and climb to 3000ft:

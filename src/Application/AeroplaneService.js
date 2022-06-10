@@ -40,7 +40,7 @@ export class AeroplaneService {
 
         this.aeroplanes = [
             new Aeroplane("BA123", 500, 411, 200, 90, 2800, 1),
-            new Aeroplane("BA456", 10, 450, 160, 270, 3000, 1),
+            // new Aeroplane("BA456", 10, 450, 160, 270, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
             // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
             // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
@@ -60,9 +60,9 @@ export class AeroplaneService {
             // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
         ]
 
-        // this.aeroplanes.forEach(plane => {
-        //     plane.setSpeed(220)
-        // })
+        this.aeroplanes.forEach(plane => {
+            plane.setLanding("9L")
+        })
     }
 
     sendCommand = (rawCommand) => {
