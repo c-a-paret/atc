@@ -146,12 +146,12 @@ canvas {
 
 #message-display {
     width: fit-content;
-
     text-align: center;
 }
 
 .message {
-    font-family: Helvetica, sans-serif;
+    font-family: "Courier New", monospace;
     font-size: 1.25rem;
     color: #5b5b5b;
+    padding: 0 1rem;
 }
