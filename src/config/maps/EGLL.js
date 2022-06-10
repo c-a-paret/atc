@@ -2,8 +2,8 @@ import {ILS_MAX_X} from "../../utils/common";
 
 const x = document.body.clientWidth
 const y = document.body.clientHeight
-const runwayWidth = x/25
-const runwayGap = x/60
+const runwayWidth = x / 25
+const runwayGap = x / 60
 
 export const EGLL = {
     name: "London Heathrow",
@@ -17,12 +17,12 @@ export const EGLL = {
                     altitude: 0,
                     ILS: {
                         innerMarker: {
-                            x: x/2 - (runwayWidth / 2),
-                            y: y/2,
+                            x: x / 2 - (runwayWidth / 2),
+                            y: y / 2,
                         },
                         outerMarker: {
-                            x: x/2 - (runwayWidth / 2) - ILS_MAX_X,
-                            y: y/2,
+                            x: x / 2 - (runwayWidth / 2) - ILS_MAX_X,
+                            y: y / 2,
                         }
                     }
                 },
@@ -32,12 +32,12 @@ export const EGLL = {
                     altitude: 0,
                     ILS: {
                         innerMarker: {
-                            x: x/2 + (runwayWidth / 2),
-                            y: y/2,
+                            x: x / 2 + (runwayWidth / 2),
+                            y: y / 2,
                         },
                         outerMarker: {
-                            x: x/2 + (runwayWidth / 2) + ILS_MAX_X,
-                            y: y/2,
+                            x: x / 2 + (runwayWidth / 2) + ILS_MAX_X,
+                            y: y / 2,
                         }
                     }
                 }
@@ -49,12 +49,12 @@ export const EGLL = {
                     altitude: 0,
                     ILS: {
                         innerMarker: {
-                            x: x/2 - (runwayWidth / 2),
-                            y: y/2 + runwayGap,
+                            x: x / 2 - (runwayWidth / 2),
+                            y: y / 2 + runwayGap,
                         },
                         outerMarker: {
-                            x: x/2 - (runwayWidth / 2) - ILS_MAX_X,
-                            y: y/2 + runwayGap,
+                            x: x / 2 - (runwayWidth / 2) - ILS_MAX_X,
+                            y: y / 2 + runwayGap,
                         }
                     }
                 },
@@ -64,12 +64,12 @@ export const EGLL = {
                     altitude: 0,
                     ILS: {
                         innerMarker: {
-                            x: x/2 + (runwayWidth / 2),
-                            y: y/2 + runwayGap,
+                            x: x / 2 + (runwayWidth / 2),
+                            y: y / 2 + runwayGap,
                         },
                         outerMarker: {
-                            x: x/2 + (runwayWidth / 2) + ILS_MAX_X,
-                            y: y/2 + runwayGap,
+                            x: x / 2 + (runwayWidth / 2) + ILS_MAX_X,
+                            y: y / 2 + runwayGap,
                         }
                     }
                 }
@@ -86,14 +86,16 @@ export const EGLL = {
             {type: "VOR", id: "LAM", name: "Lambourne", x: (0.7 * x), y: (0.28 * y)},
             {type: "VOR", id: "EPM", name: "Epsom", x: (0.55 * x), y: (0.73 * y)},
 
-            {type: "RWY", id: "9L", name: "Runway 9L", x: x/2 - (runwayWidth / 2), y: y/2},
-            {type: "RWY", id: "9R", name: "Runway 9R", x: x/2 - (runwayWidth / 2), y: y/2 + runwayGap},
-            {type: "RWY", id: "27L", name: "Runway 27L", x: x/2 + (runwayWidth / 2), y: y/2 + runwayGap},
-            {type: "RWY", id: "27R", name: "Runway 27R", x: x/2 + (runwayWidth / 2), y: y/2},
+            {type: "RWY", id: "9L", name: "Runway 9L", x: x / 2 - (runwayWidth / 2), y: y / 2},
+            {type: "RWY", id: "9R", name: "Runway 9R", x: x / 2 - (runwayWidth / 2), y: y / 2 + runwayGap},
+            {type: "RWY", id: "27L", name: "Runway 27L", x: x / 2 + (runwayWidth / 2), y: y / 2 + runwayGap},
+            {type: "RWY", id: "27R", name: "Runway 27R", x: x / 2 + (runwayWidth / 2), y: y / 2},
         ],
         exclusionZones: [
             {
                 level: "critical",
+                dashes: 2,
+                label: {text: "D139", location: {"x": 0.39 * x, "y": 0.68 * y}},
                 boundaries: [
                     {x: (0.34 * x), y: (0.74 * y)},
                     {x: (0.36 * x), y: (0.67 * y)},
@@ -105,6 +107,8 @@ export const EGLL = {
             },
             {
                 level: "moderate",
+                dashes: 2,
+                label: {text: "C422", location: {"x": 0.66 * x, "y": 0.47 * y}},
                 boundaries: [
                     {x: (0.62 * x), y: (0.395 * y)},
                     {x: (0.67 * x), y: (0.37 * y)},
@@ -113,7 +117,59 @@ export const EGLL = {
                     {x: (0.66 * x), y: (0.62 * y)},
                     {x: (0.63 * x), y: (0.52 * y)},
                 ]
+            },
+            {
+                level: "informational",
+                dashes: 0,
+                label: {text: "F79J", location: {"x": 0.366 * x, "y": 0.09 * y}},
+                boundaries: [
+                    {x: 0.4 * x, y: 0.1 * y},
+                    {x: 0.4 * x, y: 0.15 * y},
+                    {x: 0.35 * x, y: 0.15 * y},
+                    {x: 0.35 * x, y: 0.1 * y},
+                ]
             }
+        ],
+        mapLines: [
+            {dashes: 3, start: {"x": 0, "y": 0}, end: {"x": 0.3 * x, "y": 0.3 * y}},
+            {dashes: 3, start: {"x": 0.3 * x, "y": 0.3 * y}, end: {"x": 0, "y": 0.6 * y}},
+            {dashes: 3, start: {"x": 0.3 * x, "y": 0.3 * y}, end: {"x": x, "y": 0.3 * y}},
+            {dashes: 3, start: {"x": 0.15 * x, "y": 0.15 * y}, end: {"x": 0.4 * x, "y": 0.1 * y}},
+            {dashes: 3, start: {"x": 0.4 * x, "y": 0.1 * y}, end: {"x": 0.45 * x, "y": 0.3 * y}},
+            {dashes: 20, start: {"x": 0, "y": 0.7 * y}, end: {"x": 0.38 * x, "y": 0.3 * y}},
+
+            {dashes: 20, start: {"x": 0.8 * x, "y": 0}, end: {"x": 0.75 * x, "y": 0.3 * y}},
+            {dashes: 20, start: {"x": 0.75 * x, "y": 0.3 * y}, end: {"x": 0.6 * x, "y": 0.6 * y}},
+            {dashes: 20, start: {"x": 0.6 * x, "y": 0.6 * y}, end: {"x": 0.5 * x, "y": 0.6 * y}},
+            {dashes: 20, start: {"x": 0.5 * x, "y": 0.6 * y}, end: {"x": 0.3 * x, "y": y}},
+            {dashes: 20, start: {"x": 0.6 * x, "y": 0.6 * y}, end: {"x": 0.63 * x, "y": y}},
+        ],
+        crosses: [
+            {"x": 0.3 * x, "y": 0.3 * y},
+            {"x": 0.38 * x, "y": 0.3 * y},
+            {"x": 0.15 * x, "y": 0.15 * y},
+            {"x": 0.4 * x, "y": 0.1 * y},
+            {"x": 0.45 * x, "y": 0.3 * y},
+            {"x": 0.75 * x, "y": 0.3 * y},
+            {"x": 0.6 * x, "y": 0.6 * y},
+            {"x": 0.5 * x, "y": 0.6 * y},
+
+            {"x": 0.45 * x, "y": 0.7 * y},
+            {"x": 0.35 * x, "y": 0.8 * y},
+            {"x": 0.25 * x, "y": 0.85 * y},
+
+            {"x": 0.7 * x, "y": 0.35 * y},
+            {"x": 0.65 * x, "y": 0.35 * y},
+            {"x": 0.60 * x, "y": 0.4 * y},
+
+            {"x": 0.80 * x, "y": 0.8 * y},
+            {"x": 0.70 * x, "y": 0.88 * y},
+            {"x": 0.87 * x, "y": 0.52 * y},
+            {"x": 0.55 * x, "y": 0.17 * y},
+
+            {"x": 0.1 * x, "y": 0.17 * y},
+            {"x": 0.15 * x, "y": 0.3 * y},
+
         ]
     },
 

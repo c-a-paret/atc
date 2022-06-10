@@ -1,4 +1,4 @@
-import {COLOURS, ILS_MAX_X, ILS_MIN_X} from '../utils/common'
+import {COLOURS, ILS_MIN_X} from '../utils/common'
 
 export class UIController {
     constructor(mapConfig) {
@@ -52,6 +52,8 @@ export class UIController {
         this._drawVORs(this.mapConfig.features.waypoints)
         this._drawRunways(this.mapConfig.features.runways)
         this._drawILSFeathers(this.mapConfig.features.runways)
+        this._drawMapLines(this.mapConfig.features.mapLines)
+        this._drawMapCrosses(this.mapConfig.features.crosses)
     }
 
     drawAeroplane = (aeroplane) => {
@@ -73,13 +75,17 @@ export class UIController {
                 moderate: {
                     solid: COLOURS.ORANGE,
                     transparent: COLOURS.ORANGE_TRANSPARENT
+                },
+                informational: {
+                    solid: COLOURS.BLUE,
+                    transparent: COLOURS.BLUE_TRANSPARENT
                 }
             }
             // Border
             this.featuresContext.strokeStyle = severityColourMap[zone.level].solid;
-            this.featuresContext.lineWidth = 2;
+            this.featuresContext.lineWidth = 3;
             this.featuresContext.lineJoin = 'round';
-            this.featuresContext.setLineDash([2]);
+            this.featuresContext.setLineDash([zone.dashes]);
             this.featuresContext.beginPath();
             for (let x = 0; x < zone.boundaries.length; x++) {
                 let boundary = zone.boundaries[x]
@@ -94,19 +100,26 @@ export class UIController {
             this.featuresContext.stroke();
 
             // Fill
-            this.featuresContext.fillStyle = severityColourMap[zone.level].transparent;
-            this.featuresContext.beginPath();
-            for (let x = 0; x < zone.boundaries.length; x++) {
-                let boundary = zone.boundaries[x]
-                if (x === 0) {
-                    this.featuresContext.moveTo(boundary.x, boundary.y)
-                } else {
-                    this.featuresContext.lineTo(boundary.x, boundary.y)
+            if (zone.level !== 'informational') {
+                this.featuresContext.fillStyle = severityColourMap[zone.level].transparent;
+                this.featuresContext.beginPath();
+                for (let x = 0; x < zone.boundaries.length; x++) {
+                    let boundary = zone.boundaries[x]
+                    if (x === 0) {
+                        this.featuresContext.moveTo(boundary.x, boundary.y)
+                    } else {
+                        this.featuresContext.lineTo(boundary.x, boundary.y)
+                    }
                 }
-
+                this.featuresContext.closePath()
+                this.featuresContext.fill();
             }
-            this.featuresContext.closePath()
-            this.featuresContext.fill();
+
+            // Label
+            this.featuresContext.fillStyle = COLOURS.WHITE;
+            this.featuresContext.font = "12px Courier New";
+            this.featuresContext.beginPath();
+            this.featuresContext.fillText(zone.label.text, zone.label.location.x, zone.label.location.y);
         })
     }
 
@@ -162,6 +175,32 @@ export class UIController {
             this.featuresContext.lineTo(runway.start.ILS.innerMarker.x - ILS_MIN_X, runway.start.ILS.innerMarker.y)
             this.featuresContext.moveTo(runway.end.ILS.outerMarker.x, runway.end.ILS.outerMarker.y)
             this.featuresContext.lineTo(runway.end.ILS.innerMarker.x + ILS_MIN_X, runway.end.ILS.innerMarker.y)
+            this.featuresContext.stroke();
+        })
+    }
+
+    _drawMapLines = (mapLines) => {
+        mapLines.forEach(line => {
+            this.featuresContext.strokeStyle = COLOURS.WHITE_TRANSPARENT;
+            this.featuresContext.lineWidth = 1;
+            this.featuresContext.setLineDash([line.dashes]);
+            this.featuresContext.beginPath();
+            this.featuresContext.moveTo(line.start.x, line.start.y);
+            this.featuresContext.lineTo(line.end.x, line.end.y);
+            this.featuresContext.stroke();
+        })
+    }
+
+    _drawMapCrosses = (crosses) => {
+        crosses.forEach(cross => {
+            this.featuresContext.strokeStyle = COLOURS.WHITE;
+            this.featuresContext.lineWidth = 2;
+            this.featuresContext.setLineDash([]);
+            this.featuresContext.beginPath();
+            this.featuresContext.moveTo(cross.x - 4, cross.y);
+            this.featuresContext.lineTo(cross.x + 4, cross.y);
+            this.featuresContext.moveTo(cross.x, cross.y - 4);
+            this.featuresContext.lineTo(cross.x, cross.y + 4);
             this.featuresContext.stroke();
         })
     }
