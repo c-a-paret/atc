@@ -37,6 +37,11 @@ export class InterfaceController {
         document.getElementById("message-container").style.display = "none"
     }
 
+    setStats = (landedCount, exitedCount) => {
+        document.getElementById("landed-count").innerText = landedCount
+        document.getElementById("exited-count").innerText = exitedCount
+    }
+
     _previousCallSignHandler = () => {
         let commandField = document.getElementById("command-entry-field");
         commandField.value = this.lastCallSign

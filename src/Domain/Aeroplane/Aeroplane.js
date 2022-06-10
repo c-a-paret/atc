@@ -111,14 +111,22 @@ export class Aeroplane {
         this.active = false
     }
 
-    isOutsideBoundaries = (mapBoundaries) => {
+    isOutsideBoundaries = (mapBoundaries, outsideCallback) => {
         const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
         const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
-        return outsideX || outsideY
+        const outside = outsideX || outsideY;
+        if (outside && outsideCallback) {
+            outsideCallback()
+        }
+        return outside
     }
 
-    hasLanded = () => {
-        return this.altitude < 40
+    hasLanded = (landedCallback) => {
+        const landed = this.altitude < 40;
+        if (landed && landedCallback) {
+            landedCallback()
+        }
+        return landed
     }
 
 }
