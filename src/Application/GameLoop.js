@@ -9,15 +9,22 @@ export class GameLoop {
 
     init() {
         this.interfaceController.init()
-        // this.aeroplaneService.initArrival()
-        this.aeroplaneService.initTestAeroplanes()
+        this.aeroplaneService.initArrival()
+        // this.aeroplaneService.initTestAeroplanes()
         this.aeroplaneService.aeroplanes.forEach(plane => this.uiController.drawAeroplane(plane))
     }
 
     start() {
         setInterval(() => {
-            this.aeroplaneService.initArrival()
-        }, getRandomNumberBetween(90000, 240000))
+            if (!this.interfaceController.gamePaused) {
+                if ([0, 1][Math.floor(Math.random() * [0, 1].length)]) {
+                    this.aeroplaneService.initArrival()
+                    this.aeroplaneService.initArrival()
+                } else {
+                    this.aeroplaneService.initArrival()
+                }
+            }
+        }, 90000)
 
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
