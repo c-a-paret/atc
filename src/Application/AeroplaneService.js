@@ -23,7 +23,7 @@ export class AeroplaneService {
         const startY = location.y
         const startHeading = location.heading
         const startSpeed = getRandomNumberBetween(180, 260)
-        const startAltitude = getRandomNumberBetween(5000, 10000)
+        const startAltitude = getRandomNumberBetween(5000, 8000)
         const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
         const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
         plane.setWaypoint("LON")

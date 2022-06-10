@@ -14,10 +14,10 @@ export class GameLoop {
 
     start() {
         setInterval(() => {
-            if (!this.interfaceController.gamePaused) {
+            if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
                 this.aeroplaneService.initArrival()
             }
-        }, 90000)
+        }, 105000)
 
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
