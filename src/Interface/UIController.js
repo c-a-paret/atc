@@ -26,11 +26,10 @@ export class UIController {
     }
 
     initBackgroundLayer = () => {
-        this.backgroundContext.fillStyle = COLOURS.BACKGROUND;
-
         this.backgroundCanvas.width = document.body.clientWidth;
         this.backgroundCanvas.height = document.body.clientHeight;
 
+        this.backgroundContext.fillStyle = COLOURS.BACKGROUND;
         this.backgroundContext.fillRect(0, 0, this.backgroundCanvas.width, this.backgroundCanvas.height)
     }
 

@@ -12,7 +12,7 @@ export const COLOURS = {
     BLUE: 'rgb(0,151,255)',
     RED: 'rgb(220,46,78)',
     RED_TRANSPARENT: 'rgba(220,46,78,0.2)',
-    BACKGROUND: 'rgb(24,21,41)',
+    BACKGROUND: 'rgb(8,8,19)',
     WHITE: 'rgb(218,219,243)',
     ORANGE: 'rgb(194,127,6)',
     ORANGE_TRANSPARENT: 'rgb(194,127,6,0.2)',
