@@ -90,6 +90,10 @@ export const round = (number, n) => {
     return Math.round(number * Math.pow(10, n)) / Math.pow(10, n)
 }
 
+export const roundToNearest = (number, nearest) => {
+    return Math.ceil(number / nearest) * nearest
+}
+
 export const distance = (currentX, currentY, targetX, targetY) => {
     return Math.sqrt(Math.pow((currentX - targetX), 2) + Math.pow((currentY - targetY), 2))
 }

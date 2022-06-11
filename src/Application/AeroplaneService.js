@@ -1,5 +1,5 @@
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
-import {AIRCRAFT, getRandomNumberBetween} from "../utils/common";
+import {AIRCRAFT, getRandomNumberBetween, round, roundToNearest} from "../utils/common";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 
 export class AeroplaneService {
@@ -14,6 +14,7 @@ export class AeroplaneService {
             {x: 0.8 * this.mapBoundaries.maxX, y: 1, heading: 225},
             {x: 1, y: 0.33 * this.mapBoundaries.maxY, heading: 110},
             {x: this.mapBoundaries.maxX - 1, y: 0.66 * this.mapBoundaries.maxY, heading: 300},
+            {x: 0.6 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 300},
         ]
     }
 
@@ -27,8 +28,8 @@ export class AeroplaneService {
         const startX = location.x
         const startY = location.y
         const startHeading = location.heading
-        const startSpeed = getRandomNumberBetween(180, 260)
-        const startAltitude = getRandomNumberBetween(5000, 8000)
+        const startSpeed = roundToNearest(getRandomNumberBetween(180, 260), 10)
+        const startAltitude = roundToNearest(getRandomNumberBetween(5000, 8000), 500)
         const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
         const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
         plane.setWaypoint(this.map, "LON")
@@ -42,8 +43,8 @@ export class AeroplaneService {
         //     this.initArrival()
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", 550, 411, 200, 90, 2800, 1),
-            new Aeroplane("BA456", 10, 450, 160, 270, 3000, 1),
+            new Aeroplane("BA123", 990, 411, 200, 270, 2800, 1),
+            new Aeroplane("BA456", 990, 431, 160, 270, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
             // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
             // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
