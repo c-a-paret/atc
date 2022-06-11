@@ -5,9 +5,15 @@ export class InterfaceController {
         this.aeroplaneService = aeroplaneService
         this.lastCallSign = null
         this.gamePaused = false;
+        this._init()
     }
 
-    init = () => {
+    setStats = (landedCount, exitedCount) => {
+        document.getElementById("landed-count").innerText = landedCount
+        document.getElementById("exited-count").innerText = exitedCount
+    }
+
+    _init = () => {
         this._setupCommandInterface()
         this._setupClickInterface()
         this._focusCommandEntry()
@@ -35,11 +41,6 @@ export class InterfaceController {
     _clearMessage = () => {
         document.getElementById("message-display").innerText = ""
         document.getElementById("message-container").style.display = "none"
-    }
-
-    setStats = (landedCount, exitedCount) => {
-        document.getElementById("landed-count").innerText = landedCount
-        document.getElementById("exited-count").innerText = exitedCount
     }
 
     _previousCallSignHandler = () => {
