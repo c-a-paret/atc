@@ -1,4 +1,12 @@
-import {parseAltitude, parseCommand, parseHeading, parseRunway, parseSpeed, parseWaypoint} from "../CommandParser";
+import {
+    commandMessage,
+    parseAltitude,
+    parseCommand,
+    parseHeading,
+    parseRunway,
+    parseSpeed,
+    parseWaypoint
+} from "../CommandParser";
 
 describe("Parse Command", () => {
     test("Extracts the call sign", () => {
@@ -213,5 +221,82 @@ describe("Landing Commands", () => {
         const result = parseRunway(command)
 
         expect(result).toBeNull()
+    })
+})
+
+describe("Command message", () => {
+    test("Returns unrecognised when all command fields are undefined", () => {
+        const commands = {
+            callSign: undefined,
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined,
+        }
+
+        const result = commandMessage(commands)
+
+        expect(result).toBe('Unrecognised command')
+    })
+
+    test("Returns no valid commands when only call sign defined", () => {
+        const commands = {
+            callSign: 'BA123',
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined,
+        }
+
+        const result = commandMessage(commands)
+
+        expect(result).toBe('No valid commands')
+    })
+
+    test("Returns message with defined commands [Heading]", () => {
+        const commands = {
+            callSign: 'BA123',
+            speed: 340,
+            heading: 50,
+            altitude: 12000,
+            waypoint: undefined,
+            runway: undefined,
+        }
+
+        const result = commandMessage(commands)
+
+        expect(result).toBe("BA123 Speed: 340 Heading: 50 Altitude: 12000ft")
+    })
+
+    test("Returns message with defined commands [Waypoint]", () => {
+        const commands = {
+            callSign: 'BA123',
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: "JAM",
+            runway: undefined,
+        }
+
+        const result = commandMessage(commands)
+
+        expect(result).toBe("BA123 Waypoint: JAM")
+    })
+
+    test("Returns message with defined commands [Landing]", () => {
+        const commands = {
+            callSign: 'BA123',
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: "27R",
+        }
+
+        const result = commandMessage(commands)
+
+        expect(result).toBe("BA123 cleared to land runway 27R")
     })
 })

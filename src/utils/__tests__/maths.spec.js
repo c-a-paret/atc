@@ -1,6 +1,10 @@
-import {range} from "../maths";
+import {range, round, roundToNearest} from "../maths";
 
 describe("range", () => {
+    test("Creates range between 0 and 10 with unit step", () => {
+        expect(() => range(0, 10, 0)).toThrow('Step cannot be 0')
+    })
+
     test("Creates range between 0 and 10 with unit step", () => {
         const result = range(0, 10, 1)
 
@@ -35,5 +39,29 @@ describe("range", () => {
         const result = range(10, 10, 1)
 
         expect(result).toStrictEqual([])
+    })
+})
+
+describe("round", () => {
+    test("Rounds number to 2dp", () => {
+        const result = round(12.779, 2)
+        expect(result).toBe(12.78)
+    })
+
+    test("Rounds number to 3dp", () => {
+        const result = round(12.44523, 3)
+        expect(result).toBe(12.445)
+    })
+})
+
+describe("roundToNearest", () => {
+    test("Rounds number to nearest 10", () => {
+        const result = roundToNearest(257, 10)
+        expect(result).toBe(260)
+    })
+
+    test("Rounds number to nearest 100", () => {
+        const result = roundToNearest(3582, 100)
+        expect(result).toBe(3600)
     })
 })
