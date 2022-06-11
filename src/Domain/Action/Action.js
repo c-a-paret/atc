@@ -7,10 +7,10 @@ import {
     MIN_SPEED,
     toDegrees
 } from "../../utils/common";
-import {EGLL} from "../../config/maps/EGLL";
 
 class Action {
-    constructor(aeroplane, targetValue) {
+    constructor(map, aeroplane, targetValue) {
+        this.map = map
         this.aeroplane = aeroplane
         this.targetValue = targetValue
     }
@@ -39,8 +39,8 @@ export class Speed extends Action {
         1: 3
     };
 
-    constructor(aeroplane, targetSpeed) {
-        super(aeroplane, targetSpeed);
+    constructor(map, aeroplane, targetSpeed) {
+        super(null, aeroplane, targetSpeed);
     }
 
     apply = () => {
@@ -67,8 +67,8 @@ export class Speed extends Action {
 }
 
 export class Heading extends Action {
-    constructor(aeroplane, targetHeading) {
-        super(aeroplane, targetHeading);
+    constructor(map, aeroplane, targetHeading) {
+        super(null, aeroplane, targetHeading);
     }
 
     apply = () => {
@@ -129,8 +129,8 @@ export class Heading extends Action {
 }
 
 export class Altitude extends Action {
-    constructor(aeroplane, targetAltitude) {
-        super(aeroplane, targetAltitude);
+    constructor(map, aeroplane, targetAltitude) {
+        super(null, aeroplane, targetAltitude);
     }
 
     apply = () => {
@@ -158,9 +158,9 @@ export class Altitude extends Action {
 }
 
 export class Waypoint extends Action {
-    constructor(aeroplane, targetWaypoint) {
-        super(aeroplane, null);
-        EGLL.features.waypoints.forEach(vor => {
+    constructor(map, aeroplane, targetWaypoint) {
+        super(map, aeroplane, null);
+        this.map.features.waypoints.forEach(vor => {
             if (vor.id === targetWaypoint) {
                 this.targetX = vor.x
                 this.targetY = vor.y
@@ -233,8 +233,8 @@ export class Waypoint extends Action {
     }
 
     isValid = () => {
-        for (let x = 0; x < EGLL.features.waypoints.length; x++) {
-            if ( EGLL.features.waypoints[x].id === this.targetWaypoint) {
+        for (let x = 0; x < this.map.features.waypoints.length; x++) {
+            if ( this.map.features.waypoints[x].id === this.targetWaypoint) {
                 return true
             }
         }
@@ -243,8 +243,9 @@ export class Waypoint extends Action {
 }
 
 export class Landing extends Action {
-    constructor(aeroplane, targetRunway) {
-        super(aeroplane, null);
+    constructor(map, aeroplane, targetRunway) {
+        super(map, aeroplane, null);
+        this.map = map
         this.targetRunway = targetRunway
         this.waypointSet = false
         this.speedSet = false
@@ -257,10 +258,10 @@ export class Landing extends Action {
 
     apply = () => {
         if (!this.speedSet && !this.waypointSet) {
-            this.aeroplane.setSpeed(LANDING_SPEED)
-            this.aeroplane.actions.push(new Waypoint(this.aeroplane, this.targetRunway))
+            this.aeroplane.setSpeed(this.map, LANDING_SPEED)
+            this.aeroplane.actions.push(new Waypoint(this.map, this.aeroplane, this.targetRunway))
         }
-        const runway = EGLL.getRunwayInfo(this.targetRunway)
+        const runway = this.map.getRunwayInfo(this.targetRunway)
         const distanceToRunway = distance(this.aeroplane.x, this.aeroplane.y, runway.ILS.innerMarker.x, runway.ILS.innerMarker.y)
 
         if (distanceToRunway < 5 && this.aeroplane.altitude < 50) {
@@ -272,8 +273,8 @@ export class Landing extends Action {
     };
 
     isValid = () => {
-        if (EGLL.runwayExists(this.targetRunway)) {
-            const runway = EGLL.getRunwayInfo(this.targetRunway)
+        if (this.map.runwayExists(this.targetRunway)) {
+            const runway = this.map.getRunwayInfo(this.targetRunway)
 
             const withinMaximumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) <= ILS_MAX_X;
             const withinMinimumX = Math.abs(this.aeroplane.x - runway.ILS.innerMarker.x) >= ILS_MIN_X;

@@ -1,12 +1,13 @@
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {AIRCRAFT, getRandomNumberBetween} from "../utils/common";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
-import {statsService} from "../index";
 
 export class AeroplaneService {
-    constructor(mapBoundaries) {
+    constructor(map, mapBoundaries) {
         this.aeroplanes = []
+        this.map = map
         this.mapBoundaries = mapBoundaries
+        this.statsService = null
         this.spawnLocations = [
             {x: 0.33 * this.mapBoundaries.maxX, y: 1, heading: 135},
             {x: 0.5 * this.mapBoundaries.maxX, y: 1, heading: 135},
@@ -14,6 +15,10 @@ export class AeroplaneService {
             {x: 1, y: 0.33 * this.mapBoundaries.maxY, heading: 110},
             {x: this.mapBoundaries.maxX - 1, y: 0.66 * this.mapBoundaries.maxY, heading: 300},
         ]
+    }
+
+    setStatsService = (statsService) => {
+        this.statsService = statsService
     }
 
     initArrival = () => {
@@ -26,7 +31,7 @@ export class AeroplaneService {
         const startAltitude = getRandomNumberBetween(5000, 8000)
         const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
         const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
-        plane.setWaypoint("LON")
+        plane.setWaypoint(this.map, "LON")
         this.aeroplanes.push(plane)
     }
 
@@ -36,11 +41,9 @@ export class AeroplaneService {
         //     // this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
         //     this.initArrival()
         // }
-        // console.log(document.body.clientWidth / 2)
-
         this.aeroplanes = [
-            new Aeroplane("BA123", 800, 503, 200, 90, 2800, 1),
-            // new Aeroplane("BA456", 10, 450, 160, 270, 3000, 1),
+            new Aeroplane("BA123", 550, 411, 200, 90, 2800, 1),
+            new Aeroplane("BA456", 10, 450, 160, 270, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
             // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
             // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
@@ -61,7 +64,7 @@ export class AeroplaneService {
         ]
 
         this.aeroplanes.forEach(plane => {
-            plane.setLanding("9L")
+            plane.setLanding(this.map, "9L")
         })
     }
 
@@ -78,19 +81,19 @@ export class AeroplaneService {
                 callSign = plane.callSign
 
                 if (command.speed) {
-                    speedSet = plane.setSpeed(command.speed)
+                    speedSet = plane.setSpeed(this.map, command.speed)
                 }
                 if (command.heading) {
-                    headingSet = plane.setHeading(command.heading)
+                    headingSet = plane.setHeading(this.map, command.heading)
                 }
                 if (command.altitude) {
-                    altitudeSet = plane.setAltitude(command.altitude)
+                    altitudeSet = plane.setAltitude(this.map, command.altitude)
                 }
                 if (command.waypoint) {
-                    waypointSet = plane.setWaypoint(command.waypoint)
+                    waypointSet = plane.setWaypoint(this.map, command.waypoint)
                 }
                 if (command.runway) {
-                    runwaySet = plane.setLanding(command.runway)
+                    runwaySet = plane.setLanding(this.map, command.runway)
                 }
             }
         })
@@ -116,7 +119,7 @@ export class AeroplaneService {
 
     deactivateAeroplanes = () => {
         this.aeroplanes.forEach(plane => {
-            if (plane.active && (plane.isOutsideBoundaries(this.mapBoundaries, statsService.incrementExited) || plane.hasLanded(statsService.incrementLanded))) {
+            if (plane.active && (plane.isOutsideBoundaries(this.mapBoundaries, this.statsService.incrementExited) || plane.hasLanded(this.statsService.incrementLanded))) {
                 plane.makeInactive()
             }
         })

@@ -1,16 +1,65 @@
 import {AeroplaneService} from "../AeroplaneService";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
+import {GameMap} from "../../Domain/GameMap/GameMap";
+import {StatsService} from "../StatsService";
+
+const testGameMap = () => {
+    return new GameMap({
+        features: {
+            runways: [{
+                start: {
+                    label: "9L",
+                    heading: 90,
+                    altitude: 0,
+                    ILS: {
+                        innerMarker: {
+                            x: 500,
+                            y: 500,
+                        },
+                        outerMarker: {
+                            x: 280,
+                            y: 500,
+                        }
+                    }
+                },
+                end: {
+                    label: "27R",
+                    heading: 270,
+                    altitude: 0,
+                    ILS: {
+                        innerMarker: {
+                            x: 500,
+                            y: 550,
+                        },
+                        outerMarker: {
+                            x: 720,
+                            y: 550,
+                        }
+                    }
+                }
+            }], waypoints: [{type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},]
+        }
+    })
+}
+
 
 describe('Send command', () => {
 
+    let map;
+
+    beforeEach(() => {
+        map = testGameMap()
+    })
+
+
     test('Sends command to relevant aeroplane', () => {
-        const service = new AeroplaneService()
+        const service = new AeroplaneService(map, {})
         service.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
         ]
 
-        const rawCommand = "BA456S140C12H070"
+        const rawCommand = "BA456S140C120H070"
 
         const result = service.sendCommand(rawCommand)
 
@@ -19,8 +68,8 @@ describe('Send command', () => {
             speed: 140,
             heading: 70,
             altitude: 12000,
-            waypoint: null,
-            runway: null
+            waypoint: undefined,
+            runway: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -33,7 +82,7 @@ describe('Send command', () => {
     })
 
     test('All aeroplanes unaffected if command not valid', () => {
-        const service = new AeroplaneService()
+        const service = new AeroplaneService(map, {})
         service.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
@@ -45,11 +94,11 @@ describe('Send command', () => {
 
         expect(result).toStrictEqual({
             callSign: "BA456",
-            speed: null,
-            heading: null,
-            altitude: null,
-            waypoint: null,
-            runway: null
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined
         })
 
         const unaffectedAeroplane1 = service.aeroplanes[0]
@@ -65,7 +114,7 @@ describe('Send command', () => {
 describe('Get aeroplane by position', () => {
 
     test('Gets first aeroplane when provided position is within its tolerances', () => {
-        const service = new AeroplaneService()
+        const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
         service.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", 500, 350, 120, 90, 10000),
@@ -80,7 +129,7 @@ describe('Get aeroplane by position', () => {
     })
 
     test('Gets second aeroplane when provided position is within its tolerances', () => {
-        const service = new AeroplaneService()
+        const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
         service.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", 500, 350, 120, 90, 10000),
@@ -95,7 +144,7 @@ describe('Get aeroplane by position', () => {
     })
 
     test('Returns null if no aeroplanes in the area', () => {
-        const service = new AeroplaneService()
+        const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
         service.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", 500, 350, 120, 90, 10000),
@@ -120,7 +169,12 @@ describe('Deactivate aeroplanes', () => {
             maxY: 100,
         }
 
-        const service = new AeroplaneService(mapBoundaries)
+        const statsService = {
+            incrementLanded: () => {},
+            incrementExited: () => {}
+        }
+        const service = new AeroplaneService({}, mapBoundaries)
+        service.setStatsService(statsService)
 
         service.aeroplanes = [
             new Aeroplane("BA123", -1, 50, 120, 180, 5000),

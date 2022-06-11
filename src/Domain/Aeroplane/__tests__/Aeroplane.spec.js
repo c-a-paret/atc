@@ -1,18 +1,62 @@
 import {Aeroplane} from "../Aeroplane";
 import {Speed} from "../../Action/Action";
 import {MIN_SPEED} from "../../../utils/common";
+import {GameMap} from "../../GameMap/GameMap";
+
+
+const testGameMap = () => {
+    return new GameMap({
+        features: {
+            runways: [{
+                start: {
+                    label: "9L",
+                    heading: 90,
+                    altitude: 0,
+                    ILS: {
+                        innerMarker: {
+                            x: 500,
+                            y: 500,
+                        },
+                        outerMarker: {
+                            x: 280,
+                            y: 500,
+                        }
+                    }
+                },
+                end: {
+                    label: "27R",
+                    heading: 270,
+                    altitude: 0,
+                    ILS: {
+                        innerMarker: {
+                            x: 500,
+                            y: 550,
+                        },
+                        outerMarker: {
+                            x: 720,
+                            y: 550,
+                        }
+                    }
+                }
+            }], waypoints: [{type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},]
+        }
+    })
+}
+
 
 describe("Speed", () => {
     let aeroplane;
+    let map;
 
     beforeEach(() => {
+        map = testGameMap()
         aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets speed action when valid", () => {
         let desiredSpeed = 290;
 
-        aeroplane.setSpeed(desiredSpeed)
+        aeroplane.setSpeed(map, desiredSpeed)
 
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].targetValue).toBe(desiredSpeed)
@@ -20,28 +64,29 @@ describe("Speed", () => {
 
     test("Does not set speed when same as current speed", () => {
         expect(aeroplane.actions.length).toBe(0)
-        aeroplane.setSpeed(300)
+        aeroplane.setSpeed(map, 300)
         expect(aeroplane.actions.length).toBe(0)
     })
 
     test("Does not set speed when null", () => {
         expect(aeroplane.actions.length).toBe(0)
-        aeroplane.setSpeed(null)
+        aeroplane.setSpeed(map, null)
         expect(aeroplane.actions.length).toBe(0)
     })
 })
 
 describe("Heading", () => {
     let aeroplane;
-
+    let map;
     beforeEach(() => {
+        map = testGameMap()
         aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets heading action when valid", () => {
         let desiredHeading = 100;
 
-        aeroplane.setHeading(desiredHeading)
+        aeroplane.setHeading(map, desiredHeading)
 
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].targetValue).toBe(desiredHeading)
@@ -49,25 +94,24 @@ describe("Heading", () => {
 
     test("Does not set heading when over 360", () => {
         let desiredHeading = 361;
-        aeroplane.setHeading(desiredHeading)
+        aeroplane.setHeading(map, desiredHeading)
         expect(aeroplane.actions.length).toBe(0)
     })
 
     test("Does not set speed when below 0", () => {
         let desiredHeading = 0;
-        aeroplane.setHeading(desiredHeading)
+        aeroplane.setHeading(map, desiredHeading)
         expect(aeroplane.actions.length).toBe(0)
     })
 
     test("Does not set heading when null", () => {
         let desiredHeading = null;
-        aeroplane.setHeading(desiredHeading)
+        aeroplane.setHeading(map, desiredHeading)
         expect(aeroplane.actions.length).toBe(0)
     })
 })
 
 describe("Apply Actions", () => {
-
     describe("When no actions available", () => {
         let startX = 100;
         let startY = 100;
@@ -228,12 +272,18 @@ describe("Apply Actions", () => {
     })
 
     describe("When actions available", () => {
+        let map;
+
+        beforeEach(() => {
+            map = testGameMap()
+        })
+
         test("Applies all actions and moves forward", () => {
             const aeroplane = new Aeroplane("AB123", 50, 100, 150, 90, 5000, 3)
 
-            aeroplane.setSpeed(160)
-            aeroplane.setHeading(100)
-            aeroplane.setAltitude(10000)
+            aeroplane.setSpeed(map, 160)
+            aeroplane.setHeading(map, 100)
+            aeroplane.setAltitude(map, 10000)
 
             aeroplane.applyActions()
 
@@ -247,39 +297,41 @@ describe("Apply Actions", () => {
 
 describe("Sequential Actions", () => {
 
-    describe("Overwrites existing action when one same action exits", () => {
+        describe("Overwrites existing action when one same action exits", () => {
         let aeroplane;
+        let map;
 
         beforeEach(() => {
+            map = testGameMap()
             aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
         })
 
         test("Speed", () => {
-            aeroplane.setSpeed(160)
+            aeroplane.setSpeed(map, 160)
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(160)
 
-            aeroplane.setSpeed(170)
+            aeroplane.setSpeed(map, 170)
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(170)
         })
 
         test("Heading", () => {
-            aeroplane.setHeading(90)
+            aeroplane.setHeading(map, 90)
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(90)
 
-            aeroplane.setHeading(180)
+            aeroplane.setHeading(map, 180)
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(180)
         })
 
         test("Altitude", () => {
-            aeroplane.setAltitude(5000)
+            aeroplane.setAltitude(map, 5000)
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(5000)
 
-            aeroplane.setAltitude(10000)
+            aeroplane.setAltitude(map, 10000)
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(10000)
         })
@@ -287,47 +339,49 @@ describe("Sequential Actions", () => {
 
     describe("Overwrites existing action when multiple different actions exist", () => {
         let aeroplane;
+        let map;
 
         beforeEach(() => {
+            map = testGameMap()
             aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
         })
 
         test("Speed", () => {
-            aeroplane.setSpeed(160)
-            aeroplane.setHeading(90)
+            aeroplane.setSpeed(map, 160)
+            aeroplane.setHeading(map, 90)
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(90)
 
-            aeroplane.setSpeed(170)
+            aeroplane.setSpeed(map, 170)
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(170)
             expect(aeroplane.actions[1].targetValue).toBe(90)
         })
 
         test("Heading", () => {
-            aeroplane.setSpeed(160)
-            aeroplane.setHeading(90)
+            aeroplane.setSpeed(map, 160)
+            aeroplane.setHeading(map, 90)
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(90)
 
-            aeroplane.setHeading(180)
+            aeroplane.setHeading(map, 180)
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(180)
         })
 
         test("Altitude", () => {
-            aeroplane.setSpeed(160)
-            aeroplane.setAltitude(5000)
-            aeroplane.setHeading(90)
+            aeroplane.setSpeed(map, 160)
+            aeroplane.setAltitude(map, 5000)
+            aeroplane.setHeading(map, 90)
             expect(aeroplane.actions.length).toBe(3)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(5000)
             expect(aeroplane.actions[2].targetValue).toBe(90)
 
-            aeroplane.setAltitude(12000)
+            aeroplane.setAltitude(map, 12000)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(12000)
             expect(aeroplane.actions[2].targetValue).toBe(90)
@@ -336,17 +390,18 @@ describe("Sequential Actions", () => {
     })
 
     describe("Landing action clears all other actions", () => {
-        const aeroplane = new Aeroplane("AB123", 550, 450, 150, 91, 3000, 3)
+        const map = testGameMap()
+        const aeroplane = new Aeroplane("AB123", 290, 505, 150, 91, 3000, 3)
 
-        aeroplane.setSpeed(160)
-        aeroplane.setAltitude(2000)
-        aeroplane.setHeading(90)
+        aeroplane.setSpeed(map, 160)
+        aeroplane.setAltitude(map, 2000)
+        aeroplane.setHeading(map, 90)
         expect(aeroplane.actions.length).toBe(3)
         expect(aeroplane.actions[0].targetValue).toBe(160)
         expect(aeroplane.actions[1].targetValue).toBe(2000)
         expect(aeroplane.actions[2].targetValue).toBe(90)
 
-        aeroplane.setLanding("9L")
+        aeroplane.setLanding(map, "9L")
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].type()).toBe("Landing")
     })

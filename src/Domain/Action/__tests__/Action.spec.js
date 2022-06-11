@@ -1,6 +1,46 @@
 import {Altitude, Heading, Landing, shortestAngle, Speed, Waypoint} from "../Action";
-import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../utils/common";
+import {ILS_MAX_X, MAX_ALTITUDE, MIN_ALTITUDE} from "../../../utils/common";
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
+import {GameMap} from "../../GameMap/GameMap";
+
+const testGameMap = () => {
+    return new GameMap({
+        features: {
+            runways: [{
+                start: {
+                    label: "9L",
+                    heading: 90,
+                    altitude: 0,
+                    ILS: {
+                        innerMarker: {
+                            x: 500,
+                            y: 500,
+                        },
+                        outerMarker: {
+                            x: 280,
+                            y: 500,
+                        }
+                    }
+                },
+                end: {
+                    label: "27R",
+                    heading: 270,
+                    altitude: 0,
+                    ILS: {
+                        innerMarker: {
+                            x: 500,
+                            y: 550,
+                        },
+                        outerMarker: {
+                            x: 720,
+                            y: 550,
+                        }
+                    }
+                }
+            }], waypoints: [{type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},]
+        }
+    })
+}
 
 describe("Speed", () => {
     test("Creates speed action with decreasing speed", () => {
@@ -10,7 +50,7 @@ describe("Speed", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, currentSpeed, 90, 5000, weight)
 
-        const action = new Speed(aeroplane, desiredSpeed)
+        const action = new Speed({}, aeroplane, desiredSpeed)
 
         expect(aeroplane.speed).toBe(300)
         action.apply()
@@ -26,7 +66,7 @@ describe("Speed", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, currentSpeed, 90, 5000, weight)
 
-        const action = new Speed(aeroplane, desiredSpeed)
+        const action = new Speed({}, aeroplane, desiredSpeed)
 
         expect(aeroplane.speed).toBe(295)
         action.apply()
@@ -427,7 +467,7 @@ describe("Heading", () => {
   `("Turns to $firstNewHeading when facing $startHeading aiming for $targetHeading", ({startHeading, targetHeading, firstNewHeading }) => {
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, startHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, targetHeading)
+        const action = new Heading({}, aeroplane, targetHeading)
 
         expect(aeroplane.heading).toBe(startHeading)
         action.apply()
@@ -478,7 +518,7 @@ describe("Heading", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, desiredHeading)
+        const action = new Heading({}, aeroplane, desiredHeading)
 
         expect(aeroplane.heading).toBe(5)
         action.apply()
@@ -493,7 +533,7 @@ describe("Heading", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, desiredHeading)
+        const action = new Heading({}, aeroplane, desiredHeading)
 
         expect(aeroplane.heading).toBe(10)
         action.apply()
@@ -508,7 +548,7 @@ describe("Heading", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, desiredHeading)
+        const action = new Heading({}, aeroplane, desiredHeading)
 
         expect(aeroplane.heading).toBe(5)
         action.apply()
@@ -527,7 +567,7 @@ describe("Heading", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, desiredHeading)
+        const action = new Heading({}, aeroplane, desiredHeading)
 
         expect(aeroplane.heading).toBe(355)
         action.apply()
@@ -546,7 +586,7 @@ describe("Heading", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, desiredHeading)
+        const action = new Heading({}, aeroplane, desiredHeading)
 
         expect(aeroplane.heading).toBe(90)
         action.apply()
@@ -562,7 +602,7 @@ describe("Heading", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 220, currentHeading, 5000, 1)
 
-        const action = new Heading(aeroplane, desiredHeading)
+        const action = new Heading({}, aeroplane, desiredHeading)
 
         expect(aeroplane.heading).toBe(0)
         action.apply()
@@ -605,7 +645,7 @@ describe("Heading", () => {
     ${3} | ${320} | ${90} | ${92}}
   `("Aeroplane with weight $weight and speed $speed heading $currentHeading should head to $targetHeadingAfterFirstApply", ({weight, speed, currentHeading, targetHeadingAfterFirstApply}) => {
         const aeroplane = new Aeroplane("BA123", 500, 500, speed, currentHeading, 3000, weight)
-        aeroplane.setHeading(180)
+        aeroplane.setHeading({}, 180)
 
         expect(aeroplane.heading).toBe(currentHeading)
 
@@ -622,7 +662,7 @@ describe("Altitude", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 200, 90, currentAltitude, 3)
 
-        const action = new Altitude(aeroplane, desiredAltitude)
+        const action = new Altitude({}, aeroplane, desiredAltitude)
 
         expect(aeroplane.altitude).toBe(1000)
         action.apply()
@@ -637,7 +677,7 @@ describe("Altitude", () => {
 
         const aeroplane = new Aeroplane("BA123", 500, 500, 200, 90, currentAltitude, 3)
 
-        const action = new Altitude(aeroplane, desiredAltitude)
+        const action = new Altitude({}, aeroplane, desiredAltitude)
 
         expect(aeroplane.altitude).toBe(1100)
         action.apply()
@@ -672,10 +712,15 @@ describe("Altitude", () => {
 })
 
 describe("Waypoint", () => {
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+    })
+
     test("Turns to face waypoint top right quadrant", () => {
         const aeroplane = new Aeroplane("BA123", 500, 500, 200, 90, 5000, 3)
 
-        const action = new Waypoint(aeroplane, "LAM")
+        const action = new Waypoint(map, aeroplane, "LAM")
 
         expect(aeroplane.heading).toBe(90)
         action.apply()
@@ -685,9 +730,9 @@ describe("Waypoint", () => {
     })
 
     test("Turns to face waypoint bottom right quadrant", () => {
-        const aeroplane = new Aeroplane("BA123", 800, 200, 200, 90, 5000, 3)
+        const aeroplane = new Aeroplane("BA123", 300, 200, 200, 90, 5000, 3)
 
-        const action = new Waypoint(aeroplane, "LAM")
+        const action = new Waypoint(map, aeroplane, "LAM")
 
         expect(aeroplane.heading).toBe(90)
         action.apply()
@@ -697,9 +742,9 @@ describe("Waypoint", () => {
     })
 
     test("Turns to face waypoint top left quadrant", () => {
-        const aeroplane = new Aeroplane("BA123", 1000, 400, 200, 90, 5000, 3)
+        const aeroplane = new Aeroplane("BA123", 400, 600, 200, 90, 5000, 3)
 
-        const action = new Waypoint(aeroplane, "LAM")
+        const action = new Waypoint(map, aeroplane, "LAM")
 
         expect(aeroplane.heading).toBe(90)
         action.apply()
@@ -711,7 +756,7 @@ describe("Waypoint", () => {
     test("Turns to face waypoint bottom left quadrant", () => {
         const aeroplane = new Aeroplane("BA123", 1000, 200, 200, 90, 5000, 3)
 
-        const action = new Waypoint(aeroplane, "LAM")
+        const action = new Waypoint(map, aeroplane, "LAM")
 
         expect(aeroplane.heading).toBe(90)
         action.apply()
@@ -720,10 +765,10 @@ describe("Waypoint", () => {
         expect(aeroplane.heading).toBe(96)
     })
 
-    test("Turns to face LAM from starting point", () => {
-        const aeroplane = new Aeroplane("BA123", 500, 500, 200, 355, 5000, 3)
+    test("Turns to face LAM from slightly North West", () => {
+        const aeroplane = new Aeroplane("BA123", 200, 800, 200, 355, 5000, 3)
 
-        const action = new Waypoint(aeroplane, "LAM")
+        const action = new Waypoint(map, aeroplane, "LAM")
 
         expect(aeroplane.heading).toBe(355)
         action.apply()
@@ -735,91 +780,69 @@ describe("Waypoint", () => {
     test("Is not valid if the waypoint does not exist", () => {
         let incorrectWaypoint = "BIP";
 
-        expect(new Waypoint({}, incorrectWaypoint).isValid()).toBeFalsy()
+        expect(new Waypoint(map, incorrectWaypoint).isValid()).toBeFalsy()
     })
 })
 
 describe("Landing", () => {
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+    })
+
     test("Is valid if aeroplane is in correct landing configuration", () => {
-        const correctRunway = "27L";
+        const correctRunway = "27R";
         const speed = 190;
         const heading = 272;
         const altitude = 2800;
-        const x = 890;
-        const y = 480;
+        const x = 710;
+        const y = 555;
 
-        expect(new Landing({
-            speed: speed,
-            heading: heading,
-            altitude: altitude,
-            x: x,
-            y: y
-        }, correctRunway).isValid()).toBeTruthy()
+        const landing = new Landing(map,{speed: speed, heading: heading, altitude: altitude, x: x, y: y}, correctRunway);
+        expect(landing.isValid()).toBeTruthy()
     })
 
     test("Is not valid if the runway does not exist", () => {
         let incorrectRunway = "66C";
 
-        expect(new Landing({}, incorrectRunway).isValid()).toBeFalsy()
+        const landing = new Landing(map, {}, incorrectRunway);
+        expect(landing.isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not within maximum X range of inner marker", () => {
-        let currentX = 549;
-        let currentY = 450;
-
-        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 549, y: 450, heading: 90}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not outside minimum X range of inner marker", () => {
-        let currentX = 601;
-        let currentY = 450;
-
-        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 601, y: 450, heading: 90}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is to the other side of the runway", () => {
-        let currentX = 800;
-        let currentY = 450;
-
-        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 800, y: 450, heading: 90}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not within negative Y range of inner marker", () => {
-        let currentX = 575;
-        let currentY = 429;
-
-        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 575, y: 429, heading: 90}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not within positive Y range of inner marker", () => {
-        let currentX = 575;
-        let currentY = 471;
-
-        expect(new Landing({x: currentX, y: currentY, heading: 90}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 575, y: 471, heading: 90}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not within minimum angle of runway heading", () => {
-        let currentHeading = 101;
-
-        expect(new Landing({x: 575, y: 450, heading: currentHeading}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 575, y: 450, heading: 101}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not below maximum altitude for runway altitude", () => {
-        let currentAltitude = 3001;
-
-        expect(new Landing({x: 575, y: 450, heading: 90, altitude: currentAltitude}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 575, y: 450, heading: 90, altitude: 3001}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not above minimum altitude for runway altitude", () => {
-        let currentAltitude = 999;
-
-        expect(new Landing({x: 575, y: 450, heading: 90, altitude: currentAltitude}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 575, y: 450, heading: 90, altitude: 999}, "9L").isValid()).toBeFalsy()
     })
 
     test("Is not valid if the aeroplane is not below minimum approach speed", () => {
-        let currentSpeed = 201;
-
-        expect(new Landing({x: 575, y: 450, heading: 90, altitude: 2000, speed: currentSpeed}, "9L").isValid()).toBeFalsy()
+        expect(new Landing(map, {x: 575, y: 450, heading: 90, altitude: 2000, speed: 201}, "9L").isValid()).toBeFalsy()
     })
 })
 

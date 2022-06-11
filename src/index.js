@@ -4,13 +4,16 @@ import {GameLoop} from "./Application/GameLoop";
 import {InterfaceController} from "./Interface/InterfaceController";
 import {EGLL} from "./config/maps/EGLL";
 import {StatsService} from "./Application/StatsService";
+import {GameMap} from "./Domain/GameMap/GameMap";
 
 
-const ui = new UIController(EGLL)
-const aeroplaneService = new AeroplaneService(ui.mapBoundaries)
+const map = new GameMap(EGLL)
+
+const ui = new UIController(map)
+const aeroplaneService = new AeroplaneService(map, ui.mapBoundaries)
 const interfaceController = new InterfaceController(aeroplaneService)
 
-export const statsService = new StatsService(interfaceController)
+aeroplaneService.setStatsService(new StatsService(interfaceController))
 
 const gameLoop = new GameLoop(ui, interfaceController, aeroplaneService)
 

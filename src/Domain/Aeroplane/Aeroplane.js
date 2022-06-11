@@ -40,40 +40,40 @@ export class Aeroplane {
         this.actions.push(action)
     }
 
-    setSpeed = (speed) => {
-        const newSpeed = new Speed(this, speed);
+    setSpeed = (map, speed) => {
+        const newSpeed = new Speed(map, this, speed);
         if (newSpeed.isValid()) {
             this.addAction(newSpeed)
             return speed
         }
     }
 
-    setHeading = (heading) => {
-        const newHeading = new Heading(this, heading);
+    setHeading = (map, heading) => {
+        const newHeading = new Heading(map, this, heading);
         if (newHeading.isValid()) {
             this.addAction(newHeading)
             return heading
         }
     }
 
-    setAltitude = (altitude) => {
-        const newAltitude = new Altitude(this, altitude);
+    setAltitude = (map, altitude) => {
+        const newAltitude = new Altitude(map, this, altitude);
         if (newAltitude.isValid()) {
             this.addAction(newAltitude)
             return altitude
         }
     }
 
-    setWaypoint = (waypoint) => {
-        const newWaypoint = new Waypoint(this, waypoint);
+    setWaypoint = (map, waypoint) => {
+        const newWaypoint = new Waypoint(map, this, waypoint);
         if (newWaypoint.isValid()) {
             this.addAction(newWaypoint)
             return waypoint
         }
     }
 
-    setLanding = (runway) => {
-        const newLanding = new Landing(this, runway);
+    setLanding = (map, runway) => {
+        const newLanding = new Landing(map, this, runway);
         if (newLanding.isValid()) {
             this.addAction(newLanding)
             return runway

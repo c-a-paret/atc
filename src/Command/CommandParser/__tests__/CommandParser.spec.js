@@ -28,9 +28,18 @@ describe("Parse Command", () => {
         expect(result.heading).toBe(expectedSpeed)
     })
 
-    test("Extracts the desired altitude", () => {
+    test("Extracts the desired two digit altitude", () => {
         const command = "BA423H342D13S200"
-        const expectedAltitude = 13000
+        const expectedAltitude = 1300
+
+        const result = parseCommand(command)
+
+        expect(result.altitude).toBe(expectedAltitude)
+    })
+
+    test("Extracts the desired three digit altitude", () => {
+        const command = "BA423H342D270S200"
+        const expectedAltitude = 27000
 
         const result = parseCommand(command)
 

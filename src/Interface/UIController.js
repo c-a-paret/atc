@@ -1,8 +1,8 @@
 import {COLOURS, ILS_MIN_X} from '../utils/common'
 
 export class UIController {
-    constructor(mapConfig) {
-        this.mapConfig = mapConfig
+    constructor(map) {
+        this.map = map
 
         this.backgroundCanvas = document.getElementById("background");
         this.backgroundContext = this.backgroundCanvas.getContext('2d');
@@ -48,12 +48,12 @@ export class UIController {
     }
 
     initFeatures = () => {
-        this._drawExclusionZones(this.mapConfig.features.exclusionZones)
-        this._drawVORs(this.mapConfig.features.waypoints)
-        this._drawRunways(this.mapConfig.features.runways)
-        this._drawILSFeathers(this.mapConfig.features.runways)
-        this._drawMapLines(this.mapConfig.features.mapLines)
-        this._drawMapCrosses(this.mapConfig.features.crosses)
+        this._drawExclusionZones(this.map.features.exclusionZones)
+        this._drawVORs(this.map.features.waypoints)
+        this._drawRunways(this.map.features.runways)
+        this._drawILSFeathers(this.map.features.runways)
+        this._drawMapLines(this.map.features.mapLines)
+        this._drawMapCrosses(this.map.features.crosses)
     }
 
     drawAeroplane = (aeroplane) => {
