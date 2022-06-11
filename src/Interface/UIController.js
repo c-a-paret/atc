@@ -1,4 +1,5 @@
-import {COLOURS, ILS_MIN_X} from '../utils/common'
+import {COLOURS} from "../config/colours";
+import {ILS_MIN_X} from "../config/constants";
 
 export class UIController {
     constructor(map) {

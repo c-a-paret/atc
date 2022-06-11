@@ -1,7 +1,7 @@
 import {Altitude, Heading, Landing, shortestAngle, Speed, Waypoint} from "../Action";
-import {ILS_MAX_X, MAX_ALTITUDE, MIN_ALTITUDE} from "../../../utils/common";
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {GameMap} from "../../GameMap/GameMap";
+import {ILS_MAX_X, MAX_ALTITUDE, MIN_ALTITUDE} from "../../../config/constants";
 
 const testGameMap = () => {
     return new GameMap({
@@ -473,44 +473,6 @@ describe("Heading", () => {
         action.apply()
         expect(aeroplane.heading).toBe(firstNewHeading)
     });
-
-    test.each`
-    currentHeading | targetHeading | expectedShortestAngle
-    ${89} | ${91} | ${2}
-    ${91} | ${89} | ${-2}
-    ${179} | ${181} | ${2}
-    ${181} | ${179} | ${-2}
-    ${269} | ${271} | ${2}
-    ${271} | ${269} | ${-2}
-    ${359} | ${1} | ${2}
-    ${1} | ${359} | ${-2}
-     
-    
-    ${270} | ${90} | ${180}   
-    ${90} | ${270} | ${180}
-    
-    ${180} | ${0} | ${180}   
-    ${0} | ${180} | ${180}
-    
-    ${0} | ${10} | ${10}   
-    ${10} | ${0} | ${-10} 
-    
-    ${355} | ${350} | ${-5}
-    ${350} | ${355} | ${5}
-    
-    ${270} | ${180} | ${-90}   
-      
-    ${0} | ${270} | ${-90}
-    ${0} | ${90} | ${90}
-       
-    ${180} | ${270} | ${90}
-    ${180} | ${90} | ${-90}
-  `("$currentHeading to $targetHeading should be $expectedShortestAngle degrees away", ({currentHeading, targetHeading, expectedShortestAngle}) => {
-        const result = shortestAngle(currentHeading, targetHeading)
-
-        expect(result).toBe(expectedShortestAngle)
-    });
-
 
     test("Turning right within circle", () => {
         let currentHeading = 5;

@@ -1,12 +1,15 @@
 import {
-    distance, ILS_MAX_X,
-    ILS_MIN_X, LANDING_SPEED,
+    toDegrees
+} from "../../utils/maths";
+import {
+    ILS_MAX_X,
+    ILS_MIN_X,
+    LANDING_SPEED,
     MAX_ALTITUDE,
     MIN_ALTITUDE,
-    MIN_APPROACH_SPEED,
-    MIN_SPEED,
-    toDegrees
-} from "../../utils/common";
+    MIN_APPROACH_SPEED, MIN_SPEED
+} from "../../config/constants";
+import {distance, shortestAngle} from "../../utils/geometry";
 
 class Action {
     constructor(map, aeroplane, targetValue) {
@@ -301,23 +304,4 @@ export class Landing extends Action {
             return aeroplane.x > runway.ILS.innerMarker.x
         }
     }
-}
-
-export const shortestAngle = (currentHeading, targetHeading) => {
-    if (currentHeading === 180 && targetHeading === 0) {
-        return 180
-    }
-    if (currentHeading === 0 && (targetHeading < 360 && targetHeading > 180)) {
-        return targetHeading - 360
-    }
-    if (currentHeading - targetHeading < -180) {
-        return -(currentHeading + 360 - targetHeading)
-    }
-    if (currentHeading - targetHeading > 180) {
-        return targetHeading + 360 - currentHeading
-    }
-    if (targetHeading - currentHeading === -180) {
-        return 180
-    }
-    return targetHeading - currentHeading
 }

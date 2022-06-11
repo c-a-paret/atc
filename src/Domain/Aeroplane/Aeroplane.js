@@ -1,5 +1,5 @@
 import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
-import {round, toRadians} from "../../utils/common";
+import {round, toRadians} from "../../utils/maths";
 
 export class Aeroplane {
     constructor(callSign, x, y, speed, hdg, altitude, weight) {

@@ -2,6 +2,7 @@ export class GameMap {
     constructor(mapConfig) {
         this.name = mapConfig.name
         this.shortCode = mapConfig.shortCode
+        this.defaultWaypoint = "LON"
         this.features = {
             runways: mapConfig.features.runways,
             waypoints: mapConfig.features.waypoints,

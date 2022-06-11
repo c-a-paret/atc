@@ -1,6 +1,7 @@
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
-import {AIRCRAFT, getRandomNumberBetween, round, roundToNearest} from "../utils/common";
+import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
+import {AIRCRAFT} from "../config/aircraft";
 
 export class AeroplaneService {
     constructor(map, mapBoundaries) {
@@ -32,7 +33,7 @@ export class AeroplaneService {
         const startAltitude = roundToNearest(getRandomNumberBetween(5000, 8000), 500)
         const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
         const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
-        plane.setWaypoint(this.map, "LON")
+        plane.setWaypoint(this.map, this.map.defaultWaypoint)
         this.aeroplanes.push(plane)
     }
 

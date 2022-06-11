@@ -1,4 +1,4 @@
-import {distance, range} from "../common";
+import {range} from "../maths";
 
 describe("range", () => {
     test("Creates range between 0 and 10 with unit step", () => {
@@ -35,13 +35,5 @@ describe("range", () => {
         const result = range(10, 10, 1)
 
         expect(result).toStrictEqual([])
-    })
-})
-
-describe("distance", () => {
-    test("gets distance between points", () => {
-        const result = distance(14, 17, 10, 20)
-
-        expect(result).toBe(5)
     })
 })

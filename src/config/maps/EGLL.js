@@ -1,4 +1,4 @@
-import {ILS_MAX_X} from "../../utils/common";
+import {ILS_MAX_X} from "../constants";
 
 const x = document.body.clientWidth
 const y = document.body.clientHeight
@@ -8,6 +8,7 @@ const runwayGap = x / 60
 export const EGLL = {
     name: "London Heathrow",
     shortCode: "LHR",
+    defaultWaypoint: "LON",
     features: {
         runways: [
             {
