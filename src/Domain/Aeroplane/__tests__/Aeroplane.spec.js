@@ -48,7 +48,7 @@ const testGameMap = () => {
 }
 
 
-describe("Speed", () => {
+describe("Set Speed", () => {
     let aeroplane;
     let map;
 
@@ -79,7 +79,7 @@ describe("Speed", () => {
     })
 })
 
-describe("Heading", () => {
+describe("Set Heading", () => {
     let aeroplane;
     let map;
     beforeEach(() => {
@@ -111,6 +111,82 @@ describe("Heading", () => {
     test("Does not set heading when null", () => {
         let desiredHeading = null;
         aeroplane.setHeading(map, desiredHeading)
+        expect(aeroplane.actions.length).toBe(0)
+    })
+})
+
+describe("Set Waypoint", () => {
+    let aeroplane;
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+    })
+
+    test("Sets waypoint action when valid", () => {
+        let desiredWaypoint = "LAM";
+
+        aeroplane.setWaypoint(map, desiredWaypoint)
+
+        expect(aeroplane.actions.length).toBe(1)
+        expect(aeroplane.actions[0].targetWaypoint).toBe(desiredWaypoint)
+    })
+
+    test("Does not set waypoint when does not exist", () => {
+        let desiredWaypoint = "CAT";
+        aeroplane.setWaypoint(map, desiredWaypoint)
+        expect(aeroplane.actions.length).toBe(0)
+    })
+})
+
+describe("Set Altitude", () => {
+    let aeroplane;
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+    })
+
+    test("Sets altitude action when valid", () => {
+        let desiredAltitude = 12000;
+
+        aeroplane.setAltitude(map, desiredAltitude)
+
+        expect(aeroplane.actions.length).toBe(1)
+        expect(aeroplane.actions[0].targetValue).toBe(desiredAltitude)
+    })
+
+    test("Does not set altitude when not valid", () => {
+        let desiredAltitude = 1234;
+
+        aeroplane.setAltitude(map, desiredAltitude)
+
+        expect(aeroplane.actions.length).toBe(0)
+    })
+})
+
+describe("Set Landing", () => {
+    let aeroplane;
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+        aeroplane = new Aeroplane("AB123", 290, 500, 190, 90, 2500, 3)
+    })
+
+    test("Sets landing action when valid", () => {
+        let desiredRunway = "9L";
+
+        aeroplane.setLanding(map, desiredRunway)
+
+        expect(aeroplane.actions.length).toBe(1)
+        expect(aeroplane.actions[0].targetRunway).toBe(desiredRunway)
+    })
+
+    test("Does not set landing when not valid", () => {
+        let desiredRunway = "24C";
+
+        aeroplane.setLanding(map, desiredRunway)
+
         expect(aeroplane.actions.length).toBe(0)
     })
 })
@@ -669,3 +745,53 @@ describe("Outside boundaries", () => {
     })
 })
 
+describe("Landing/Landed state", () => {
+
+    describe("Determines when landing", () => {
+        test("Aeroplane is landing", () => {
+            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, 3000, 3)
+            aeroplane.actions = [
+                new Landing(testGameMap(), aeroplane, "9R")
+            ]
+            expect(aeroplane.isLanding()).toBeTruthy()
+        })
+
+        test("Aeroplane is not landing", () => {
+            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, 3000, 3)
+            aeroplane.actions = [
+                new Speed(testGameMap(), aeroplane, 220)
+            ]
+            expect(aeroplane.isLanding()).toBeFalsy()
+        })
+    })
+
+    describe("Determines when landed", () => {
+        test("Aeroplane has landed", () => {
+            const altitude = 39
+            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, altitude, 3)
+
+            expect(aeroplane.hasLanded()).toBeTruthy()
+        })
+
+        test("Aeroplane has not landed", () => {
+            const altitude = 40;
+            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, altitude, 3)
+            expect(aeroplane.hasLanded()).toBeFalsy()
+        })
+
+        test("Calls landed callback", () => {
+            let callCount = 0;
+            const uponLandingCallback = () => {
+                callCount += 1
+            };
+
+            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, 20, 3)
+
+            expect(callCount).toBe(0)
+
+            aeroplane.hasLanded(uponLandingCallback)
+
+            expect(callCount).toBe(1)
+        })
+    })
+})
