@@ -1,5 +1,5 @@
 import {Aeroplane} from "../Aeroplane";
-import {Speed} from "../../Action/Action";
+import {Altitude, Heading, Landing, Speed, Waypoint} from "../../Action/Action";
 import {GameMap} from "../../GameMap/GameMap";
 import {MIN_SPEED} from "../../../config/constants";
 
@@ -38,7 +38,11 @@ const testGameMap = () => {
                         }
                     }
                 }
-            }], waypoints: [{type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},]
+            }],
+            waypoints: [
+                {type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},
+                {type: "VOR", id: "CPT", name: "Compton", x: 600, y: 600},
+            ]
         }
     })
 }
@@ -108,6 +112,214 @@ describe("Heading", () => {
         let desiredHeading = null;
         aeroplane.setHeading(map, desiredHeading)
         expect(aeroplane.actions.length).toBe(0)
+    })
+})
+
+describe("Add Actions", () => {
+    describe('When no pre-existing actions', () => {
+        test('Adds single Landing action to aeroplane', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const action = new Landing(testGameMap(), aeroplane, "9R")
+            aeroplane.addAction(action)
+
+            expect(aeroplane.actions.length).toBe(1)
+        })
+
+        test('Adds single Waypoint action to aeroplane', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const action = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(action)
+
+            expect(aeroplane.actions.length).toBe(1)
+        })
+
+        test('Adds single Heading action to aeroplane', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const action = new Heading(testGameMap(), aeroplane, 87)
+            aeroplane.addAction(action)
+
+            expect(aeroplane.actions.length).toBe(1)
+        })
+
+        test('Adds single Speed action to aeroplane', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const action = new Speed(testGameMap(), aeroplane, 220)
+            aeroplane.addAction(action)
+
+            expect(aeroplane.actions.length).toBe(1)
+        })
+
+        test('Adds single Altitude action to aeroplane', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const action = new Altitude(testGameMap(), aeroplane, 4600)
+            aeroplane.addAction(action)
+
+            expect(aeroplane.actions.length).toBe(1)
+        })
+    })
+
+    describe('Landing overwrites all pre-existing actions', () => {
+        test('With one pre-existing action', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Altitude(testGameMap(), aeroplane, 4600)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Altitude")
+
+            const landingAction = new Landing(testGameMap(), aeroplane, "9R")
+            aeroplane.addAction(landingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Landing")
+        })
+
+        test('With multiple pre-existing actions', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Altitude(testGameMap(), aeroplane, 4600),
+                new Speed(testGameMap(), aeroplane, 220),
+                new Waypoint(testGameMap(), aeroplane, "LAM")
+            ]
+
+            expect(aeroplane.actions.length).toBe(3)
+            expect(aeroplane.actions[0].type()).toBe("Altitude")
+            expect(aeroplane.actions[1].type()).toBe("Speed")
+            expect(aeroplane.actions[2].type()).toBe("Waypoint")
+
+            const landingAction = new Landing(testGameMap(), aeroplane, "9R")
+            aeroplane.addAction(landingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Landing")
+        })
+
+    })
+
+    describe('Heading and Waypoint actions overwrite one another', () => {
+        test('Heading overwrites Waypoint', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "LAM")
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+
+            const headingAction = new Heading(testGameMap(), aeroplane, 87)
+            aeroplane.addAction(headingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+        })
+
+        test('Waypoint overwrites Heading', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Heading(testGameMap(), aeroplane, 87)
+            ]
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+        })
+    })
+
+    describe('Updated action overwrites pre-existing same action', () => {
+        test('Waypoint updates', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "LAM")
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("LAM")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "CPT")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("CPT")
+        })
+
+        test('Speed updates', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Speed(testGameMap(), aeroplane, 220)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Speed")
+            expect(aeroplane.actions[0].targetValue).toBe(220)
+
+            const speedAction = new Speed(testGameMap(), aeroplane, 250)
+            aeroplane.addAction(speedAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Speed")
+            expect(aeroplane.actions[0].targetValue).toBe(250)
+        })
+
+        test('Heading updates', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Heading(testGameMap(), aeroplane, 87)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+            expect(aeroplane.actions[0].targetValue).toBe(87)
+
+            const headingAction = new Heading(testGameMap(), aeroplane, 102)
+            aeroplane.addAction(headingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+            expect(aeroplane.actions[0].targetValue).toBe(102)
+        })
+
+        test('Altitude updates', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Altitude(testGameMap(), aeroplane, 4600)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Altitude")
+            expect(aeroplane.actions[0].targetValue).toBe(4600)
+
+            const altitudeAction = new Altitude(testGameMap(), aeroplane, 12200)
+            aeroplane.addAction(altitudeAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Altitude")
+            expect(aeroplane.actions[0].targetValue).toBe(12200)
+        })
+
+        test('Landing updates', () => {
+            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Landing(testGameMap(), aeroplane, "9R")
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Landing")
+            expect(aeroplane.actions[0].targetRunway).toBe("9R")
+
+            const landingAction = new Landing(testGameMap(), aeroplane, "9L")
+            aeroplane.addAction(landingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Landing")
+            expect(aeroplane.actions[0].targetRunway).toBe("9L")
+        })
     })
 })
 
@@ -297,7 +509,7 @@ describe("Apply Actions", () => {
 
 describe("Sequential Actions", () => {
 
-        describe("Overwrites existing action when one same action exits", () => {
+    describe("Overwrites existing action when one same action exits", () => {
         let aeroplane;
         let map;
 
