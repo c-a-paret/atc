@@ -1,7 +1,6 @@
 import {AeroplaneService} from "../AeroplaneService";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {GameMap} from "../../Domain/GameMap/GameMap";
-import {StatsService} from "../StatsService";
 
 const testGameMap = () => {
     return new GameMap({
@@ -51,8 +50,7 @@ describe('Send command', () => {
         map = testGameMap()
     })
 
-
-    test('Sends command to relevant aeroplane', () => {
+    test('Sends base commands to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {})
         service.aeroplanes = [
             new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
@@ -79,6 +77,64 @@ describe('Send command', () => {
         const affectedAeroplane = service.aeroplanes[1]
         expect(affectedAeroplane.callSign).toBe("BA456")
         expect(affectedAeroplane.actions.length).toBe(3)
+    })
+
+    test('Sends waypoint command to relevant aeroplane', () => {
+        const service = new AeroplaneService(map, {})
+        service.aeroplanes = [
+            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
+        ]
+
+        const rawCommand = "BA456>LAM"
+
+        const result = service.sendCommand(rawCommand)
+
+        expect(result).toStrictEqual({
+            callSign: "BA456",
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: "LAM",
+            runway: undefined
+        })
+
+        const unaffectedAeroplane = service.aeroplanes[0]
+        expect(unaffectedAeroplane.callSign).toBe("BA123")
+        expect(unaffectedAeroplane.actions.length).toBe(0)
+
+        const affectedAeroplane = service.aeroplanes[1]
+        expect(affectedAeroplane.callSign).toBe("BA456")
+        expect(affectedAeroplane.actions.length).toBe(1)
+    })
+
+    test('Sends landing command to relevant aeroplane', () => {
+        const service = new AeroplaneService(map, {})
+        service.aeroplanes = [
+            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", 300, 500, 140, 90, 2800, 3),
+        ]
+
+        const rawCommand = "BA456.9L."
+
+        const result = service.sendCommand(rawCommand)
+
+        expect(result).toStrictEqual({
+            callSign: "BA456",
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: "9L"
+        })
+
+        const unaffectedAeroplane = service.aeroplanes[0]
+        expect(unaffectedAeroplane.callSign).toBe("BA123")
+        expect(unaffectedAeroplane.actions.length).toBe(0)
+
+        const affectedAeroplane = service.aeroplanes[1]
+        expect(affectedAeroplane.callSign).toBe("BA456")
+        expect(affectedAeroplane.actions.length).toBe(1)
     })
 
     test('All aeroplanes unaffected if command not valid', () => {
@@ -170,8 +226,10 @@ describe('Deactivate aeroplanes', () => {
         }
 
         const statsService = {
-            incrementLanded: () => {},
-            incrementExited: () => {}
+            incrementLanded: () => {
+            },
+            incrementExited: () => {
+            }
         }
         const service = new AeroplaneService({}, mapBoundaries)
         service.setStatsService(statsService)
