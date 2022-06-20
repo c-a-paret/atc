@@ -25,7 +25,7 @@ There are four informational elements that accompany the aeroplane:
 
 1. The call sign (`BA123`)
 2. The current heading (`90`)
-3. The current heading (`200`)
+3. The current speed (`200`)
 4. The current altitude as flight level (see below) (`30`)
 
 ## Runways
@@ -216,7 +216,7 @@ When an aeroplane accepts a landing command, a small arrow will be displayed to 
 
 ## Example commands
 
-Direct BA123 to maintain speed of 200 knots, fly heading 200 degrees and climb to 3000ft:
+Direct BA123 to maintain speed of 200 knots, fly heading 270 degrees and climb to 3000ft:
 
 ```text
 BA123S200H270C3
@@ -231,7 +231,7 @@ VS462.27L.
 Direct LH822 to fly direct to waypoint `CPT` and descent to 12000ft
 
 ```text
-LH822>CPTD12
+LH822>CPTD120
 ```
 
 ## Developing
