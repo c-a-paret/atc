@@ -43,7 +43,7 @@ export class AeroplaneService {
         //     // this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
         //     this.initArrival()
         // }
-         this.aeroplanes = [
+        this.aeroplanes = [
             new Aeroplane("BA123", 990, 411, 200, 270, 2800, 1),
             new Aeroplane("BA456", 990, 431, 160, 270, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
@@ -124,6 +124,24 @@ export class AeroplaneService {
             if (plane.active && (plane.isOutsideBoundaries(this.mapBoundaries, this.statsService.incrementExited) || plane.hasLanded(this.statsService.incrementLanded))) {
                 plane.makeInactive()
             }
+        })
+    }
+
+    markAeroplanesBreakingProximity = () => {
+        this.aeroplanes.forEach(plane => {
+            plane.markAdheringProximityLimits()
+        })
+
+        // With other aeroplanes
+        this.aeroplanes.forEach(plane => {
+            this.aeroplanes.forEach(comparisonPlane => {
+                if (plane.callSign !== comparisonPlane.callSign) {
+                    if (comparisonPlane.proximalTo(plane)) {
+                        plane.markBreachingProximityLimits()
+                        comparisonPlane.markBreachingProximityLimits()
+                    }
+                }
+            })
         })
     }
 }

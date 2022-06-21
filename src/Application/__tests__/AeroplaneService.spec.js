@@ -248,3 +248,31 @@ describe('Deactivate aeroplanes', () => {
         expect(service.aeroplanes[1].active).toBeTruthy()
     })
 })
+
+describe('Determine proximal aeroplanes', () => {
+
+    test('Lists aeroplanes that breach proximity boundaries', () => {
+
+        const service = new AeroplaneService({}, {})
+
+        service.aeroplanes = [
+            new Aeroplane("BA123_BREACH", 50, 50, 120, 90, 5000),
+            new Aeroplane("BA456_BREACH", 50, 50, 120, 90, 5500),
+
+            new Aeroplane("BA789_BREACH", 1000, 1000, 120, 90, 10000),
+            new Aeroplane("BA101_BREACH", 1030, 960, 120, 90, 9001),
+
+            new Aeroplane("BA112_NO_BREACH", 500, 500, 120, 90, 10000),
+        ]
+
+        service.markAeroplanesBreakingProximity()
+
+        expect(service.aeroplanes[0].breachingProximity).toBeTruthy()
+        expect(service.aeroplanes[1].breachingProximity).toBeTruthy()
+
+        expect(service.aeroplanes[2].breachingProximity).toBeTruthy()
+        expect(service.aeroplanes[3].breachingProximity).toBeTruthy()
+
+        expect(service.aeroplanes[4].breachingProximity).toBeFalsy()
+    })
+})

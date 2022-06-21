@@ -22,6 +22,7 @@ export class GameLoop {
             if (!this.interfaceController.gamePaused) {
                 this.uiController.clearAeroplaneLayer()
                 this.aeroplaneService.deactivateAeroplanes()
+                this.aeroplaneService.markAeroplanesBreakingProximity()
                 this.aeroplaneService.aeroplanes.forEach(plane => {
                     if (plane.active) {
                         plane.applyActions()

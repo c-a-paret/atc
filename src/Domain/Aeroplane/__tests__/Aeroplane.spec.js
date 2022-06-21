@@ -795,3 +795,46 @@ describe("Landing/Landed state", () => {
         })
     })
 })
+
+describe("Proximity breached", () => {
+
+    describe("Determines aeroplane breached proximity limits", () => {
+        test("Horizontal distance", () => {
+            const aeroplane1 = new Aeroplane("AB123", 470, 470, 150, 0, 3000, 3)
+            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+
+            const result = aeroplane1.proximalTo(aeroplane2)
+
+            expect(result).toBeTruthy()
+        })
+
+        test("Vertical distance", () => {
+            const aeroplane1 = new Aeroplane("AB123", 470, 470, 150, 0, 3900, 3)
+            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+
+            const result = aeroplane1.proximalTo(aeroplane2)
+
+            expect(result).toBeTruthy()
+        })
+    })
+
+    describe("Determines aeroplane has not breached proximity limits", () => {
+        test("When enough vertical separation", () => {
+            const aeroplane1 = new Aeroplane("AB123", 490, 510, 150, 0, 4001, 3)
+            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+
+            const result = aeroplane1.proximalTo(aeroplane2)
+
+            expect(result).toBeFalsy()
+        })
+
+        test("When enough horizontal separation", () => {
+            const aeroplane1 = new Aeroplane("AB123", 300, 800, 150, 0, 3100, 3)
+            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+
+            const result = aeroplane1.proximalTo(aeroplane2)
+
+            expect(result).toBeFalsy()
+        })
+    })
+})

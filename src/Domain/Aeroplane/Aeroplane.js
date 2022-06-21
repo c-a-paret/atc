@@ -1,5 +1,7 @@
 import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
+import {distance} from "../../utils/geometry";
+import {HORIZONTAL_SEPARATION_MINIMUM, VERTICAL_SEPARATION_MINIMUM} from "../../config/constants";
 
 export class Aeroplane {
     constructor(callSign, x, y, speed, hdg, altitude, weight) {
@@ -12,6 +14,7 @@ export class Aeroplane {
         this.altitude = altitude;
         this.actions = []
         this.active = true
+        this.breachingProximity = false
     }
 
     addAction = (action) => {
@@ -133,4 +136,18 @@ export class Aeroplane {
         return landed
     }
 
+    proximalTo = (otherAeroplane) => {
+        const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
+        const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
+        return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
+            && verticalDistance <= VERTICAL_SEPARATION_MINIMUM
+    }
+
+    markBreachingProximityLimits = () => {
+        this.breachingProximity = true
+    }
+
+    markAdheringProximityLimits = () => {
+        this.breachingProximity = false
+    }
 }

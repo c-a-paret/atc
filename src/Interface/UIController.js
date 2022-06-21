@@ -207,7 +207,11 @@ export class UIController {
     }
 
     _drawAeroplanePosition = (aeroplane) => {
-        this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        if (aeroplane.breachingProximity) {
+            this.aeroplaneContext.strokeStyle = COLOURS.RED;
+        } else {
+            this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        }
         this.featuresContext.lineWidth = 2;
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.arc(aeroplane.x, aeroplane.y, 5, 0, Math.PI * 2, false);
@@ -215,7 +219,11 @@ export class UIController {
     }
 
     _drawAeroplaneSpeedTail = (aeroplane) => {
-        this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        if (aeroplane.breachingProximity) {
+            this.aeroplaneContext.strokeStyle = COLOURS.RED;
+        } else {
+            this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        }
         this.featuresContext.lineWidth = 2;
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.moveTo(aeroplane.x, aeroplane.y)
@@ -234,14 +242,22 @@ export class UIController {
     }
 
     _drawHeadingLabel = (aeroplane) => {
-        this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        if (aeroplane.breachingProximity) {
+            this.aeroplaneContext.fillStyle = COLOURS.RED;
+        } else {
+            this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        }
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.fillText(`${aeroplane.heading}`, aeroplane.x - 20, aeroplane.y - 20);
     }
 
     _drawSpeedLabel = (aeroplane) => {
-        this.aeroplaneContext.fillStyle = COLOURS.YELLOW;
+        if (aeroplane.breachingProximity) {
+            this.aeroplaneContext.fillStyle = COLOURS.RED;
+        } else {
+            this.aeroplaneContext.fillStyle = COLOURS.YELLOW;
+        }
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         const headingLabelWidth = this.aeroplaneContext.measureText(`${aeroplane.heading}`).width;
@@ -249,7 +265,11 @@ export class UIController {
     }
 
     _drawAltitudeLabel = (aeroplane) => {
-        this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        if (aeroplane.breachingProximity) {
+            this.aeroplaneContext.fillStyle = COLOURS.RED;
+        } else {
+            this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        }
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         const headingLabelWidth = this.aeroplaneContext.measureText(`${aeroplane.heading}`).width;
@@ -258,7 +278,11 @@ export class UIController {
     }
 
     _drawCallSignLabel = (aeroplane) => {
-        this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        if (aeroplane.breachingProximity) {
+            this.aeroplaneContext.fillStyle = COLOURS.RED;
+        } else {
+            this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        }
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.fillText(`${aeroplane.callSign}${aeroplane.isLanding() ? '↘︎︎' : ''}`, aeroplane.x - 20, aeroplane.y - 30);

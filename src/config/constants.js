@@ -5,3 +5,5 @@ export const MIN_ALTITUDE = 1000;
 export const MAX_ALTITUDE = 40000;
 export const ILS_MAX_X = 220
 export const ILS_MIN_X = 140
+export const VERTICAL_SEPARATION_MINIMUM = 1000
+export const HORIZONTAL_SEPARATION_MINIMUM = 70
