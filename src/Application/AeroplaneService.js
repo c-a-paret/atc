@@ -2,6 +2,7 @@ import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 import {AIRCRAFT} from "../config/aircraft";
+import {isInsidePolygon} from "../utils/geometry";
 
 export class AeroplaneService {
     constructor(map, mapBoundaries) {
@@ -44,8 +45,8 @@ export class AeroplaneService {
         //     this.initArrival()
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", 990, 411, 200, 270, 2800, 1),
-            new Aeroplane("BA456", 990, 431, 160, 270, 3000, 1),
+            new Aeroplane("BA123", 927, 324, 120, 135, 2800, 1),
+            new Aeroplane("BA456", 508.64, 608.28, 160, 90, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
             // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
             // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
@@ -140,6 +141,16 @@ export class AeroplaneService {
                         plane.markBreachingProximityLimits()
                         comparisonPlane.markBreachingProximityLimits()
                     }
+                }
+            })
+        })
+
+        // With restricted zones
+        this.aeroplanes.forEach(plane => {
+            this.map.features.exclusionZones.forEach(zone => {
+                const planeInvY = this.map.maxY - plane.y
+                if (isInsidePolygon(zone.boundaries, plane.x, planeInvY)) {
+                    plane.markBreachingProximityLimits()
                 }
             })
         })

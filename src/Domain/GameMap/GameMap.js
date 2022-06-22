@@ -3,6 +3,8 @@ export class GameMap {
         this.name = mapConfig.name
         this.shortCode = mapConfig.shortCode
         this.defaultWaypoint = "LON"
+        this.maxX = mapConfig.maxX
+        this.maxY = mapConfig.maxY
         this.features = {
             runways: mapConfig.features.runways,
             waypoints: mapConfig.features.waypoints,
