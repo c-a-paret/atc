@@ -9,6 +9,8 @@ export const EGLL = {
     name: "London Heathrow",
     shortCode: "LHR",
     defaultWaypoint: "LON",
+    maxX: x,
+    maxY: y,
     features: {
         runways: [
             {
@@ -98,12 +100,12 @@ export const EGLL = {
                 dashes: 2,
                 label: {text: "D139", location: {"x": 0.39 * x, "y": 0.68 * y}},
                 boundaries: [
-                    {x: (0.34 * x), y: (0.74 * y)},
-                    {x: (0.36 * x), y: (0.67 * y)},
-                    {x: (0.42 * x), y: (0.6 * y)},
-                    {x: (0.47 * x), y: (0.6 * y)},
-                    {x: (0.44 * x), y: (0.67 * y)},
-                    {x: (0.39 * x), y: (0.76 * y)},
+                    {x: (0.34 * x), y: (0.74 * y), inv_y: y - (0.74 * y)},
+                    {x: (0.36 * x), y: (0.67 * y), inv_y: y - (0.67 * y)},
+                    {x: (0.42 * x), y: (0.6 * y), inv_y: y - (0.6 * y)},
+                    {x: (0.47 * x), y: (0.6 * y), inv_y: y - (0.6 * y)},
+                    {x: (0.44 * x), y: (0.67 * y), inv_y: y - (0.67 * y)},
+                    {x: (0.39 * x), y: (0.76 * y), inv_y: y - (0.76 * y)},
                 ]
             },
             {
@@ -111,12 +113,12 @@ export const EGLL = {
                 dashes: 2,
                 label: {text: "C422", location: {"x": 0.66 * x, "y": 0.47 * y}},
                 boundaries: [
-                    {x: (0.62 * x), y: (0.395 * y)},
-                    {x: (0.67 * x), y: (0.37 * y)},
-                    {x: (0.705 * x), y: (0.388 * y)},
-                    {x: (0.715 * x), y: (0.49 * y)},
-                    {x: (0.66 * x), y: (0.62 * y)},
-                    {x: (0.63 * x), y: (0.52 * y)},
+                    {x: (0.62 * x), y: (0.395 * y), inv_y: y - (0.395 * y)},
+                    {x: (0.67 * x), y: (0.37 * y), inv_y: y - (0.37 * y)},
+                    {x: (0.705 * x), y: (0.388 * y), inv_y: y - (0.388 * y)},
+                    {x: (0.715 * x), y: (0.49 * y), inv_y: y - (0.49 * y)},
+                    {x: (0.66 * x), y: (0.62 * y), inv_y: y - (0.62 * y)},
+                    {x: (0.63 * x), y: (0.52 * y), inv_y: y - (0.52 * y)},
                 ]
             },
             {
@@ -124,10 +126,10 @@ export const EGLL = {
                 dashes: 0,
                 label: {text: "F79J", location: {"x": 0.366 * x, "y": 0.09 * y}},
                 boundaries: [
-                    {x: 0.4 * x, y: 0.1 * y},
-                    {x: 0.4 * x, y: 0.15 * y},
-                    {x: 0.35 * x, y: 0.15 * y},
-                    {x: 0.35 * x, y: 0.1 * y},
+                    {x: 0.4 * x, y: 0.1 * y, inv_y: y - (0.1 * y)},
+                    {x: 0.4 * x, y: 0.15 * y, inv_y: y - (0.15 * y)},
+                    {x: 0.35 * x, y: 0.15 * y, inv_y: y - (0.15 * y)},
+                    {x: 0.35 * x, y: 0.1 * y, inv_y: y - (0.1 * y)},
                 ]
             }
         ],

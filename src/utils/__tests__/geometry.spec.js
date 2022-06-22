@@ -1,4 +1,4 @@
-import {distance, shortestAngle} from "../geometry";
+import {distance, isInsidePolygon, shortestAngle} from "../geometry";
 
 describe("distance", () => {
     test("gets distance between points", () => {
@@ -46,5 +46,34 @@ describe('Shortest distance', () => {
             const result = shortestAngle(currentHeading, targetHeading)
 
             expect(result).toBe(expectedShortestAngle)
+        });
+});
+
+
+describe('Is inside polygon', () => {
+    test.each`
+        x | y | isInside
+      // On corner
+        ${930} | ${500} | ${false}
+      // On boundary
+        ${930} | ${495} | ${true}
+      // Inside 
+        ${970} | ${495} | ${true}
+        ${1020} | ${470} | ${true}
+      // Outside 
+        ${0} | ${0} | ${false} 
+        ${2000} | ${1000} | ${false} 
+        ${929} | ${495} | ${false}
+      `("Point ($x,$y) -> inside polygon: $isInside",
+        ({x, y, isInside}) => {
+            const polygon = [
+                {x: 930, y: null, inv_y: 500},
+                {x: 1000, y: null, inv_y: 520},
+                {x: 1050, y: null, inv_y: 460},
+                {x: 990, y: null, inv_y: 480},
+                {x: 930, y: null, inv_y: 480},
+            ]
+
+            expect(isInsidePolygon(polygon, x, y)).toEqual(isInside)
         });
 });
