@@ -2,7 +2,6 @@ import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 import {AIRCRAFT} from "../config/aircraft";
-import {isInsidePolygon} from "../utils/geometry";
 
 export class AeroplaneService {
     constructor(map, mapBoundaries) {
@@ -146,5 +145,11 @@ export class AeroplaneService {
                 }
             })
         })
+
+        if (this.aeroplanes.some(plane => plane.breachingProximity)) {
+            this.statsService.startProximityTimer()
+        } else {
+            this.statsService.stopProximityTimer()
+        }
     }
 }

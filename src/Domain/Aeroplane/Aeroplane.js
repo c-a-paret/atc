@@ -155,7 +155,6 @@ export class Aeroplane {
         return this.altitude < zone.minAltitude || this.altitude > zone.maxAltitude
     }
 
-
     markBreachingProximityLimits = () => {
         this.breachingProximity = true
     }

@@ -252,8 +252,14 @@ describe('Deactivate aeroplanes', () => {
 describe('Determine proximal aeroplanes', () => {
 
     test('Lists aeroplanes that breach proximity boundaries', () => {
+        const mockMap = {features: {exclusionZones: []}};
+        const mockStatsService = {
+            startProximityTimer: () => {},
+            stopProximityTimer: () => {}
+        };
 
-        const service = new AeroplaneService({features: {exclusionZones: []}}, {})
+        const service = new AeroplaneService(mockMap, {})
+        service.setStatsService(mockStatsService)
 
         service.aeroplanes = [
             new Aeroplane("BA123_BREACH", 50, 50, 120, 90, 5000),
