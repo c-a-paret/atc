@@ -11,12 +11,16 @@ export class AeroplaneService {
         this.mapBoundaries = mapBoundaries
         this.statsService = null
         this.spawnLocations = [
-            {x: 0.33 * this.mapBoundaries.maxX, y: 1, heading: 135},
+            {x: 0.2 * this.mapBoundaries.maxX, y: 1, heading: 135},
             {x: 0.5 * this.mapBoundaries.maxX, y: 1, heading: 135},
             {x: 0.8 * this.mapBoundaries.maxX, y: 1, heading: 225},
             {x: 1, y: 0.33 * this.mapBoundaries.maxY, heading: 110},
-            {x: this.mapBoundaries.maxX - 1, y: 0.66 * this.mapBoundaries.maxY, heading: 300},
-            {x: 0.6 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 300},
+            {x: 1, y: 0.66 * this.mapBoundaries.maxY, heading: 80},
+            {x: this.mapBoundaries.maxX - 1, y: 0.33 * this.mapBoundaries.maxY, heading: 260},
+            {x: this.mapBoundaries.maxX - 1, y: 0.66 * this.mapBoundaries.maxY, heading: 280},
+            {x: 0.2 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 20},
+            {x: 0.5 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 360},
+            {x: 0.8 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 340},
         ]
     }
 
@@ -40,34 +44,23 @@ export class AeroplaneService {
 
     initTestAeroplanes = () => {
 
-        // for (let x = 0; x < 8; x++) {
-        //     // this.aeroplanes.push(new Aeroplane("BA123", 500, 300, 300, x))
-        //     this.initArrival()
-        // }
-        this.aeroplanes = [
-            new Aeroplane("BA123", 927, 324, 120, 135, 2800, 1),
-            new Aeroplane("BA456", 508.64, 608.28, 160, 90, 3000, 1),
+        for (let x = 0; x < this.spawnLocations.length; x++) {
+            const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
+            const location = this.spawnLocations[x];
+            const startX = location.x
+            const startY = location.y
+            const startHeading = location.heading
+            const aeroplane = new Aeroplane(callSign, startX, startY, 120, startHeading, 2800, 1)
+            this.aeroplanes.push(aeroplane)
+        }
+        // this.aeroplanes = [
+            // new Aeroplane("BA123", 750, 25, 120, 135, 2800, 1),
+            // new Aeroplane("BA456", 500, 608.28, 160, 90, 3000, 1),
             // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
-            // new Aeroplane("BA111", 500, 150, 150, 94, 6000),
-            // new Aeroplane("BA222", 500, 160, 160, 95, 6000),
-            // new Aeroplane("BA333", 500, 170, 170, 96, 6000),
-            // new Aeroplane("BA444", 500, 180, 180, 97, 6000),
-            // new Aeroplane("BA555", 500, 190, 190, 98, 6000),
-            // new Aeroplane("BA666", 500, 200, 200, 99, 6000),
-            // new Aeroplane("BA777", 500, 210, 210, 100, 6000),
-            // new Aeroplane("BA888", 500, 220, 220, 101, 6000),
-            // new Aeroplane("BA888", 500, 230, 230, 102, 6000),
-            // new Aeroplane("BA888", 500, 240, 240, 103, 6000),
-            // new Aeroplane("BA888", 500, 250, 250, 104, 6000),
-            // new Aeroplane("BA888", 500, 260, 260, 105, 6000),
-            // new Aeroplane("BA888", 500, 270, 270, 106, 6000),
-            // new Aeroplane("BA888", 500, 280, 280, 107, 6000),
-            // new Aeroplane("BA888", 500, 290, 290, 108, 6000),
-            // new Aeroplane("BA888", 500, 300, 300, 109, 6000),
-        ]
+        // ]
 
         this.aeroplanes.forEach(plane => {
-            plane.setLanding(this.map, "9L")
+            plane.setWaypoint(this.map, "LON")
         })
     }
 
@@ -148,8 +141,7 @@ export class AeroplaneService {
         // With restricted zones
         this.aeroplanes.forEach(plane => {
             this.map.features.exclusionZones.forEach(zone => {
-                const planeInvY = this.map.maxY - plane.y
-                if (isInsidePolygon(zone.boundaries, plane.x, planeInvY)) {
+                if (plane.breachingRestrictedZone(this.map, zone)) {
                     plane.markBreachingProximityLimits()
                 }
             })

@@ -99,6 +99,8 @@ export const EGLL = {
                 level: "critical",
                 dashes: 2,
                 label: {text: "D139", location: {"x": 0.39 * x, "y": 0.68 * y}},
+                minAltitude: null,
+                maxAltitude: null,
                 boundaries: [
                     {x: (0.34 * x), y: (0.74 * y), inv_y: y - (0.74 * y)},
                     {x: (0.36 * x), y: (0.67 * y), inv_y: y - (0.67 * y)},
@@ -112,6 +114,8 @@ export const EGLL = {
                 level: "moderate",
                 dashes: 2,
                 label: {text: "C422", location: {"x": 0.66 * x, "y": 0.47 * y}},
+                minAltitude: 3000,
+                maxAltitude: 5000,
                 boundaries: [
                     {x: (0.62 * x), y: (0.395 * y), inv_y: y - (0.395 * y)},
                     {x: (0.67 * x), y: (0.37 * y), inv_y: y - (0.37 * y)},
@@ -125,6 +129,8 @@ export const EGLL = {
                 level: "informational",
                 dashes: 0,
                 label: {text: "F79J", location: {"x": 0.366 * x, "y": 0.09 * y}},
+                minAltitude: 5000,
+                maxAltitude: 40000,
                 boundaries: [
                     {x: 0.4 * x, y: 0.1 * y, inv_y: y - (0.1 * y)},
                     {x: 0.4 * x, y: 0.15 * y, inv_y: y - (0.15 * y)},

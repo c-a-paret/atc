@@ -1,6 +1,6 @@
 import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
-import {distance} from "../../utils/geometry";
+import {distance, isInsidePolygon} from "../../utils/geometry";
 import {HORIZONTAL_SEPARATION_MINIMUM, VERTICAL_SEPARATION_MINIMUM} from "../../config/constants";
 
 export class Aeroplane {
@@ -142,6 +142,19 @@ export class Aeroplane {
         return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
             && verticalDistance <= VERTICAL_SEPARATION_MINIMUM
     }
+
+    breachingRestrictedZone = (map, zone) => {
+        const planeInverseY = map.maxY - this.y
+        return isInsidePolygon(zone.boundaries, this.x, planeInverseY) && this.breachingAltitudeRestriction(zone)
+    }
+
+    breachingAltitudeRestriction = (zone) => {
+        if (zone.minAltitude === null && zone.maxAltitude === null) {
+            return true
+        }
+        return this.altitude < zone.minAltitude || this.altitude > zone.maxAltitude
+    }
+
 
     markBreachingProximityLimits = () => {
         this.breachingProximity = true

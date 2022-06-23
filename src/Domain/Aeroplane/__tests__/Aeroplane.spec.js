@@ -838,3 +838,157 @@ describe("Proximity breached", () => {
         })
     })
 })
+
+describe("Altitude restriction breached", () => {
+
+    describe("Determines aeroplane breached altitude restrictions", () => {
+        test("When no altitude range specified", () => {
+            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, 3000, 3)
+            const zone = {
+                minAltitude: null,
+                maxAltitude: null,
+            }
+
+            const result = aeroplane.breachingAltitudeRestriction(zone)
+
+            expect(result).toBeTruthy()
+        })
+
+        test("When below minimum altitude", () => {
+            const currentAltitude = 2999;
+            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const zone = {
+                minAltitude: 3000,
+                maxAltitude: undefined,
+            }
+
+            const result = aeroplane.breachingAltitudeRestriction(zone)
+
+            expect(result).toBeTruthy()
+        })
+
+        test("When below maximum altitude", () => {
+            const currentAltitude = 5001;
+            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const zone = {
+                minAltitude: undefined,
+                maxAltitude: 5000,
+            }
+
+            const result = aeroplane.breachingAltitudeRestriction(zone)
+
+            expect(result).toBeTruthy()
+        })
+    })
+
+    describe("Determines aeroplane has not breached altitude restrictions", () => {
+        test("When at minimum altitude", () => {
+            const currentAltitude = 3000;
+            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const zone = {
+                minAltitude: 3000,
+                maxAltitude: undefined,
+            }
+
+            const result = aeroplane.breachingAltitudeRestriction(zone)
+
+            expect(result).toBeFalsy()
+        })
+
+        test("When at maximum altitude", () => {
+            const currentAltitude = 5000;
+            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const zone = {
+                minAltitude: undefined,
+                maxAltitude: 5000,
+            }
+
+            const result = aeroplane.breachingAltitudeRestriction(zone)
+
+            expect(result).toBeFalsy()
+        })
+    })
+})
+
+describe("Restricted zone breached", () => {
+
+    describe("Determines aeroplane breached restricted zone location", () => {
+        test("Inside boundary", () => {
+            const aeroplane = new Aeroplane("AB123", 50, 750, 150, 0, 2800, 3)
+            const zone = {
+                minAltitude: 3000,
+                maxAltitude: undefined,
+                boundaries: [
+                    {x: 0, y: undefined, inv_y: 0},
+                    {x: 0, y: undefined, inv_y: 100},
+                    {x: 100, y: undefined, inv_y: 100},
+                    {x: 100, y: undefined, inv_y: 0},
+                ]
+            };
+            const map = {
+                maxY: 800,
+                features: {
+                    exclusionZones: [
+                        zone
+                    ]
+                }
+            }
+            const result = aeroplane.breachingRestrictedZone(map, zone)
+
+            expect(result).toBeTruthy()
+        })
+
+        test("On boundary", () => {
+            const aeroplane = new Aeroplane("AB123", 0, 750, 150, 0, 2800, 3)
+            const zone = {
+                minAltitude: 3000,
+                maxAltitude: undefined,
+                boundaries: [
+                    {x: 0, y: undefined, inv_y: 0},
+                    {x: 0, y: undefined, inv_y: 100},
+                    {x: 100, y: undefined, inv_y: 100},
+                    {x: 100, y: undefined, inv_y: 0},
+                ]
+            };
+            const map = {
+                maxY: 800,
+                features: {
+                    exclusionZones: [
+                        zone
+                    ]
+                }
+            }
+            const result = aeroplane.breachingRestrictedZone(map, zone)
+
+            expect(result).toBeTruthy()
+        })
+    })
+
+    describe("Determines aeroplane not breached restricted zone location", () => {
+        test("On zone corner", () => {
+            const aeroplane = new Aeroplane("AB123", 100, 700, 150, 0, 2800, 3)
+            const zone = {
+                minAltitude: 3000,
+                maxAltitude: undefined,
+                boundaries: [
+                    {x: 0, y: undefined, inv_y: 0},
+                    {x: 0, y: undefined, inv_y: 100},
+                    {x: 100, y: undefined, inv_y: 100},
+                    {x: 100, y: undefined, inv_y: 0},
+                ]
+            };
+            const map = {
+                maxY: 800,
+                features: {
+                    exclusionZones: [
+                        zone
+                    ]
+                }
+            }
+            const result = aeroplane.breachingRestrictedZone(map, zone)
+
+            expect(result).toBeFalsy()
+        })
+    })
+
+})
