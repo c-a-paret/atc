@@ -4,11 +4,15 @@
 
 Your goal is to direct as many aeroplanes as possible to land safely and to not let any leave the map. If an aeroplane is directed outside the map it will be removed from the game play.
 
-The stats counter in the top right of the screen shows how many aeroplanes you have lost and landed.
+The stats counter in the top right of the screen shows how many aeroplanes you have lost and landed and for how long you have breached restrictions.
 
 ![Stats](images/stats.png?raw=true)
 
-There is currently no penalty for breaching aircraft proximity limits or landing at incorrect locations.
+Restrictions include:
+- Aeroplanes within 1 nautical mile and 1000ft of one another
+- Aeroplanes below minimum altitude or above maximum altitude within restriction zones 
+
+There is currently no penalty for landing at incorrect locations.
 
 # Interface
 
