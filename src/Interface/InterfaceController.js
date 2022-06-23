@@ -1,4 +1,5 @@
 import {commandMessage} from "../Command/CommandParser/CommandParser";
+import {timeStringFromSeconds} from "../utils/timeFormatters";
 
 export class InterfaceController {
     constructor(aeroplaneService) {
@@ -8,9 +9,18 @@ export class InterfaceController {
         this._init()
     }
 
-    setStats = (landedCount, exitedCount) => {
+    setStats = (landedCount, exitedCount, breachedRestrictions) => {
+        if (exitedCount > 0) {
+            document.getElementById("exited-count").classList.remove('good')
+            document.getElementById("exited-count").classList.add('bad')
+        }
+        if (breachedRestrictions > 0) {
+            document.getElementById("breached-restrictions").classList.remove('good')
+            document.getElementById("breached-restrictions").classList.add('bad')
+        }
         document.getElementById("landed-count").innerText = landedCount
         document.getElementById("exited-count").innerText = exitedCount
+        document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }
 
     _init = () => {

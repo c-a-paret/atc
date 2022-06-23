@@ -12,12 +12,24 @@ export class GameLoop {
     }
 
     start() {
+        // Arrival spawner
         setInterval(() => {
             if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
                 this.aeroplaneService.initArrival()
             }
         }, 105000)
 
+        // Stats display updater
+        setInterval(() => {
+            if (!this.interfaceController.gamePaused) {
+                const landed = this.aeroplaneService.statsService.landedCount
+                const lost = this.aeroplaneService.statsService.exitedBoundaryCount
+                const restrictionsBreached = this.aeroplaneService.statsService.proximityTimer
+                this.interfaceController.setStats(landed, lost, restrictionsBreached)
+            }
+        }, 1000)
+
+        // Aeroplane display updater
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
                 this.uiController.clearAeroplaneLayer()
