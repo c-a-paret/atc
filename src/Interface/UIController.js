@@ -121,6 +121,23 @@ export class UIController {
             this.featuresContext.font = "12px Courier New";
             this.featuresContext.beginPath();
             this.featuresContext.fillText(zone.label.text, zone.label.location.x, zone.label.location.y);
+
+            if (zone.minAltitude && zone.maxAltitude) {
+                const labelHeight = this.featuresContext.measureText(`${zone.label.text}`).fontBoundingBoxAscent;
+                const minAltitudeLabel = `${zone.minAltitude / 100}`;
+                const maxAltitudeLabel = `${zone.maxAltitude / 100}`;
+
+                this.featuresContext.fillStyle = COLOURS.YELLOW;
+                this.featuresContext.font = "12px Courier New";
+                this.featuresContext.beginPath();
+                this.featuresContext.fillText(minAltitudeLabel, zone.label.location.x, zone.label.location.y + labelHeight);
+
+                const minAltitudeLabelWidth = this.featuresContext.measureText(minAltitudeLabel).width;
+                this.featuresContext.fillStyle = COLOURS.WHITE;
+                this.featuresContext.font = "12px Courier New";
+                this.featuresContext.beginPath();
+                this.featuresContext.fillText(maxAltitudeLabel, zone.label.location.x + minAltitudeLabelWidth + 4, zone.label.location.y + labelHeight);
+            }
         })
     }
 

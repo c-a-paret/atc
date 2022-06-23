@@ -128,7 +128,7 @@ export const EGLL = {
             {
                 level: "informational",
                 dashes: 0,
-                label: {text: "F79J", location: {"x": 0.366 * x, "y": 0.09 * y}},
+                label: {text: "F79J", location: {"x": 0.353 * x, "y": 0.115 * y}},
                 minAltitude: 5000,
                 maxAltitude: 40000,
                 boundaries: [
