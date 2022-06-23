@@ -1,7 +1,7 @@
 import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
-import {HORIZONTAL_SEPARATION_MINIMUM, VERTICAL_SEPARATION_MINIMUM} from "../../config/constants";
+import {HORIZONTAL_SEPARATION_MINIMUM, SPEED_TAIL_LENGTH, VERTICAL_SEPARATION_MINIMUM} from "../../config/constants";
 
 export class Aeroplane {
     constructor(callSign, x, y, speed, hdg, altitude, weight) {
@@ -15,6 +15,7 @@ export class Aeroplane {
         this.actions = []
         this.active = true
         this.breachingProximity = false
+        this.lastPositions = []
     }
 
     addAction = (action) => {
@@ -97,7 +98,17 @@ export class Aeroplane {
         this.x = round(this.x + distancePerTick * Math.sin(headingRadians), 2);
         this.y = round(this.y - distancePerTick * Math.cos(headingRadians), 2);
 
+        this.updateLastPositions(this.x, this.y)
+
         this._clean_actions()
+    }
+
+    updateLastPositions = (x, y) => {
+        if (this.lastPositions.length === SPEED_TAIL_LENGTH + 1) {
+            this.lastPositions = this.lastPositions.slice(1)
+        }
+
+        this.lastPositions.push({x: x, y: y})
     }
 
     withinPosition = (x, y) => {

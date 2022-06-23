@@ -229,9 +229,15 @@ export class UIController {
         } else {
             this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
         }
-        this.featuresContext.lineWidth = 2;
+        // Construct diamond shape
+        const radius = 6
+        this.aeroplaneContext.lineWidth = 1;
         this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.arc(aeroplane.x, aeroplane.y, 5, 0, Math.PI * 2, false);
+        this.aeroplaneContext.moveTo(aeroplane.x, aeroplane.y - radius)
+        this.aeroplaneContext.lineTo(aeroplane.x + radius, aeroplane.y)
+        this.aeroplaneContext.lineTo(aeroplane.x, aeroplane.y + radius)
+        this.aeroplaneContext.lineTo(aeroplane.x - radius, aeroplane.y)
+        this.aeroplaneContext.closePath()
         this.aeroplaneContext.stroke();
     }
 
@@ -241,21 +247,15 @@ export class UIController {
         } else {
             this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
         }
-        this.featuresContext.lineWidth = 2;
-        this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.moveTo(aeroplane.x, aeroplane.y)
-
-        const oppositeHeading = aeroplane.heading + 180
-
-        const headingRadians = (Math.PI / 180) * oppositeHeading
-        const normalisedSpeed = aeroplane.speed / 8
-
-        let tailEndX = aeroplane.x + normalisedSpeed * Math.sin(headingRadians);
-        let tailEndY = aeroplane.y - normalisedSpeed * Math.cos(headingRadians);
-
-        this.aeroplaneContext.moveTo(tailEndX, tailEndY)
-        this.aeroplaneContext.lineTo(aeroplane.x, aeroplane.y)
-        this.aeroplaneContext.stroke();
+        for (let x = 0; x < aeroplane.lastPositions.length - 2; x+=2) {
+            let markerX = aeroplane.lastPositions[x].x
+            let markerY = aeroplane.lastPositions[x].y
+            this.aeroplaneContext.beginPath();
+            const offset = 5
+            this.aeroplaneContext.moveTo(markerX - offset, markerY + offset)
+            this.aeroplaneContext.lineTo(markerX + offset / 1.2, markerY - offset / 1.2)
+            this.aeroplaneContext.stroke();
+        }
     }
 
     _drawHeadingLabel = (aeroplane) => {

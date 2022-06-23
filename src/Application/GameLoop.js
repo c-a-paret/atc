@@ -10,7 +10,7 @@ export class GameLoop {
         // this.aeroplaneService.initTestAeroplanes()
         this.aeroplaneService.aeroplanes.forEach(plane => this.uiController.drawAeroplane(plane))
     }
-
+q
     start() {
         // Arrival spawner
         setInterval(() => {

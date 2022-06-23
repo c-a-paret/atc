@@ -43,24 +43,29 @@ export class AeroplaneService {
 
     initTestAeroplanes = () => {
 
-        for (let x = 0; x < this.spawnLocations.length; x++) {
-            const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
-            const location = this.spawnLocations[x];
-            const startX = location.x
-            const startY = location.y
-            const startHeading = location.heading
-            const aeroplane = new Aeroplane(callSign, startX, startY, 120, startHeading, 2800, 1)
-            this.aeroplanes.push(aeroplane)
-        }
-        // this.aeroplanes = [
-            // new Aeroplane("BA123", 750, 25, 120, 135, 2800, 1),
-            // new Aeroplane("BA456", 500, 608.28, 160, 90, 3000, 1),
-            // new Aeroplane("BA789", 500, 140, 140, 93, 6000),
-        // ]
+        // for (let x = 0; x < this.spawnLocations.length; x++) {
+        //     const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
+        //     const location = this.spawnLocations[x];
+        //     const startX = location.x
+        //     const startY = location.y
+        //     const startHeading = location.heading
+        //     const aeroplane = new Aeroplane(callSign, startX, startY, 120, startHeading, 2800, 1)
+        //     this.aeroplanes.push(aeroplane)
+        // }
+        this.aeroplanes = [
+            new Aeroplane("BA123", 500, 200, 200, 45, 2800, 1),
+            new Aeroplane("BA456", 500, 300, 200, 90, 3000, 1),
+            new Aeroplane("BA789", 500, 400, 200, 135, 6000, 1),
+            new Aeroplane("BA101", 500, 500, 200, 180, 6000, 1),
 
-        this.aeroplanes.forEach(plane => {
-            plane.setWaypoint(this.map, "LON")
-        })
+            new Aeroplane("BA112", 500, 250, 200, 305, 6000, 1),
+            new Aeroplane("BA131", 500, 350, 200, 270, 6000, 1),
+            new Aeroplane("BA415", 500, 450, 200, 225, 6000, 1),
+        ]
+
+        // this.aeroplanes.forEach(plane => {
+        //     plane.setWaypoint(this.map, "LON")
+        // })
     }
 
     sendCommand = (rawCommand) => {
