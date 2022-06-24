@@ -10,7 +10,9 @@ export class GameLoop {
         // this.aeroplaneService.initTestAeroplanes()
         this.aeroplaneService.aeroplanes.forEach(plane => this.uiController.drawAeroplane(plane))
     }
-q
+
+    q
+
     start() {
         // Arrival spawner
         setInterval(() => {
@@ -36,10 +38,8 @@ q
                 this.aeroplaneService.deactivateAeroplanes()
                 this.aeroplaneService.markAeroplanesBreakingProximity()
                 this.aeroplaneService.aeroplanes.forEach(plane => {
-                    if (plane.active) {
-                        plane.applyActions()
-                        this.uiController.drawAeroplane(plane)
-                    }
+                    plane.applyActions()
+                    this.uiController.drawAeroplane(plane)
                 })
             }
         }, 900)

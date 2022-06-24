@@ -1,6 +1,7 @@
 import {AeroplaneService} from "../AeroplaneService";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {GameMap} from "../../Domain/GameMap/GameMap";
+import {LANDED_ALTITUDE} from "../../config/constants";
 
 const testGameMap = () => {
     return new GameMap({
@@ -215,9 +216,9 @@ describe('Get aeroplane by position', () => {
     })
 })
 
-describe('Deactivate aeroplanes', () => {
+describe('Remove aeroplanes', () => {
 
-    test('Deactivates aeroplanes outside of map boundaries', () => {
+    test('Removes aeroplanes outside of map boundaries', () => {
         const mapBoundaries = {
             minX: 0,
             maxX: 100,
@@ -239,13 +240,46 @@ describe('Deactivate aeroplanes', () => {
             new Aeroplane("BA456", 50, 50, 120, 90, 10000),
         ]
 
-        expect(service.aeroplanes[0].active).toBeTruthy()
-        expect(service.aeroplanes[1].active).toBeTruthy()
+        expect(service.aeroplanes.length).toBe(2)
+        expect(service.aeroplanes[0].callSign).toBe('BA123')
+        expect(service.aeroplanes[1].callSign).toBe('BA456')
 
         service.deactivateAeroplanes()
 
-        expect(service.aeroplanes[0].active).toBeFalsy()
-        expect(service.aeroplanes[1].active).toBeTruthy()
+        expect(service.aeroplanes.length).toBe(1)
+        expect(service.aeroplanes[0].callSign).toBe('BA456')
+    })
+
+    test('Removes aeroplanes that have landed', () => {
+        const mapBoundaries = {
+            minX: 0,
+            maxX: 100,
+            minY: 0,
+            maxY: 100,
+        }
+
+        const statsService = {
+            incrementLanded: () => {
+            },
+            incrementExited: () => {
+            }
+        }
+        const service = new AeroplaneService({}, mapBoundaries)
+        service.setStatsService(statsService)
+
+        service.aeroplanes = [
+            new Aeroplane("BA123", 100, 100, 140, 90, LANDED_ALTITUDE - 1),
+            new Aeroplane("BA456", 25, 100, 140, 90, 3000),
+        ]
+
+        expect(service.aeroplanes.length).toBe(2)
+        expect(service.aeroplanes[0].callSign).toBe('BA123')
+        expect(service.aeroplanes[1].callSign).toBe('BA456')
+
+        service.deactivateAeroplanes()
+
+        expect(service.aeroplanes.length).toBe(1)
+        expect(service.aeroplanes[0].callSign).toBe('BA456')
     })
 })
 

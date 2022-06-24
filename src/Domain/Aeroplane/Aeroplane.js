@@ -1,7 +1,12 @@
 import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
-import {HORIZONTAL_SEPARATION_MINIMUM, SPEED_TAIL_LENGTH, VERTICAL_SEPARATION_MINIMUM} from "../../config/constants";
+import {
+    HORIZONTAL_SEPARATION_MINIMUM,
+    LANDED_ALTITUDE,
+    SPEED_TAIL_LENGTH,
+    VERTICAL_SEPARATION_MINIMUM
+} from "../../config/constants";
 
 export class Aeroplane {
     constructor(callSign, x, y, speed, hdg, altitude, weight) {
@@ -13,7 +18,6 @@ export class Aeroplane {
         this.heading = hdg;
         this.altitude = altitude;
         this.actions = []
-        this.active = true
         this.breachingProximity = false
         this.lastPositions = []
     }
@@ -121,10 +125,6 @@ export class Aeroplane {
         return withinX && withinY
     }
 
-    makeInactive = () => {
-        this.active = false
-    }
-
     isOutsideBoundaries = (mapBoundaries, outsideCallback) => {
         const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
         const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
@@ -140,7 +140,7 @@ export class Aeroplane {
     }
 
     hasLanded = (landedCallback) => {
-        const landed = this.altitude < 40;
+        const landed = this.altitude < LANDED_ALTITUDE;
         if (landed && landedCallback) {
             landedCallback()
         }
