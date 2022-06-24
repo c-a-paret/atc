@@ -8,10 +8,11 @@ export class GameLoop {
     init() {
         this.aeroplaneService.initArrival()
         // this.aeroplaneService.initTestAeroplanes()
-        this.aeroplaneService.aeroplanes.forEach(plane => this.uiController.drawAeroplane(plane))
+        this.aeroplaneService.aeroplanes.forEach(plane => {
+            this.uiController.drawAeroplane(plane)
+        })
+        this.interfaceController.drawStrips(this.aeroplaneService.aeroplanes)
     }
-
-    q
 
     start() {
         // Arrival spawner
@@ -41,6 +42,8 @@ export class GameLoop {
                     plane.applyActions()
                     this.uiController.drawAeroplane(plane)
                 })
+                this.interfaceController.clearStrips()
+                this.interfaceController.drawStrips(this.aeroplaneService.aeroplanes)
             }
         }, 900)
     }

@@ -1,6 +1,6 @@
 import {ILS_MAX_X} from "../constants";
 
-const x = document.body.clientWidth
+const x = document.body.clientWidth * 0.95
 const y = document.body.clientHeight
 const runwayWidth = x / 25
 const runwayGap = x / 60
