@@ -6,8 +6,8 @@ export class GameLoop {
     }
 
     init() {
-        this.aeroplaneService.initArrival()
-        // this.aeroplaneService.initTestAeroplanes()
+        // this.aeroplaneService.initArrival()
+        this.aeroplaneService.initTestAeroplanes()
         this.aeroplaneService.aeroplanes.forEach(plane => {
             this.uiController.drawAeroplane(plane)
         })

@@ -53,11 +53,11 @@ export class AeroplaneService {
         //     this.aeroplanes.push(aeroplane)
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", 1400, 500, 200, 225, 2800, 1),
-            new Aeroplane("BA456", 500, 300, 200, 90, 3000, 1),
-            new Aeroplane("BA789", 500, 400, 200, 135, 6000, 1),
-            new Aeroplane("BA101", 500, 500, 200, 180, 6000, 1),
-            new Aeroplane("BA112", 500, 250, 200, 305, 6000, 1),
+            new Aeroplane("BA123", 470, 425, 200, 90, 2800, 1),
+            // new Aeroplane("BA456", 500, 300, 200, 90, 3000, 1),
+            // new Aeroplane("BA789", 500, 400, 200, 135, 6000, 1),
+            // new Aeroplane("BA101", 500, 500, 200, 180, 6000, 1),
+            // new Aeroplane("BA112", 500, 250, 200, 305, 6000, 1),
             // new Aeroplane("BA131", 500, 350, 200, 270, 6000, 1),
             // new Aeroplane("BA415", 500, 450, 200, 225, 6000, 1),
             // new Aeroplane("BA161", 500, 450, 200, 225, 6000, 1),
@@ -69,7 +69,7 @@ export class AeroplaneService {
         ]
 
         // this.aeroplanes.forEach(plane => {
-        //     plane.setWaypoint(this.map, "LON")
+        //     plane.setLanding(this.map, "9L")
         // })
     }
 

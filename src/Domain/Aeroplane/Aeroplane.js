@@ -3,7 +3,7 @@ import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
     HORIZONTAL_SEPARATION_MINIMUM,
-    LANDED_ALTITUDE,
+    LANDED_ALTITUDE, LANDING_SPEED,
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
@@ -20,32 +20,72 @@ export class Aeroplane {
         this.actions = []
         this.breachingProximity = false
         this.lastPositions = []
+
+        this.targetLocation = undefined
+        this.targetAltitude = undefined
+        this.targetSpeed = undefined
+    }
+
+    _clear_targets = () => {
+        const activeActions = this.actions.map(action => action.type())
+        if (activeActions.every(action => !["Waypoint", "Heading", "Landing"].includes(action))) {
+            this.targetLocation = undefined
+        }
+        this.targetAltitude = activeActions.includes('Altitude') ? this.targetAltitude : undefined
+        this.targetSpeed = activeActions.includes('Speed') ? this.targetSpeed : undefined
+    }
+
+    _update_targets = () => {
+        // Add targets from current actions
+        this.actions.forEach(action => {
+            if (action.type() === "Waypoint") {
+                this.targetLocation = action.targetWaypoint
+            }
+            if (["Heading", "Landing"].includes(action.type())) {
+                this.targetLocation = action.targetValue
+            }
+            if (action.type() === "Altitude") {
+                console.log('setting target altitude')
+                this.targetAltitude = action.targetValue
+            }
+            if (action.type() === "Speed") {
+                this.targetSpeed = action.targetValue
+            }
+        })
     }
 
     addAction = (action) => {
         if (action.type() === "Landing") { // landing overwrites everything
             this.actions = [action]
+            this._update_targets()
             return
         }
         for (let x = 0; x < this.actions.length; x++) {
             if (this.actions[x].type() === "Waypoint" && action.type() === "Heading") { // heading overwrites waypoint
                 this.actions[x] = action
+                this._update_targets()
                 return
             }
             if (this.actions[x].type() === "Heading" && action.type() === "Waypoint") { // waypoint overwrites heading
                 this.actions[x] = action
+                this._update_targets()
                 return
             }
             if (this.actions[x].type() === "Waypoint" && action.type() === "Waypoint") { // waypoint overwrites waypoint
                 this.actions[x] = action
+                this._update_targets()
                 return
             }
             if (this.actions[x].type() === action.type()) { // replace action
+                console.log('Replacing action...')
                 this.actions[x] = action
+                this._update_targets()
                 return
             }
         }
+        console.log('Pushing new action...')
         this.actions.push(action)
+        this._update_targets()
     }
 
     setSpeed = (map, speed) => {
@@ -90,6 +130,7 @@ export class Aeroplane {
 
     _clean_actions = () => {
         this.actions = this.actions.filter(action => action.isActionable())
+        this._clear_targets()
     }
 
     applyActions = () => {

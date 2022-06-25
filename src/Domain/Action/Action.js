@@ -162,7 +162,7 @@ export class Altitude extends Action {
 
 export class Waypoint extends Action {
     constructor(map, aeroplane, targetWaypoint) {
-        super(map, aeroplane, null);
+        super(map, aeroplane, targetWaypoint);
         this.map.features.waypoints.forEach(vor => {
             if (vor.id === targetWaypoint) {
                 this.targetX = vor.x
@@ -247,7 +247,7 @@ export class Waypoint extends Action {
 
 export class Landing extends Action {
     constructor(map, aeroplane, targetRunway) {
-        super(map, aeroplane, null);
+        super(map, aeroplane, targetRunway);
         this.map = map
         this.targetRunway = targetRunway
         this.waypointSet = false

@@ -1,6 +1,20 @@
 import {commandMessage} from "../Command/CommandParser/CommandParser";
 import {timeStringFromSeconds} from "../utils/timeFormatters";
 
+class TargetValue {
+    constructor(value) {
+        this.value = value
+        this.isTarget = true
+    }
+}
+
+class CurrentValue {
+    constructor(value) {
+        this.value = value
+        this.isTarget = false
+    }
+}
+
 export class InterfaceController {
     constructor(aeroplaneService) {
         this.aeroplaneService = aeroplaneService
@@ -23,33 +37,35 @@ export class InterfaceController {
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }
 
-    _element = (tag, cls, id) => {
+    _element = (tag, classes, id) => {
         const element = document.createElement(tag)
-        element.classList.add(cls)
+        classes.forEach(cls => {
+            element.classList.add(cls)
+        })
         element.id = id
         return element
     }
 
-    _div = (cls, id) => {
-        return this._element("div", cls, id)
+    _div = (classes, id) => {
+        return this._element("div", classes, id)
     }
 
-    _p = (cls, id) => {
-        return this._element("p", cls, id)
+    _p = (classes, id) => {
+        return this._element("p", classes, id)
     }
 
     _overviewBlock = (aeroplane) => {
-        const overview = this._div("overview")
+        const overview = this._div(["overview"])
 
         //  Call Sign
-        const callSign = this._div("value")
-        const callSignText = this._p("text")
+        const callSign = this._div(["value"])
+        const callSignText = this._p(["text"])
         callSignText.innerText = aeroplane.callSign
         callSign.appendChild(callSignText)
 
         //  Target
-        const target = this._div("value")
-        const targetText = this._p("text")
+        const target = this._div(["value"])
+        const targetText = this._p(["text"])
         targetText.innerText = "27L"
         target.appendChild(targetText)
 
@@ -59,30 +75,78 @@ export class InterfaceController {
         return overview
     }
 
+    _get_location = (aeroplane) => {
+        if (aeroplane.isLanding()) {
+            return new CurrentValue(`Landing runway ${aeroplane.actions[0].targetRunway}`)
+        } else {
+            if (aeroplane.targetLocation) {
+                return new TargetValue(aeroplane.targetLocation)
+            }
+            return new CurrentValue(aeroplane.heading)
+        }
+    }
+
+    _get_altitude = (aeroplane) => {
+        if (!aeroplane.isLanding()) {
+            if (aeroplane.targetAltitude) {
+                return new TargetValue(aeroplane.targetAltitude)
+            }
+            return new CurrentValue(aeroplane.altitude)
+        }
+        return new CurrentValue('')
+    }
+
+    _get_speed = (aeroplane) => {
+        if (!aeroplane.isLanding()) {
+            if (aeroplane.targetSpeed) {
+                return new TargetValue(aeroplane.targetSpeed)
+            }
+            return new CurrentValue(aeroplane.speed)
+        }
+        return new CurrentValue('')
+    }
+
+    _get_overview_values = (aeroplane) => {
+        return {
+            location: this._get_location(aeroplane),
+            altitude: this._get_altitude(aeroplane),
+            speed: this._get_speed(aeroplane)
+        }
+    }
+
+    _colour_class = (value) => {
+        if (value.isTarget) {
+            return 'target-value'
+        }
+        return 'current-value'
+    }
+
     _actionsOverviewBlock = (aeroplane) => {
-        const actionsOverview = this._div("actions-overview")
+        const actionsOverview = this._div(["actions-overview"])
+
+        const overviewValues = this._get_overview_values(aeroplane)
 
         //  Heading
-        const targetHeading = this._div("action-target")
-        const targetHeadingText = this._p("text")
-        targetHeadingText.innerText = aeroplane.heading
-        targetHeading.appendChild(targetHeadingText)
+        const location = this._div(["action-target"])
+        const locationText = this._p(["text", this._colour_class(overviewValues.location)])
+        locationText.innerText = overviewValues.location.value
+        location.appendChild(locationText)
 
         //  Altitude
-        const targetAltitude = this._div("action-target")
-        const targetAltitudeText = this._p("text")
-        targetAltitudeText.innerText = aeroplane.altitude
-        targetAltitude.appendChild(targetAltitudeText)
+        const altitude = this._div(["action-target"])
+        const altitudeText = this._p(["text", this._colour_class(overviewValues.altitude)])
+        altitudeText.innerText = overviewValues.altitude.value
+        altitude.appendChild(altitudeText)
 
         //  Speed
-        const targetSpeed = this._div("action-target")
-        const targetSpeedText = this._p("text")
-        targetSpeedText.innerText = aeroplane.speed
-        targetSpeed.appendChild(targetSpeedText)
+        const speed = this._div(["action-target"])
+        const speedText = this._p(["text", this._colour_class(overviewValues.speed)])
+        speedText.innerText = overviewValues.speed.value
+        speed.appendChild(speedText)
 
-        actionsOverview.appendChild(targetHeading)
-        actionsOverview.appendChild(targetAltitude)
-        actionsOverview.appendChild(targetSpeed)
+        actionsOverview.appendChild(location)
+        actionsOverview.appendChild(altitude)
+        actionsOverview.appendChild(speed)
 
         return actionsOverview
     }
@@ -112,10 +176,10 @@ export class InterfaceController {
         //     </div>
         // </div>
         const sidebar = document.getElementById("sidebar");
-        const strip = this._div("aeroplane-strip")
+        const strip = this._div(["aeroplane-strip"])
 
         const overview = this._overviewBlock(aeroplane)
-        const separator = this._div("separator")
+        const separator = this._div(["separator"])
         const actionsOverview = this._actionsOverviewBlock(aeroplane)
 
         strip.appendChild(overview)

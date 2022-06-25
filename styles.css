@@ -186,6 +186,14 @@ canvas {
     justify-content: space-between;
 }
 
+.target-value {
+    color: rgb(255,186,0);
+}
+
+.current-value {
+    color: rgb(0,213,170);
+}
+
 .overview .text {
     font-family: "Courier New", monospace;
     color: white;
@@ -200,7 +208,6 @@ canvas {
 
 .actions-overview .text {
     font-family: "Courier New", monospace;
-    color: white;
     font-size: 1rem;
     margin: 0;
 }
