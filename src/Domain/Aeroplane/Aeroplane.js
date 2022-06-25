@@ -45,7 +45,6 @@ export class Aeroplane {
                 this.targetLocation = action.targetValue
             }
             if (action.type() === "Altitude") {
-                console.log('setting target altitude')
                 this.targetAltitude = action.targetValue
             }
             if (action.type() === "Speed") {
@@ -77,13 +76,11 @@ export class Aeroplane {
                 return
             }
             if (this.actions[x].type() === action.type()) { // replace action
-                console.log('Replacing action...')
                 this.actions[x] = action
                 this._update_targets()
                 return
             }
         }
-        console.log('Pushing new action...')
         this.actions.push(action)
         this._update_targets()
     }

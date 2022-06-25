@@ -11,7 +11,7 @@ export class GameLoop {
         this.aeroplaneService.aeroplanes.forEach(plane => {
             this.uiController.drawAeroplane(plane)
         })
-        this.interfaceController.drawStrips(this.aeroplaneService.aeroplanes)
+        this.interfaceController.drawStrips()
     }
 
     start() {
@@ -32,7 +32,7 @@ export class GameLoop {
             }
         }, 1000)
 
-        // Aeroplane display updater
+        // Aeroplanes and strips display updater
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
                 this.uiController.clearAeroplaneLayer()
@@ -42,8 +42,9 @@ export class GameLoop {
                     plane.applyActions()
                     this.uiController.drawAeroplane(plane)
                 })
-                this.interfaceController.clearStrips()
-                this.interfaceController.drawStrips(this.aeroplaneService.aeroplanes)
+                this.interfaceController.clearInactiveStrips()
+                this.interfaceController.drawStrips()
+                this.interfaceController.updateStrips()
             }
         }, 900)
     }

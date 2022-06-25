@@ -18,7 +18,11 @@ class CurrentValue {
 export class InterfaceController {
     constructor(aeroplaneService) {
         this.aeroplaneService = aeroplaneService
+
         this.lastCallSign = null
+        this.selectedStrip = null
+        this.selectedCallSign = null
+
         this.gamePaused = false;
         this._init()
     }
@@ -42,7 +46,7 @@ export class InterfaceController {
         classes.forEach(cls => {
             element.classList.add(cls)
         })
-        element.id = id
+        element.setAttribute('id', id)
         return element
     }
 
@@ -77,7 +81,7 @@ export class InterfaceController {
 
     _get_location = (aeroplane) => {
         if (aeroplane.isLanding()) {
-            return new CurrentValue(`Landing runway ${aeroplane.actions[0].targetRunway}`)
+            return new TargetValue(`Landing runway ${aeroplane.actions[0].targetRunway}`)
         } else {
             if (aeroplane.targetLocation) {
                 return new TargetValue(aeroplane.targetLocation)
@@ -121,32 +125,40 @@ export class InterfaceController {
         return 'current-value'
     }
 
+    _invert = (cls) => {
+        if (cls === 'target-value') {
+            return 'current-value'
+        }
+        return 'target-value'
+    }
+
     _actionsOverviewBlock = (aeroplane) => {
         const actionsOverview = this._div(["actions-overview"])
 
         const overviewValues = this._get_overview_values(aeroplane)
 
-        //  Heading
+        //  Location
         const location = this._div(["action-target"])
-        const locationText = this._p(["text", this._colour_class(overviewValues.location)])
+        const locationText = this._p(["text", this._colour_class(overviewValues.location)], `${aeroplane.callSign}-location`)
         locationText.innerText = overviewValues.location.value
         location.appendChild(locationText)
 
-        //  Altitude
-        const altitude = this._div(["action-target"])
-        const altitudeText = this._p(["text", this._colour_class(overviewValues.altitude)])
-        altitudeText.innerText = overviewValues.altitude.value
-        altitude.appendChild(altitudeText)
-
         //  Speed
         const speed = this._div(["action-target"])
-        const speedText = this._p(["text", this._colour_class(overviewValues.speed)])
+        const speedText = this._p(["text", this._colour_class(overviewValues.speed)], `${aeroplane.callSign}-speed`)
         speedText.innerText = overviewValues.speed.value
         speed.appendChild(speedText)
 
+        //  Altitude
+        const altitude = this._div(["action-target"])
+        const altitudeText = this._p(["text", this._colour_class(overviewValues.altitude)], `${aeroplane.callSign}-altitude`)
+        altitudeText.innerText = overviewValues.altitude.value
+        altitude.appendChild(altitudeText)
+
+
         actionsOverview.appendChild(location)
-        actionsOverview.appendChild(altitude)
         actionsOverview.appendChild(speed)
+        actionsOverview.appendChild(altitude)
 
         return actionsOverview
     }
@@ -176,7 +188,7 @@ export class InterfaceController {
         //     </div>
         // </div>
         const sidebar = document.getElementById("sidebar");
-        const strip = this._div(["aeroplane-strip"])
+        const strip = this._div(["aeroplane-strip"], aeroplane.callSign)
 
         const overview = this._overviewBlock(aeroplane)
         const separator = this._div(["separator"])
@@ -186,19 +198,76 @@ export class InterfaceController {
         strip.appendChild(separator)
         strip.appendChild(actionsOverview)
 
+        strip.addEventListener('click', () => this._select(strip))
+
         sidebar.appendChild(strip)
     }
 
-    clearStrips = () => {
+    _clearStripFocus = () => {
+        try {
+            this.selectedStrip.classList.remove('selected')
+        } catch (e) {
+
+        }
+    }
+
+    _select = (strip) => {
+        this._clearStripFocus()
+        strip.classList.add('selected')
+        this.selectedStrip = strip
+        this.selectedCallSign = strip.id
+        this.lastCallSign = strip.id
+        let commandField = document.getElementById("command-entry-field");
+        commandField.value = this.selectedCallSign
+        this._focusCommandEntry()
+    }
+
+    clearInactiveStrips = () => {
         const strips = document.querySelectorAll(".aeroplane-strip")
+        const aeroplaneCallSigns = this.aeroplaneService.aeroplanes.map(plane => plane.callSign)
         strips.forEach(strip => {
-            strip.remove()
+            if (!aeroplaneCallSigns.includes(strip.id)) {
+                strip.remove()
+            }
         })
     }
 
-    drawStrips = (aeroplanes) => {
-        aeroplanes.forEach(plane => {
-            this.addStrip(plane)
+    _getStripFor = (callSign) => {
+        return document.getElementById(callSign)
+    }
+
+    drawStrips = () => {
+        this.aeroplaneService.aeroplanes.forEach(plane => {
+            if (!this._getStripFor(plane.callSign)) {
+                this.addStrip(plane)
+            }
+        })
+    }
+
+    updateStrips = () => {
+        this.aeroplaneService.aeroplanes.forEach(plane => {
+            const overviewValues = this._get_overview_values(plane)
+
+            // Location
+            const locationTextElement = document.getElementById(`${plane.callSign}-location`)
+            const locationColourClass = this._colour_class(overviewValues.location);
+            locationTextElement.classList.add(locationColourClass)
+            locationTextElement.classList.remove(this._invert(locationColourClass))
+            locationTextElement.innerText = overviewValues.location.value
+
+            // Altitude
+            const altitudeTextElement = document.getElementById(`${plane.callSign}-altitude`)
+            const altitudeColourClass = this._colour_class(overviewValues.altitude);
+            altitudeTextElement.classList.add(altitudeColourClass)
+            altitudeTextElement.classList.remove(this._invert(altitudeColourClass))
+            altitudeTextElement.innerText = overviewValues.altitude.value
+
+            // Speed
+            const speedTextElement = document.getElementById(`${plane.callSign}-speed`)
+            const speedColourClass = this._colour_class(overviewValues.speed);
+            speedTextElement.classList.add(speedColourClass)
+            speedTextElement.classList.remove(this._invert(speedColourClass))
+            speedTextElement.innerText = overviewValues.speed.value
         })
     }
 
@@ -214,6 +283,7 @@ export class InterfaceController {
         const acceptedCommands = this.aeroplaneService.sendCommand(commandField.value)
         this.lastCallSign = acceptedCommands.callSign
         commandField.value = ""
+        this._clearStripFocus()
         this._displayMessage(commandMessage(acceptedCommands))
         setTimeout(() => {
             this._clearMessage()
