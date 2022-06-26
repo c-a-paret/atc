@@ -41,6 +41,98 @@ export class InterfaceController {
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }
 
+    drawStrips = () => {
+        this.aeroplaneService.aeroplanes.forEach(plane => {
+            if (!this._getStripFor(plane.callSign)) {
+                this.addStrip(plane)
+            }
+        })
+    }
+
+    addStrip = (aeroplane) => {
+        // <div className="aeroplane-strip">
+        //     <div className="overview">
+        //         <div className="value">
+        //             <p className="text">BA123</p>
+        //         </div>
+        //         <div className="target">
+        //             <p className="text">27L</p>
+        //         </div>
+        //     </div>
+        //     <div className="separator"></div>
+        //     <div className="actions-overview">
+        //         <div className="action-target">
+        //             <p className="text">262</p>
+        //         </div>
+        //         <div className="action-target with-direction">
+        //             <p className="text">50</p>
+        //             <p className="text arrow">↘︎︎</p>
+        //         </div>
+        //         <div className="action-target">
+        //             <p className="text">260</p>
+        //         </div>
+        //     </div>
+        // </div>
+        const sidebar = document.getElementById("sidebar");
+        const strip = this._div(["aeroplane-strip"], aeroplane.callSign)
+
+        const overview = this._overviewBlock(aeroplane)
+        const separator = this._div(["separator"])
+        const actionsOverview = this._actionsOverviewBlock(aeroplane)
+
+        strip.appendChild(overview)
+        strip.appendChild(separator)
+        strip.appendChild(actionsOverview)
+
+        strip.addEventListener('click', () => this._selectStrip(strip))
+
+        sidebar.appendChild(strip)
+    }
+
+    updateStrips = () => {
+        this.aeroplaneService.aeroplanes.forEach(plane => {
+            const overviewValues = this._get_overview_values(plane)
+
+            // Location
+            const locationTextElement = document.getElementById(`${plane.callSign}-location`)
+            const locationColourClass = this._colour_class(overviewValues.location);
+            locationTextElement.classList.add(locationColourClass)
+            locationTextElement.classList.remove(this._invert(locationColourClass))
+            locationTextElement.innerText = overviewValues.location.value
+
+            // Altitude
+            const altitudeTextElement = document.getElementById(`${plane.callSign}-altitude`)
+            const altitudeColourClass = this._colour_class(overviewValues.altitude);
+            altitudeTextElement.classList.add(altitudeColourClass)
+            altitudeTextElement.classList.remove(this._invert(altitudeColourClass))
+            altitudeTextElement.innerText = overviewValues.altitude.value
+
+            // Speed
+            const speedTextElement = document.getElementById(`${plane.callSign}-speed`)
+            const speedColourClass = this._colour_class(overviewValues.speed);
+            speedTextElement.classList.add(speedColourClass)
+            speedTextElement.classList.remove(this._invert(speedColourClass))
+            speedTextElement.innerText = overviewValues.speed.value
+        })
+    }
+
+    clearInactiveStrips = () => {
+        const strips = document.querySelectorAll(".aeroplane-strip")
+        const aeroplaneCallSigns = this.aeroplaneService.aeroplanes.map(plane => plane.callSign)
+        strips.forEach(strip => {
+            if (!aeroplaneCallSigns.includes(strip.id)) {
+                strip.remove()
+            }
+        })
+    }
+
+    _init = () => {
+        this._setupCommandInterface()
+        this._setupClickInterface()
+        this._focusCommandEntry()
+        this._setupPlayPauseInterface()
+    }
+
     _element = (tag, classes, id) => {
         const element = document.createElement(tag)
         classes.forEach(cls => {
@@ -170,46 +262,6 @@ export class InterfaceController {
         return actionsOverview
     }
 
-    addStrip = (aeroplane) => {
-        // <div className="aeroplane-strip">
-        //     <div className="overview">
-        //         <div className="value">
-        //             <p className="text">BA123</p>
-        //         </div>
-        //         <div className="target">
-        //             <p className="text">27L</p>
-        //         </div>
-        //     </div>
-        //     <div className="separator"></div>
-        //     <div className="actions-overview">
-        //         <div className="action-target">
-        //             <p className="text">262</p>
-        //         </div>
-        //         <div className="action-target with-direction">
-        //             <p className="text">50</p>
-        //             <p className="text arrow">↘︎︎</p>
-        //         </div>
-        //         <div className="action-target">
-        //             <p className="text">260</p>
-        //         </div>
-        //     </div>
-        // </div>
-        const sidebar = document.getElementById("sidebar");
-        const strip = this._div(["aeroplane-strip"], aeroplane.callSign)
-
-        const overview = this._overviewBlock(aeroplane)
-        const separator = this._div(["separator"])
-        const actionsOverview = this._actionsOverviewBlock(aeroplane)
-
-        strip.appendChild(overview)
-        strip.appendChild(separator)
-        strip.appendChild(actionsOverview)
-
-        strip.addEventListener('click', () => this._select(strip))
-
-        sidebar.appendChild(strip)
-    }
-
     _clearStripFocus = () => {
         try {
             this.selectedStrip.classList.remove('selected')
@@ -218,7 +270,7 @@ export class InterfaceController {
         }
     }
 
-    _select = (strip) => {
+    _selectStrip = (strip) => {
         this._clearStripFocus()
         strip.classList.add('selected')
         this.selectedStrip = strip
@@ -229,60 +281,8 @@ export class InterfaceController {
         this._focusCommandEntry()
     }
 
-    clearInactiveStrips = () => {
-        const strips = document.querySelectorAll(".aeroplane-strip")
-        const aeroplaneCallSigns = this.aeroplaneService.aeroplanes.map(plane => plane.callSign)
-        strips.forEach(strip => {
-            if (!aeroplaneCallSigns.includes(strip.id)) {
-                strip.remove()
-            }
-        })
-    }
-
     _getStripFor = (callSign) => {
         return document.getElementById(callSign)
-    }
-
-    drawStrips = () => {
-        this.aeroplaneService.aeroplanes.forEach(plane => {
-            if (!this._getStripFor(plane.callSign)) {
-                this.addStrip(plane)
-            }
-        })
-    }
-
-    updateStrips = () => {
-        this.aeroplaneService.aeroplanes.forEach(plane => {
-            const overviewValues = this._get_overview_values(plane)
-
-            // Location
-            const locationTextElement = document.getElementById(`${plane.callSign}-location`)
-            const locationColourClass = this._colour_class(overviewValues.location);
-            locationTextElement.classList.add(locationColourClass)
-            locationTextElement.classList.remove(this._invert(locationColourClass))
-            locationTextElement.innerText = overviewValues.location.value
-
-            // Altitude
-            const altitudeTextElement = document.getElementById(`${plane.callSign}-altitude`)
-            const altitudeColourClass = this._colour_class(overviewValues.altitude);
-            altitudeTextElement.classList.add(altitudeColourClass)
-            altitudeTextElement.classList.remove(this._invert(altitudeColourClass))
-            altitudeTextElement.innerText = overviewValues.altitude.value
-
-            // Speed
-            const speedTextElement = document.getElementById(`${plane.callSign}-speed`)
-            const speedColourClass = this._colour_class(overviewValues.speed);
-            speedTextElement.classList.add(speedColourClass)
-            speedTextElement.classList.remove(this._invert(speedColourClass))
-            speedTextElement.innerText = overviewValues.speed.value
-        })
-    }
-
-    _init = () => {
-        this._setupCommandInterface()
-        this._setupClickInterface()
-        this._focusCommandEntry()
-        this._setupPlayPauseInterface()
     }
 
     _newCommandHandler = () => {
