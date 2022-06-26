@@ -55,19 +55,19 @@ export class AeroplaneService {
         //     this.aeroplanes.push(aeroplane)
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", "A321", 470, 425, 200, 90, 2800, 1),
-            new Aeroplane("BA456", "A321", 500, 300, 200, 90, 3000, 1),
-            new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
-            new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
-            new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
-            new Aeroplane("BA131", "A321", 500, 350, 200, 270, 6000, 1),
-            new Aeroplane("BA415", "A321", 500, 450, 200, 225, 6000, 1),
-            new Aeroplane("BA161", "A321", 500, 450, 200, 225, 6000, 1),
-            new Aeroplane("BA171", "A321", 500, 450, 200, 225, 6000, 1),
-            new Aeroplane("BA181", "A321", 500, 450, 200, 225, 6000, 1),
-            new Aeroplane("BA191", "A321", 500, 450, 200, 225, 6000, 1),
-            new Aeroplane("BA202", "A321", 500, 450, 200, 225, 6000, 1),
-            new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA123", "A321", 300, 425, 200, 90, 6000, 1),
+            // new Aeroplane("BA999", "A321", 300, 425, 200, 90, 6000, 1),
+            // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
+            // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
+            // new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
+            // new Aeroplane("BA131", "A321", 500, 350, 200, 270, 6000, 1),
+            // new Aeroplane("BA415", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA161", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA171", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA181", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA191", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA202", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
         // this.aeroplanes.forEach(plane => {
@@ -102,6 +102,9 @@ export class AeroplaneService {
                 }
                 if (command.runway) {
                     runwaySet = plane.setLanding(this.map, command.runway)
+                }
+                if (command.hold) {
+                    holdSet = plane.setHold(this.map, command.hold)
                 }
             }
         })

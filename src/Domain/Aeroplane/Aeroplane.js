@@ -1,4 +1,4 @@
-import {Altitude, Heading, Landing, Speed, Waypoint} from "../Action/Action";
+import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
@@ -55,29 +55,29 @@ export class Aeroplane {
     }
 
     addAction = (action) => {
-        if (action.type() === "Landing") { // landing overwrites everything
+        // Nothing overwrites Landing
+        if (this.actions.length > 0 && this.actions[0].type() === 'Landing') {
+            return
+        }
+
+        // Landing overwrites everything
+        if (action.type() === "Landing") {
             this.actions = [action]
             this._update_targets()
             return
         }
+
         for (let x = 0; x < this.actions.length; x++) {
-            if (this.actions[x].type() === "Waypoint" && action.type() === "Heading") { // heading overwrites waypoint
+            // replace same action
+            if (this.actions[x].type() === action.type()) {
                 this.actions[x] = action
                 this._update_targets()
                 return
             }
-            if (this.actions[x].type() === "Heading" && action.type() === "Waypoint") { // waypoint overwrites heading
-                this.actions[x] = action
-                this._update_targets()
-                return
-            }
-            if (this.actions[x].type() === "Waypoint" && action.type() === "Waypoint") { // waypoint overwrites waypoint
-                this.actions[x] = action
-                this._update_targets()
-                return
-            }
-            if (this.actions[x].type() === action.type()) { // replace action
-                this.actions[x] = action
+            // Directional actions override one another
+            const directionalActions = ["HoldingPattern", "Heading", "Waypoint"]
+            if (directionalActions.includes(action.type()) && directionalActions.includes(this.actions[x].type())) {
+                this.actions = [action]
                 this._update_targets()
                 return
             }
@@ -123,6 +123,14 @@ export class Aeroplane {
         if (newLanding.isValid()) {
             this.addAction(newLanding)
             return runway
+        }
+    }
+
+    setHold = (map, direction) => {
+        const newHoldingPattern = new HoldingPattern(map, this, direction);
+        if (newHoldingPattern.isValid()) {
+            this.addAction(newHoldingPattern)
+            return direction
         }
     }
 
@@ -176,6 +184,10 @@ export class Aeroplane {
 
     isLanding = () => {
         return this.actions.length > 0 && this.actions[0].type() === "Landing"
+    }
+
+    isHolding = () => {
+        return this.actions.length > 0 && this.actions.map(action => action.type()).includes("HoldingPattern")
     }
 
     hasLanded = (landedCallback) => {

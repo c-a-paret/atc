@@ -1,4 +1,4 @@
-import {Altitude, Heading, Landing, shortestAngle, Speed, Waypoint} from "../Action";
+import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../Action";
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {GameMap} from "../../GameMap/GameMap";
 import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../config/constants";
@@ -609,12 +609,8 @@ describe("Heading", () => {
     ${3} | ${180} | ${90} | ${92}}
     ${3} | ${220} | ${90} | ${92}}
     ${3} | ${320} | ${90} | ${92}}
-  `("Aeroplane with weight $weight and speed $speed heading $currentHeading should head to $targetHeadingAfterFirstApply", ({
-                                                                                                                                                                                                                                                                                                                                                                                                                                                       weight,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                       speed,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                       currentHeading,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                       targetHeadingAfterFirstApply
-                                                                                                                                                                                                                                                                                                                                                                                                                                                   }) => {
+  `("Aeroplane with weight $weight and speed $speed heading $currentHeading should head to $targetHeadingAfterFirstApply", (
+        {weight, speed, currentHeading, targetHeadingAfterFirstApply}) => {
         const aeroplane = new Aeroplane("BA123", "A321", 500, 500, speed, currentHeading, 3000, weight)
         aeroplane.setHeading({}, 180)
 
@@ -861,6 +857,59 @@ describe("Landing", () => {
 
     test("Is not valid if the aeroplane is not below minimum approach speed", () => {
         expect(new Landing(map, {x: 575, y: 450, heading: 90, altitude: 2000, speed: 201}, "9L").isValid()).toBeFalsy()
+    })
+})
+
+describe("Holding Pattern", () => {
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+    })
+
+    test("Turns aeroplane to correct heading when turning left across 0", () => {
+        const holdDirection = -1;
+        const speed = 190;
+        const heading = 3;
+        const weight = 1;
+        const x = 500;
+        const y = 500;
+
+        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight)
+        const hold = new HoldingPattern(map, aeroplane, holdDirection);
+
+        expect(aeroplane.heading).toBe(3)
+
+        hold.apply()
+
+        expect(aeroplane.heading).toBe(358)
+    })
+
+    test("Turns aeroplane to correct heading when turning right across 0", () => {
+        const holdDirection = 1;
+        const speed = 190;
+        const heading = 358;
+        const weight = 1;
+        const x = 500;
+        const y = 500;
+
+        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight)
+        const hold = new HoldingPattern(map, aeroplane, holdDirection);
+
+        expect(aeroplane.heading).toBe(358)
+
+        hold.apply()
+
+        expect(aeroplane.heading).toBe(3)
+    })
+
+    test("Is always valid", () => {
+        const hold = new HoldingPattern(map, {}, "anything");
+        expect(hold.isValid()).toBeTruthy()
+    })
+
+    test("Is always actionable", () => {
+        const hold = new HoldingPattern(map, {}, 1);
+        expect(hold.isActionable()).toBeTruthy()
     })
 })
 

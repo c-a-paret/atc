@@ -180,7 +180,9 @@ export class InterfaceController {
 
     _get_location = (aeroplane) => {
         if (aeroplane.isLanding()) {
-            return new TargetValue(`Landing runway ${aeroplane.actions[0].targetRunway}`)
+            return new TargetValue('Landing')
+        } else if (aeroplane.isHolding()) {
+            return new TargetValue(`Hold`)
         } else {
             if (aeroplane.targetLocation) {
                 return new TargetValue(aeroplane.targetLocation)

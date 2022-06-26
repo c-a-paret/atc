@@ -1,5 +1,5 @@
 import {Aeroplane} from "../Aeroplane";
-import {Altitude, Heading, Landing, Speed, Waypoint} from "../../Action/Action";
+import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../../Action/Action";
 import {GameMap} from "../../GameMap/GameMap";
 import {MIN_SPEED} from "../../../config/constants";
 
@@ -273,7 +273,39 @@ describe("Add Actions", () => {
 
     })
 
-    describe('Heading and Waypoint actions overwrite one another', () => {
+    describe('Directional actions overwrite one another', () => {
+        test('Hold overwrites waypoint action', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "LAM")
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+
+            const holdAction = new HoldingPattern(testGameMap(), aeroplane, 1)
+            aeroplane.addAction(holdAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
+        })
+
+        test('Hold overwrites heading action', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Heading(testGameMap(), aeroplane, 272)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+
+            const holdAction = new HoldingPattern(testGameMap(), aeroplane, 1)
+            aeroplane.addAction(holdAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
+        })
+
         test('Heading overwrites Waypoint', () => {
             const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
@@ -282,6 +314,22 @@ describe("Add Actions", () => {
 
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].type()).toBe("Waypoint")
+
+            const headingAction = new Heading(testGameMap(), aeroplane, 87)
+            aeroplane.addAction(headingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+        })
+
+        test('Heading overwrites Hold', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new HoldingPattern(testGameMap(), aeroplane, 1)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
 
             const headingAction = new Heading(testGameMap(), aeroplane, 87)
             aeroplane.addAction(headingAction)
@@ -303,6 +351,151 @@ describe("Add Actions", () => {
 
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].type()).toBe("Waypoint")
+        })
+
+        test('Waypoint overwrites Hold', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new HoldingPattern(testGameMap(), aeroplane, 1)
+            ]
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+        })
+
+        test('Waypoint overwrites Waypoint', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "OCK")
+            ]
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("OCK")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("LAM")
+        })
+    })
+
+    describe('Nothing overwrites landing', () => {
+        test('Hold does not overwrite Landing', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 500, 425, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Landing(testGameMap(), aeroplane, "9L")
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Landing")
+
+            const holdAction = new HoldingPattern(testGameMap(), aeroplane, 1)
+            aeroplane.addAction(holdAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Landing")
+        })
+
+        test('Hold overwrites heading action', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Heading(testGameMap(), aeroplane, 272)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+
+            const holdAction = new HoldingPattern(testGameMap(), aeroplane, 1)
+            aeroplane.addAction(holdAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
+        })
+
+        test('Heading overwrites Waypoint', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "LAM")
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+
+            const headingAction = new Heading(testGameMap(), aeroplane, 87)
+            aeroplane.addAction(headingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+        })
+
+        test('Heading overwrites Hold', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new HoldingPattern(testGameMap(), aeroplane, 1)
+            ]
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
+
+            const headingAction = new Heading(testGameMap(), aeroplane, 87)
+            aeroplane.addAction(headingAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+        })
+
+        test('Waypoint overwrites Heading', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Heading(testGameMap(), aeroplane, 87)
+            ]
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+        })
+
+        test('Waypoint overwrites Hold', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new HoldingPattern(testGameMap(), aeroplane, 1)
+            ]
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("HoldingPattern")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+        })
+
+        test('Waypoint overwrites Waypoint', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "OCK")
+            ]
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("OCK")
+
+            const waypointAction = new Waypoint(testGameMap(), aeroplane, "LAM")
+            aeroplane.addAction(waypointAction)
+
+            expect(aeroplane.actions.length).toBe(1)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("LAM")
         })
     })
 
@@ -377,24 +570,6 @@ describe("Add Actions", () => {
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].type()).toBe("Altitude")
             expect(aeroplane.actions[0].targetValue).toBe(12200)
-        })
-
-        test('Landing updates', () => {
-            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
-            aeroplane.actions = [
-                new Landing(testGameMap(), aeroplane, "9R")
-            ]
-
-            expect(aeroplane.actions.length).toBe(1)
-            expect(aeroplane.actions[0].type()).toBe("Landing")
-            expect(aeroplane.actions[0].targetRunway).toBe("9R")
-
-            const landingAction = new Landing(testGameMap(), aeroplane, "9L")
-            aeroplane.addAction(landingAction)
-
-            expect(aeroplane.actions.length).toBe(1)
-            expect(aeroplane.actions[0].type()).toBe("Landing")
-            expect(aeroplane.actions[0].targetRunway).toBe("9L")
         })
     })
 })
@@ -742,6 +917,25 @@ describe("Outside boundaries", () => {
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
+    })
+})
+
+describe("Holding state", () => {
+    test("Aeroplane is landing", () => {
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
+        aeroplane.actions = [
+            new HoldingPattern(testGameMap(), aeroplane, 1),
+            new Speed(testGameMap(), aeroplane, 240)
+        ]
+        expect(aeroplane.isHolding()).toBeTruthy()
+    })
+
+    test("Aeroplane is not holding", () => {
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
+        aeroplane.actions = [
+            new Speed(testGameMap(), aeroplane, 220)
+        ]
+        expect(aeroplane.isHolding()).toBeFalsy()
     })
 })
 

@@ -1,13 +1,12 @@
-import {
-    toDegrees
-} from "../../utils/maths";
+import {toDegrees} from "../../utils/maths";
 import {
     ILS_MAX_X,
     ILS_MIN_X,
     LANDING_SPEED,
     MAX_ALTITUDE,
     MIN_ALTITUDE,
-    MIN_APPROACH_SPEED, MIN_SPEED
+    MIN_APPROACH_SPEED,
+    MIN_SPEED
 } from "../../config/constants";
 import {distance, shortestAngle} from "../../utils/geometry";
 
@@ -237,7 +236,7 @@ export class Waypoint extends Action {
 
     isValid = () => {
         for (let x = 0; x < this.map.features.waypoints.length; x++) {
-            if ( this.map.features.waypoints[x].id === this.targetWaypoint) {
+            if (this.map.features.waypoints[x].id === this.targetWaypoint) {
                 return true
             }
         }
@@ -250,8 +249,8 @@ export class Landing extends Action {
         super(map, aeroplane, targetRunway);
         this.map = map
         this.targetRunway = targetRunway
-        this.waypointSet = false
         this.speedSet = false
+        this.waypointSet = false
         this.executed = false
     }
 
@@ -261,8 +260,10 @@ export class Landing extends Action {
 
     apply = () => {
         if (!this.speedSet && !this.waypointSet) {
-            this.aeroplane.setSpeed(this.map, LANDING_SPEED)
+            this.aeroplane.actions.push(new Speed(this.map, this.aeroplane, LANDING_SPEED))
             this.aeroplane.actions.push(new Waypoint(this.map, this.aeroplane, this.targetRunway))
+            this.speedSet = true
+            this.waypointSet = true
         }
         const runway = this.map.getRunwayInfo(this.targetRunway)
         const distanceToRunway = distance(this.aeroplane.x, this.aeroplane.y, runway.ILS.innerMarker.x, runway.ILS.innerMarker.y)
@@ -302,6 +303,57 @@ export class Landing extends Action {
             return aeroplane.x < runway.ILS.innerMarker.x
         } else {
             return aeroplane.x > runway.ILS.innerMarker.x
+        }
+    }
+}
+
+export class HoldingPattern extends Action {
+    constructor(map, aeroplane, direction) {
+        const directionName = direction === 1 ? 'right' : 'left'
+        super(map, aeroplane, directionName);
+        this.map = map
+        this.direction = direction
+    }
+
+    isActionable = () => {
+        return true
+    }
+
+    isValid = () => {
+        return true
+    }
+
+    apply = () => {
+        const rateOfTurn = this._change_rate()
+        let newHeading = this.aeroplane.heading + (this.direction * rateOfTurn)
+        if (newHeading < 360) {
+            newHeading = 360 + newHeading
+        }
+        if (newHeading > 360) {
+            newHeading = newHeading - 360
+        }
+        this.aeroplane.heading = newHeading
+    };
+
+    _change_rate = () => {
+        if (this.aeroplane.speed < 200) {
+            return {
+                1: 5,
+                2: 3,
+                3: 2,
+            }[this.aeroplane.weight]
+        } else if (this.aeroplane.speed < 300) {
+            return {
+                1: 3,
+                2: 2,
+                3: 2,
+            }[this.aeroplane.weight]
+        } else {
+            return {
+                1: 3,
+                2: 2,
+                3: 2,
+            }[this.aeroplane.weight]
         }
     }
 }

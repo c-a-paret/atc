@@ -141,6 +141,40 @@ describe('Send command', () => {
         expect(affectedAeroplane.actions.length).toBe(1)
     })
 
+    test('Sends speed and hold command to relevant aeroplane', () => {
+        const service = new AeroplaneService(map, {})
+        service.aeroplanes = [
+            new Aeroplane("BA123", "A321", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", "A321", 500, 350, 120, 90, 10000, 3),
+        ]
+
+        const rawCommand = "BA456S140HR"
+
+        const result = service.sendCommand(rawCommand)
+
+        expect(result).toStrictEqual({
+            callSign: "BA456",
+            speed: 140,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined,
+            hold: 1
+        })
+
+        const unaffectedAeroplane = service.aeroplanes[0]
+        expect(unaffectedAeroplane.callSign).toBe("BA123")
+        expect(unaffectedAeroplane.actions.length).toBe(0)
+
+        const affectedAeroplane = service.aeroplanes[1]
+        expect(affectedAeroplane.callSign).toBe("BA456")
+        expect(affectedAeroplane.actions.length).toBe(2)
+
+        expect(affectedAeroplane.actions[0].type()).toBe("Speed")
+        expect(affectedAeroplane.actions[1].type()).toBe("HoldingPattern")
+    })
+
+
     test('All aeroplanes unaffected if command not valid', () => {
         const service = new AeroplaneService(map, {})
         service.aeroplanes = [
