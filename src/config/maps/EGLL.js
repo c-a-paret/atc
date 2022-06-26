@@ -1,6 +1,6 @@
 import {ILS_MAX_X} from "../constants";
 
-const x = document.body.clientWidth * 0.95
+const x = document.body.clientWidth
 const y = document.body.clientHeight
 const runwayWidth = x / 25
 const runwayGap = x / 60
@@ -179,6 +179,22 @@ export const EGLL = {
             {"x": 0.1 * x, "y": 0.17 * y},
             {"x": 0.15 * x, "y": 0.3 * y},
 
+        ]
+    },
+    terrain: {
+        rivers: [
+            // {
+            //     name: "Thames",
+            //     borders: [
+            //         [
+            //             {x: x, y: 0.5 * y },
+            //             {x: 0.995 * x, y: 0.49 * y },
+            //             {x: 0.99 * x, y: 0.47 * y },
+            //             {x: 0.975 * x, y: 0.45 * y },
+            //             {x: 0.965 * x, y: 0.452 * y },
+            //         ]
+            //     ]
+            // }
         ]
     },
 

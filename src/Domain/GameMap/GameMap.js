@@ -12,6 +12,7 @@ export class GameMap {
             mapLines: mapConfig.features.mapLines,
             crosses: mapConfig.features.crosses,
         }
+        this.terrain = mapConfig.terrain
     }
 
     runwayExists = (targetRunway) => {

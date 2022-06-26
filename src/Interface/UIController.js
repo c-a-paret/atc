@@ -55,6 +55,7 @@ export class UIController {
         this._drawILSFeathers(this.map.features.runways)
         this._drawMapLines(this.map.features.mapLines)
         this._drawMapCrosses(this.map.features.crosses)
+        this._drawTerrain(this.map.terrain)
     }
 
     drawAeroplane = (aeroplane) => {
@@ -327,5 +328,20 @@ export class UIController {
                 this.featuresContext.fillText(waypoint.id, waypoint.x - 12, waypoint.y - 20);
             }
         }
+    }
+
+    _drawTerrain = (terrain) => {
+        terrain.rivers.forEach(river => {
+            river.borders.forEach(border => {
+                this.featuresContext.strokeStyle = COLOURS.WHITE_TRANSPARENT;
+                this.featuresContext.lineWidth = 1;
+                this.featuresContext.beginPath();
+                this.featuresContext.moveTo(border[0].x, border[0].y);
+                border.forEach(point => {
+                    this.featuresContext.lineTo(point.x, point.y);
+                })
+                this.featuresContext.stroke();
+            })
+        })
     }
 }
