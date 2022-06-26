@@ -83,6 +83,7 @@ export class AeroplaneService {
         let altitudeSet;
         let waypointSet;
         let runwaySet;
+        let holdSet;
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
                 callSign = plane.callSign
@@ -110,7 +111,8 @@ export class AeroplaneService {
             "heading": headingSet,
             "altitude": altitudeSet,
             "waypoint": waypointSet,
-            "runway": runwaySet
+            "runway": runwaySet,
+            "hold": holdSet
         }
     }
 

@@ -2,7 +2,7 @@ import {
     commandMessage,
     parseAltitude,
     parseCommand,
-    parseHeading,
+    parseHeading, parseHold,
     parseRunway,
     parseSpeed,
     parseWaypoint
@@ -28,7 +28,7 @@ describe("Parse Command", () => {
     })
 
     test("Extracts the desired heading", () => {
-        const command = "BA423H342S200"
+        const command = "BA423T342S200"
         const expectedSpeed = 342
 
         const result = parseCommand(command)
@@ -63,8 +63,17 @@ describe("Parse Command", () => {
         expect(result.waypoint).toBe(expectedWaypoint)
     })
 
+    test("Extracts the hold pattern", () => {
+        const command = "BA423HLS220"
+        const expectedHoldDirection = -1
+
+        const result = parseCommand(command)
+
+        expect(result.hold).toBe(expectedHoldDirection)
+    })
+
     test("Sets heading and waypoint null if both supplied", () => {
-        const command = "BA423>OCKD13H200"
+        const command = "BA423>OCKD13T200"
 
         const result = parseCommand(command)
 
@@ -132,7 +141,7 @@ describe("Speed Commands", () => {
 
 describe("Heading Commands", () => {
     test("Extracts heading inside larger command", () => {
-        const command = "BA423S200H070WLAM"
+        const command = "BA423S200T070WLAM"
         const expectedHeading = 70
 
         const result = parseHeading(command)
@@ -141,7 +150,7 @@ describe("Heading Commands", () => {
     })
 
     test("Extracts heading of 000 to 360", () => {
-        const command = "BA423S200H000WLAM"
+        const command = "BA423S200T000WLAM"
         const expectedHeading = 360
 
         const result = parseHeading(command)
@@ -219,6 +228,34 @@ describe("Landing Commands", () => {
         const command = "J123S150"
 
         const result = parseRunway(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Hold Commands", () => {
+    test("Extracts hold right command", () => {
+        const command = "BA423HR"
+        const expectedDirection = 1
+
+        const result = parseHold(command)
+
+        expect(result).toBe(expectedDirection)
+    })
+
+    test("Extracts hold left command", () => {
+        const command = "BA423HL"
+        const expectedDirection = -1
+
+        const result = parseHold(command)
+
+        expect(result).toBe(expectedDirection)
+    })
+
+    test("Returns null if no hold command found", () => {
+        const command = "J123S150"
+
+        const result = parseHold(command)
 
         expect(result).toBeNull()
     })

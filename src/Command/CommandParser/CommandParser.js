@@ -15,15 +15,16 @@ export const parseCommand = (rawCommand) => {
         heading: heading,
         altitude: parseAltitude(actionCommands),
         waypoint: waypoint,
-        runway: parsedRunway
+        runway: parsedRunway,
+        hold: parseHold(actionCommands)
     }
 }
 
 export const commandMessage = (acceptedCommands) => {
-    if ([acceptedCommands.callSign, acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway].every(value => value === undefined)) {
+    if ([acceptedCommands.callSign, acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway, acceptedCommands.hold].every(value => value === undefined)) {
         return 'Unrecognised command'
     }
-    if ([acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway].every(value => value === undefined)) {
+    if ([acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway, acceptedCommands.hold].every(value => value === undefined)) {
         return 'No valid commands'
     }
     return `${acceptedCommands.callSign}` +
@@ -31,7 +32,8 @@ export const commandMessage = (acceptedCommands) => {
         `${acceptedCommands.heading ? ' Heading: ' + acceptedCommands.heading : ''}` +
         `${acceptedCommands.altitude ? ' Altitude: ' + acceptedCommands.altitude + 'ft' : ''}` +
         `${acceptedCommands.waypoint ? ' Waypoint: ' + acceptedCommands.waypoint : ''}` +
-        `${acceptedCommands.runway ? ' cleared to land runway ' + acceptedCommands.runway : ''}`
+        `${acceptedCommands.runway ? ' cleared to land runway ' + acceptedCommands.runway : ''}` +
+        `${Math.abs(acceptedCommands.hold) === 1 ? ` Holding to the ${acceptedCommands.hold === 1 ? 'right' : 'left'} ` : ''}`
 }
 
 export const parseSpeed = (command) => {
@@ -43,7 +45,7 @@ export const parseSpeed = (command) => {
 }
 
 export const parseHeading = (command) => {
-    const match = command.match(/H(\d{3})/g);
+    const match = command.match(/T(\d{3})/g);
     if (match && match.length === 1) {
         let heading = parseInt(match[0].substring(1));
         return heading === 0 ? 360 : heading
@@ -74,3 +76,12 @@ export const parseRunway = (command) => {
     }
     return null
 }
+
+export const parseHold = (command) => {
+    const match = command.match(/H[LR]/g);
+    if (match && match.length === 1) {
+        return match[0][1] === "R" ? 1 : -1
+    }
+    return null
+}
+

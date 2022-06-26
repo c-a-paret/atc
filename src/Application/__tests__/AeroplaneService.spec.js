@@ -58,7 +58,7 @@ describe('Send command', () => {
             new Aeroplane("BA456", "A321", "A321", 500, 350, 120, 90, 10000, 3),
         ]
 
-        const rawCommand = "BA456S140C120H070"
+        const rawCommand = "BA456S140C120T070"
 
         const result = service.sendCommand(rawCommand)
 
@@ -68,7 +68,8 @@ describe('Send command', () => {
             heading: 70,
             altitude: 12000,
             waypoint: undefined,
-            runway: undefined
+            runway: undefined,
+            hold: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -97,7 +98,8 @@ describe('Send command', () => {
             heading: undefined,
             altitude: undefined,
             waypoint: "LAM",
-            runway: undefined
+            runway: undefined,
+            hold: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -126,7 +128,8 @@ describe('Send command', () => {
             heading: undefined,
             altitude: undefined,
             waypoint: undefined,
-            runway: "9L"
+            runway: "9L",
+            hold: undefined,
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -155,7 +158,8 @@ describe('Send command', () => {
             heading: undefined,
             altitude: undefined,
             waypoint: undefined,
-            runway: undefined
+            runway: undefined,
+            hold: undefined
         })
 
         const unaffectedAeroplane1 = service.aeroplanes[0]
