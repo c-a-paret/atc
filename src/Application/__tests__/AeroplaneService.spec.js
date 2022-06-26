@@ -54,8 +54,8 @@ describe('Send command', () => {
     test('Sends base commands to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
+            new Aeroplane("BA123", "A321", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", "A321", 500, 350, 120, 90, 10000, 3),
         ]
 
         const rawCommand = "BA456S140C120H070"
@@ -83,8 +83,8 @@ describe('Send command', () => {
     test('Sends waypoint command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000, 3),
         ]
 
         const rawCommand = "BA456>LAM"
@@ -112,8 +112,8 @@ describe('Send command', () => {
     test('Sends landing command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", 300, 500, 140, 90, 2800, 3),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", 300, 500, 140, 90, 2800, 3),
         ]
 
         const rawCommand = "BA456.9L."
@@ -141,8 +141,8 @@ describe('Send command', () => {
     test('All aeroplanes unaffected if command not valid', () => {
         const service = new AeroplaneService(map, {})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000, 3),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000, 3),
         ]
 
         const rawCommand = "BA456X140Y12P070"
@@ -173,8 +173,8 @@ describe('Get aeroplane by position', () => {
     test('Gets first aeroplane when provided position is within its tolerances', () => {
         const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
+            new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
         ]
 
         const providedX = 501
@@ -188,8 +188,8 @@ describe('Get aeroplane by position', () => {
     test('Gets second aeroplane when provided position is within its tolerances', () => {
         const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
+            new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
         ]
 
         const providedX = 496
@@ -203,8 +203,8 @@ describe('Get aeroplane by position', () => {
     test('Returns null if no aeroplanes in the area', () => {
         const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
         service.aeroplanes = [
-            new Aeroplane("BA123", 500, 300, 120, 180, 5000),
-            new Aeroplane("BA456", 500, 350, 120, 90, 10000),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
+            new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
         ]
 
         const providedX = 5
@@ -236,8 +236,8 @@ describe('Remove aeroplanes', () => {
         service.setStatsService(statsService)
 
         service.aeroplanes = [
-            new Aeroplane("BA123", -1, 50, 120, 180, 5000),
-            new Aeroplane("BA456", 50, 50, 120, 90, 10000),
+            new Aeroplane("BA123", "A321", -1, 50, 120, 180, 5000),
+            new Aeroplane("BA456", "A321", 50, 50, 120, 90, 10000),
         ]
 
         expect(service.aeroplanes.length).toBe(2)
@@ -268,8 +268,8 @@ describe('Remove aeroplanes', () => {
         service.setStatsService(statsService)
 
         service.aeroplanes = [
-            new Aeroplane("BA123", 100, 100, 140, 90, LANDED_ALTITUDE - 1),
-            new Aeroplane("BA456", 25, 100, 140, 90, 3000),
+            new Aeroplane("BA123", "A321", 100, 100, 140, 90, LANDED_ALTITUDE - 1),
+            new Aeroplane("BA456", "A321", 25, 100, 140, 90, 3000),
         ]
 
         expect(service.aeroplanes.length).toBe(2)
@@ -296,13 +296,13 @@ describe('Determine proximal aeroplanes', () => {
         service.setStatsService(mockStatsService)
 
         service.aeroplanes = [
-            new Aeroplane("BA123_BREACH", 50, 50, 120, 90, 5000),
-            new Aeroplane("BA456_BREACH", 50, 50, 120, 90, 5500),
+            new Aeroplane("BA123_BREACH", "A321", 50, 50, 120, 90, 5000),
+            new Aeroplane("BA456_BREACH", "A321", 50, 50, 120, 90, 5500),
 
-            new Aeroplane("BA789_BREACH", 1000, 1000, 120, 90, 10000),
-            new Aeroplane("BA101_BREACH", 1030, 960, 120, 90, 9001),
+            new Aeroplane("BA789_BREACH", "A321", 1000, 1000, 120, 90, 10000),
+            new Aeroplane("BA101_BREACH", "A321", 1030, 960, 120, 90, 9001),
 
-            new Aeroplane("BA112_NO_BREACH", 500, 500, 120, 90, 10000),
+            new Aeroplane("BA112_NO_BREACH", "A321", 500, 500, 120, 90, 10000),
         ]
 
         service.markAeroplanesBreakingProximity()

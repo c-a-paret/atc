@@ -28,15 +28,17 @@ export class AeroplaneService {
     }
 
     initArrival = () => {
-        const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
+        const aeroplaneConfig = AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)]
+        const callSign = `${aeroplaneConfig.operatorIATA}${getRandomNumberBetween(100, 999)}`
+        const shortClass = aeroplaneConfig.shortClass
         const location = this.spawnLocations[Math.floor(Math.random() * this.spawnLocations.length)];
         const startX = location.x
         const startY = location.y
         const startHeading = location.heading
         const startSpeed = roundToNearest(getRandomNumberBetween(180, 260), 10)
         const startAltitude = roundToNearest(getRandomNumberBetween(5000, 8000), 500)
-        const weight = [1, 2, 3][Math.floor(Math.random() * 3)];
-        const plane = new Aeroplane(callSign, startX, startY, startSpeed, startHeading, startAltitude, weight)
+        const weight = aeroplaneConfig.weight
+        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight)
         plane.setWaypoint(this.map, this.map.defaultWaypoint)
         this.aeroplanes.push(plane)
     }
@@ -53,19 +55,19 @@ export class AeroplaneService {
         //     this.aeroplanes.push(aeroplane)
         // }
         this.aeroplanes = [
-            new Aeroplane("BA123", 470, 425, 200, 90, 2800, 1),
-            // new Aeroplane("BA456", 500, 300, 200, 90, 3000, 1),
-            // new Aeroplane("BA789", 500, 400, 200, 135, 6000, 1),
-            // new Aeroplane("BA101", 500, 500, 200, 180, 6000, 1),
-            // new Aeroplane("BA112", 500, 250, 200, 305, 6000, 1),
-            // new Aeroplane("BA131", 500, 350, 200, 270, 6000, 1),
-            // new Aeroplane("BA415", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA161", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA171", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA181", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA191", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA202", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA212", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA123", "A321", 470, 425, 200, 90, 2800, 1),
+            new Aeroplane("BA456", "A321", 500, 300, 200, 90, 3000, 1),
+            new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
+            new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
+            new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
+            new Aeroplane("BA131", "A321", 500, 350, 200, 270, 6000, 1),
+            new Aeroplane("BA415", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA161", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA171", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA181", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA191", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA202", "A321", 500, 450, 200, 225, 6000, 1),
+            new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
         // this.aeroplanes.forEach(plane => {

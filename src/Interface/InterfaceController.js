@@ -67,13 +67,20 @@ export class InterfaceController {
         callSignText.innerText = aeroplane.callSign
         callSign.appendChild(callSignText)
 
+        //  Short class
+        const shortClass = this._div(["value"])
+        const shortClassText = this._p(["text", "center", "short-class"])
+        shortClassText.innerText = aeroplane.shortClass
+        shortClass.appendChild(shortClassText)
+
         //  Target
         const target = this._div(["value"])
-        const targetText = this._p(["text"])
+        const targetText = this._p(["text", "right"])
         targetText.innerText = "27L"
         target.appendChild(targetText)
 
         overview.appendChild(callSign)
+        overview.appendChild(shortClass)
         overview.appendChild(target)
 
         return overview
@@ -145,13 +152,13 @@ export class InterfaceController {
 
         //  Speed
         const speed = this._div(["action-target"])
-        const speedText = this._p(["text", this._colour_class(overviewValues.speed)], `${aeroplane.callSign}-speed`)
+        const speedText = this._p(["text", this._colour_class(overviewValues.speed), "center"], `${aeroplane.callSign}-speed`)
         speedText.innerText = overviewValues.speed.value
         speed.appendChild(speedText)
 
         //  Altitude
         const altitude = this._div(["action-target"])
-        const altitudeText = this._p(["text", this._colour_class(overviewValues.altitude)], `${aeroplane.callSign}-altitude`)
+        const altitudeText = this._p(["text", this._colour_class(overviewValues.altitude), "right"], `${aeroplane.callSign}-altitude`)
         altitudeText.innerText = overviewValues.altitude.value
         altitude.appendChild(altitudeText)
 

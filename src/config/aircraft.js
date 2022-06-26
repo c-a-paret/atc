@@ -4,13 +4,15 @@ export const AIRCRAFT = [
         "operatorIATA": "BA",
         "type": "Airbus",
         "class": "A340-400",
+        "shortClass": "A340",
         "weight": 3,
     },
     {
         "operator": "Lufthansa",
         "operatorIATA": "LH",
         "type": "Airbus",
-        "class": "A321",
+        "class": "A321xlr",
+        "shortClass": "A321",
         "weight": 2,
     },
     {
@@ -18,13 +20,15 @@ export const AIRCRAFT = [
         "operatorIATA": "VS",
         "type": "Boeing",
         "class": "B747-400",
+        "shortClass": "B747",
         "weight": 3,
     },
     {
         "operator": "EasyJet",
         "operatorIATA": "EZ",
         "type": "Airbus",
-        "class": "A319",
+        "class": "A319neo",
+        "shortClass": "A319",
         "weight": 1,
     },
     {
@@ -32,13 +36,15 @@ export const AIRCRAFT = [
         "operatorIATA": "RY",
         "type": "Boeing",
         "class": "B737-300",
+        "shortClass": "B737",
         "weight": 2,
     },
     {
         "operator": "Aer Lingus",
         "operatorIATA": "AL",
         "type": "Airbus",
-        "class": "A320",
+        "class": "A320-200",
+        "shortClass": "A320",
         "weight": 2,
     },
     {
@@ -46,6 +52,7 @@ export const AIRCRAFT = [
         "operatorIATA": "AA",
         "type": "Boeing",
         "class": "B777-800",
+        "shortClass": "B777",
         "weight": 3,
     }
 ]

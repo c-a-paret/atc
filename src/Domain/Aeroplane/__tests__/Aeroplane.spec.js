@@ -54,7 +54,7 @@ describe("Set Speed", () => {
 
     beforeEach(() => {
         map = testGameMap()
-        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+        aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets speed action when valid", () => {
@@ -84,7 +84,7 @@ describe("Set Heading", () => {
     let map;
     beforeEach(() => {
         map = testGameMap()
-        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+        aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets heading action when valid", () => {
@@ -120,7 +120,7 @@ describe("Set Waypoint", () => {
     let map;
     beforeEach(() => {
         map = testGameMap()
-        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+        aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets waypoint action when valid", () => {
@@ -144,7 +144,7 @@ describe("Set Altitude", () => {
     let map;
     beforeEach(() => {
         map = testGameMap()
-        aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+        aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
     })
 
     test("Sets altitude action when valid", () => {
@@ -170,7 +170,7 @@ describe("Set Landing", () => {
     let map;
     beforeEach(() => {
         map = testGameMap()
-        aeroplane = new Aeroplane("AB123", 290, 500, 190, 90, 2500, 3)
+        aeroplane = new Aeroplane("AB123", "A321", 290, 500, 190, 90, 2500, 3)
     })
 
     test("Sets landing action when valid", () => {
@@ -194,7 +194,7 @@ describe("Set Landing", () => {
 describe("Add Actions", () => {
     describe('When no pre-existing actions', () => {
         test('Adds single Landing action to aeroplane', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             const action = new Landing(testGameMap(), aeroplane, "9R")
             aeroplane.addAction(action)
 
@@ -202,7 +202,7 @@ describe("Add Actions", () => {
         })
 
         test('Adds single Waypoint action to aeroplane', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             const action = new Waypoint(testGameMap(), aeroplane, "LAM")
             aeroplane.addAction(action)
 
@@ -210,7 +210,7 @@ describe("Add Actions", () => {
         })
 
         test('Adds single Heading action to aeroplane', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             const action = new Heading(testGameMap(), aeroplane, 87)
             aeroplane.addAction(action)
 
@@ -218,7 +218,7 @@ describe("Add Actions", () => {
         })
 
         test('Adds single Speed action to aeroplane', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             const action = new Speed(testGameMap(), aeroplane, 220)
             aeroplane.addAction(action)
 
@@ -226,7 +226,7 @@ describe("Add Actions", () => {
         })
 
         test('Adds single Altitude action to aeroplane', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             const action = new Altitude(testGameMap(), aeroplane, 4600)
             aeroplane.addAction(action)
 
@@ -236,7 +236,7 @@ describe("Add Actions", () => {
 
     describe('Landing overwrites all pre-existing actions', () => {
         test('With one pre-existing action', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Altitude(testGameMap(), aeroplane, 4600)
             ]
@@ -252,7 +252,7 @@ describe("Add Actions", () => {
         })
 
         test('With multiple pre-existing actions', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Altitude(testGameMap(), aeroplane, 4600),
                 new Speed(testGameMap(), aeroplane, 220),
@@ -275,7 +275,7 @@ describe("Add Actions", () => {
 
     describe('Heading and Waypoint actions overwrite one another', () => {
         test('Heading overwrites Waypoint', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Waypoint(testGameMap(), aeroplane, "LAM")
             ]
@@ -291,7 +291,7 @@ describe("Add Actions", () => {
         })
 
         test('Waypoint overwrites Heading', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Heading(testGameMap(), aeroplane, 87)
             ]
@@ -308,7 +308,7 @@ describe("Add Actions", () => {
 
     describe('Updated action overwrites pre-existing same action', () => {
         test('Waypoint updates', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Waypoint(testGameMap(), aeroplane, "LAM")
             ]
@@ -326,7 +326,7 @@ describe("Add Actions", () => {
         })
 
         test('Speed updates', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Speed(testGameMap(), aeroplane, 220)
             ]
@@ -344,7 +344,7 @@ describe("Add Actions", () => {
         })
 
         test('Heading updates', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Heading(testGameMap(), aeroplane, 87)
             ]
@@ -362,7 +362,7 @@ describe("Add Actions", () => {
         })
 
         test('Altitude updates', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Altitude(testGameMap(), aeroplane, 4600)
             ]
@@ -380,7 +380,7 @@ describe("Add Actions", () => {
         })
 
         test('Landing updates', () => {
-            const aeroplane = new Aeroplane("AB123", 100, 200, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 3000, 3)
             aeroplane.actions = [
                 new Landing(testGameMap(), aeroplane, "9R")
             ]
@@ -406,11 +406,11 @@ describe("Apply Actions", () => {
         let aeroplane;
 
         beforeEach(() => {
-            aeroplane = new Aeroplane("AB123", startX, startY, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", startX, startY, 150, 0, 3000, 3)
         })
 
         test("Change in position responsive at minimum speed and 1 degree heading", () => {
-            aeroplane = new Aeroplane("AB123", 100, 100, MIN_SPEED, 91, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", 100, 100, MIN_SPEED, 91, 3000, 3)
 
             expect(aeroplane.x).toBe(100)
             expect(aeroplane.y).toBe(100)
@@ -567,7 +567,7 @@ describe("Apply Actions", () => {
         })
 
         test("Applies all actions and moves forward", () => {
-            const aeroplane = new Aeroplane("AB123", 50, 100, 150, 90, 5000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 50, 100, 150, 90, 5000, 3)
 
             aeroplane.setSpeed(map, 160)
             aeroplane.setHeading(map, 100)
@@ -591,7 +591,7 @@ describe("Sequential Actions", () => {
 
         beforeEach(() => {
             map = testGameMap()
-            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", 100, 100, 150, 0, 3000, 3)
         })
 
         test("Speed", () => {
@@ -631,7 +631,7 @@ describe("Sequential Actions", () => {
 
         beforeEach(() => {
             map = testGameMap()
-            aeroplane = new Aeroplane("AB123", 100, 100, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", 100, 100, 150, 0, 3000, 3)
         })
 
         test("Speed", () => {
@@ -679,7 +679,7 @@ describe("Sequential Actions", () => {
 
     describe("Landing action clears all other actions", () => {
         const map = testGameMap()
-        const aeroplane = new Aeroplane("AB123", 290, 505, 150, 91, 3000, 3)
+        const aeroplane = new Aeroplane("AB123", "A321", 290, 505, 150, 91, 3000, 3)
 
         aeroplane.setSpeed(map, 160)
         aeroplane.setAltitude(map, 2000)
@@ -714,7 +714,7 @@ describe("Outside boundaries", () => {
         test("Too far north", () => {
             const x = 50
             const y = -1
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -722,7 +722,7 @@ describe("Outside boundaries", () => {
         test("Too far east", () => {
             const x = 101
             const y = 50
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -730,7 +730,7 @@ describe("Outside boundaries", () => {
         test("Too far south", () => {
             const x = 50
             const y = 101
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -738,7 +738,7 @@ describe("Outside boundaries", () => {
         test("Too far west", () => {
             const x = -1
             const y = 50
-            aeroplane = new Aeroplane("AB123", x, y, 150, 0, 3000, 3)
+            aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
             const result = aeroplane.isOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
@@ -749,7 +749,7 @@ describe("Landing/Landed state", () => {
 
     describe("Determines when landing", () => {
         test("Aeroplane is landing", () => {
-            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
             aeroplane.actions = [
                 new Landing(testGameMap(), aeroplane, "9R")
             ]
@@ -757,7 +757,7 @@ describe("Landing/Landed state", () => {
         })
 
         test("Aeroplane is not landing", () => {
-            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
             aeroplane.actions = [
                 new Speed(testGameMap(), aeroplane, 220)
             ]
@@ -768,14 +768,14 @@ describe("Landing/Landed state", () => {
     describe("Determines when landed", () => {
         test("Aeroplane has landed", () => {
             const altitude = 39
-            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, altitude, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, altitude, 3)
 
             expect(aeroplane.hasLanded()).toBeTruthy()
         })
 
         test("Aeroplane has not landed", () => {
             const altitude = 40;
-            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, altitude, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, altitude, 3)
             expect(aeroplane.hasLanded()).toBeFalsy()
         })
 
@@ -785,7 +785,7 @@ describe("Landing/Landed state", () => {
                 callCount += 1
             };
 
-            const aeroplane = new Aeroplane("AB123", 250, 300, 150, 0, 20, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 20, 3)
 
             expect(callCount).toBe(0)
 
@@ -800,8 +800,8 @@ describe("Proximity breached", () => {
 
     describe("Determines aeroplane breached proximity limits", () => {
         test("Horizontal distance", () => {
-            const aeroplane1 = new Aeroplane("AB123", 470, 470, 150, 0, 3000, 3)
-            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+            const aeroplane1 = new Aeroplane("AB123", "A321", 470, 470, 150, 0, 3000, 3)
+            const aeroplane2 = new Aeroplane("AB123", "A321", 500, 500, 150, 0, 3000, 3)
 
             const result = aeroplane1.proximalTo(aeroplane2)
 
@@ -809,8 +809,8 @@ describe("Proximity breached", () => {
         })
 
         test("Vertical distance", () => {
-            const aeroplane1 = new Aeroplane("AB123", 470, 470, 150, 0, 3900, 3)
-            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+            const aeroplane1 = new Aeroplane("AB123", "A321", 470, 470, 150, 0, 3900, 3)
+            const aeroplane2 = new Aeroplane("AB123", "A321", 500, 500, 150, 0, 3000, 3)
 
             const result = aeroplane1.proximalTo(aeroplane2)
 
@@ -820,8 +820,8 @@ describe("Proximity breached", () => {
 
     describe("Determines aeroplane has not breached proximity limits", () => {
         test("When enough vertical separation", () => {
-            const aeroplane1 = new Aeroplane("AB123", 490, 510, 150, 0, 4001, 3)
-            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+            const aeroplane1 = new Aeroplane("AB123", "A321", 490, 510, 150, 0, 4001, 3)
+            const aeroplane2 = new Aeroplane("AB123", "A321", 500, 500, 150, 0, 3000, 3)
 
             const result = aeroplane1.proximalTo(aeroplane2)
 
@@ -829,8 +829,8 @@ describe("Proximity breached", () => {
         })
 
         test("When enough horizontal separation", () => {
-            const aeroplane1 = new Aeroplane("AB123", 300, 800, 150, 0, 3100, 3)
-            const aeroplane2 = new Aeroplane("AB123", 500, 500, 150, 0, 3000, 3)
+            const aeroplane1 = new Aeroplane("AB123", "A321", 300, 800, 150, 0, 3100, 3)
+            const aeroplane2 = new Aeroplane("AB123", "A321", 500, 500, 150, 0, 3000, 3)
 
             const result = aeroplane1.proximalTo(aeroplane2)
 
@@ -843,7 +843,7 @@ describe("Altitude restriction breached", () => {
 
     describe("Determines aeroplane breached altitude restrictions", () => {
         test("When no altitude range specified", () => {
-            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, 3000, 3)
             const zone = {
                 minAltitude: null,
                 maxAltitude: null,
@@ -856,7 +856,7 @@ describe("Altitude restriction breached", () => {
 
         test("When below minimum altitude", () => {
             const currentAltitude = 2999;
-            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
                 minAltitude: 3000,
                 maxAltitude: undefined,
@@ -869,7 +869,7 @@ describe("Altitude restriction breached", () => {
 
         test("When below maximum altitude", () => {
             const currentAltitude = 5001;
-            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
                 minAltitude: undefined,
                 maxAltitude: 5000,
@@ -884,7 +884,7 @@ describe("Altitude restriction breached", () => {
     describe("Determines aeroplane has not breached altitude restrictions", () => {
         test("When at minimum altitude", () => {
             const currentAltitude = 3000;
-            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
                 minAltitude: 3000,
                 maxAltitude: undefined,
@@ -897,7 +897,7 @@ describe("Altitude restriction breached", () => {
 
         test("When at maximum altitude", () => {
             const currentAltitude = 5000;
-            const aeroplane = new Aeroplane("AB123", 470, 470, 150, 0, currentAltitude, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
                 minAltitude: undefined,
                 maxAltitude: 5000,
@@ -914,7 +914,7 @@ describe("Restricted zone breached", () => {
 
     describe("Determines aeroplane breached restricted zone location", () => {
         test("Inside boundary", () => {
-            const aeroplane = new Aeroplane("AB123", 50, 750, 150, 0, 2800, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 50, 750, 150, 0, 2800, 3)
             const zone = {
                 minAltitude: 3000,
                 maxAltitude: undefined,
@@ -939,7 +939,7 @@ describe("Restricted zone breached", () => {
         })
 
         test("On boundary", () => {
-            const aeroplane = new Aeroplane("AB123", 0, 750, 150, 0, 2800, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 0, 750, 150, 0, 2800, 3)
             const zone = {
                 minAltitude: 3000,
                 maxAltitude: undefined,
@@ -966,7 +966,7 @@ describe("Restricted zone breached", () => {
 
     describe("Determines aeroplane not breached restricted zone location", () => {
         test("On zone corner", () => {
-            const aeroplane = new Aeroplane("AB123", 100, 700, 150, 0, 2800, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 700, 150, 0, 2800, 3)
             const zone = {
                 minAltitude: 3000,
                 maxAltitude: undefined,

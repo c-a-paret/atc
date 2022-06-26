@@ -3,14 +3,15 @@ import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
     HORIZONTAL_SEPARATION_MINIMUM,
-    LANDED_ALTITUDE, LANDING_SPEED,
+    LANDED_ALTITUDE,
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
 
 export class Aeroplane {
-    constructor(callSign, x, y, speed, hdg, altitude, weight) {
+    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight) {
         this.callSign = callSign;
+        this.shortClass = shortClass;
         this.weight = weight;
         this.x = x;
         this.y = y;
