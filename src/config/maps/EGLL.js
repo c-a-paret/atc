@@ -88,6 +88,7 @@ export const EGLL = {
             {type: "VOR", id: "MAY", name: "Mayfield", x: (0.65 * x), y: (0.85 * y)},
             {type: "VOR", id: "LAM", name: "Lambourne", x: (0.7 * x), y: (0.28 * y)},
             {type: "VOR", id: "EPM", name: "Epsom", x: (0.55 * x), y: (0.73 * y)},
+            {type: "VOR", id: "CHT", name: "Chiltern", x: (0.46 * x), y: (0.31 * y)},
 
             {type: "RWY", id: "9L", name: "Runway 9L", x: x / 2 - (runwayWidth / 2), y: y / 2},
             {type: "RWY", id: "9R", name: "Runway 9R", x: x / 2 - (runwayWidth / 2), y: y / 2 + runwayGap},
@@ -111,18 +112,51 @@ export const EGLL = {
                 ]
             },
             {
+                level: "critical",
+                dashes: 2,
+                label: {text: "EG(R)-158", location: {"x": 0.76 * x, "y": 0.43 * y}},
+                minAltitude: 4000,
+                maxAltitude: 5000,
+                boundaries: [
+                    {x: (0.74 * x), y: (0.45 * y), inv_y: y - (0.45 * y)},
+                    {x: (0.77 * x), y: (0.445 * y), inv_y: y - (0.445 * y)},
+                    {x: (0.775 * x), y: (0.46 * y), inv_y: y - (0.46 * y)},
+                    {x: (0.775 * x), y: (0.468 * y), inv_y: y - (0.468 * y)},
+                    {x: (0.74 * x), y: (0.462 * y), inv_y: y - (0.462 * y)},
+                ]
+            },
+            {
+                level: "critical",
+                dashes: 2,
+                label: {text: "EG(R)-107", location: {"x": 0.915 * x, "y": 0.52 * y}},
+                minAltitude: null,
+                maxAltitude: null,
+                boundaries: [
+                    {x: (0.928 * x), y: (0.47 * y), inv_y: y - (0.47 * y)},
+                    {x: (0.934 * x), y: (0.478 * y), inv_y: y - (0.478 * y)},
+                    {x: (0.934 * x), y: (0.49 * y), inv_y: y - (0.49 * y)},
+                    {x: (0.93 * x), y: (0.5 * y), inv_y: y - (0.5 * y)},
+                    {x: (0.926 * x), y: (0.492 * y), inv_y: y - (0.492 * y)},
+                    {x: (0.926 * x), y: (0.494 * y), inv_y: y - (0.494 * y)},
+                    {x: (0.924 * x), y: (0.485 * y), inv_y: y - (0.485 * y)},
+                ]
+            },
+            {
                 level: "moderate",
                 dashes: 2,
-                label: {text: "C422", location: {"x": 0.66 * x, "y": 0.47 * y}},
+                label: {text: "EG(R)-157", location: {"x": 0.75 * x, "y": 0.55 * y}},
                 minAltitude: 3000,
                 maxAltitude: 5000,
                 boundaries: [
-                    {x: (0.62 * x), y: (0.395 * y), inv_y: y - (0.395 * y)},
-                    {x: (0.67 * x), y: (0.37 * y), inv_y: y - (0.37 * y)},
-                    {x: (0.705 * x), y: (0.388 * y), inv_y: y - (0.388 * y)},
-                    {x: (0.715 * x), y: (0.49 * y), inv_y: y - (0.49 * y)},
-                    {x: (0.66 * x), y: (0.62 * y), inv_y: y - (0.62 * y)},
-                    {x: (0.63 * x), y: (0.52 * y), inv_y: y - (0.52 * y)},
+                    {x: (0.79 * x), y: (0.36 * y), inv_y: y - (0.36 * y)},
+                    {x: (0.82 * x), y: (0.45 * y), inv_y: y - (0.45 * y)},
+                    {x: (0.82 * x), y: (0.6 * y), inv_y: y - (0.6 * y)},
+                    {x: (0.75 * x), y: (0.58 * y), inv_y: y - (0.58 * y)},
+                    {x: (0.7 * x), y: (0.61 * y), inv_y: y - (0.61 * y)},
+                    {x: (0.68 * x), y: (0.55 * y), inv_y: y - (0.55 * y)},
+                    {x: (0.64 * x), y: (0.53 * y), inv_y: y - (0.53 * y)},
+                    {x: (0.665 * x), y: (0.36 * y), inv_y: y - (0.36 * y)},
+                    {x: (0.725 * x), y: (0.4 * y), inv_y: y - (0.4 * y)},
                 ]
             },
             {

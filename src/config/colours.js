@@ -10,7 +10,7 @@ export const COLOURS = {
     WHITE_TRANSPARENT: 'rgb(218,219,243,0.5)',
     WHITE_TRANSPARENT_MAX: 'rgb(218,219,243,0.1)',
     ORANGE: 'rgb(255,167,7)',
-    ORANGE_TRANSPARENT: 'rgb(194,127,6,0.2)',
+    ORANGE_TRANSPARENT: 'rgb(194,127,6,0.15)',
     GREY: 'rgba(197,197,197,0.25)',
     GREY_TRANSPARENT: 'rgba(197,197,197,0.05)',
 }
