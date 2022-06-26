@@ -159,21 +159,21 @@ export class InterfaceController {
         callSignText.innerText = aeroplane.callSign
         callSign.appendChild(callSignText)
 
+        //  Target
+        const target = this._div(["value"])
+        const targetText = this._p(["text", "center"])
+        targetText.innerText = ""
+        target.appendChild(targetText)
+
         //  Short class
         const shortClass = this._div(["value"])
-        const shortClassText = this._p(["text", "center", "short-class"])
+        const shortClassText = this._p(["text", "right", "short-class"])
         shortClassText.innerText = aeroplane.shortClass
         shortClass.appendChild(shortClassText)
 
-        //  Target
-        const target = this._div(["value"])
-        const targetText = this._p(["text", "right"])
-        targetText.innerText = "27L"
-        target.appendChild(targetText)
-
         overview.appendChild(callSign)
-        overview.appendChild(shortClass)
         overview.appendChild(target)
+        overview.appendChild(shortClass)
 
         return overview
     }
