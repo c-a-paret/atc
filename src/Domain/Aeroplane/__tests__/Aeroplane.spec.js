@@ -384,6 +384,29 @@ describe("Add Actions", () => {
             expect(aeroplane.actions[0].type()).toBe("Waypoint")
             expect(aeroplane.actions[0].targetWaypoint).toBe("LAM")
         })
+
+        test('Heading does not overwrite altitude', () => {
+            const aeroplane = new Aeroplane("AB123", "A321", 100, 200, 300, 90, 7000, 3)
+            aeroplane.actions = [
+                new Waypoint(testGameMap(), aeroplane, "LAM"),
+                new Altitude(testGameMap(), aeroplane, 4000)
+            ]
+
+            expect(aeroplane.actions.length).toBe(2)
+            expect(aeroplane.actions[0].type()).toBe("Waypoint")
+            expect(aeroplane.actions[0].targetWaypoint).toBe("LAM")
+            expect(aeroplane.actions[1].type()).toBe("Altitude")
+            expect(aeroplane.actions[1].targetValue).toBe(4000)
+
+            const headingAction = new Heading(testGameMap(), aeroplane, 180)
+            aeroplane.addAction(headingAction)
+
+            expect(aeroplane.actions.length).toBe(2)
+            expect(aeroplane.actions[0].type()).toBe("Heading")
+            expect(aeroplane.actions[0].targetValue).toBe(180)
+            expect(aeroplane.actions[1].type()).toBe("Altitude")
+            expect(aeroplane.actions[1].targetValue).toBe(4000)
+        })
     })
 
     describe('Nothing overwrites landing', () => {

@@ -77,7 +77,7 @@ export class Aeroplane {
             // Directional actions override one another
             const directionalActions = ["HoldingPattern", "Heading", "Waypoint"]
             if (directionalActions.includes(action.type()) && directionalActions.includes(this.actions[x].type())) {
-                this.actions = [action]
+                this.actions[x] = action
                 this._update_targets()
                 return
             }
