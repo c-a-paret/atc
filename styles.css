@@ -142,7 +142,7 @@ canvas {
 .message {
     font-family: "Courier New", monospace;
     font-size: 1.25rem;
-    color: #5b5b5b;
+    color: rgb(234, 234, 234);
     padding: 0 1rem;
 }
 
