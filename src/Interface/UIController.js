@@ -55,6 +55,7 @@ export class UIController {
         this._drawILSFeathers(this.map.features.runways)
         this._drawMapLines(this.map.features.mapLines)
         this._drawMapCrosses(this.map.features.crosses)
+        this._drawTallStructures(this.map.features.tallStructures)
         this._drawTerrain(this.map.terrain)
     }
 
@@ -222,6 +223,20 @@ export class UIController {
             this.featuresContext.moveTo(cross.x, cross.y - 4);
             this.featuresContext.lineTo(cross.x, cross.y + 4);
             this.featuresContext.stroke();
+        })
+    }
+
+    _drawTallStructures = (structures) => {
+        structures.forEach(structure => {
+            this.featuresContext.fillStyle = COLOURS.WHITE;
+            this.featuresContext.lineWidth = 1;
+            this.featuresContext.setLineDash([]);
+            this.featuresContext.beginPath();
+            this.featuresContext.moveTo(structure.x - 5, structure.y + 5);
+            this.featuresContext.lineTo(structure.x, structure.y - 5);
+            this.featuresContext.lineTo(structure.x + 5, structure.y + 5);
+            this.featuresContext.closePath();
+            this.featuresContext.fill();
         })
     }
 

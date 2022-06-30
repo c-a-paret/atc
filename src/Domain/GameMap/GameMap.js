@@ -11,6 +11,7 @@ export class GameMap {
             exclusionZones: mapConfig.features.exclusionZones,
             mapLines: mapConfig.features.mapLines,
             crosses: mapConfig.features.crosses,
+            tallStructures: mapConfig.features.tallStructures,
         }
         this.terrain = mapConfig.terrain
     }
