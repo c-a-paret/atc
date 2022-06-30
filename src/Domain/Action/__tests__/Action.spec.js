@@ -62,7 +62,7 @@ describe("Speed", () => {
     test("Creates speed action with increasing speed", () => {
         let weight = 3;
         let currentSpeed = 295;
-        let desiredSpeed = 300;
+        let desiredSpeed = 304;
 
         const aeroplane = new Aeroplane("BA123", "A321", 500, 500, currentSpeed, 90, 5000, weight)
 
@@ -78,25 +78,19 @@ describe("Speed", () => {
     test("Is not valid if the target speed is below 0", () => {
         let desiredSpeed = -12;
 
-        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
-    })
-
-    test("Is not valid if the target speed is not multiple of 10", () => {
-        let desiredSpeed = 207;
-
-        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+        expect(new Speed({}, {speed: 200}, desiredSpeed).isValid()).toBeFalsy()
     })
 
     test("Is not valid if the target speed is same as current speed", () => {
         let desiredSpeed = 200;
 
-        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+        expect(new Speed({}, {speed: 200}, desiredSpeed).isValid()).toBeFalsy()
     })
 
     test("Is not valid if the target speed is lower than the minimum speed", () => {
         let desiredSpeed = 10;
 
-        expect(new Speed({speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+        expect(new Speed({}, {speed: 200}, desiredSpeed).isValid()).toBeFalsy()
     })
 })
 
@@ -581,19 +575,19 @@ describe("Heading", () => {
     test("Is not valid if the target heading is same as current heading", () => {
         let desiredAltitude = 243;
 
-        expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+        expect(new Heading({}, {heading: 243}, desiredAltitude).isValid()).toBeFalsy()
     })
 
     test("Is not valid if the target heading is less than zero", () => {
         let desiredAltitude = -1;
 
-        expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+        expect(new Heading({}, {heading: 243}, desiredAltitude).isValid()).toBeFalsy()
     })
 
     test("Is not valid if the target heading is greater than 360", () => {
         let desiredAltitude = 361;
 
-        expect(new Heading({heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+        expect(new Heading({}, {heading: 243}, desiredAltitude).isValid()).toBeFalsy()
     })
 
     test.each`
@@ -640,7 +634,7 @@ describe("Altitude", () => {
 
     test("Creates altitude action with decreasing altitude", () => {
         let currentAltitude = 1100;
-        let desiredAltitude = 1000;
+        let desiredAltitude = 1020;
 
         const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, currentAltitude, 3)
 
@@ -656,25 +650,25 @@ describe("Altitude", () => {
     test("Is not valid if the target altitude is below minimum altitude", () => {
         let desiredAltitude = MIN_ALTITUDE - 1;
 
-        expect(new Altitude({altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+        expect(new Altitude({}, {altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
     })
 
     test("Is not valid if the target altitude is above max altitude", () => {
         let desiredAltitude = MAX_ALTITUDE + 1;
 
-        expect(new Altitude({altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+        expect(new Altitude({}, {altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
     })
 
     test("Is not valid if the target altitude is same as current altitude", () => {
         let currentAltitude = 2000;
 
-        expect(new Altitude({altitude: currentAltitude}, currentAltitude).isValid()).toBeFalsy()
+        expect(new Altitude({}, {altitude: currentAltitude}, currentAltitude).isValid()).toBeFalsy()
     })
 
-    test("Is not valid if the target altitude is not multiple of 100", () => {
+    test("Is not valid if the target altitude is not multiple of 20", () => {
         let desiredAltitude = 2116;
 
-        expect(new Altitude({altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+        expect(new Altitude({}, {altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
     })
 })
 

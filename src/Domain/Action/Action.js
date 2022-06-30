@@ -63,7 +63,6 @@ export class Speed extends Action {
     isValid = () => {
         return this.targetValue
             && this.targetValue !== this.aeroplane.speed
-            && this.targetValue % 10 === 0
             && this.targetValue >= MIN_SPEED
     }
 }
@@ -155,7 +154,7 @@ export class Altitude extends Action {
             && this.targetValue !== this.aeroplane.altitude
             && this.targetValue >= MIN_ALTITUDE
             && this.targetValue <= MAX_ALTITUDE
-            && this.targetValue % 100 === 0
+            && this.targetValue % 20 === 0
     }
 }
 
