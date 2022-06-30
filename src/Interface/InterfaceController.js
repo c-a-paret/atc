@@ -131,6 +131,7 @@ export class InterfaceController {
         this._setupClickInterface()
         this._focusCommandEntry()
         this._setupPlayPauseInterface()
+        this._setupButtonsInterface()
     }
 
     _element = (tag, classes, id) => {
@@ -333,16 +334,26 @@ export class InterfaceController {
     }
 
     _setupPlayPauseInterface = () => {
-        document.getElementById("pause-play").addEventListener("click", this._play_pause_handler)
+        document.getElementById("pause-play").addEventListener("click", this._playPauseHandler)
     }
 
-    _play_pause_handler = () => {
+    _playPauseHandler = () => {
         if (this.gamePaused) {
-            document.getElementById("pause-play").style.backgroundColor = 'rgba(22, 145, 203, 0.5)'
+            this._unPauseGame()
         } else {
-            document.getElementById("pause-play").style.backgroundColor = 'rgba(255,2,109,0.5)'
+            this._pauseGame()
         }
-        this.gamePaused = !this.gamePaused
+    }
+
+    _pauseGame = () => {
+        document.getElementById("pause-play").style.backgroundColor = 'rgba(255,2,109,0.5)'
+        this.gamePaused = true
+    }
+
+    _unPauseGame = () => {
+        this._hideHelpMenu()
+        document.getElementById("pause-play").style.backgroundColor = 'rgba(22, 145, 203, 0.5)'
+        this.gamePaused = false
     }
 
     _focusCommandEntry = () => {
@@ -363,6 +374,38 @@ export class InterfaceController {
                 this._focusCommandEntry()
             }
         });
+    }
+
+    _setupButtonsInterface = () => {
+        const helpButton = document.getElementById('help')
+        helpButton.addEventListener('click', (e) => {
+            this._handleHelpMenu()
+        });
+    }
+
+    _handleHelpMenu = () => {
+        const helpMenu = document.getElementById('help-menu')
+        if (this.gamePaused) {
+            const display = helpMenu.style.display;
+            if (display === '' || display === 'none') {
+                this._showHelpMenu()
+            } else {
+                this._hideHelpMenu()
+            }
+        } else {
+            this._pauseGame()
+            this._showHelpMenu()
+        }
+    }
+
+    _hideHelpMenu = () => {
+        const helpMenu = document.getElementById('help-menu')
+        helpMenu.style.display = 'none'
+    }
+
+    _showHelpMenu = () => {
+        const helpMenu = document.getElementById('help-menu')
+        helpMenu.style.display = 'block'
     }
 
 }

@@ -6,8 +6,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div id="pause-play">
-    <p class="symbol">•</p>
+<div class="controls">
+    <div id="pause-play">
+        <p class="symbol">•</p>
+    </div>
+    <div id="help">
+        <div class="ui-button">
+            <p class="text">Help</p>
+        </div>
+    </div>
 </div>
 <div class="simulator">
     <div id="stage">
@@ -40,6 +47,146 @@
 </div>
 <div class="sidebar" id="sidebar">
     <!--  Populated dynamically  -->
+</div>
+<div class="help-menu" id="help-menu">
+    <h1>ATC</h1>
+    <p>Issue commands to aeroplanes to land on runways.</p>
+    <p>Avoid losing planes off the map or breaching restrictions (see below).</p>
+    <h2>Commands</h2>
+    Commands always start with the aeroplane call sign (e.g.: BA123, AA739, etc.)<br>
+    Multiple commands can be issued at the same time. Simply string them together in one line (see examples below).
+    <table>
+        <tr class="header">
+            <td>Action</td>
+            <td>Command</td>
+            <td>Example</td>
+            <td>Detail</td>
+            <td>Restrictions/Notes</td>
+        </tr>
+        <tr>
+            <td class="header-column">Heading</td>
+            <td>T</td>
+            <td>T097</td>
+            <td>T(urn to heading)</td>
+            <td>Between 0 and 360 degrees</td>
+        </tr>
+        <tr>
+            <td class="header-column">Speed</td>
+            <td>S</td>
+            <td>S180</td>
+            <td>S(peed)</td>
+            <td>Min speed: 120kts<br>Max speed: 999kts</td>
+        </tr>
+        <tr>
+            <td class="header-column">Altitude</td>
+            <td>C or D</td>
+            <td>C40</td>
+            <td>C(limb) or D(escend)</td>
+            <td>Commands issued in 100s of feet<br>Min altitude: 1000ft<br>Max altitude: 40000ft</td>
+        </tr>
+        <tr>
+            <td class="header-column">Go to Waypoint</td>
+            <td>&gt;</td>
+            <td>&gt;LAM</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="header-column">Hold</td>
+            <td>H</td>
+            <td>HR or HL</td>
+            <td>H(old)R(ight)<br>H(old)L(left)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="header-column no-wrap">Landing Clearance</td>
+            <td class="no-wrap">.&lt;runway&gt;.</td>
+            <td>.9L.</td>
+            <td></td>
+            <td>Landing clearance will only be accepted when the plane is:<br>
+                <ul>
+                    <li>At or below 3000ft</li>
+                    <li>At or below 200 knots</li>
+                    <li>Within 10 degrees of the runway heading</li>
+                    <li>Within the width of the landing feather</li>
+                    <li>Horizontally within the inner line of the runway feather</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <h3>Example commands</h3>
+    <table>
+        <tr>
+            <td class="header-column">BA123S180D30</td>
+            <td>BA123 set speed to 180kts (S180) and descend to 3000ft (D30)</td>
+        </tr>
+        <tr>
+            <td class="header-column">AA636C120T072</td>
+            <td>AA636 climb to 12,000ft (C120) and turn heading 72 degrees (T072)</td>
+        </tr>
+        <tr>
+            <td class="header-column">LH221.27R.</td>
+            <td>LH221 cleared to land runway 27R</td>
+        </tr>
+        <tr>
+            <td class="header-column">EY897HRD60</td>
+            <td>EY897 enter right handed holding pattern (HR) and descend to 6000ft (D60)</td>
+        </tr>
+    </table>
+    <h2>Restrictions</h2>
+    Breaching restrictions will cause the 'restrictions' timer to count up. Aim to minimise the amount of time you are breaching restrictions.
+    <table>
+        <tr class="header">
+            <td>Type</td>
+            <td>Detail</td>
+        </tr>
+        <tr>
+            <td class="header-column">Restricted Zone</td>
+            <td>
+                Restricted zones have three flavours:
+                <ul>
+                    <li>Critical (red)</li>
+                    <ul>
+                        <li>No entry to airspace permitted</li>
+                    </ul>
+                    <li>Moderate (orange)</li>
+                    <ul>
+                        <li>Minimum and/or maximum altitude restrictions apply</li>
+                    </ul>
+                    <li>Informational (blue)</li>
+                    <ul>
+                        <li>Minimum and/or maximum altitude restrictions apply</li>
+                    </ul>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="header-column">Aircraft Proximity</td>
+            <td>Proximity restrictions between aeroplanes will be breached when planes have:
+                <ul>
+                    <li>Less than 1000ft vertical separation</li>
+                    <li>Less than 1 nautical mile horizontal separation</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <h2>Aeroplane information strips</h2>
+    Aeroplane information strips on the right hand sidebar show:
+    <ul>
+        <li>The call sign (BA123, etc.)</li>
+        <li>The aircraft type</li>
+            <ul>
+                <li>Note that larger aircraft types weigh more and affect performance</li>
+                <li>B777 - Boeing 777</li>
+                <li>A320 - Airbus 320</li>
+                <li>etc.</li>
+            </ul>
+        <li>The current or target heading/waypoint</li>
+        <li>The current or target speed</li>
+        <li>The current or target altitude</li>
+        <li>If the aeroplane is currently landing</li>
+        <li>If the aeroplane is currently in a holding pattern</li>
+    </ul>
 </div>
 <script src="main.js"></script>
 </body>
