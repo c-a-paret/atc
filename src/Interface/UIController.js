@@ -123,16 +123,17 @@ export class UIController {
             this.featuresContext.beginPath();
             this.featuresContext.fillText(zone.label.text, zone.label.location.x, zone.label.location.y);
 
-            if (zone.minAltitude && zone.maxAltitude) {
-                const labelHeight = this.featuresContext.measureText(`${zone.label.text}`).fontBoundingBoxAscent;
-                const minAltitudeLabel = `${zone.minAltitude / 100}`;
-                const maxAltitudeLabel = `${zone.maxAltitude / 100}`;
-
+            const labelHeight = this.featuresContext.measureText(`${zone.label.text}`).fontBoundingBoxAscent;
+            let minAltitudeLabel;
+            if (zone.minAltitude) {
+                minAltitudeLabel = `${zone.minAltitude / 100}`;
                 this.featuresContext.fillStyle = COLOURS.YELLOW;
                 this.featuresContext.font = "12px Courier New";
                 this.featuresContext.beginPath();
                 this.featuresContext.fillText(minAltitudeLabel, zone.label.location.x, zone.label.location.y + labelHeight);
-
+            }
+            if (zone.minAltitude && zone.maxAltitude) {
+                const maxAltitudeLabel = `${zone.maxAltitude / 100}`;
                 const minAltitudeLabelWidth = this.featuresContext.measureText(minAltitudeLabel).width;
                 this.featuresContext.fillStyle = COLOURS.WHITE;
                 this.featuresContext.font = "12px Courier New";
@@ -331,16 +332,17 @@ export class UIController {
     }
 
     _drawTerrain = (terrain) => {
-        terrain.rivers.forEach(river => {
+        terrain.waterBodies.forEach(river => {
             river.borders.forEach(border => {
-                this.featuresContext.strokeStyle = COLOURS.WHITE_TRANSPARENT;
+                this.featuresContext.fillStyle = COLOURS.WHITE_TRANSPARENT_MAX;
                 this.featuresContext.lineWidth = 1;
                 this.featuresContext.beginPath();
                 this.featuresContext.moveTo(border[0].x, border[0].y);
                 border.forEach(point => {
                     this.featuresContext.lineTo(point.x, point.y);
                 })
-                this.featuresContext.stroke();
+                this.featuresContext.closePath()
+                this.featuresContext.fill();
             })
         })
     }
