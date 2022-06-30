@@ -99,21 +99,6 @@ export const EGLL = {
             {
                 level: "critical",
                 dashes: 2,
-                label: {text: "D139", location: {"x": 0.39 * x, "y": 0.68 * y}},
-                minAltitude: null,
-                maxAltitude: null,
-                boundaries: [
-                    {x: (0.34 * x), y: (0.74 * y), inv_y: y - (0.74 * y)},
-                    {x: (0.36 * x), y: (0.67 * y), inv_y: y - (0.67 * y)},
-                    {x: (0.42 * x), y: (0.6 * y), inv_y: y - (0.6 * y)},
-                    {x: (0.47 * x), y: (0.6 * y), inv_y: y - (0.6 * y)},
-                    {x: (0.44 * x), y: (0.67 * y), inv_y: y - (0.67 * y)},
-                    {x: (0.39 * x), y: (0.76 * y), inv_y: y - (0.76 * y)},
-                ]
-            },
-            {
-                level: "critical",
-                dashes: 2,
                 label: {text: "EG(R)-158", location: {"x": 0.787 * x, "y": 0.42 * y}},
                 minAltitude: 4000,
                 maxAltitude: null,
