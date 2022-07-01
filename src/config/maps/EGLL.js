@@ -24,7 +24,7 @@ export const EGLL = {
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 - (runwayWidth / 2),
+                            x: x / 2 - (runwayWidth / 3),
                             y: y / 2,
                         },
                         outerMarker: {
@@ -43,7 +43,7 @@ export const EGLL = {
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 + (runwayWidth / 2),
+                            x: x / 2 + (runwayWidth / 3),
                             y: y / 2,
                         },
                         outerMarker: {
@@ -64,7 +64,7 @@ export const EGLL = {
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 - (runwayWidth / 2),
+                            x: x / 2 - (runwayWidth / 3),
                             y: y / 2 + runwayGap,
                         },
                         outerMarker: {
@@ -83,7 +83,7 @@ export const EGLL = {
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 + (runwayWidth / 2),
+                            x: x / 2 + (runwayWidth / 3),
                             y: y / 2 + runwayGap,
                         },
                         outerMarker: {
