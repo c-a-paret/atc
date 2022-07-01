@@ -1,7 +1,7 @@
 import {toDegrees} from "../../utils/maths";
 import {
     ILS_MAX_X,
-    ILS_MIN_X,
+    ILS_MIN_X, LANDED_ALTITUDE,
     LANDING_SPEED,
     MAX_ALTITUDE,
     MIN_ALTITUDE,
@@ -267,7 +267,7 @@ export class Landing extends Action {
         const runway = this.map.getRunwayInfo(this.targetRunway)
         const distanceToRunway = distance(this.aeroplane.x, this.aeroplane.y, runway.landingZone.x, runway.landingZone.y)
 
-        if (distanceToRunway < 5 && this.aeroplane.altitude < 50) {
+        if (distanceToRunway < 5 && this.aeroplane.altitude < LANDED_ALTITUDE) {
             this.executed = true
         }
 

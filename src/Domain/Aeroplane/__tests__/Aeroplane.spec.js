@@ -12,6 +12,10 @@ const testGameMap = () => {
                     label: "9L",
                     heading: 90,
                     altitude: 0,
+                    landingZone: {
+                        x: 510,
+                        y: 500,
+                    },
                     ILS: {
                         innerMarker: {
                             x: 500,
@@ -27,6 +31,10 @@ const testGameMap = () => {
                     label: "27R",
                     heading: 270,
                     altitude: 0,
+                    landingZone: {
+                        x: 490,
+                        y: 500,
+                    },
                     ILS: {
                         innerMarker: {
                             x: 500,

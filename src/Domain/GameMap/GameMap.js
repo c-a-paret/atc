@@ -2,17 +2,10 @@ export class GameMap {
     constructor(mapConfig) {
         this.name = mapConfig.name
         this.shortCode = mapConfig.shortCode
-        this.defaultWaypoint = "LON"
+        this.defaultWaypoint = mapConfig.defaultWaypoint
         this.maxX = mapConfig.maxX
         this.maxY = mapConfig.maxY
-        this.features = {
-            runways: mapConfig.features.runways,
-            waypoints: mapConfig.features.waypoints,
-            exclusionZones: mapConfig.features.exclusionZones,
-            mapLines: mapConfig.features.mapLines,
-            crosses: mapConfig.features.crosses,
-            tallStructures: mapConfig.features.tallStructures,
-        }
+        this.features = mapConfig.features
         this.terrain = mapConfig.terrain
     }
 
