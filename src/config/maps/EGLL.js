@@ -18,6 +18,10 @@ export const EGLL = {
                     label: "9L",
                     heading: 90,
                     altitude: 0,
+                    landingZone: {
+                        x: x / 2 - (runwayWidth / 5),
+                        y: y / 2,
+                    },
                     ILS: {
                         innerMarker: {
                             x: x / 2 - (runwayWidth / 2),
@@ -33,6 +37,10 @@ export const EGLL = {
                     label: "27R",
                     heading: 270,
                     altitude: 0,
+                    landingZone: {
+                        x: x / 2 + (runwayWidth / 5),
+                        y: y / 2,
+                    },
                     ILS: {
                         innerMarker: {
                             x: x / 2 + (runwayWidth / 2),
@@ -50,6 +58,10 @@ export const EGLL = {
                     label: "9R",
                     heading: 90,
                     altitude: 0,
+                    landingZone: {
+                        x: x / 2 - (runwayWidth / 5),
+                        y: y / 2 + runwayGap,
+                    },
                     ILS: {
                         innerMarker: {
                             x: x / 2 - (runwayWidth / 2),
@@ -65,6 +77,10 @@ export const EGLL = {
                     label: "27L",
                     heading: 270,
                     altitude: 0,
+                    landingZone: {
+                        x: x / 2 + (runwayWidth / 5),
+                        y: y / 2 + runwayGap,
+                    },
                     ILS: {
                         innerMarker: {
                             x: x / 2 + (runwayWidth / 2),

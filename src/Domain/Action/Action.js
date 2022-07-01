@@ -265,7 +265,7 @@ export class Landing extends Action {
             this.waypointSet = true
         }
         const runway = this.map.getRunwayInfo(this.targetRunway)
-        const distanceToRunway = distance(this.aeroplane.x, this.aeroplane.y, runway.ILS.innerMarker.x, runway.ILS.innerMarker.y)
+        const distanceToRunway = distance(this.aeroplane.x, this.aeroplane.y, runway.landingZone.x, runway.landingZone.y)
 
         if (distanceToRunway < 5 && this.aeroplane.altitude < 50) {
             this.executed = true
@@ -299,9 +299,9 @@ export class Landing extends Action {
 
     _onCorrectSideOfRunway = (aeroplane, runway) => {
         if (runway.heading <= 180 && runway.heading >= 0) {
-            return aeroplane.x < runway.ILS.innerMarker.x
+            return aeroplane.x < runway.landingZone.x
         } else {
-            return aeroplane.x > runway.ILS.innerMarker.x
+            return aeroplane.x > runway.landingZone.x
         }
     }
 }
