@@ -300,3 +300,19 @@ td {
     text-wrap: none;
     white-space: nowrap;
 }
+
+.blue {
+    color: rgb(4, 230, 255);
+}
+
+.orange {
+    color: rgb(255, 167, 7)
+}
+
+.red {
+    color: rgb(253, 3, 43);
+}
+
+.bold {
+    font-weight: bold;
+}
