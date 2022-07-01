@@ -220,11 +220,12 @@ canvas {
 }
 
 .target-value {
-    color: rgb(255, 186, 0);
+    color: rgb(4, 230, 255);
+    font-weight: bold;
 }
 
 .current-value {
-    color: rgb(0, 213, 170);
+    color: rgb(255, 255, 255);
 }
 
 .overview .text {
