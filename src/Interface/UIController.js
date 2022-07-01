@@ -237,6 +237,10 @@ export class UIController {
             this.featuresContext.lineTo(structure.x + 5, structure.y + 5);
             this.featuresContext.closePath();
             this.featuresContext.fill();
+
+            this.featuresContext.font = "12px Courier New";
+            this.featuresContext.beginPath();
+            this.featuresContext.fillText(structure.label, structure.x + 5, structure.y - 5);
         })
     }
 
