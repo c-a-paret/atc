@@ -52,97 +52,98 @@
 </div>
 <div class="help-menu" id="help-menu">
     <h1>ATC</h1>
-    <p>Issue commands to land aeroplanes on runways.</p>
+    <p>Issue commands to guide aircraft and land on runways.</p>
     <p>Avoid losing planes off the map or breaching restrictions (see below).</p>
-            <h2>Command Reference</h2>
-            Commands always start with the aeroplane call sign (e.g.: BA123, AA739, etc.)<br>
-            Multiple commands can be issued at the same time. Simply string them together in one line (see examples below).
-            <table>
-                <tr class="header">
-                    <td>Action</td>
-                    <td>Command</td>
-                    <td>Example</td>
-                    <td>Detail</td>
-                    <td>Restrictions/Notes</td>
-                </tr>
-                <tr>
-                    <td class="header-column">Heading</td>
-                    <td>T</td>
-                    <td>T097</td>
-                    <td>T(urn to heading)</td>
-                    <td>Provide three digit heading<br>Between 000 and 360 degrees</td>
-                </tr>
-                <tr>
-                    <td class="header-column">Speed</td>
-                    <td>S</td>
-                    <td>S180</td>
-                    <td>S(peed)</td>
-                    <td>Min speed: 120kts<br>Max speed: 999kts</td>
-                </tr>
-                <tr>
-                    <td class="header-column">Altitude</td>
-                    <td>C or D</td>
-                    <td>C40</td>
-                    <td>C(limb) or D(escend)</td>
-                    <td>Commands issued in 100s of feet<br>Min altitude: 1000ft<br>Max altitude: 40000ft</td>
-                </tr>
-                <tr>
-                    <td class="header-column">Go to Waypoint</td>
-                    <td>&gt;</td>
-                    <td>&gt;LAM</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="header-column">Hold</td>
-                    <td>H</td>
-                    <td>HR or HL</td>
-                    <td>H(old)R(ight)<br>H(old)L(left)</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="header-column no-wrap">Landing Clearance</td>
-                    <td class="no-wrap">.&lt;runway&gt;.</td>
-                    <td>.9L.</td>
-                    <td></td>
-                    <td>Landing clearance will only be accepted when the plane is:<br>
-                        <ul>
-                            <li>At or below 3000ft</li>
-                            <li>At or below 200 knots</li>
-                            <li>Within 10 degrees of the runway heading</li>
-                            <li>Within the width of the landing feather</li>
-                            <li>Horizontally within the inner line of the runway feather</li>
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-            <h3>Example commands</h3>
-            <table>
-                <tr>
-                    <td class="header-column">BA123S180D30</td>
-                    <td>BA123 set speed to 180kts (S180) and descend to 3000ft (D30)</td>
-                </tr>
-                <tr>
-                    <td class="header-column">AA636C120T072</td>
-                    <td>AA636 climb to 12,000ft (C120) and turn heading 72 degrees (T072)</td>
-                </tr>
-                <tr>
-                    <td class="header-column">LH221.27R.</td>
-                    <td>LH221 cleared to land runway 27R</td>
-                </tr>
-                <tr>
-                    <td class="header-column">EY897HRD60</td>
-                    <td>EY897 enter right handed holding pattern (HR) and descend to 6000ft (D60)</td>
-                </tr>
-            </table>
+    <h2>Command Reference</h2>
+    Commands always start with the aeroplane call sign (e.g.: BA123, AA739, etc.)<br>
+    Multiple commands can be issued at the same time. Simply string them together in one line (see examples below).
+    <table>
+        <tr class="header">
+            <td>Action</td>
+            <td>Command</td>
+            <td>Example</td>
+            <td>Detail</td>
+            <td>Restrictions/Notes</td>
+        </tr>
+        <tr>
+            <td class="header-column">Heading</td>
+            <td>T</td>
+            <td>T097</td>
+            <td>T(urn to heading)</td>
+            <td>Provide three digit heading<br>Between 000 and 360 degrees</td>
+        </tr>
+        <tr>
+            <td class="header-column">Speed</td>
+            <td>S</td>
+            <td>S180</td>
+            <td>S(peed)</td>
+            <td>Min speed: 120kts<br>Max speed: 999kts</td>
+        </tr>
+        <tr>
+            <td class="header-column">Altitude</td>
+            <td>C or D</td>
+            <td>C40</td>
+            <td>C(limb) or D(escend)</td>
+            <td>Commands issued in 100s of feet<br>Min altitude: 1000ft<br>Max altitude: 40000ft</td>
+        </tr>
+        <tr>
+            <td class="header-column">Go to Waypoint</td>
+            <td>&gt;</td>
+            <td>&gt;LAM</td>
+            <td></td>
+            <td>
+                Example of waypoint on the map:
+                <br>
+                <br>
+                <img src="images/waypoint.png" alt="waypoint">
+            </td>
+        </tr>
+        <tr>
+            <td class="header-column">Hold</td>
+            <td>H</td>
+            <td>HR or HL</td>
+            <td>H(old)R(ight)<br>H(old)L(left)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="header-column no-wrap">Landing Clearance</td>
+            <td class="no-wrap">.&lt;runway&gt;.</td>
+            <td>.9L.</td>
+            <td></td>
+            <td>Landing clearance will only be accepted when the plane is:<br>
+                <ul>
+                    <li>At or below 3000ft</li>
+                    <li>At or below 200 knots</li>
+                    <li>Within 10 degrees of the runway heading</li>
+                    <li>Within the width of the landing feather</li>
+                    <li>Horizontally within the inner line of the runway feather</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <h3>Example commands</h3>
+    <table>
+        <tr>
+            <td class="header-column">BA123S180D30</td>
+            <td>BA123 set speed to 180kts (S180) and descend to 3000ft (D30)</td>
+        </tr>
+        <tr>
+            <td class="header-column">AA636C120T072</td>
+            <td>AA636 climb to 12,000ft (C120) and turn heading 72 degrees (T072)</td>
+        </tr>
+        <tr>
+            <td class="header-column">LH221.27R.</td>
+            <td>LH221 cleared to land runway 27R</td>
+        </tr>
+        <tr>
+            <td class="header-column">EY897HRD60</td>
+            <td>EY897 enter right handed holding pattern (HR) and descend to 6000ft (D60)</td>
+        </tr>
+    </table>
     <h2>Restrictions</h2>
     Breaching restrictions will cause the 'restrictions' timer to count up. Aim to minimise the amount of time you are
     breaching restrictions.
     <h3>Restricted zones</h3>
-    Restricted zones have labels to identify them and provide detail about their restrictions. The <span class="orange">orange</span>
-    value shows the minimum altitude while the white value shows the maximum value.
-    <br>
-    <br>
     Restricted zones have three flavours:
     <ul>
         <li><span class="bold red">Critical</span></li>
@@ -158,9 +159,20 @@
             <li>Minimum and/or maximum altitude restrictions apply</li>
         </ul>
     </ul>
+    Restricted zones have labels to identify them and provide detail about their altitude restrictions:
+    <br><br>
+    <img src="images/zone_info.png" alt="zone_info">
+    <br><br>
+    The <span class="orange">orange</span>
+    value shows the minimum altitude while the white value shows the maximum altitude.
+    <br>
+    <br>
 
     <h3>Aircraft Proximity</h3>
     Aircraft breaching proximity restrictions will be highlighted in red on the map.
+    <br>
+    <br>
+    <img src="images/aircraft_proximity.png" alt="aircraft_proximity">
     <br>
     <br>
     Proximity restrictions between aeroplanes will be breached when planes have:
@@ -168,6 +180,22 @@
         <li>Less than 1000ft vertical separation</li>
         <li>Less than 1 nautical mile horizontal separation</li>
     </ul>
+
+    <h2>Aircraft</h2>
+    Aircraft appear like this on the map:
+    <br>
+    <br>
+    <img src="images/aeroplane.png" alt="aeroplane">
+    <br>
+    Information displayed:
+    <ul>
+        <li>Call Sign (BA123)</li>
+        <li>Current <span class="green">heading</span> (97 degrees)</li>
+        <li>Current <span class="orange">speed</span> (240 knots)</li>
+        <li>Current <span class="green">altitude</span> (6200 feet)</li>
+    </ul>
+    The trail of slashes extend <em>behind</em> the aircraft and the gap between the slashes denotes the speed of the
+    aircraft, i.e.: the greater the gap, the greater the speed.
 
     <h2>Aircraft information strips</h2>
     Aeroplane information strips on the right-hand sidebar show:
@@ -189,6 +217,9 @@
 
     <h3>Pausing the game</h3>
     Pause the game by pressing the circle in the top right of the screen. Opening this help guide also pauses the game.
+    <br>
+    <br>
+    <img src="images/pause.png" alt="pause">
 
     <h3>Selecting Aircraft</h3>
     You can select an aircraft to issue a command by:
