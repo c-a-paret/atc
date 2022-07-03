@@ -730,28 +730,5 @@ export const EGLL = {
                 ]
             }
         ]
-    },
-
-    runwayExists(targetRunway) {
-        for (let x = 0; x < this.features.runways.length; x++) {
-            let runway = this.features.runways[x]
-            if (runway.start.label === targetRunway || runway.end.label === targetRunway) {
-                return true
-            }
-        }
-        return false
-    },
-
-    getRunwayInfo(targetRunway) {
-        for (let x = 0; x < this.features.runways.length; x++) {
-            let runway = this.features.runways[x]
-            if (runway.start.label === targetRunway) {
-                return runway.start
-            }
-            if (runway.end.label === targetRunway) {
-                return runway.end
-            }
-        }
-        return null
     }
 }
