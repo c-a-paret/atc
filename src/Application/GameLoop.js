@@ -1,16 +1,15 @@
 export class GameLoop {
-    constructor(uiController, interfaceController, aeroplaneService) {
+    constructor(uiController, interfaceController, aeroplaneService, statsService) {
         this.uiController = uiController
         this.interfaceController = interfaceController
         this.aeroplaneService = aeroplaneService
+        this.statsService = statsService
     }
 
     init() {
         this.aeroplaneService.initArrival()
         // this.aeroplaneService.initTestAeroplanes()
-        this.aeroplaneService.aeroplanes.forEach(plane => {
-            this.uiController.drawAeroplane(plane)
-        })
+        this.uiController.drawAeroplanes()
         this.interfaceController.drawStrips()
     }
 
@@ -22,13 +21,17 @@ export class GameLoop {
             }
         }, 105000)
 
-        // Stats display updater
+        // Stats updater
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
-                const landed = this.aeroplaneService.statsService.landedCount
-                const lost = this.aeroplaneService.statsService.exitedBoundaryCount
-                const restrictionsBreached = this.aeroplaneService.statsService.proximityTimer
-                this.interfaceController.setStats(landed, lost, restrictionsBreached)
+                if (this.aeroplaneService.aeroplanes.some(plane => plane.breachingProximity)) {
+                    this.statsService.incrementBreachedTimer()
+                }
+                this.interfaceController.setStats(
+                    this.statsService.landedCount,
+                    this.statsService.exitedBoundaryCount,
+                    this.statsService.proximityTimer
+                )
             }
         }, 1000)
 
@@ -36,12 +39,13 @@ export class GameLoop {
         setInterval(() => {
             if (!this.interfaceController.gamePaused) {
                 this.uiController.clearAeroplaneLayer()
+
                 this.aeroplaneService.deactivateAeroplanes()
                 this.aeroplaneService.markAeroplanesBreakingProximity()
-                this.aeroplaneService.aeroplanes.forEach(plane => {
-                    plane.applyActions()
-                    this.uiController.drawAeroplane(plane)
-                })
+                this.aeroplaneService.applyActions()
+
+                this.uiController.drawAeroplanes()
+
                 this.interfaceController.clearInactiveStrips()
                 this.interfaceController.drawStrips()
                 this.interfaceController.updateStrips()

@@ -5,6 +5,12 @@ export class GameMap {
         this.defaultWaypoint = mapConfig.defaultWaypoint
         this.maxX = mapConfig.maxX
         this.maxY = mapConfig.maxY
+        this.mapBoundaries = {
+            minX: 0,
+            maxX: mapConfig.maxX,
+            minY: 0,
+            maxY: mapConfig.maxY,
+        }
         this.features = mapConfig.features
         this.terrain = mapConfig.terrain
     }

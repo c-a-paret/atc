@@ -4,11 +4,11 @@ import {parseCommand} from "../Command/CommandParser/CommandParser";
 import {AIRCRAFT} from "../config/aircraft";
 
 export class AeroplaneService {
-    constructor(map, mapBoundaries) {
+    constructor(map, statsService) {
         this.aeroplanes = []
         this.map = map
-        this.mapBoundaries = mapBoundaries
-        this.statsService = null
+        this.mapBoundaries = map.mapBoundaries
+        this.statsService = statsService
         this.spawnLocations = [
             {x: 0.2 * this.mapBoundaries.maxX, y: 1, heading: 135},
             {x: 0.5 * this.mapBoundaries.maxX, y: 1, heading: 135},
@@ -21,10 +21,6 @@ export class AeroplaneService {
             {x: 0.5 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 360},
             {x: 0.8 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 340},
         ]
-    }
-
-    setStatsService = (statsService) => {
-        this.statsService = statsService
     }
 
     initArrival = () => {
@@ -137,6 +133,12 @@ export class AeroplaneService {
         })
     }
 
+    applyActions = () => {
+        this.aeroplanes.forEach(plane => {
+            plane.applyActions()
+        })
+    }
+
     markAeroplanesBreakingProximity = () => {
         this.aeroplanes.forEach(plane => {
             plane.markAdheringProximityLimits()
@@ -162,11 +164,5 @@ export class AeroplaneService {
                 }
             })
         })
-
-        if (this.aeroplanes.some(plane => plane.breachingProximity)) {
-            this.statsService.startProximityTimer()
-        } else {
-            this.statsService.stopProximityTimer()
-        }
     }
 }

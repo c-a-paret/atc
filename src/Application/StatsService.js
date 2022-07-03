@@ -1,10 +1,8 @@
 export class StatsService {
-    constructor(interfaceController) {
-        this.interfaceController = interfaceController
+    constructor() {
         this.landedCount = 0
         this.exitedBoundaryCount = 0
         this.proximityTimer = 0
-        this.proximityTimerId = null
     }
 
     incrementLanded = () => {
@@ -15,19 +13,7 @@ export class StatsService {
         this.exitedBoundaryCount += 1
     }
 
-    startProximityTimer = () => {
-        if (!this.proximityTimerId) {
-            this.proximityTimerId = setInterval(() => {
-                if (!this.interfaceController.gamePaused) {
-                    this.proximityTimer += 1
-                }
-            }, 1000)
-        }
+    incrementBreachedTimer = () => {
+        this.proximityTimer += 1
     }
-
-    stopProximityTimer = () => {
-        clearInterval(this.proximityTimerId)
-        this.proximityTimerId = null
-    }
-
 }

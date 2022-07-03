@@ -9,13 +9,13 @@ import {GameMap} from "./Domain/GameMap/GameMap";
 
 const map = new GameMap(EGLL)
 
-const ui = new UIController(map)
-const aeroplaneService = new AeroplaneService(map, ui.mapBoundaries)
+const statsService = new StatsService();
+const aeroplaneService = new AeroplaneService(map, statsService)
+
 const interfaceController = new InterfaceController(aeroplaneService)
+const uiController = new UIController(map, aeroplaneService)
 
-aeroplaneService.setStatsService(new StatsService(interfaceController))
-
-const gameLoop = new GameLoop(ui, interfaceController, aeroplaneService)
+const gameLoop = new GameLoop(uiController, interfaceController, aeroplaneService, statsService)
 
 gameLoop.init()
 gameLoop.start()

@@ -5,6 +5,8 @@ import {LANDED_ALTITUDE} from "../../config/constants";
 
 const testGameMap = () => {
     return new GameMap({
+        maxX: 1000,
+        maxY: 1000,
         features: {
             runways: [{
                 start: {
@@ -217,7 +219,7 @@ describe('Send command', () => {
 describe('Get aeroplane by position', () => {
 
     test('Gets first aeroplane when provided position is within its tolerances', () => {
-        const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
+        const service = new AeroplaneService(testGameMap(), {})
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
@@ -232,7 +234,7 @@ describe('Get aeroplane by position', () => {
     })
 
     test('Gets second aeroplane when provided position is within its tolerances', () => {
-        const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
+        const service = new AeroplaneService(testGameMap(), {})
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
@@ -247,7 +249,7 @@ describe('Get aeroplane by position', () => {
     })
 
     test('Returns null if no aeroplanes in the area', () => {
-        const service = new AeroplaneService({}, {maxX: 1000, maxY: 1000})
+        const service = new AeroplaneService(testGameMap(), {})
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
@@ -265,21 +267,13 @@ describe('Get aeroplane by position', () => {
 describe('Remove aeroplanes', () => {
 
     test('Removes aeroplanes outside of map boundaries', () => {
-        const mapBoundaries = {
-            minX: 0,
-            maxX: 100,
-            minY: 0,
-            maxY: 100,
-        }
-
+        const landedCallback = jest.fn();
+        const exitedCallback = jest.fn();
         const statsService = {
-            incrementLanded: () => {
-            },
-            incrementExited: () => {
-            }
+            incrementLanded: landedCallback,
+            incrementExited: exitedCallback
         }
-        const service = new AeroplaneService({}, mapBoundaries)
-        service.setStatsService(statsService)
+        const service = new AeroplaneService(testGameMap(), statsService)
 
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", -1, 50, 120, 180, 5000),
@@ -294,6 +288,9 @@ describe('Remove aeroplanes', () => {
 
         expect(service.aeroplanes.length).toBe(1)
         expect(service.aeroplanes[0].callSign).toBe('BA456')
+
+        expect(landedCallback).not.toHaveBeenCalled()
+        expect(exitedCallback).toHaveBeenCalled()
     })
 
     test('Removes aeroplanes that have landed', () => {
@@ -304,14 +301,14 @@ describe('Remove aeroplanes', () => {
             maxY: 100,
         }
 
+        const landedCallback = jest.fn();
+        const exitedCallback = jest.fn();
         const statsService = {
-            incrementLanded: () => {
-            },
-            incrementExited: () => {
-            }
+            incrementLanded: landedCallback,
+            incrementExited: exitedCallback
         }
-        const service = new AeroplaneService({}, mapBoundaries)
-        service.setStatsService(statsService)
+
+        const service = new AeroplaneService(testGameMap(), statsService)
 
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 100, 100, 140, 90, LANDED_ALTITUDE - 1),
@@ -326,20 +323,18 @@ describe('Remove aeroplanes', () => {
 
         expect(service.aeroplanes.length).toBe(1)
         expect(service.aeroplanes[0].callSign).toBe('BA456')
+
+        expect(landedCallback).toHaveBeenCalled()
+        expect(exitedCallback).not.toHaveBeenCalled()
     })
 })
 
 describe('Determine proximal aeroplanes', () => {
 
     test('Lists aeroplanes that breach proximity boundaries', () => {
-        const mockMap = {features: {exclusionZones: []}};
-        const mockStatsService = {
-            startProximityTimer: () => {},
-            stopProximityTimer: () => {}
-        };
+        const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {exclusionZones: []}};
 
-        const service = new AeroplaneService(mockMap, {})
-        service.setStatsService(mockStatsService)
+        const service = new AeroplaneService(mockMap, {}, {})
 
         service.aeroplanes = [
             new Aeroplane("BA123_BREACH", "A321", 50, 50, 120, 90, 5000),

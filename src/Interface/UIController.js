@@ -2,8 +2,9 @@ import {COLOURS} from "../config/colours";
 import {ILS_MIN_X} from "../config/constants";
 
 export class UIController {
-    constructor(map) {
+    constructor(map, aeroplaneService) {
         this.map = map
+        this.aeroplaneService = aeroplaneService
 
         this.backgroundCanvas = document.getElementById("background");
         this.backgroundContext = this.backgroundCanvas.getContext('2d');
@@ -59,13 +60,15 @@ export class UIController {
         this._drawTerrain(this.map.terrain)
     }
 
-    drawAeroplane = (aeroplane) => {
-        this._drawAeroplanePosition(aeroplane)
-        this._drawAeroplaneSpeedTail(aeroplane)
-        this._drawHeadingLabel(aeroplane)
-        this._drawSpeedLabel(aeroplane)
-        this._drawAltitudeLabel(aeroplane)
-        this._drawCallSignLabel(aeroplane)
+    drawAeroplanes = () => {
+        this.aeroplaneService.aeroplanes.forEach(plane => {
+            this._drawAeroplanePosition(plane)
+            this._drawAeroplaneSpeedTail(plane)
+            this._drawHeadingLabel(plane)
+            this._drawSpeedLabel(plane)
+            this._drawAltitudeLabel(plane)
+            this._drawCallSignLabel(plane)
+        })
     }
 
     _drawExclusionZones = (exclusionZones) => {
