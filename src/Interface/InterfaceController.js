@@ -1,5 +1,6 @@
 import {commandMessage} from "../Command/CommandParser/CommandParser";
 import {timeStringFromSeconds} from "../utils/timeFormatters";
+import {div, p} from "./elements";
 
 class TargetValue {
     constructor(value) {
@@ -74,10 +75,10 @@ export class InterfaceController {
         //     </div>
         // </div>
         const sidebar = document.getElementById("sidebar");
-        const strip = this._div(["aeroplane-strip"], aeroplane.callSign)
+        const strip = div(["aeroplane-strip"], aeroplane.callSign)
 
         const overview = this._overviewBlock(aeroplane)
-        const separator = this._div(["separator"])
+        const separator = div(["separator"])
         const actionsOverview = this._actionsOverviewBlock(aeroplane)
 
         strip.appendChild(overview)
@@ -134,41 +135,24 @@ export class InterfaceController {
         this._setupButtonsInterface()
     }
 
-    _element = (tag, classes, id) => {
-        const element = document.createElement(tag)
-        classes.forEach(cls => {
-            element.classList.add(cls)
-        })
-        element.setAttribute('id', id)
-        return element
-    }
-
-    _div = (classes, id) => {
-        return this._element("div", classes, id)
-    }
-
-    _p = (classes, id) => {
-        return this._element("p", classes, id)
-    }
-
     _overviewBlock = (aeroplane) => {
-        const overview = this._div(["overview"])
+        const overview = div(["overview"])
 
         //  Call Sign
-        const callSign = this._div(["value"])
-        const callSignText = this._p(["text"])
+        const callSign = div(["value"])
+        const callSignText = p(["text"])
         callSignText.innerText = aeroplane.callSign
         callSign.appendChild(callSignText)
 
         //  Target
-        const target = this._div(["value"])
-        const targetText = this._p(["text", "center"])
+        const target = div(["value"])
+        const targetText = p(["text", "center"])
         targetText.innerText = ""
         target.appendChild(targetText)
 
         //  Short class
-        const shortClass = this._div(["value"])
-        const shortClassText = this._p(["text", "right", "short-class"])
+        const shortClass = div(["value"])
+        const shortClassText = p(["text", "right", "short-class"])
         shortClassText.innerText = aeroplane.shortClass
         shortClass.appendChild(shortClassText)
 
@@ -235,25 +219,25 @@ export class InterfaceController {
     }
 
     _actionsOverviewBlock = (aeroplane) => {
-        const actionsOverview = this._div(["actions-overview"])
+        const actionsOverview = div(["actions-overview"])
 
         const overviewValues = this._get_overview_values(aeroplane)
 
         //  Location
-        const location = this._div(["action-target"])
-        const locationText = this._p(["text", this._colour_class(overviewValues.location)], `${aeroplane.callSign}-location`)
+        const location = div(["action-target"])
+        const locationText = p(["text", this._colour_class(overviewValues.location)], `${aeroplane.callSign}-location`)
         locationText.innerText = overviewValues.location.value
         location.appendChild(locationText)
 
         //  Speed
-        const speed = this._div(["action-target"])
-        const speedText = this._p(["text", this._colour_class(overviewValues.speed), "center"], `${aeroplane.callSign}-speed`)
+        const speed = div(["action-target"])
+        const speedText = p(["text", this._colour_class(overviewValues.speed), "center"], `${aeroplane.callSign}-speed`)
         speedText.innerText = overviewValues.speed.value
         speed.appendChild(speedText)
 
         //  Altitude
-        const altitude = this._div(["action-target"])
-        const altitudeText = this._p(["text", this._colour_class(overviewValues.altitude), "right"], `${aeroplane.callSign}-altitude`)
+        const altitude = div(["action-target"])
+        const altitudeText = p(["text", this._colour_class(overviewValues.altitude), "right"], `${aeroplane.callSign}-altitude`)
         altitudeText.innerText = overviewValues.altitude.value
         altitude.appendChild(altitudeText)
 
@@ -378,7 +362,7 @@ export class InterfaceController {
 
     _setupButtonsInterface = () => {
         const helpButton = document.getElementById('help')
-        helpButton.addEventListener('click', (e) => {
+        helpButton.addEventListener('click', (_) => {
             this._handleHelpMenu()
         });
     }
