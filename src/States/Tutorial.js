@@ -1,5 +1,6 @@
 import {GameState} from "./GameState";
 import {TutorialMapOverview} from "./Tutorial/TutorialMapOverview";
+import {TutorialAircraftSpeed} from "./Tutorial/TutorialAircraftSpeed";
 
 
 export class Tutorial extends GameState {
@@ -8,7 +9,7 @@ export class Tutorial extends GameState {
         this.setMap(map)
         this.interfaceController = interfaceController
         this.state = undefined
-        this.transitionTo(new TutorialMapOverview(this.map))
+        this.transitionTo(new TutorialAircraftSpeed(this.map))
     }
 
     transitionTo = (state) => {
