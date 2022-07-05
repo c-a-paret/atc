@@ -17,6 +17,7 @@ export class TutorialSelectingAircraftClicking {
         this._selectingAircraftClick()
         this.machine.interfaceController.showHint(
             "Selecting aircraft [Click]",
+            "We always start by selecting an aircraft. There are several ways to do this.\n\n" +
             "Select one of the aircraft on the map by clicking on it.\n\n" +
             "The call sign will appear in the command entry field at the bottom of the map.\n\n" +
             "The strip in the right hand sidebar associated with that aeroplane will also be highlighted.\n\n" +

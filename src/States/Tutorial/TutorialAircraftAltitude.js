@@ -1,5 +1,6 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../config/constants";
+import {TutorialAircraftHolding} from "./TutorialAircraftHolding";
 
 export class TutorialAircraftAltitude {
     constructor(map) {
@@ -24,7 +25,7 @@ export class TutorialAircraftAltitude {
             "A40",
             "This will tell the aeroplane to change altitude to 4000 feet.\n\n" +
             "Notice that the altitude command is also specified in 100s of feet.\n\n" +
-            "Watch the last number on the aircraft label change as the aircraft slows down.\n\n" +
+            "Watch the last number on the aircraft label change as the aircraft descends.\n\n" +
             "Like before, the relevant number on the label and sidebar change.\n\n" +
             `You can choose any value between ${MIN_ALTITUDE}ft and ${MAX_ALTITUDE}ft.`,
             "Next",
@@ -36,7 +37,7 @@ export class TutorialAircraftAltitude {
     next = () => {
         this.machine.machine.clear()
         this.machine.interfaceController.clearCommandEntry()
-
+        this.machine.transitionTo(new TutorialAircraftHolding(this.map))
     }
 
     _aircraftSpeed = () => {

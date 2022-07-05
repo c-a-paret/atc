@@ -1,5 +1,5 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
-import {TutorialAircraftSpeed} from "./TutorialAircraftSpeed";
+import {TutorialAircraftWaypoint} from "./TutorialAircraftWaypoint";
 
 export class TutorialAircraftHeading {
     constructor(map) {
@@ -35,7 +35,7 @@ export class TutorialAircraftHeading {
     next = () => {
         this.machine.machine.clear()
         this.machine.interfaceController.clearCommandEntry()
-        this.machine.transitionTo(new TutorialAircraftSpeed(this.map))
+        this.machine.transitionTo(new TutorialAircraftWaypoint(this.map))
     }
 
     _aircraftHeading = () => {

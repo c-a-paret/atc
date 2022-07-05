@@ -55,8 +55,9 @@ export class TutorialMapOverview {
                 hintTitle: "Overview",
                 hintBodyBefore: "This tutorial will take you through the interface and the core gameplay.\n\n"
                     + "You are looking at an air traffic control radioscope.\n\n"
-                    + "This is a map of an airport and its surrounding area. In this case London Heathrow.\n\n"
+                    + "This is a map of the surrounding area of an airport. In this case London Heathrow.\n\n"
                     + "The view is from above.\n\n"
+                    + "The airport is exactly in the middle of the map.\n\n"
                     + "Click 'Next' to continue (you may need to scroll down inside this panel).",
                 hintCode: "",
                 hintBodyAfter: "",
@@ -138,7 +139,7 @@ export class TutorialMapOverview {
             {
                 hintTitle: "Breaching Restricted Zones",
                 hintBodyBefore: "An aircraft is heading towards a restricted zone.\n\n" +
-                    "The orange zone EG(R)-157 has a minimum altitude of 3000ft and a maximum altitude of 5000ft.\n\n" +
+                    "The orange zone ahead, EG(R)-157, has a minimum altitude of 3000ft and a maximum altitude of 5000ft.\n\n" +
                     "The aircraft is currently at 2500ft.\n\n" +
                     "When the aircraft enters the restricted zone, it will breach the restrictions and you will be penalised.\n\n" +
                     "The aeroplane will be highlighted in red and the timer in the top right corner will start counting up.\n\n" +
@@ -172,7 +173,7 @@ export class TutorialMapOverview {
             0.25 * this.map.mapBoundaries.maxY,
             200,
             90,
-            2500,
+            6000,
             2)
         this.machine.machine.aeroplanes.push(plane)
     }
@@ -188,7 +189,7 @@ export class TutorialMapOverview {
             2500,
             2)
         const plane2 = new Aeroplane(
-            'AB123',
+            'CD456',
             'TUT',
             0.1 * this.map.mapBoundaries.maxX,
             0.4 * this.map.mapBoundaries.maxY,
@@ -206,9 +207,9 @@ export class TutorialMapOverview {
             'TUT',
             0.55 * this.map.mapBoundaries.maxX,
             0.45 * this.map.mapBoundaries.maxY,
-            200,
+            220,
             90,
-            6000,
+            2500,
             2)
         this.machine.machine.aeroplanes.push(plane)
     }
