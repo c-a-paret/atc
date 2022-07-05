@@ -369,6 +369,7 @@ td {
     color: white;
     border: none;
     padding: 0.5rem;
+    border-radius: 0.2rem;
 }
 
 .hint-confirm:hover {
