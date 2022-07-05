@@ -271,7 +271,7 @@ export class UIController {
         } else {
             this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
         }
-        for (let x = 0; x < aeroplane.lastPositions.length - 2; x+=2) {
+        for (let x = 0; x < aeroplane.lastPositions.length - 2; x += 2) {
             let markerX = aeroplane.lastPositions[x].x
             let markerY = aeroplane.lastPositions[x].y
             this.aeroplaneContext.beginPath();

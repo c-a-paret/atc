@@ -5,6 +5,12 @@ export class StatsService {
         this.proximityTimer = 0
     }
 
+    reset = () => {
+        this.landedCount = 0
+        this.exitedBoundaryCount = 0
+        this.proximityTimer = 0
+    }
+
     incrementLanded = () => {
         this.landedCount += 1
     }

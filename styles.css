@@ -320,3 +320,62 @@ td {
 .bold {
     font-weight: bold;
 }
+
+.hint {
+    display: none;
+    z-index: 11;
+    position: absolute;
+    left: 2%;
+    bottom: 2%;
+    width: 25%;
+    height: auto;
+    max-height: 60%;
+    background-color: rgba(55, 108, 152, 0.5);
+    border-radius: 0.25rem;
+    backdrop-filter: blur(2px);
+
+    padding: 0.25rem 1rem 0.5rem;
+
+    font-family: "Courier New", monospace;
+    color: white;
+
+    overflow-y: scroll;
+}
+
+#hint-title {
+    font-size: 1.1rem;
+}
+
+.hint-body {
+    font-size: 1rem;
+}
+
+.code {
+    display: none;
+    background-color: #545454;
+    color: #eaeaea;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+}
+
+#hint-body-after {
+    display: none;
+}
+
+.hint-confirm {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+}
+
+.hint-confirm:hover {
+    cursor: pointer;
+}
+
+.hint-controls {
+    display: flex;
+    justify-content: flex-end;
+}

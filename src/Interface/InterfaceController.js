@@ -1,6 +1,8 @@
 import {commandMessage} from "../Command/CommandParser/CommandParser";
 import {timeStringFromSeconds} from "../utils/timeFormatters";
 import {div, p} from "./elements";
+import {CoreGamePlay} from "../States/CoreGamePlay";
+import {Tutorial} from "../States/Tutorial";
 
 class TargetValue {
     constructor(value) {
@@ -32,14 +34,62 @@ export class InterfaceController {
         if (exitedCount > 0) {
             document.getElementById("exited-count").classList.remove('good')
             document.getElementById("exited-count").classList.add('bad')
+        } else {
+            document.getElementById("exited-count").classList.remove('bad')
+            document.getElementById("exited-count").classList.add('good')
         }
         if (breachedRestrictions > 0) {
             document.getElementById("breached-restrictions").classList.remove('good')
             document.getElementById("breached-restrictions").classList.add('bad')
+        } else {
+            document.getElementById("breached-restrictions").classList.remove('bad')
+            document.getElementById("breached-restrictions").classList.add('good')
         }
         document.getElementById("landed-count").innerText = landedCount
         document.getElementById("exited-count").innerText = exitedCount
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
+    }
+
+    _drawGameModeButtons = () => {
+        document.getElementById("game").addEventListener("click", this._setGameMode)
+        document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
+    }
+
+    _setGameMode = () => {
+        this.hideHint()
+        this.aeroplaneService.transitionTo(new CoreGamePlay())
+    }
+
+    _setTutorialMode = () => {
+        this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
+    }
+
+    showHint = (hintTitle, hintBodyBefore, hintCode, hintBodyAfter, confirmButtonText, confirmButtonCallback) => {
+        document.getElementById("hint").style.display = 'none'
+        const title = document.getElementById('hint-title')
+        const bodyBefore = document.getElementById('hint-body-before')
+        const code = document.getElementById('hint-code')
+        const bodyAfter = document.getElementById('hint-body-after')
+
+        title.innerText = hintTitle
+        bodyBefore.innerText = hintBodyBefore
+        if (hintCode) {
+            code.innerText = hintCode
+            code.style.display = 'inline-block'
+        }
+
+        if (hintBodyAfter) {
+            bodyAfter.innerText = hintBodyAfter
+            bodyAfter.style.display = 'inline-block'
+        }
+
+        document.getElementById("hint-confirm").innerText = confirmButtonText
+        document.getElementById("hint-confirm").onclick = confirmButtonCallback
+        document.getElementById("hint").style.display = 'block'
+    }
+
+    hideHint = () => {
+        document.getElementById("hint").style.display = 'none'
     }
 
     drawStrips = () => {
@@ -133,6 +183,7 @@ export class InterfaceController {
         this._focusCommandEntry()
         this._setupPlayPauseInterface()
         this._setupButtonsInterface()
+        this._drawGameModeButtons()
     }
 
     _overviewBlock = (aeroplane) => {
@@ -283,6 +334,11 @@ export class InterfaceController {
             this._clearMessage()
         }, 2000)
     };
+
+    clearCommandEntry = () => {
+        let commandField = document.getElementById("command-entry-field");
+        commandField.value = ""
+    }
 
     _displayMessage = (message) => {
         let messageContainer = document.getElementById("message-container");

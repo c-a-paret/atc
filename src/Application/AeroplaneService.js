@@ -1,46 +1,32 @@
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
-import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
-import {AIRCRAFT} from "../config/aircraft";
 
 export class AeroplaneService {
-    constructor(map, statsService) {
+    constructor(map, statsService, initialState) {
         this.aeroplanes = []
         this.map = map
-        this.mapBoundaries = map.mapBoundaries
         this.statsService = statsService
-        this.spawnLocations = [
-            {x: 0.2 * this.mapBoundaries.maxX, y: 1, heading: 135},
-            {x: 0.5 * this.mapBoundaries.maxX, y: 1, heading: 135},
-            {x: 0.8 * this.mapBoundaries.maxX, y: 1, heading: 225},
-            {x: 1, y: 0.33 * this.mapBoundaries.maxY, heading: 110},
-            {x: 1, y: 0.66 * this.mapBoundaries.maxY, heading: 80},
-            {x: this.mapBoundaries.maxX - 1, y: 0.33 * this.mapBoundaries.maxY, heading: 260},
-            {x: this.mapBoundaries.maxX - 1, y: 0.66 * this.mapBoundaries.maxY, heading: 280},
-            {x: 0.2 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 20},
-            {x: 0.5 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 360},
-            {x: 0.8 * this.mapBoundaries.maxX, y: this.mapBoundaries.maxY, heading: 340},
-        ]
+
+        this.state = undefined
+        this.transitionTo(initialState)
     }
 
-    initArrival = () => {
-        const aeroplaneConfig = AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)]
-        const callSign = `${aeroplaneConfig.operatorIATA}${getRandomNumberBetween(100, 999)}`
-        const shortClass = aeroplaneConfig.shortClass
-        const location = this.spawnLocations[Math.floor(Math.random() * this.spawnLocations.length)];
-        const startX = location.x
-        const startY = location.y
-        const startHeading = location.heading
-        const startSpeed = roundToNearest(getRandomNumberBetween(180, 260), 10)
-        const startAltitude = roundToNearest(getRandomNumberBetween(5000, 8000), 500)
-        const weight = aeroplaneConfig.weight
-        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight)
-        plane.setWaypoint(this.map, this.map.defaultWaypoint)
-        this.aeroplanes.push(plane)
+    transitionTo = (state) => {
+        this.state = state
+        this.state.setMachine(this)
+        this.state.setMap(this.map)
+    }
+
+    tick = () => {
+        this.state.tick()
+    }
+
+    clear = () => {
+        this.aeroplanes = []
+        this.statsService.reset()
     }
 
     initTestAeroplanes = () => {
-
         // for (let x = 0; x < this.spawnLocations.length; x++) {
         //     const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
         //     const location = this.spawnLocations[x];
@@ -127,7 +113,7 @@ export class AeroplaneService {
 
     deactivateAeroplanes = () => {
         this.aeroplanes.forEach(plane => {
-            if (plane.isOutsideBoundaries(this.mapBoundaries, this.statsService.incrementExited) || plane.hasLanded(this.statsService.incrementLanded)) {
+            if (plane.isOutsideBoundaries(this.map.mapBoundaries, this.statsService.incrementExited) || plane.hasLanded(this.statsService.incrementLanded)) {
                 this.aeroplanes = this.aeroplanes.filter(activePlane => activePlane !== plane)
             }
         })

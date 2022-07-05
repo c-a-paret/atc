@@ -4,22 +4,23 @@ export class GameLoop {
         this.interfaceController = interfaceController
         this.aeroplaneService = aeroplaneService
         this.statsService = statsService
+
     }
 
     init() {
-        this.aeroplaneService.initArrival()
+        this.aeroplaneService.tick()
         // this.aeroplaneService.initTestAeroplanes()
         this.uiController.drawAeroplanes()
         this.interfaceController.drawStrips()
     }
 
     start() {
-        // Arrival spawner
+        // State ticker
         setInterval(() => {
             if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
-                this.aeroplaneService.initArrival()
+                this.aeroplaneService.tick()
             }
-        }, 105000)
+        }, 1000)
 
         // Stats updater
         setInterval(() => {
