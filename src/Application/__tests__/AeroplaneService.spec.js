@@ -56,19 +56,24 @@ const testGameMap = () => {
 describe('Send command', () => {
 
     let map;
+    let mockState;
 
     beforeEach(() => {
         map = testGameMap()
+        mockState = {
+            setMachine: jest.fn(),
+            setMap: jest.fn(),
+        }
     })
 
     test('Sends base commands to relevant aeroplane', () => {
-        const service = new AeroplaneService(map, {})
+        const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", "A321", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", "A321", "A321", 500, 350, 120, 90, 10000, 3),
         ]
 
-        const rawCommand = "BA456S140C120T070"
+        const rawCommand = "BA456S140A120T070"
 
         const result = service.sendCommand(rawCommand)
 
@@ -92,7 +97,7 @@ describe('Send command', () => {
     })
 
     test('Sends waypoint command to relevant aeroplane', () => {
-        const service = new AeroplaneService(map, {})
+        const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000, 3),
@@ -122,7 +127,7 @@ describe('Send command', () => {
     })
 
     test('Sends landing command to relevant aeroplane', () => {
-        const service = new AeroplaneService(map, {})
+        const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", "A321", 300, 500, 140, 90, 2800, 3),
@@ -152,7 +157,7 @@ describe('Send command', () => {
     })
 
     test('Sends speed and hold command to relevant aeroplane', () => {
-        const service = new AeroplaneService(map, {})
+        const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", "A321", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", "A321", "A321", 500, 350, 120, 90, 10000, 3),
@@ -186,7 +191,7 @@ describe('Send command', () => {
 
 
     test('All aeroplanes unaffected if command not valid', () => {
-        const service = new AeroplaneService(map, {})
+        const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000, 3),
@@ -218,8 +223,17 @@ describe('Send command', () => {
 
 describe('Get aeroplane by position', () => {
 
+    let mockState;
+
+    beforeEach(() => {
+        mockState = {
+            setMachine: jest.fn(),
+            setMap: jest.fn(),
+        }
+    })
+
     test('Gets first aeroplane when provided position is within its tolerances', () => {
-        const service = new AeroplaneService(testGameMap(), {})
+        const service = new AeroplaneService(testGameMap(), {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
@@ -234,7 +248,7 @@ describe('Get aeroplane by position', () => {
     })
 
     test('Gets second aeroplane when provided position is within its tolerances', () => {
-        const service = new AeroplaneService(testGameMap(), {})
+        const service = new AeroplaneService(testGameMap(), {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
@@ -249,7 +263,7 @@ describe('Get aeroplane by position', () => {
     })
 
     test('Returns null if no aeroplanes in the area', () => {
-        const service = new AeroplaneService(testGameMap(), {})
+        const service = new AeroplaneService(testGameMap(), {}, mockState)
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000),
             new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000),
@@ -266,6 +280,15 @@ describe('Get aeroplane by position', () => {
 
 describe('Remove aeroplanes', () => {
 
+    let mockState;
+
+    beforeEach(() => {
+        mockState = {
+            setMachine: jest.fn(),
+            setMap: jest.fn(),
+        }
+    })
+
     test('Removes aeroplanes outside of map boundaries', () => {
         const landedCallback = jest.fn();
         const exitedCallback = jest.fn();
@@ -273,7 +296,7 @@ describe('Remove aeroplanes', () => {
             incrementLanded: landedCallback,
             incrementExited: exitedCallback
         }
-        const service = new AeroplaneService(testGameMap(), statsService)
+        const service = new AeroplaneService(testGameMap(), statsService, mockState)
 
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", -1, 50, 120, 180, 5000),
@@ -308,7 +331,7 @@ describe('Remove aeroplanes', () => {
             incrementExited: exitedCallback
         }
 
-        const service = new AeroplaneService(testGameMap(), statsService)
+        const service = new AeroplaneService(testGameMap(), statsService, mockState)
 
         service.aeroplanes = [
             new Aeroplane("BA123", "A321", 100, 100, 140, 90, LANDED_ALTITUDE - 1),
@@ -334,7 +357,10 @@ describe('Determine proximal aeroplanes', () => {
     test('Lists aeroplanes that breach proximity boundaries', () => {
         const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {exclusionZones: []}};
 
-        const service = new AeroplaneService(mockMap, {}, {})
+        const service = new AeroplaneService(mockMap, {}, {
+                setMachine: jest.fn(),
+                setMap: jest.fn()
+        })
 
         service.aeroplanes = [
             new Aeroplane("BA123_BREACH", "A321", 50, 50, 120, 90, 5000),

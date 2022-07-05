@@ -54,7 +54,7 @@ export const parseHeading = (command) => {
 }
 
 export const parseAltitude = (command) => {
-    const match = command.match(/[CDcd](\d{1,3})/g);
+    const match = command.match(/[A](\d{1,3})/g);
     if (match && match.length === 1) {
         return parseInt(match[0].substring(1)) * 100
     }
