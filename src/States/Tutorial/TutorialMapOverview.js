@@ -92,7 +92,7 @@ export class TutorialMapOverview {
             {
                 hintTitle: "Aeroplanes",
                 hintBodyBefore: "An aeroplane has been placed on the map.\n\n" +
-                    "Above the aeroplane is a label that shows current information about the aeroplane.\n\n" +
+                    "Just above the aeroplane, is a label that shows current information about the aeroplane.\n\n" +
                     "At the top is its Call Sign (AB123). This is how you refer to the plane.\n\n" +
                     "The three numbers underneath show:\n\n" +
                     "- Heading (90 degrees, directly East)\n" +

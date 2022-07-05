@@ -66,21 +66,28 @@ export class InterfaceController {
 
     showHint = (hintTitle, hintBodyBefore, hintCode, hintBodyAfter, confirmButtonText, confirmButtonCallback) => {
         document.getElementById("hint").style.display = 'none'
+
         const title = document.getElementById('hint-title')
         const bodyBefore = document.getElementById('hint-body-before')
         const code = document.getElementById('hint-code')
         const bodyAfter = document.getElementById('hint-body-after')
         const confirmButton = document.getElementById("hint-confirm")
+
+        // Hide optional elements
+        code.style.display = 'none'
+        bodyAfter.style.display = 'none'
         confirmButton.style.display = 'none'
 
-        title.innerText = ''
-        bodyBefore.innerText = ''
+        // Clear optional elements' content
+        code.innerText = ''
         bodyAfter.innerText = ''
         confirmButton.innerText = ''
 
+        // Always have a title and some content
         title.innerText = hintTitle
         bodyBefore.innerText = hintBodyBefore
 
+        // Display optional content
         if (hintCode) {
             code.innerText = hintCode
             code.style.display = 'inline-block'
@@ -91,12 +98,16 @@ export class InterfaceController {
         if (hintBodyAfter) {
             bodyAfter.innerText = hintBodyAfter
             bodyAfter.style.display = 'inline-block'
+        } else {
+            bodyAfter.style.display = 'none'
         }
 
         if (confirmButtonText) {
             confirmButton.innerText = confirmButtonText
             confirmButton.style.display = 'inline-block'
             document.getElementById("hint-confirm").onclick = confirmButtonCallback
+        } else {
+            confirmButton.style.display = 'none'
         }
 
         document.getElementById("hint").style.display = 'block'
