@@ -70,12 +70,22 @@ export class InterfaceController {
         const bodyBefore = document.getElementById('hint-body-before')
         const code = document.getElementById('hint-code')
         const bodyAfter = document.getElementById('hint-body-after')
+        const confirmButton = document.getElementById("hint-confirm")
+        confirmButton.style.display = 'none'
+
+        title.innerText = ''
+        bodyBefore.innerText = ''
+        bodyAfter.innerText = ''
+        confirmButton.innerText = ''
 
         title.innerText = hintTitle
         bodyBefore.innerText = hintBodyBefore
+
         if (hintCode) {
             code.innerText = hintCode
             code.style.display = 'inline-block'
+        } else {
+            code.style.display = 'none'
         }
 
         if (hintBodyAfter) {
@@ -83,8 +93,12 @@ export class InterfaceController {
             bodyAfter.style.display = 'inline-block'
         }
 
-        document.getElementById("hint-confirm").innerText = confirmButtonText
-        document.getElementById("hint-confirm").onclick = confirmButtonCallback
+        if (confirmButtonText) {
+            confirmButton.innerText = confirmButtonText
+            confirmButton.style.display = 'inline-block'
+            document.getElementById("hint-confirm").onclick = confirmButtonCallback
+        }
+
         document.getElementById("hint").style.display = 'block'
     }
 

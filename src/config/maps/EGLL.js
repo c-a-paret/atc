@@ -180,7 +180,7 @@ export const EGLL = {
                 dashes: 2,
                 label: {text: "EG(D)-133", location: {"x": 0.27 * x, "y": 0.455 * y}},
                 minAltitude: 4000,
-                maxAltitude: null,
+                maxAltitude: 40000,
                 boundaries: [
                     {x: (0.29 * x), y: (0.471 * y), inv_y: y - (0.471 * y)},
                     {x: (0.284 * x), y: (0.471 * y), inv_y: y - (0.471 * y)},

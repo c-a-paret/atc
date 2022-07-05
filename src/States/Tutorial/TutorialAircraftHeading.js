@@ -18,7 +18,7 @@ export class TutorialAircraftHeading {
         this.machine.interfaceController.showHint(
             "Turning aircraft",
             "Currently, LH534 is heading 90 degrees.\n\n" +
-            "You can see this on the aircraft label its sidebar strip (the first of the three numbers).\n\n" +
+            "You can see this on the aircraft label and its sidebar strip (the first of the three numbers).\n\n" +
             "Select the aircraft and type the command below into the command field after the call sign, and press Enter.",
             "T180",
             "This will tell the aeroplane to turn to heading 180 degrees (directly south).\n\n" +

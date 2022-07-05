@@ -23,7 +23,8 @@ export class TutorialAircraftWaypoint {
             ">EPM",
             "This will direct the aircraft to turn and fly towards waypoint EPM (Epsom) towards the bottom of the map.\n\n" +
             "Notice that the heading indicator in the sidebar has turned Blue and references EPM, while the aeroplane label on the map still shows the current heading.\n\n" +
-            "When the aeroplane reaches the waypoint, it will continue on its current heading.",
+            "When the aeroplane reaches the waypoint, it will continue on its current heading.\n\n" +
+            "Try some other waypoints and notice how the most recent command overrides a previous one.",
             "Next",
             this.next
         )

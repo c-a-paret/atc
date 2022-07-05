@@ -1,4 +1,5 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
+import {TutorialLanding} from "./TutorialLanding";
 
 export class TutorialAircraftMultipleCommands {
     constructor(map) {
@@ -32,7 +33,7 @@ export class TutorialAircraftMultipleCommands {
     next = () => {
         this.machine.machine.clear()
         this.machine.interfaceController.clearCommandEntry()
-        // this.machine.transitionTo(new TutorialAircraftAltitude(this.map))
+        this.machine.transitionTo(new TutorialLanding(this.map))
     }
 
     _baseAircraft = () => {
