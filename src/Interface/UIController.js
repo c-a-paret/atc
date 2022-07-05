@@ -68,6 +68,7 @@ export class UIController {
             this._drawSpeedLabel(plane)
             this._drawAltitudeLabel(plane)
             this._drawCallSignLabel(plane)
+            this._drawProjectedPath(plane)
         })
     }
 
@@ -327,6 +328,38 @@ export class UIController {
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.fillText(aeroplane.callSign, aeroplane.x - 20, aeroplane.y - 30);
+    }
+
+    _drawProjectedPath = (aeroplane) => {
+        if (aeroplane.nextPositions.length > 0) {
+
+            this.aeroplaneContext.strokeStyle = COLOURS.GREY;
+            this.aeroplaneContext.lineWidth = 2;
+            this.aeroplaneContext.beginPath();
+            this.aeroplaneContext.moveTo(aeroplane.nextPositions[0].x, aeroplane.nextPositions[0].y)
+            aeroplane.nextPositions.forEach(position => {
+                this.aeroplaneContext.lineTo(position.x, position.y)
+                if (position.marker) {
+                    this.aeroplaneContext.stroke();
+                    this._drawMarker(position.x, position.y)
+                    this.aeroplaneContext.beginPath();
+                }
+            })
+            this.aeroplaneContext.stroke();
+        }
+
+    }
+
+    _drawMarker = (x, y) => {
+        this.aeroplaneContext.strokeStyle = COLOURS.MINT;
+        this.aeroplaneContext.lineWidth = 2;
+        this.aeroplaneContext.beginPath();
+        this.aeroplaneContext.moveTo(x - 4, y);
+        this.aeroplaneContext.lineTo(x + 4, y);
+        this.aeroplaneContext.moveTo(x, y - 4);
+        this.aeroplaneContext.lineTo(x, y + 4);
+        this.aeroplaneContext.stroke();
+        this.aeroplaneContext.strokeStyle = COLOURS.GREY;
     }
 
     _drawVORs = (waypoints) => {

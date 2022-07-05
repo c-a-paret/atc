@@ -3,7 +3,7 @@ import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
     HORIZONTAL_SEPARATION_MINIMUM,
-    LANDED_ALTITUDE,
+    LANDED_ALTITUDE, NUM_PROJECTED_TICKS,
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
@@ -21,6 +21,7 @@ export class Aeroplane {
         this.actions = []
         this.breachingProximity = false
         this.lastPositions = []
+        this.nextPositions = []
 
         this.targetLocation = undefined
         this.targetAltitude = undefined
@@ -154,6 +155,32 @@ export class Aeroplane {
         this._clean_actions()
     }
 
+    simulatePath = () => {
+        if (this.isLanding()) {
+            this.nextPositions = []
+        } else {
+            const simulatedAeroplane = new Aeroplane(null, null, this.x, this.y, this.speed, this.heading, this.altitude, this.weight)
+            this.actions.forEach(action => {
+                const copiedAction = action.copy(simulatedAeroplane);
+                if (copiedAction) {
+                    simulatedAeroplane.actions.push(copiedAction)
+                }
+            })
+
+            const projectedLocations = []
+            let altitudeMarker = false
+            for (let x = 0; x < NUM_PROJECTED_TICKS; x++) {
+                simulatedAeroplane.applyActions()
+                if (!altitudeMarker && this.isChangingAltitude() && simulatedAeroplane.altitude === this.targetAltitude) {
+                    projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, altitude: simulatedAeroplane.altitude, marker: true})
+                    altitudeMarker = true
+                }
+                projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, altitude: simulatedAeroplane.altitude, marker: false})
+            }
+            this.nextPositions = projectedLocations
+        }
+    }
+
     updateLastPositions = (x, y) => {
         if (this.lastPositions.length === SPEED_TAIL_LENGTH + 1) {
             this.lastPositions = this.lastPositions.slice(1)
@@ -188,6 +215,10 @@ export class Aeroplane {
 
     isHolding = () => {
         return this.actions.length > 0 && this.actions.map(action => action.type()).includes("HoldingPattern")
+    }
+
+    isChangingAltitude = () => {
+        return this.actions.length > 0 && this.actions.map(action => action.type()).includes("Altitude")
     }
 
     hasLanded = (landedCallback) => {

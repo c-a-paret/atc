@@ -32,6 +32,10 @@ class Action {
     isValid = () => {
 
     };
+
+    copy = (aeroplane) => {
+
+    }
 }
 
 export class Speed extends Action {
@@ -64,6 +68,10 @@ export class Speed extends Action {
         return this.targetValue
             && this.targetValue !== this.aeroplane.speed
             && this.targetValue >= MIN_SPEED
+    }
+
+    copy = (aeroplane) => {
+        return new Speed(this.map, aeroplane, this.targetValue)
     }
 }
 
@@ -127,6 +135,10 @@ export class Heading extends Action {
             && this.targetValue >= 0
             && this.targetValue <= 360
     };
+
+    copy = (aeroplane) => {
+        return new Heading(this.map, aeroplane, this.targetValue)
+    }
 }
 
 export class Altitude extends Action {
@@ -155,6 +167,10 @@ export class Altitude extends Action {
             && this.targetValue >= MIN_ALTITUDE
             && this.targetValue <= MAX_ALTITUDE
             && this.targetValue % 20 === 0
+    }
+
+    copy = (aeroplane) => {
+        return new Altitude(this.map, aeroplane, this.targetValue)
     }
 }
 
@@ -241,6 +257,10 @@ export class Waypoint extends Action {
         }
         return false;
     }
+
+    copy = (aeroplane) => {
+        return new Waypoint(this.map, aeroplane, this.targetWaypoint)
+    }
 }
 
 export class Landing extends Action {
@@ -297,6 +317,10 @@ export class Landing extends Action {
         return false
     }
 
+    copy = (aeroplane) => {
+
+    }
+
     _onCorrectSideOfRunway = (aeroplane, runway) => {
         if (runway.heading <= 180 && runway.heading >= 0) {
             return aeroplane.x < runway.landingZone.x
@@ -333,6 +357,10 @@ export class HoldingPattern extends Action {
         }
         this.aeroplane.heading = newHeading
     };
+
+    copy = (aeroplane) => {
+        return new HoldingPattern(this.map, aeroplane, this.direction)
+    }
 
     _change_rate = () => {
         if (this.aeroplane.speed < 200) {
