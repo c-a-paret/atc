@@ -5,6 +5,7 @@ export class GameMap {
         this.defaultWaypoint = mapConfig.defaultWaypoint
         this.maxX = mapConfig.maxX
         this.maxY = mapConfig.maxY
+        this.focusableConfig = mapConfig.focusableConfig
         this.mapBoundaries = {
             minX: 0,
             maxX: mapConfig.maxX,

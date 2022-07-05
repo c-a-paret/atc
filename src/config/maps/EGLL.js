@@ -11,6 +11,38 @@ export const EGLL = {
     defaultWaypoint: "LON",
     maxX: x,
     maxY: y,
+    focusableConfig: {
+        runways: {
+            minX: x / 2 - (runwayWidth / 2),
+            minY: y / 2 - 10,
+            maxX: x / 2 + (runwayWidth / 2),
+            maxY: y / 2 + runwayGap + 10
+        },
+        waypoint: {
+            minX: (0.44 * x),
+            minY: (0.26 * y),
+            maxX: (0.48 * x),
+            maxY: (0.34 * y)
+        },
+        restrictedZone: {
+            minX: 0.65 * x,
+            minY: 0.3 * y,
+            maxX: 0.88 * x,
+            maxY: 0.67 * y,
+        },
+        restrictedZoneLabel: {
+            minX: 0.725 * x,
+            minY: 0.57 * y,
+            maxX: 0.78 * x,
+            maxY: 0.61 * y,
+        },
+        landingFeather: {
+            minX: x / 2 - (runwayWidth / 2) - ILS_MAX_X - 25,
+            minY: y / 2 - runwayGap,
+            maxX: x / 2 - (runwayWidth / 2) + 5,
+            maxY: y / 2 + runwayGap
+        }
+    },
     features: {
         runways: [
             {
@@ -18,6 +50,12 @@ export const EGLL = {
                     label: "9L",
                     heading: 90,
                     altitude: 0,
+                    focusableConfig: {
+                        minX: x / 2 - (runwayWidth / 2) - ILS_MAX_X - 5,
+                        minY: y / 2 - 5,
+                        maxX: x / 2 - (runwayWidth / 2) + 5,
+                        maxY: y / 2 + runwayGap,
+                    },
                     landingZone: {
                         x: x / 2 - (runwayWidth / 5),
                         y: y / 2,
@@ -129,7 +167,7 @@ export const EGLL = {
             {
                 level: "critical",
                 dashes: 2,
-                label: {text: "EG(R)-157", location: {"x": 0.739 * x, "y": 0.471 * y}},
+                label: {text: "EG(R)-160", location: {"x": 0.739 * x, "y": 0.471 * y}},
                 minAltitude: 4000,
                 maxAltitude: null,
                 boundaries: [

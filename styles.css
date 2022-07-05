@@ -381,3 +381,27 @@ td {
     display: flex;
     justify-content: flex-end;
 }
+
+.attention-focus {
+    z-index: 12;
+    display: none;
+    position: absolute;
+    border: 2px dashed rgba(34, 208, 101, 0.5);
+}
+
+.blink {
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}

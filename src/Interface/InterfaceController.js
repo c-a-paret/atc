@@ -3,6 +3,7 @@ import {timeStringFromSeconds} from "../utils/timeFormatters";
 import {div, p} from "./elements";
 import {CoreGamePlay} from "../States/CoreGamePlay";
 import {Tutorial} from "../States/Tutorial";
+import {round} from "../utils/maths";
 
 class TargetValue {
     constructor(value) {
@@ -115,6 +116,22 @@ export class InterfaceController {
 
     hideHint = () => {
         document.getElementById("hint").style.display = 'none'
+    }
+
+    focusAttention = (focusableElementConfig) => {
+        const attentionElement = document.getElementById("attention-focus");
+
+        attentionElement.style.left = `${round(focusableElementConfig.minX, 0)}px`
+        attentionElement.style.top = `${focusableElementConfig.minY}px`
+
+        attentionElement.style.width = `${focusableElementConfig.maxX - focusableElementConfig.minX}px`
+        attentionElement.style.height = `${focusableElementConfig.maxY - focusableElementConfig.minY}px`
+
+        attentionElement.style.display = 'block'
+    }
+
+    blurAttention = () => {
+        document.getElementById("attention-focus").style.display = 'none';
     }
 
     drawStrips = () => {

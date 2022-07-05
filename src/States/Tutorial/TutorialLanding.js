@@ -23,8 +23,10 @@ export class TutorialLanding {
         this.machine.machine.clear()
         this.machine.interfaceController.clearCommandEntry()
         this.machine.interfaceController.hideHint()
+        this.machine.interfaceController.blurAttention()
         const hint = this.getHint(this.hint)
         hint.spawnFunction && hint.spawnFunction()
+        hint.focusConfig && this.machine.interfaceController.focusAttention(hint.focusConfig)
         this.machine.interfaceController.showHint(
             hint.hintTitle,
             hint.hintBodyBefore,
@@ -61,7 +63,8 @@ export class TutorialLanding {
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
-                confirmButtonCallback: this.next
+                confirmButtonCallback: this.next,
+                focusConfig: this.map.focusableConfig.landingFeather
             },
             {
                 hintTitle: "Landing - Incorrect Location",

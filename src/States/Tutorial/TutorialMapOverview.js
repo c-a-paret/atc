@@ -23,8 +23,10 @@ export class TutorialMapOverview {
         this.machine.machine.clear()
         this.machine.interfaceController.clearCommandEntry()
         this.machine.interfaceController.hideHint()
+        this.machine.interfaceController.blurAttention()
         const hint = this.getHint(this.hint)
         hint.spawnFunction && hint.spawnFunction()
+        hint.focusConfig && this.machine.interfaceController.focusAttention(hint.focusConfig)
         this.machine.interfaceController.showHint(
             hint.hintTitle,
             hint.hintBodyBefore,
@@ -76,7 +78,8 @@ export class TutorialMapOverview {
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
-                confirmButtonCallback: this.next
+                confirmButtonCallback: this.next,
+                focusConfig: this.map.focusableConfig.runways
             },
             {
                 hintTitle: "Waypoints",
@@ -87,7 +90,8 @@ export class TutorialMapOverview {
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
-                confirmButtonCallback: this.next
+                confirmButtonCallback: this.next,
+                focusConfig: this.map.focusableConfig.waypoint
             },
             {
                 hintTitle: "Aeroplanes",
@@ -125,8 +129,16 @@ export class TutorialMapOverview {
                     "Three types of restricted zones exist:\n\n" +
                     "- Critical (red)\n" +
                     "- Moderate (orange)\n" +
-                    "- Informational (blue)\n\n" +
-                    "These zones have a label, for example: EG(R)-157 and indicators for the minimum and/or maximum altitude.\n\n" +
+                    "- Informational (blue)",
+                hintCode: "",
+                hintBodyAfter: "",
+                confirmButtonText: "Next",
+                confirmButtonCallback: this.next,
+                focusConfig: this.map.focusableConfig.restrictedZone
+            },
+            {
+                hintTitle: "Restricted Zone Labels",
+                hintBodyBefore: "Restricted zones have a label, for example: EG(R)-157 and indicators for the minimum and/or maximum altitude.\n\n" +
                     "- An orange number shows the minimum altitude\n" +
                     "- A white number shows the maximum altitude.\n\n" +
                     "The altitudes are given in 100s of feet. For example, 30 means 3000ft and 250 means 25,000ft.\n\n" +
@@ -134,7 +146,8 @@ export class TutorialMapOverview {
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
-                confirmButtonCallback: this.next
+                confirmButtonCallback: this.next,
+                focusConfig: this.map.focusableConfig.restrictedZoneLabel
             },
             {
                 hintTitle: "Breaching Restricted Zones",
