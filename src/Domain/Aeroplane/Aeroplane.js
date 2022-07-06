@@ -172,10 +172,10 @@ export class Aeroplane {
             for (let x = 0; x < NUM_PROJECTED_TICKS; x++) {
                 simulatedAeroplane.applyActions()
                 if (!altitudeMarker && this.isChangingAltitude() && simulatedAeroplane.altitude === this.targetAltitude) {
-                    projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, altitude: simulatedAeroplane.altitude, marker: true})
+                    projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, marker: true})
                     altitudeMarker = true
                 }
-                projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, altitude: simulatedAeroplane.altitude, marker: false})
+                projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, marker: false})
             }
             this.nextPositions = projectedLocations
         }

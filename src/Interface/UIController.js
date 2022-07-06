@@ -332,20 +332,32 @@ export class UIController {
 
     _drawProjectedPath = (aeroplane) => {
         if (aeroplane.nextPositions.length > 0) {
+            const firstX = aeroplane.nextPositions[0].x
+            const firstY = aeroplane.nextPositions[0].y
+            const lastX = aeroplane.nextPositions[aeroplane.nextPositions.length - 1].x
+            const lastY = aeroplane.nextPositions[aeroplane.nextPositions.length - 1].y
 
-            this.aeroplaneContext.strokeStyle = COLOURS.GREY;
+            const gradient = this.aeroplaneContext.createLinearGradient(firstX, firstY, lastX, lastY);
+            gradient.addColorStop(0, COLOURS.GREY);
+            gradient.addColorStop(1, COLOURS.GREY_TRANSPARENT);
+
+            this.aeroplaneContext.strokeStyle = gradient;
             this.aeroplaneContext.lineWidth = 2;
+
+            // Projected path
             this.aeroplaneContext.beginPath();
             this.aeroplaneContext.moveTo(aeroplane.nextPositions[0].x, aeroplane.nextPositions[0].y)
             aeroplane.nextPositions.forEach(position => {
                 this.aeroplaneContext.lineTo(position.x, position.y)
-                if (position.marker) {
-                    this.aeroplaneContext.stroke();
-                    this._drawMarker(position.x, position.y)
-                    this.aeroplaneContext.beginPath();
-                }
             })
             this.aeroplaneContext.stroke();
+
+            // Marker
+            aeroplane.nextPositions.forEach(position => {
+                if (position.marker) {
+                    this._drawMarker(position.x, position.y)
+                }
+            })
         }
 
     }
