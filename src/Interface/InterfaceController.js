@@ -28,6 +28,7 @@ export class InterfaceController {
         this.selectedCallSign = null
 
         this.gamePaused = false;
+        this.projectedPathsOn = false;
         this._init()
     }
 
@@ -54,6 +55,7 @@ export class InterfaceController {
     _drawGameModeButtons = () => {
         document.getElementById("game").addEventListener("click", this._setGameMode)
         document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
+        document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
     }
 
     _setGameMode = () => {
@@ -64,6 +66,16 @@ export class InterfaceController {
 
     _setTutorialMode = () => {
         this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
+    }
+
+    _toggleProjectedPaths = () => {
+        if (this.projectedPathsOn) {
+            this.projectedPathsOn = false
+            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths On'
+        } else {
+            this.projectedPathsOn = true
+            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths Off'
+        }
     }
 
     showHint = (hintTitle, hintBodyBefore, hintCode, hintBodyAfter, confirmButtonText, confirmButtonCallback) => {
