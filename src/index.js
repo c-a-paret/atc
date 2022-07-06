@@ -17,7 +17,7 @@ const startState = new CoreGamePlay(map)
 const aeroplaneService = new AeroplaneService(map, statsService, startState)
 
 const interfaceController = new InterfaceController(aeroplaneService)
-const uiController = new UIController(map, aeroplaneService, interfaceController)
+const uiController = new UIController(map, aeroplaneService)
 
 const gameLoop = new GameLoop(uiController, interfaceController, aeroplaneService, statsService)
 

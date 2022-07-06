@@ -3,10 +3,9 @@ import {ILS_MIN_X} from "../config/constants";
 import {round} from "../utils/maths";
 
 export class UIController {
-    constructor(map, aeroplaneService, interfaceController) {
+    constructor(map, aeroplaneService) {
         this.map = map
         this.aeroplaneService = aeroplaneService
-        this.interfaceController = interfaceController
 
         this.backgroundCanvas = document.getElementById("background");
         this.backgroundContext = this.backgroundCanvas.getContext('2d');
@@ -333,35 +332,33 @@ export class UIController {
     }
 
     _drawProjectedPath = (aeroplane) => {
-        if (this.interfaceController.selectedCallSign === aeroplane.callSign) {
-            if (aeroplane.nextPositions.length > 0) {
-                const firstX = aeroplane.nextPositions[0].x
-                const firstY = aeroplane.nextPositions[0].y
-                const lastX = aeroplane.nextPositions[aeroplane.nextPositions.length - 1].x
-                const lastY = aeroplane.nextPositions[aeroplane.nextPositions.length - 1].y
+        if (aeroplane.nextPositions.length > 0) {
+            const firstX = aeroplane.nextPositions[0].x
+            const firstY = aeroplane.nextPositions[0].y
+            const lastX = aeroplane.nextPositions[aeroplane.nextPositions.length - 1].x
+            const lastY = aeroplane.nextPositions[aeroplane.nextPositions.length - 1].y
 
-                const gradient = this.aeroplaneContext.createLinearGradient(firstX, firstY, lastX, lastY);
-                gradient.addColorStop(0, COLOURS.GREY);
-                gradient.addColorStop(1, COLOURS.GREY_TRANSPARENT);
+            const gradient = this.aeroplaneContext.createLinearGradient(firstX, firstY, lastX, lastY);
+            gradient.addColorStop(0, COLOURS.GREY);
+            gradient.addColorStop(1, COLOURS.GREY_TRANSPARENT);
 
-                this.aeroplaneContext.strokeStyle = gradient;
-                this.aeroplaneContext.lineWidth = 2;
+            this.aeroplaneContext.strokeStyle = gradient;
+            this.aeroplaneContext.lineWidth = 2;
 
-                // Projected path
-                this.aeroplaneContext.beginPath();
-                this.aeroplaneContext.moveTo(aeroplane.nextPositions[0].x, aeroplane.nextPositions[0].y)
-                aeroplane.nextPositions.forEach(position => {
-                    this.aeroplaneContext.lineTo(position.x, position.y)
-                })
-                this.aeroplaneContext.stroke();
+            // Projected path
+            this.aeroplaneContext.beginPath();
+            this.aeroplaneContext.moveTo(aeroplane.nextPositions[0].x, aeroplane.nextPositions[0].y)
+            aeroplane.nextPositions.forEach(position => {
+                this.aeroplaneContext.lineTo(position.x, position.y)
+            })
+            this.aeroplaneContext.stroke();
 
-                // Marker
-                aeroplane.nextPositions.forEach(position => {
-                    if (position.marker) {
-                        this._drawMarker(position.x, position.y)
-                    }
-                })
-            }
+            // Marker
+            aeroplane.nextPositions.forEach(position => {
+                if (position.marker) {
+                    this._drawMarker(position.x, position.y)
+                }
+            })
         }
     }
 

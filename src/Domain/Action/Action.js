@@ -91,48 +91,25 @@ export class Heading extends Action {
 
         if (shortestAngle(currentHeading, targetHeading) > 0) {
             // turn right
-            this.aeroplane.heading = (this.aeroplane.heading + this._change_rate_v2()) % 360;
+            this.aeroplane.heading = (this.aeroplane.heading + this._change_rate()) % 360;
         } else {
             // turn left
-            let newHeading = this.aeroplane.heading - this._change_rate_v2();
+            let newHeading = this.aeroplane.heading - this._change_rate();
             this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
         }
     };
 
     _wouldEndUpBeyondTarget(targetHeading, currentHeading) {
-        return Math.abs(targetHeading - currentHeading) < this._change_rate_v2();
+        return Math.abs(targetHeading - currentHeading) < this._change_rate();
     }
 
-    _change_rate_v2 = () => {
+    _change_rate = () => {
         if (this.aeroplane.weight === 1) {
             return -0.002275 * this.aeroplane.speed + 5
         } else if (this.aeroplane.weight === 2) {
             return -0.002275 * this.aeroplane.speed + 4
         } else {
             return -0.002275 * this.aeroplane.speed + 3
-        }
-    }
-
-
-    _change_rate = () => {
-        if (this.aeroplane.speed < 200) {
-            return {
-                1: 5,
-                2: 3,
-                3: 2,
-            }[this.aeroplane.weight]
-        } else if (this.aeroplane.speed < 300) {
-            return {
-                1: 3,
-                2: 2,
-                3: 2,
-            }[this.aeroplane.weight]
-        } else {
-            return {
-                1: 3,
-                2: 2,
-                3: 2,
-            }[this.aeroplane.weight]
         }
     }
 
