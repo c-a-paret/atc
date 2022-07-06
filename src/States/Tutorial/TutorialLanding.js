@@ -154,21 +154,31 @@ export class TutorialLanding {
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
                 confirmButtonCallback: this.next,
-                spawnFunction: this.correctConfiguration
+                spawnFunction: this.correctConfiguration9L
             },
             {
-                hintTitle: "Issuing Landing Clearance",
+                hintTitle: "Issuing Landing Clearance [1/2]",
                 hintBodyBefore: "Select the aircraft and type the following command to issue landing clearance for runway 9L:",
-                hintCode: ".9L.",
-                hintBodyAfter: "Notice that the sidebar strip shows a Blue 'Landing' indicator and watch the aircraft label values change as the aircraft follows its landing procedure on your behalf.\n\n" +
+                hintCode: "ILS9L",
+                hintBodyAfter: "'ILS' stands for 'Instrument Landing System'.\n\n" +
+                    "Notice that the sidebar strip shows a Blue 'Landing' indicator and watch the aircraft label values change as the aircraft follows its landing procedure on your behalf.\n\n" +
                     "Once the aircraft lands on the runway, the aircraft and its associated sidebar strip will disappear and the 'Landed' count in the top right corner of the screen will go up by one.\n\n",
                 confirmButtonText: "Next",
                 confirmButtonCallback: this.next,
-                spawnFunction: this.correctConfiguration
+                spawnFunction: this.correctConfiguration9L
+            },
+            {
+                hintTitle: "Issuing Landing Clearance [2/2]",
+                hintBodyBefore: "Let's try another one for 27R:",
+                hintCode: "ILS27R",
+                hintBodyAfter: "",
+                confirmButtonText: "Next",
+                confirmButtonCallback: this.next,
+                spawnFunction: this.correctConfiguration27R
             },
             {
                 hintTitle: "Congratulations!",
-                hintBodyBefore: "You have landed your first plane and finished the tutorial.\n\n" +
+                hintBodyBefore: "You have landed your first planes and finished the tutorial.\n\n" +
                     "Click 'Game' at the top of the screen to start playing!",
                 hintCode: "",
                 hintBodyAfter: "",
@@ -258,7 +268,7 @@ export class TutorialLanding {
         this.machine.machine.aeroplanes.push(plane)
     }
 
-    correctConfiguration = () => {
+    correctConfiguration9L = () => {
         const plane = new Aeroplane(
             'AB123',
             'TUT',
@@ -266,6 +276,19 @@ export class TutorialLanding {
             0.5 * this.map.mapBoundaries.maxY,
             180,
             90,
+            2800,
+            2)
+        this.machine.machine.aeroplanes.push(plane)
+    }
+
+    correctConfiguration27R = () => {
+        const plane = new Aeroplane(
+            'AB123',
+            'TUT',
+            0.52 * this.map.mapBoundaries.maxX + ILS_MAX_X,
+            0.5 * this.map.mapBoundaries.maxY,
+            180,
+            270,
             2800,
             2)
         this.machine.machine.aeroplanes.push(plane)

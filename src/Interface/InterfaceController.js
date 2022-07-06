@@ -399,6 +399,7 @@ export class InterfaceController {
     _previousCallSignHandler = () => {
         let commandField = document.getElementById("command-entry-field");
         commandField.value = this.lastCallSign
+        this.selectedCallSign = this.lastCallSign
         const strip = this._getStripFor(this.lastCallSign)
         this._selectStrip(strip)
     };

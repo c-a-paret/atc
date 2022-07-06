@@ -82,7 +82,7 @@ describe("Parse Command", () => {
     })
 
     test("Sets heading null if runway supplied", () => {
-        const command = "BA423.9L.H200"
+        const command = "BA423ILS9LH200"
 
         const result = parseCommand(command)
 
@@ -92,7 +92,7 @@ describe("Parse Command", () => {
     })
 
     test("Sets waypoint null if runway supplied", () => {
-        const command = "BA423>OCK.27R.S200"
+        const command = "BA423>OCKILS27RS200"
 
         const result = parseCommand(command)
 
@@ -206,9 +206,27 @@ describe("Waypoint Commands", () => {
 })
 
 describe("Landing Commands", () => {
-    test("Extracts runway inside larger command", () => {
-        const command = "BA423.9L.S200"
+    test("Extracts one digit runway when only command", () => {
+        const command = "ILS9L"
         const expectedRunway = "9L"
+
+        const result = parseRunway(command)
+
+        expect(result).toBe(expectedRunway)
+    })
+
+    test("Extracts one digit runway inside command with speed command", () => {
+        const command = "BA423ILS9LS200"
+        const expectedRunway = "9L"
+
+        const result = parseRunway(command)
+
+        expect(result).toBe(expectedRunway)
+    })
+
+    test("Extracts two digit runway inside command with speed command", () => {
+        const command = "BA423ILS27RS200"
+        const expectedRunway = "27R"
 
         const result = parseRunway(command)
 

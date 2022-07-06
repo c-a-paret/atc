@@ -133,7 +133,7 @@ describe('Send command', () => {
             new Aeroplane("BA456", "A321", 300, 500, 140, 90, 2800, 3),
         ]
 
-        const rawCommand = "BA456.9L."
+        const rawCommand = "BA456ILS9L"
 
         const result = service.sendCommand(rawCommand)
 

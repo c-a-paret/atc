@@ -32,8 +32,6 @@ export class CoreGamePlay extends GameState {
         {x: 0.8 * this.map.mapBoundaries.maxX, y: 1, heading: 225},
         {x: 1, y: 0.33 * this.map.mapBoundaries.maxY, heading: 110},
         {x: 1, y: 0.66 * this.map.mapBoundaries.maxY, heading: 80},
-        {x: this.map.mapBoundaries.maxX - 1, y: 0.33 * this.map.mapBoundaries.maxY, heading: 260},
-        {x: this.map.mapBoundaries.maxX - 1, y: 0.66 * this.map.mapBoundaries.maxY, heading: 280},
         {x: 0.2 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 20},
         {x: 0.5 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 360},
         {x: 0.8 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 340},

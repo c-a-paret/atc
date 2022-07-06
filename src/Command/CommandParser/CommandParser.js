@@ -70,9 +70,9 @@ export const parseWaypoint = (command) => {
 }
 
 export const parseRunway = (command) => {
-    const match = command.match(/\.\d{1,2}[LRC]\./g);
-    if (match && match.length === 1) {
-        return match[0].substring(1, match[0].length - 1)
+    const matches = command.match(/(.)*?ILS(\d{1,2}[LRC])(.)*?/);
+    if (matches) {
+        return matches[2]
     }
     return null
 }
