@@ -374,6 +374,7 @@ export class InterfaceController {
         this._displayMessage(commandMessage(acceptedCommands))
         setTimeout(() => {
             this._clearMessage()
+            this.selectedCallSign = ""
         }, 2000)
     };
 
