@@ -56,3 +56,26 @@ export const AIRCRAFT = [
         "weight": 3,
     }
 ]
+
+export const SPECIAL_AIRCRAFT = [
+    {
+        "operator": "BAE",
+        "operatorIATA": "ZK",
+        "type": "Eurofighter",
+        "class": "Typhoon",
+        "shortClass": "FGR4",
+        "weight": 1,
+        "minSpeed": 500,
+        "maxSpeed": 800,
+    },
+    {
+        "operator": "HMG",
+        "operatorIATA": "ZZ",
+        "type": "Airbus",
+        "class": "Voyager",
+        "shortClass": "A330",
+        "weight": 2,
+        "minSpeed": 300,
+        "maxSpeed": 400,
+    }
+]
