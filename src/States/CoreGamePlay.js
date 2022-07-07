@@ -21,7 +21,8 @@ export class CoreGamePlay extends GameState {
             this.initialised = true
         }
         if (this.ticks % 105 === 0) {
-            this.initArrival()
+            this.initTestAeroplanes()
+            // this.initArrival()
         }
         this.ticks += 1
     }
@@ -52,5 +53,27 @@ export class CoreGamePlay extends GameState {
         const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight)
         plane.setWaypoint(this.map, this.map.defaultWaypoint)
         this.machine.aeroplanes.push(plane)
+    }
+
+    initTestAeroplanes = () => {
+        this.machine.aeroplanes = [
+            new Aeroplane("BA123", "A321", 450, 440, 200, 90, 2200, 1),
+            // new Aeroplane("BA999", "A321", 300, 425, 200, 90, 6000, 1),
+            // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
+            // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
+            // new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
+            // new Aeroplane("BA131", "A321", 500, 350, 200, 270, 6000, 1),
+            // new Aeroplane("BA415", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA161", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA171", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA181", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA191", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA202", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
+        ]
+
+        // this.aeroplanes.forEach(plane => {
+        //     plane.setLanding(this.map, "9L")
+        // })
     }
 }

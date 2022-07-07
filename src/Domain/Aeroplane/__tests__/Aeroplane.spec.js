@@ -1074,7 +1074,7 @@ describe("Altitude restriction breached", () => {
                 maxAltitude: null,
             }
 
-            const result = aeroplane.breachingAltitudeRestriction(zone)
+            const result = aeroplane.breachingZoneAltitudeRestriction(zone)
 
             expect(result).toBeTruthy()
         })
@@ -1087,7 +1087,7 @@ describe("Altitude restriction breached", () => {
                 maxAltitude: undefined,
             }
 
-            const result = aeroplane.breachingAltitudeRestriction(zone)
+            const result = aeroplane.breachingZoneAltitudeRestriction(zone)
 
             expect(result).toBeTruthy()
         })
@@ -1100,7 +1100,7 @@ describe("Altitude restriction breached", () => {
                 maxAltitude: 5000,
             }
 
-            const result = aeroplane.breachingAltitudeRestriction(zone)
+            const result = aeroplane.breachingZoneAltitudeRestriction(zone)
 
             expect(result).toBeTruthy()
         })
@@ -1115,7 +1115,7 @@ describe("Altitude restriction breached", () => {
                 maxAltitude: undefined,
             }
 
-            const result = aeroplane.breachingAltitudeRestriction(zone)
+            const result = aeroplane.breachingZoneAltitudeRestriction(zone)
 
             expect(result).toBeFalsy()
         })
@@ -1128,7 +1128,7 @@ describe("Altitude restriction breached", () => {
                 maxAltitude: 5000,
             }
 
-            const result = aeroplane.breachingAltitudeRestriction(zone)
+            const result = aeroplane.breachingZoneAltitudeRestriction(zone)
 
             expect(result).toBeFalsy()
         })

@@ -5,6 +5,7 @@ export const LANDED_ALTITUDE = 40
 export const MIN_APPROACH_SPEED = 200
 export const MIN_ALTITUDE = 1000;
 export const MAX_ALTITUDE = 40000;
+export const MIN_GROUND_CLEARANCE = 2000;
 export const ILS_MAX_X = 220
 export const ILS_MIN_X = 140
 export const VERTICAL_SEPARATION_MINIMUM = 1000

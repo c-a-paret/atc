@@ -3,7 +3,7 @@ import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
     HORIZONTAL_SEPARATION_MINIMUM,
-    LANDED_ALTITUDE, NUM_PROJECTED_TICKS,
+    LANDED_ALTITUDE, MIN_GROUND_CLEARANCE, NUM_PROJECTED_TICKS,
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
@@ -238,14 +238,18 @@ export class Aeroplane {
 
     breachingRestrictedZone = (map, zone) => {
         const planeInverseY = map.maxY - this.y
-        return isInsidePolygon(zone.boundaries, this.x, planeInverseY) && this.breachingAltitudeRestriction(zone)
+        return isInsidePolygon(zone.boundaries, this.x, planeInverseY) && this.breachingZoneAltitudeRestriction(zone)
     }
 
-    breachingAltitudeRestriction = (zone) => {
+    breachingZoneAltitudeRestriction = (zone) => {
         if (zone.minAltitude === null && zone.maxAltitude === null) {
             return true
         }
         return this.altitude < zone.minAltitude || this.altitude > zone.maxAltitude
+    }
+
+    breachingGroundClearance = () => {
+        return !this.isLanding() && this.altitude < MIN_GROUND_CLEARANCE
     }
 
     markBreachingProximityLimits = () => {

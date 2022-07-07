@@ -26,37 +26,6 @@ export class AeroplaneService {
         this.statsService.reset()
     }
 
-    initTestAeroplanes = () => {
-        // for (let x = 0; x < this.spawnLocations.length; x++) {
-        //     const callSign = `${AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)].operatorIATA}${getRandomNumberBetween(100, 999)}`
-        //     const location = this.spawnLocations[x];
-        //     const startX = location.x
-        //     const startY = location.y
-        //     const startHeading = location.heading
-        //     const aeroplane = new Aeroplane(callSign, startX, startY, 120, startHeading, 2800, 1)
-        //     this.aeroplanes.push(aeroplane)
-        // }
-        this.aeroplanes = [
-            new Aeroplane("BA123", "A321", 1300, 425, 200, 90, 6000, 1),
-            // new Aeroplane("BA999", "A321", 300, 425, 200, 90, 6000, 1),
-            // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
-            // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
-            // new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
-            // new Aeroplane("BA131", "A321", 500, 350, 200, 270, 6000, 1),
-            // new Aeroplane("BA415", "A321", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA161", "A321", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA171", "A321", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA181", "A321", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA191", "A321", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA202", "A321", 500, 450, 200, 225, 6000, 1),
-            // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
-        ]
-
-        // this.aeroplanes.forEach(plane => {
-        //     plane.setLanding(this.map, "9L")
-        // })
-    }
-
     sendCommand = (rawCommand) => {
         const command = parseCommand(rawCommand)
         let callSign;
@@ -150,6 +119,13 @@ export class AeroplaneService {
                     plane.markBreachingProximityLimits()
                 }
             })
+        })
+
+        // With ground
+        this.aeroplanes.forEach(plane => {
+            if (plane.breachingGroundClearance()) {
+                plane.markBreachingProximityLimits()
+            }
         })
     }
 }
