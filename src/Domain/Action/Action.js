@@ -134,13 +134,22 @@ export class Altitude extends Action {
         super(null, aeroplane, targetAltitude);
     }
 
+    _change_rate = () => {
+        if (this.aeroplane.altitude > 10000) {
+            return 80
+        } else if (this.aeroplane.altitude > 5000) {
+            return 50
+        }
+        return 20
+    }
+
     apply = () => {
         if (this.aeroplane.altitude < this.targetValue) {
-            const newValue = this.aeroplane.altitude + 20
+            const newValue = this.aeroplane.altitude + this._change_rate()
             this.aeroplane.altitude = Math.min(newValue, this.targetValue)
         }
         if (this.aeroplane.altitude > this.targetValue) {
-            const newValue = this.aeroplane.altitude - 20
+            const newValue = this.aeroplane.altitude - this._change_rate()
             this.aeroplane.altitude = Math.max(newValue, this.targetValue)
         }
     }

@@ -58,7 +58,7 @@ export class CoreGamePlay extends GameState {
         const startY = location.y
         const startHeading = location.heading
         const startSpeed = roundToNearest(getRandomNumberBetween(180, 260), 10)
-        const startAltitude = roundToNearest(getRandomNumberBetween(5000, 8000), 500)
+        const startAltitude = roundToNearest(getRandomNumberBetween(5000, 15000), 500)
         const weight = aeroplaneConfig.weight
         const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight)
         plane.setWaypoint(this.map, this.map.defaultWaypoint)
