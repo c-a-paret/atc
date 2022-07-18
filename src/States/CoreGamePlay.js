@@ -2,6 +2,8 @@ import {AIRCRAFT, SPECIAL_AIRCRAFT} from "../config/aircraft";
 import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
+import {DEPARTURE} from "../config/constants";
+import {READY_FOR_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 
 
 export class CoreGamePlay extends GameState {
@@ -9,6 +11,7 @@ export class CoreGamePlay extends GameState {
         super();
         this.machine = undefined
         this.initialised = false
+        this.specialAircraftInterval = getRandomNumberBetween(480, 720)
     }
 
     setMachine = (machine) => {
@@ -23,14 +26,15 @@ export class CoreGamePlay extends GameState {
         if (this.ticks % 105 === 0) {
             // this.initTestAeroplanes()
             this.initArrival()
+            // this.initDeparture()
         }
-        if (this.ticks > 0 && this.ticks % getRandomNumberBetween(480, 720) === 0) {
+        if (this.ticks > 0 && this.ticks % this.specialAircraftInterval === 0) {
             this.initSpecialArrival()
         }
         this.ticks += 1
     }
 
-    coreSpawnLocations = () => [
+    arrivalSpawnLocations = () => [
         {x: 0.2 * this.map.mapBoundaries.maxX, y: 1, heading: 135},
         {x: 0.5 * this.map.mapBoundaries.maxX, y: 1, heading: 135},
         {x: 0.8 * this.map.mapBoundaries.maxX, y: 1, heading: 225},
@@ -48,11 +52,12 @@ export class CoreGamePlay extends GameState {
         {x: 0.8 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 300},
     ]
 
+
     initArrival = () => {
         const aeroplaneConfig = AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)]
         const callSign = `${aeroplaneConfig.operatorIATA}${getRandomNumberBetween(100, 999)}`
         const shortClass = aeroplaneConfig.shortClass
-        const spawnLocations = this.coreSpawnLocations()
+        const spawnLocations = this.arrivalSpawnLocations()
         const location = spawnLocations[Math.floor(Math.random() * spawnLocations.length)];
         const startX = location.x
         const startY = location.y
@@ -62,6 +67,20 @@ export class CoreGamePlay extends GameState {
         const weight = aeroplaneConfig.weight
         const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight)
         plane.setWaypoint(this.map, this.map.defaultWaypoint)
+        this.machine.aeroplanes.push(plane)
+    }
+
+    initDeparture = () => {
+        const aeroplaneConfig = AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)]
+        const callSign = `${aeroplaneConfig.operatorIATA}${getRandomNumberBetween(100, 999)}`
+        const shortClass = aeroplaneConfig.shortClass
+        const startX = 1
+        const startY = 1
+        const startHeading = 0
+        const startSpeed = 0
+        const startAltitude = this.map.features.runways[0].start.altitude
+        const weight = aeroplaneConfig.weight
+        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, READY_FOR_TAXI)
         this.machine.aeroplanes.push(plane)
     }
 

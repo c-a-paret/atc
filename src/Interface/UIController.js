@@ -1,6 +1,7 @@
 import {COLOURS} from "../config/colours";
 import {ILS_MIN_X} from "../config/constants";
 import {round} from "../utils/maths";
+import {AIR_OPERATIONS} from "../Domain/Aeroplane/aeroplaneStates";
 
 export class UIController {
     constructor(map, aeroplaneService, interfaceController) {
@@ -251,21 +252,23 @@ export class UIController {
     }
 
     _drawAeroplanePosition = (aeroplane) => {
-        if (aeroplane.breachingProximity) {
-            this.aeroplaneContext.strokeStyle = COLOURS.RED;
-        } else {
-            this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+        if (AIR_OPERATIONS.includes(aeroplane.state)) {
+            if (aeroplane.breachingProximity) {
+                this.aeroplaneContext.strokeStyle = COLOURS.RED;
+            } else {
+                this.aeroplaneContext.strokeStyle = COLOURS.YELLOW;
+            }
+            // Construct diamond shape
+            const radius = 6
+            this.aeroplaneContext.lineWidth = 1;
+            this.aeroplaneContext.beginPath();
+            this.aeroplaneContext.moveTo(aeroplane.x, aeroplane.y - radius)
+            this.aeroplaneContext.lineTo(aeroplane.x + radius, aeroplane.y)
+            this.aeroplaneContext.lineTo(aeroplane.x, aeroplane.y + radius)
+            this.aeroplaneContext.lineTo(aeroplane.x - radius, aeroplane.y)
+            this.aeroplaneContext.closePath()
+            this.aeroplaneContext.stroke();
         }
-        // Construct diamond shape
-        const radius = 6
-        this.aeroplaneContext.lineWidth = 1;
-        this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.moveTo(aeroplane.x, aeroplane.y - radius)
-        this.aeroplaneContext.lineTo(aeroplane.x + radius, aeroplane.y)
-        this.aeroplaneContext.lineTo(aeroplane.x, aeroplane.y + radius)
-        this.aeroplaneContext.lineTo(aeroplane.x - radius, aeroplane.y)
-        this.aeroplaneContext.closePath()
-        this.aeroplaneContext.stroke();
     }
 
     _drawAeroplaneSpeedTail = (aeroplane) => {

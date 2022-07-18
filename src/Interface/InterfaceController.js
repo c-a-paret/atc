@@ -4,6 +4,7 @@ import {div, p} from "./elements";
 import {CoreGamePlay} from "../States/CoreGamePlay";
 import {Tutorial} from "../States/Tutorial";
 import {round} from "../utils/maths";
+import {HOLDING_SHORT, READY_FOR_TAXI, TAXIING} from "../Domain/Aeroplane/aeroplaneStates";
 
 class TargetValue {
     constructor(value) {
@@ -180,7 +181,7 @@ export class InterfaceController {
         //     </div>
         // </div>
         const sidebar = document.getElementById("sidebar");
-        const strip = div(["aeroplane-strip"], aeroplane.callSign)
+        const strip = div(["aeroplane-strip", aeroplane.type.toLowerCase()], aeroplane.callSign)
 
         const overview = this._overviewBlock(aeroplane)
         const separator = div(["separator"])
@@ -273,7 +274,13 @@ export class InterfaceController {
         if (aeroplane.isLanding()) {
             return new TargetValue('Landing')
         } else if (aeroplane.isHolding()) {
-            return new TargetValue(`Hold`)
+            return new TargetValue('Hold')
+        } else if (aeroplane.state === READY_FOR_TAXI) {
+            return new TargetValue('New')
+        } else if (aeroplane.state === TAXIING) {
+            return new TargetValue('Taxi')
+        } else if (aeroplane.state === HOLDING_SHORT) {
+            return new TargetValue('Short')
         } else {
             if (aeroplane.targetLocation) {
                 return new TargetValue(aeroplane.targetLocation)

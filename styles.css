@@ -193,10 +193,17 @@ canvas {
     min-height: 4rem;
     margin: 0.5rem 0 0;
     padding: 0.5rem 0.5rem 0 0.5rem;
-    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 0.25rem;
     display: grid;
     grid-template-rows: 1fr 0.3fr 1fr;
+}
+
+.arrival {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.departure {
+    background-color: rgba(113, 248, 255, 0.18);
 }
 
 .aeroplane-strip:hover {
@@ -204,7 +211,7 @@ canvas {
 }
 
 .selected {
-    background-color: rgba(255, 255, 255, 0.2);
+    border-left: 5px solid white;
 }
 
 .aeroplane-strip > .separator {

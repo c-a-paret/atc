@@ -10,7 +10,6 @@ import {CoreGamePlay} from "./States/CoreGamePlay";
 
 const map = new GameMap(EGLL)
 
-
 const statsService = new StatsService();
 const startState = new CoreGamePlay(map)
 

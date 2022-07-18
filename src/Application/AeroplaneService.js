@@ -1,4 +1,3 @@
-import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 
 export class AeroplaneService {
