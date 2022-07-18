@@ -1,7 +1,8 @@
 import {AeroplaneService} from "../AeroplaneService";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {GameMap} from "../../Domain/GameMap/GameMap";
-import {LANDED_ALTITUDE} from "../../config/constants";
+import {DEPARTURE, LANDED_ALTITUDE} from "../../config/constants";
+import {HOLDING_SHORT, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
 
 const testGameMap = () => {
     return new GameMap({
@@ -84,7 +85,9 @@ describe('Send command', () => {
             altitude: 12000,
             waypoint: undefined,
             runway: undefined,
-            hold: undefined
+            hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -114,7 +117,9 @@ describe('Send command', () => {
             altitude: undefined,
             waypoint: "LAM",
             runway: undefined,
-            hold: undefined
+            hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -145,6 +150,8 @@ describe('Send command', () => {
             waypoint: undefined,
             runway: "9L",
             hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -159,8 +166,8 @@ describe('Send command', () => {
     test('Sends speed and hold command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
-            new Aeroplane("BA123", "A321", "A321", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", "A321", "A321", 500, 350, 120, 90, 10000, 3),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", 500, 350, 120, 90, 10000, 3),
         ]
 
         const rawCommand = "BA456S140HR"
@@ -174,7 +181,9 @@ describe('Send command', () => {
             altitude: undefined,
             waypoint: undefined,
             runway: undefined,
-            hold: 1
+            hold: 1,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -187,6 +196,58 @@ describe('Send command', () => {
 
         expect(affectedAeroplane.actions[0].type()).toBe("Speed")
         expect(affectedAeroplane.actions[1].type()).toBe("HoldingPattern")
+    })
+
+    test('Sends taxi and hold command to relevant aeroplane', () => {
+        const service = new AeroplaneService(map, {}, mockState)
+        service.aeroplanes = [
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", 500, 350, 0, 360, 0, 3, DEPARTURE, READY_TO_TAXI),
+        ]
+
+        const rawCommand = "BA456TH9L"
+
+        const result = service.sendCommand(rawCommand)
+
+        expect(result).toStrictEqual({
+            callSign: "BA456",
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined,
+            hold: undefined,
+            taxiAndHold: "9L",
+            clearedForTakeoff: undefined
+        })
+
+        // TODO: Check actions have been added
+    })
+
+    test('Sends cleared for takeoff command to relevant aeroplane', () => {
+        const service = new AeroplaneService(map, {}, mockState)
+        service.aeroplanes = [
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
+            new Aeroplane("BA456", "A321", 500, 350, 0, 270, 0, 3, DEPARTURE, HOLDING_SHORT),
+        ]
+
+        const rawCommand = "BA456CTO"
+
+        const result = service.sendCommand(rawCommand)
+
+        expect(result).toStrictEqual({
+            callSign: "BA456",
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined,
+            hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: true
+        })
+
+        // TODO: Check actions have been added
     })
 
 
@@ -208,7 +269,9 @@ describe('Send command', () => {
             altitude: undefined,
             waypoint: undefined,
             runway: undefined,
-            hold: undefined
+            hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined
         })
 
         const unaffectedAeroplane1 = service.aeroplanes[0]

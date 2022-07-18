@@ -4,7 +4,7 @@ import {div, p} from "./elements";
 import {CoreGamePlay} from "../States/CoreGamePlay";
 import {Tutorial} from "../States/Tutorial";
 import {round} from "../utils/maths";
-import {HOLDING_SHORT, READY_FOR_TAXI, TAXIING} from "../Domain/Aeroplane/aeroplaneStates";
+import {HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../Domain/Aeroplane/aeroplaneStates";
 
 class TargetValue {
     constructor(value) {
@@ -275,7 +275,7 @@ export class InterfaceController {
             return new TargetValue('Landing')
         } else if (aeroplane.isHolding()) {
             return new TargetValue('Hold')
-        } else if (aeroplane.state === READY_FOR_TAXI) {
+        } else if (aeroplane.state === READY_TO_TAXI) {
             return new TargetValue('New')
         } else if (aeroplane.state === TAXIING) {
             return new TargetValue('Taxi')

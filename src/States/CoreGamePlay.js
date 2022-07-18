@@ -3,7 +3,7 @@ import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
 import {DEPARTURE} from "../config/constants";
-import {READY_FOR_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
+import {READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 
 
 export class CoreGamePlay extends GameState {
@@ -80,7 +80,7 @@ export class CoreGamePlay extends GameState {
         const startSpeed = 0
         const startAltitude = this.map.features.runways[0].start.altitude
         const weight = aeroplaneConfig.weight
-        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, READY_FOR_TAXI)
+        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, READY_TO_TAXI)
         this.machine.aeroplanes.push(plane)
     }
 

@@ -34,6 +34,8 @@ export class AeroplaneService {
         let waypointSet;
         let runwaySet;
         let holdSet;
+        let taxiAndHoldSet;
+        let clearedForTakeoff;
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
                 callSign = plane.callSign
@@ -56,6 +58,14 @@ export class AeroplaneService {
                 if (command.hold) {
                     holdSet = plane.setHold(this.map, command.hold)
                 }
+                if (command.taxiAndHold) {
+                    // TODO: Implement properly
+                    taxiAndHoldSet = command.taxiAndHold
+                }
+                if (command.clearedForTakeoff) {
+                    // TODO: Implement properly
+                    clearedForTakeoff = command.clearedForTakeoff
+                }
             }
         })
         return {
@@ -65,7 +75,9 @@ export class AeroplaneService {
             "altitude": altitudeSet,
             "waypoint": waypointSet,
             "runway": runwaySet,
-            "hold": holdSet
+            "hold": holdSet,
+            "taxiAndHold": taxiAndHoldSet,
+            "clearedForTakeoff": clearedForTakeoff
         }
     }
 

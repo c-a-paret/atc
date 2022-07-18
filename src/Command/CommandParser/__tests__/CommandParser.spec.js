@@ -1,14 +1,14 @@
 import {
     commandMessage,
-    parseAltitude,
+    parseAltitude, parseClearedForTakeoff,
     parseCommand,
     parseHeading, parseHold,
     parseRunway,
-    parseSpeed,
+    parseSpeed, parseTaxiAndHold,
     parseWaypoint
 } from "../CommandParser";
 
-describe("Parse Command", () => {
+describe("Parse command", () => {
     test("Extracts the call sign", () => {
         const command = "BA423S200"
         const expectedCallSign = "BA423"
@@ -102,7 +102,7 @@ describe("Parse Command", () => {
     })
 })
 
-describe("Speed Commands", () => {
+describe("Speed commands", () => {
     test("Extracts speed inside larger command", () => {
         const command = "BA423S200H070"
         const expectedSpeed = 200
@@ -139,7 +139,7 @@ describe("Speed Commands", () => {
     })
 })
 
-describe("Heading Commands", () => {
+describe("Heading commands", () => {
     test("Extracts heading inside larger command", () => {
         const command = "BA423S200T070WLAM"
         const expectedHeading = 70
@@ -167,7 +167,7 @@ describe("Heading Commands", () => {
     })
 })
 
-describe("Altitude Commands", () => {
+describe("Altitude commands", () => {
     test("Extracts two digit flight level altitude inside larger command", () => {
         const command = "200A31>LAM"
         const expectedAltitude = 3100
@@ -186,7 +186,7 @@ describe("Altitude Commands", () => {
     })
 })
 
-describe("Waypoint Commands", () => {
+describe("Waypoint commands", () => {
     test("Extracts waypoint inside larger command", () => {
         const command = "BA423>LAMS200C2"
         const expectedWaypoint = "LAM"
@@ -205,7 +205,7 @@ describe("Waypoint Commands", () => {
     })
 })
 
-describe("Landing Commands", () => {
+describe("Landing commands", () => {
     test("Extracts one digit runway when only command", () => {
         const command = "ILS9L"
         const expectedRunway = "9L"
@@ -242,7 +242,7 @@ describe("Landing Commands", () => {
     })
 })
 
-describe("Hold Commands", () => {
+describe("Hold commands", () => {
     test("Extracts hold right command", () => {
         const command = "BA423HR"
         const expectedDirection = 1
@@ -265,6 +265,78 @@ describe("Hold Commands", () => {
         const command = "J123S150"
 
         const result = parseHold(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Taxi and hold commands", () => {
+    test("Extracts taxi and hold to 27R command", () => {
+        const command = "BA423TH27R"
+        const expectedRunway = "27R"
+
+        const result = parseTaxiAndHold(command)
+
+        expect(result).toBe(expectedRunway)
+    })
+
+    test("Extracts taxi and hold to 9L command", () => {
+        const command = "BA423TH9L"
+        const expectedRunway = "9L"
+
+        const result = parseTaxiAndHold(command)
+
+        expect(result).toBe(expectedRunway)
+    })
+
+    test("Returns null if command incomplete", () => {
+        const command = "J123TH"
+
+        const result = parseTaxiAndHold(command)
+
+        expect(result).toBeNull()
+    })
+
+    test("Returns null if no taxi and hold command found", () => {
+        const command = "J123S150"
+
+        const result = parseTaxiAndHold(command)
+
+        expect(result).toBeNull()
+    })
+})
+
+describe("Cleared for takeoff commands", () => {
+    test("Extracts takeoff clearance when the only command", () => {
+        const command = "BA423CTO"
+        const expectedCommand = true
+
+        const result = parseClearedForTakeoff(command)
+
+        expect(result).toBe(expectedCommand)
+    })
+
+    test("Extracts takeoff clearance when amongst other command", () => {
+        const command = "BA423S200T360CTOA500"
+        const expectedCommand = true
+
+        const result = parseClearedForTakeoff(command)
+
+        expect(result).toBe(expectedCommand)
+    })
+
+    test("Returns null if command incomplete", () => {
+        const command = "J123CT"
+
+        const result = parseClearedForTakeoff(command)
+
+        expect(result).toBeNull()
+    })
+
+    test("Returns null if no taxi and hold command found", () => {
+        const command = "J123S150"
+
+        const result = parseClearedForTakeoff(command)
 
         expect(result).toBeNull()
     })

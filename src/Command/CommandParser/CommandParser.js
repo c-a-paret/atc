@@ -16,15 +16,35 @@ export const parseCommand = (rawCommand) => {
         altitude: parseAltitude(actionCommands),
         waypoint: waypoint,
         runway: parsedRunway,
-        hold: parseHold(actionCommands)
+        hold: parseHold(actionCommands),
+        taxiAndHold: parseTaxiAndHold(actionCommands),
+        clearedForTakeoff: parseClearedForTakeoff(command)
     }
 }
 
 export const commandMessage = (acceptedCommands) => {
-    if ([acceptedCommands.callSign, acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway, acceptedCommands.hold].every(value => value === undefined)) {
+    if ([
+        acceptedCommands.callSign,
+        acceptedCommands.speed,
+        acceptedCommands.heading,
+        acceptedCommands.altitude,
+        acceptedCommands.waypoint,
+        acceptedCommands.runway,
+        acceptedCommands.hold,
+        acceptedCommands.taxiAndHold,
+        acceptedCommands.clearedForTakeoff
+    ].every(value => value === undefined)) {
         return 'Unrecognised command'
     }
-    if ([acceptedCommands.speed, acceptedCommands.heading, acceptedCommands.altitude, acceptedCommands.waypoint, acceptedCommands.runway, acceptedCommands.hold].every(value => value === undefined)) {
+    if ([acceptedCommands.speed,
+        acceptedCommands.heading,
+        acceptedCommands.altitude,
+        acceptedCommands.waypoint,
+        acceptedCommands.runway,
+        acceptedCommands.hold,
+        acceptedCommands.taxiAndHold,
+        acceptedCommands.clearedForTakeoff
+    ].every(value => value === undefined)) {
         return 'No valid commands'
     }
     return `${acceptedCommands.callSign}` +
@@ -33,6 +53,8 @@ export const commandMessage = (acceptedCommands) => {
         `${acceptedCommands.altitude ? ' Altitude: ' + acceptedCommands.altitude + 'ft' : ''}` +
         `${acceptedCommands.waypoint ? ' Waypoint: ' + acceptedCommands.waypoint : ''}` +
         `${acceptedCommands.runway ? ' cleared to land runway ' + acceptedCommands.runway : ''}` +
+        `${acceptedCommands.taxiAndHold ? ' taxi and hold ' + acceptedCommands.taxiAndHold : ''}` +
+        `${acceptedCommands.clearedForTakeoff ? ' cleared for takeoff ' : ''}` +
         `${Math.abs(acceptedCommands.hold) === 1 ? ` Holding to the ${acceptedCommands.hold === 1 ? 'right' : 'left'} ` : ''}`
 }
 
@@ -81,6 +103,22 @@ export const parseHold = (command) => {
     const match = command.match(/H[LR]/g);
     if (match && match.length === 1) {
         return match[0][1] === "R" ? 1 : -1
+    }
+    return null
+}
+
+export const parseTaxiAndHold = (command) => {
+    const matches = command.match(/(.)*?TH(\d{1,2}[LRC])(.)*?/);
+    if (matches) {
+        return matches[2]
+    }
+    return null
+}
+
+export const parseClearedForTakeoff = (command) => {
+    const matches = command.match(/(.)*?(CTO)(.)*?/);
+    if (matches) {
+        return matches[2] === "CTO"
     }
     return null
 }

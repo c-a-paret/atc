@@ -11,7 +11,7 @@ import {
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
-import {FLYING, GROUND_OPERATIONS, READY_FOR_TAXI, TAXIING} from "./aeroplaneStates";
+import {FLYING, GROUND_OPERATIONS, READY_TO_TAXI, TAXIING} from "./aeroplaneStates";
 
 export class Aeroplane {
     constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING) {
@@ -160,7 +160,7 @@ export class Aeroplane {
             action.apply()
         })
 
-        if ([READY_FOR_TAXI, TAXIING].includes(this.state)) {
+        if ([READY_TO_TAXI, TAXIING].includes(this.state)) {
             return
         }
 
