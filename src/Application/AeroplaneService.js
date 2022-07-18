@@ -59,8 +59,7 @@ export class AeroplaneService {
                     holdSet = plane.setHold(this.map, command.hold)
                 }
                 if (command.taxiAndHold) {
-                    // TODO: Implement properly
-                    taxiAndHoldSet = command.taxiAndHold
+                    taxiAndHoldSet = plane.setTaxiAndHold(this.map, command.taxiAndHold)
                 }
                 if (command.clearedForTakeoff) {
                     // TODO: Implement properly

@@ -1,4 +1,4 @@
-import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../Action/Action";
+import {Altitude, Heading, HoldingPattern, Landing, Speed, TaxiToRunway, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
@@ -11,7 +11,7 @@ import {
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
-import {FLYING, GROUND_OPERATIONS, READY_TO_TAXI, TAXIING} from "./aeroplaneStates";
+import {AIR_OPERATIONS, FLYING, GROUND_OPERATIONS, HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "./aeroplaneStates";
 
 export class Aeroplane {
     constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING) {
@@ -33,6 +33,7 @@ export class Aeroplane {
         this.targetLocation = undefined
         this.targetAltitude = undefined
         this.targetSpeed = undefined
+        this.positionDescription = ''
     }
 
     _clear_targets = () => {
@@ -150,17 +151,37 @@ export class Aeroplane {
         }
     }
 
+    setTaxiAndHold = (map, runway) => {
+        const newTaxiAndHold = new TaxiToRunway(map, this, runway);
+        if (newTaxiAndHold.isValid()) {
+            this.state = TAXIING
+            this.addAction(newTaxiAndHold)
+            return runway
+        }
+    }
+
     _clean_actions = () => {
-        this.actions = this.actions.filter(action => action.isActionable())
+        this.actions = this.actions.filter(action => action.isFutureActionable() || action.isActionable())
         this._clear_targets()
+    }
+
+    isFlying = () => {
+        return AIR_OPERATIONS.includes(this.state)
+    }
+
+    isOnGround = () => {
+        return GROUND_OPERATIONS.includes(this.state)
     }
 
     applyActions = () => {
         this.actions.forEach(action => {
-            action.apply()
+            if (action.isActionable()) {
+                action.apply()
+            }
         })
 
-        if ([READY_TO_TAXI, TAXIING].includes(this.state)) {
+        if ([READY_TO_TAXI, TAXIING, HOLDING_SHORT].includes(this.state)) {
+            this._clean_actions()
             return
         }
 

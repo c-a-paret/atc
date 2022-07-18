@@ -280,7 +280,7 @@ export class InterfaceController {
         } else if (aeroplane.state === TAXIING) {
             return new TargetValue('Taxi')
         } else if (aeroplane.state === HOLDING_SHORT) {
-            return new TargetValue('Short')
+            return new TargetValue(aeroplane.positionDescription)
         } else {
             if (aeroplane.targetLocation) {
                 return new TargetValue(aeroplane.targetLocation)
