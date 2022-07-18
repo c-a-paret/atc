@@ -1,7 +1,8 @@
 import {toDegrees} from "../../utils/maths";
 import {
     ILS_MAX_X,
-    ILS_MIN_X, LANDED_ALTITUDE,
+    ILS_MIN_X,
+    LANDED_ALTITUDE,
     LANDING_SPEED,
     MAX_ALTITUDE,
     MIN_ALTITUDE,
@@ -75,6 +76,16 @@ export class Speed extends Action {
     }
 }
 
+const turning_change_rate = (aeroplane) => {
+    if (aeroplane.weight === 1) {
+        return -0.006666 * aeroplane.speed + 5
+    } else if (aeroplane.weight === 2) {
+        return -0.006666 * aeroplane.speed + 4
+    } else {
+        return -0.006666 * aeroplane.speed + 3
+    }
+}
+
 export class Heading extends Action {
     constructor(map, aeroplane, targetHeading) {
         super(null, aeroplane, targetHeading);
@@ -91,26 +102,16 @@ export class Heading extends Action {
 
         if (shortestAngle(currentHeading, targetHeading) > 0) {
             // turn right
-            this.aeroplane.heading = (this.aeroplane.heading + this._change_rate()) % 360;
+            this.aeroplane.heading = (this.aeroplane.heading + turning_change_rate(this.aeroplane)) % 360;
         } else {
             // turn left
-            let newHeading = this.aeroplane.heading - this._change_rate();
+            let newHeading = this.aeroplane.heading - turning_change_rate(this.aeroplane);
             this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
         }
     };
 
     _wouldEndUpBeyondTarget(targetHeading, currentHeading) {
-        return Math.abs(targetHeading - currentHeading) < this._change_rate();
-    }
-
-    _change_rate = () => {
-        if (this.aeroplane.weight === 1) {
-            return -0.002275 * this.aeroplane.speed + 5
-        } else if (this.aeroplane.weight === 2) {
-            return -0.002275 * this.aeroplane.speed + 4
-        } else {
-            return -0.002275 * this.aeroplane.speed + 3
-        }
+        return Math.abs(targetHeading - currentHeading) < turning_change_rate(this.aeroplane);
     }
 
     isActionable = () => {
@@ -224,26 +225,16 @@ export class Waypoint extends Action {
 
         if (shortestAngle(currentHeading, targetHeading) > 0) {
             // turn right
-            this.aeroplane.heading = (this.aeroplane.heading + this._change_rate()) % 360;
+            this.aeroplane.heading = (this.aeroplane.heading + turning_change_rate(this.aeroplane)) % 360;
         } else {
             // turn left
-            let newHeading = this.aeroplane.heading - this._change_rate();
+            let newHeading = this.aeroplane.heading - turning_change_rate(this.aeroplane);
             this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
         }
     };
 
     _wouldEndUpBeyondTarget(targetHeading, currentHeading) {
-        return Math.abs(targetHeading - currentHeading) < this._change_rate();
-    }
-
-    _change_rate = () => {
-        if (this.aeroplane.speed < 200) {
-            return 5
-        } else if (this.aeroplane.speed < 300) {
-            return 3
-        } else {
-            return 2
-        }
+        return Math.abs(targetHeading - currentHeading) < turning_change_rate(this.aeroplane);
     }
 
     isValid = () => {
@@ -344,8 +335,7 @@ export class HoldingPattern extends Action {
     }
 
     apply = () => {
-        const rateOfTurn = this._change_rate()
-        let newHeading = this.aeroplane.heading + (this.direction * rateOfTurn)
+        let newHeading = this.aeroplane.heading + (this.direction * turning_change_rate(this.aeroplane))
         if (newHeading < 360) {
             newHeading = 360 + newHeading
         }
@@ -357,27 +347,5 @@ export class HoldingPattern extends Action {
 
     copy = (aeroplane) => {
         return new HoldingPattern(this.map, aeroplane, this.direction)
-    }
-
-    _change_rate = () => {
-        if (this.aeroplane.speed < 200) {
-            return {
-                1: 5,
-                2: 3,
-                3: 2,
-            }[this.aeroplane.weight]
-        } else if (this.aeroplane.speed < 300) {
-            return {
-                1: 3,
-                2: 2,
-                3: 2,
-            }[this.aeroplane.weight]
-        } else {
-            return {
-                1: 3,
-                2: 2,
-                3: 2,
-            }[this.aeroplane.weight]
-        }
     }
 }
