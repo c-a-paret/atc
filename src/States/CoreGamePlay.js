@@ -83,7 +83,7 @@ export class CoreGamePlay extends GameState {
 
     initTestAeroplanes = () => {
         this.machine.aeroplanes = [
-            new Aeroplane("BA123", "A321", 450, 440, 200, 90, 2200, 1),
+            new Aeroplane("BA123", "A321", 450, 500, 200, 90, 5000, 1),
             // new Aeroplane("BA999", "A321", 300, 425, 200, 90, 6000, 1),
             // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
             // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
@@ -98,8 +98,8 @@ export class CoreGamePlay extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
-        // this.aeroplanes.forEach(plane => {
-        //     plane.setLanding(this.map, "9L")
-        // })
+        this.machine.aeroplanes.forEach(plane => {
+            plane.setAltitude(this.map, 4000)
+        })
     }
 }

@@ -369,10 +369,7 @@ export class UIController {
         this.aeroplaneContext.strokeStyle = COLOURS.MINT;
         this.aeroplaneContext.lineWidth = 2;
         this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.moveTo(x - 4, y);
-        this.aeroplaneContext.lineTo(x + 4, y);
-        this.aeroplaneContext.moveTo(x, y - 4);
-        this.aeroplaneContext.lineTo(x, y + 4);
+        this.aeroplaneContext.arc(x, y, 4, 0, Math.PI * 2, false);
         this.aeroplaneContext.stroke();
         this.aeroplaneContext.strokeStyle = COLOURS.GREY;
     }
