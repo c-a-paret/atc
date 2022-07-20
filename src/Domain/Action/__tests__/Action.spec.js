@@ -2,6 +2,7 @@ import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../Ac
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {GameMap} from "../../GameMap/GameMap";
 import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../config/constants";
+import {FLYING} from "../../Aeroplane/aeroplaneStates";
 
 const testGameMap = () => {
     return new GameMap({
@@ -882,7 +883,7 @@ describe("Holding Pattern", () => {
     })
 
     test("Is only actionable when flying", () => {
-        const hold = new HoldingPattern(map, {isFlying: () => true}, 1);
+        const hold = new HoldingPattern(map, {is: () => true}, 1);
         expect(hold.isActionable()).toBeTruthy()
     })
 })

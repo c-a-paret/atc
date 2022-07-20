@@ -625,22 +625,22 @@ describe("Apply Actions", () => {
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(101.5)
+            expect(aeroplane.x).toBe(101.75)
             expect(aeroplane.y).toBe(100.03)
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(103)
+            expect(aeroplane.x).toBe(103.5)
             expect(aeroplane.y).toBe(100.06)
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(104.5)
+            expect(aeroplane.x).toBe(105.25)
             expect(aeroplane.y).toBe(100.09)
 
             aeroplane.applyActions()
 
-            expect(aeroplane.x).toBe(106)
+            expect(aeroplane.x).toBe(107)
             expect(aeroplane.y).toBe(100.12)
         })
 

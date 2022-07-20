@@ -18,6 +18,10 @@ const testGameMap = () => {
                         x: 510,
                         y: 500,
                     },
+                    takeoffPoint: {
+                        x: 550,
+                        y: 500,
+                    },
                     ILS: {
                         innerMarker: {
                             x: 500,
@@ -35,6 +39,10 @@ const testGameMap = () => {
                     altitude: 0,
                     landingZone: {
                         x: 490,
+                        y: 500,
+                    },
+                    takeoffPoint: {
+                        x: 440,
                         y: 500,
                     },
                     ILS: {
@@ -226,9 +234,14 @@ describe('Send command', () => {
 
     test('Sends cleared for takeoff command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {}, mockState)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3)
+        const aeroplane2 = new Aeroplane("BA456", "A321", 500, 350, 0, 270, 0, 3, DEPARTURE, HOLDING_SHORT)
+
+        aeroplane2.positionDescription = "9L"
+
         service.aeroplanes = [
-            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", "A321", 500, 350, 0, 270, 0, 3, DEPARTURE, HOLDING_SHORT),
+            aeroplane1,
+            aeroplane2,
         ]
 
         const rawCommand = "BA456CTO"
@@ -421,8 +434,8 @@ describe('Determine proximal aeroplanes', () => {
         const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {exclusionZones: []}};
 
         const service = new AeroplaneService(mockMap, {}, {
-                setMachine: jest.fn(),
-                setMap: jest.fn()
+            setMachine: jest.fn(),
+            setMap: jest.fn()
         })
 
         service.aeroplanes = [
