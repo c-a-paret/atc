@@ -67,10 +67,6 @@ export class Aeroplane {
         return this.type === ARRIVAL
     }
 
-    isDeparture = () => {
-        return this.type === DEPARTURE
-    }
-
     addAction = (action) => {
         // Nothing overwrites Landing
         if (this.actions.length > 0 && this.actions[0].type() === 'Landing') {

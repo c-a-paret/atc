@@ -83,7 +83,7 @@ export class Speed extends Action {
     }
 
     isFutureActionable = () => {
-        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
     isValid = () => {
@@ -130,7 +130,7 @@ export class Heading extends Action {
     };
 
     isFutureActionable = () => {
-        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
     isValid = () => {
@@ -170,12 +170,12 @@ export class Altitude extends Action {
         }
     }
 
-    isFutureActionable = () => {
-        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
-    }
-
     isActionable = () => {
         return this.aeroplane.altitude !== this.targetValue && this.aeroplane.is([FLYING])
+    }
+
+    isFutureActionable = () => {
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
     isValid = () => {
@@ -237,7 +237,7 @@ export class Waypoint extends Action {
     }
 
     isFutureActionable = () => {
-        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
     apply = () => {
