@@ -7,10 +7,12 @@ import {
     MAX_ALTITUDE,
     MIN_ALTITUDE,
     MIN_APPROACH_SPEED,
-    MIN_SPEED
+    MIN_GROUND_CLEARANCE,
+    MIN_SPEED,
+    TAKEOFF_SPEED
 } from "../../config/constants";
 import {distance, shortestAngle} from "../../utils/geometry";
-import {AIR_OPERATIONS, GROUND_OPERATIONS, HOLDING_SHORT} from "../Aeroplane/aeroplaneStates";
+import {FLYING, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
 
 class Action {
     constructor(map, aeroplane, targetValue) {
@@ -77,11 +79,11 @@ export class Speed extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.speed !== this.targetValue && this.aeroplane.isFlying()
+        return this.aeroplane.speed !== this.targetValue && this.aeroplane.is([FLYING])
     }
 
     isFutureActionable = () => {
-        return this.aeroplane.isOnGround()
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
     }
 
     isValid = () => {
@@ -124,11 +126,11 @@ export class Heading extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.heading !== this.targetValue && this.aeroplane.isFlying()
+        return this.aeroplane.heading !== this.targetValue && this.aeroplane.is([FLYING])
     };
 
     isFutureActionable = () => {
-        return this.aeroplane.isOnGround()
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
     }
 
     isValid = () => {
@@ -169,11 +171,11 @@ export class Altitude extends Action {
     }
 
     isFutureActionable = () => {
-        return this.aeroplane.isOnGround()
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
     }
 
     isActionable = () => {
-        return this.aeroplane.altitude !== this.targetValue && this.aeroplane.isFlying()
+        return this.aeroplane.altitude !== this.targetValue && this.aeroplane.is([FLYING])
     }
 
     isValid = () => {
@@ -226,7 +228,7 @@ export class Waypoint extends Action {
     }
 
     isActionable = () => {
-        if (!this.aeroplane.isFlying()) {
+        if (this.aeroplane.isNot([FLYING])) {
             return false
         }
         const distanceToWaypoint = distance(this.aeroplane.x, this.aeroplane.y, this.targetX, this.targetY)
@@ -235,7 +237,7 @@ export class Waypoint extends Action {
     }
 
     isFutureActionable = () => {
-        return this.aeroplane.isOnGround()
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
     }
 
     apply = () => {
@@ -286,7 +288,7 @@ export class Landing extends Action {
     }
 
     isActionable = () => {
-        return !this.executed && this.aeroplane.isFlying()
+        return !this.executed && this.aeroplane.is([FLYING])
     }
 
     isFutureActionable = () => {
@@ -355,7 +357,7 @@ export class HoldingPattern extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.isFlying() && true
+        return this.aeroplane.is([FLYING]) && true
     }
 
     isFutureActionable = () => {
@@ -388,21 +390,19 @@ export class TaxiToRunway extends Action {
         super(map, aeroplane, targetRunway);
         this.map = map
         this.targetRunway = targetRunway
+        this.runway = undefined
         this.targetX = undefined
         this.targetY = undefined
         this.taxiTime = getRandomNumberBetween(5, 20)
 
         if (this.map.runwayExists(this.targetRunway)) {
-            const runway = this.map.getRunwayInfo(this.targetRunway)
-            this.targetX = runway.landingZone.x
-            this.targetY = runway.landingZone.y
+            this.runway = this.map.getRunwayInfo(this.targetRunway)
+            this.targetX = this.runway.landingZone.x
+            this.targetY = this.runway.landingZone.y
         }
     }
 
     isActionable = () => {
-        if ([HOLDING_SHORT, ...AIR_OPERATIONS].includes(this.aeroplane.state)) {
-            return true
-        }
         if (this.taxiTime > 0) {
             return true
         }
@@ -410,25 +410,86 @@ export class TaxiToRunway extends Action {
             this.aeroplane.x = this.targetX
             this.aeroplane.y = this.targetY
             this.aeroplane.state = HOLDING_SHORT
+            this.aeroplane.heading = this.runway.heading
             this.aeroplane.positionDescription = this.targetRunway
             return false
         }
     }
 
     isFutureActionable = () => {
-        return !this.aeroplane.isFlying()
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING])
     }
 
     isValid = () => {
-        return this.map.runwayExists(this.targetRunway) && GROUND_OPERATIONS.includes(this.aeroplane.state)
+        return this.map.runwayExists(this.targetRunway) && this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
     }
 
     apply = () => {
-        console.log('Applying taxi and hold')
         this.taxiTime -= 1
     };
 
     copy = (aeroplane) => {
         return new TaxiToRunway(this.map, aeroplane, this.targetRunway)
+    }
+}
+
+
+export class Takeoff extends Action {
+    constructor(map, aeroplane, runway = null) {
+        super(map, aeroplane, null);
+        this.map = map
+        this.targetX = undefined
+        this.targetY = undefined
+        this.runway = undefined
+        this.speedSet = false
+        this.executed = false
+
+        if (!runway && this.map.runwayExists(this.aeroplane.positionDescription)) {
+            this.runway = this.map.getRunwayInfo(this.aeroplane.positionDescription)
+            this.targetX = this.runway.takeoffPoint.x
+            this.targetY = this.runway.takeoffPoint.y
+        } else {
+            this.runway = runway
+        }
+    }
+
+    isActionable = () => {
+        return !this.executed
+    }
+
+    isFutureActionable = () => {
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
+    }
+
+    isValid = () => {
+        return this.map.runwayExists(this.runway.label) && this.aeroplane.is([HOLDING_SHORT])
+    }
+
+    apply = () => {
+        this.aeroplane.heading = this.runway.heading
+
+        // Speed
+        if (this.aeroplane.speed < TAKEOFF_SPEED) {
+            this.aeroplane.speed += 20
+        }
+
+        // Altitude
+        if (this.aeroplane.speed < TAKEOFF_SPEED) {
+            this.aeroplane.altitude = 0
+        }
+
+        if (this.aeroplane.speed >= TAKEOFF_SPEED && this.aeroplane.altitude < MIN_GROUND_CLEARANCE) {
+            this.aeroplane.altitude += 60
+        }
+
+        // End takeoff sequence
+        if (this.aeroplane.speed >= TAKEOFF_SPEED && this.aeroplane.altitude >= MIN_GROUND_CLEARANCE) {
+            this.aeroplane.state = FLYING
+            this.executed = true
+        }
+    };
+
+    copy = (aeroplane) => {
+        return new Takeoff(this.map, aeroplane, this.runway)
     }
 }

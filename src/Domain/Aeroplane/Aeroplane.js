@@ -1,4 +1,4 @@
-import {Altitude, Heading, HoldingPattern, Landing, Speed, TaxiToRunway, Waypoint} from "../Action/Action";
+import {Altitude, Heading, HoldingPattern, Landing, Speed, Takeoff, TaxiToRunway, Waypoint} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
@@ -11,7 +11,7 @@ import {
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
-import {AIR_OPERATIONS, FLYING, GROUND_OPERATIONS, HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "./aeroplaneStates";
+import {FLYING, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
 
 export class Aeroplane {
     constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING) {
@@ -160,17 +160,26 @@ export class Aeroplane {
         }
     }
 
+    clearForTakeoff = (map) => {
+        const takeoff = new Takeoff(map, this);
+        if (takeoff.isValid()) {
+            this.state = TAKING_OFF
+            this.addAction(takeoff)
+            return true
+        }
+    }
+
     _clean_actions = () => {
         this.actions = this.actions.filter(action => action.isFutureActionable() || action.isActionable())
         this._clear_targets()
     }
 
-    isFlying = () => {
-        return AIR_OPERATIONS.includes(this.state)
+    is = (states) => {
+        return states.includes(this.state)
     }
 
-    isOnGround = () => {
-        return GROUND_OPERATIONS.includes(this.state)
+    isNot = (states) => {
+        return !this.is(states)
     }
 
     applyActions = () => {
@@ -186,7 +195,7 @@ export class Aeroplane {
         }
 
         const headingRadians = toRadians(this.heading)
-        const distancePerTick = 1 + ((this.speed - 100) / 20 * 0.5)
+        const distancePerTick = 1 + (Math.max(30, this.speed - 100) / 20 * 0.5)
         this.x = round(this.x + distancePerTick * Math.sin(headingRadians), 2);
         this.y = round(this.y - distancePerTick * Math.cos(headingRadians), 2);
 
@@ -273,7 +282,7 @@ export class Aeroplane {
     }
 
     proximalTo = (otherAeroplane) => {
-        if (!GROUND_OPERATIONS.includes(this.state)) {
+        if (this.is([TAKING_OFF, FLYING])) {
             const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
             const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
             return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
@@ -294,7 +303,7 @@ export class Aeroplane {
     }
 
     breachingGroundClearance = () => {
-        return !this.isLanding() && !GROUND_OPERATIONS.includes(this.state) && this.altitude < MIN_GROUND_CLEARANCE
+        return !this.isLanding() && this.is([FLYING]) && this.altitude < MIN_GROUND_CLEARANCE
     }
 
     markBreachingProximityLimits = () => {

@@ -1,6 +1,7 @@
 export const MIN_SPEED = 120;
 export const MAX_SPEED = 999;
 export const LANDING_SPEED = 140;
+export const TAKEOFF_SPEED = 200;
 export const LANDED_ALTITUDE = 40
 export const MIN_APPROACH_SPEED = 200
 export const MIN_ALTITUDE = 1000;

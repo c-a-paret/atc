@@ -60,6 +60,10 @@ export const EGLL = {
                         x: x / 2 - (runwayWidth / 5),
                         y: y / 2,
                     },
+                    takeoffPoint: {
+                        x: x / 2 + (runwayWidth / 5),
+                        y: y / 2,
+                    },
                     ILS: {
                         innerMarker: {
                             x: x / 2 - (runwayWidth / 3),
@@ -77,6 +81,10 @@ export const EGLL = {
                     altitude: 0,
                     landingZone: {
                         x: x / 2 + (runwayWidth / 5),
+                        y: y / 2,
+                    },
+                    takeoffPoint: {
+                        x: x / 2 - (runwayWidth / 5),
                         y: y / 2,
                     },
                     ILS: {
@@ -100,6 +108,10 @@ export const EGLL = {
                         x: x / 2 - (runwayWidth / 5),
                         y: y / 2 + runwayGap,
                     },
+                    takeoffPoint: {
+                        x: x / 2 + (runwayWidth / 5),
+                        y: y / 2 + runwayGap,
+                    },
                     ILS: {
                         innerMarker: {
                             x: x / 2 - (runwayWidth / 3),
@@ -117,6 +129,10 @@ export const EGLL = {
                     altitude: 0,
                     landingZone: {
                         x: x / 2 + (runwayWidth / 5),
+                        y: y / 2 + runwayGap,
+                    },
+                    takeoffPoint: {
+                        x: x / 2 - (runwayWidth / 5),
                         y: y / 2 + runwayGap,
                     },
                     ILS: {

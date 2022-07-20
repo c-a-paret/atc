@@ -1,9 +1,8 @@
+// Ground operations
 export const READY_TO_TAXI = "READY_TO_TAXI"
 export const TAXIING = "TAXIING"
 export const HOLDING_SHORT = "HOLDING_SHORT"
+// Air operations
 export const TAKING_OFF = "TAKING_OFF"
-
 export const FLYING = "FLYING"
-
-export const GROUND_OPERATIONS = [READY_TO_TAXI, TAXIING, HOLDING_SHORT]
-export const AIR_OPERATIONS = [TAKING_OFF, FLYING]
+export const LANDING = "LANDING"
