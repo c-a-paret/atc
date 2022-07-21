@@ -357,7 +357,7 @@ export class HoldingPattern extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.is([FLYING]) && true
+        return this.aeroplane.is([FLYING])
     }
 
     isFutureActionable = () => {
@@ -365,7 +365,6 @@ export class HoldingPattern extends Action {
     }
 
     isValid = () => {
-        // TODO: Implement properly
         return true
     }
 
@@ -432,7 +431,6 @@ export class TaxiToRunway extends Action {
         return new TaxiToRunway(this.map, aeroplane, this.targetRunway)
     }
 }
-
 
 export class Takeoff extends Action {
     constructor(map, aeroplane, runway = null) {

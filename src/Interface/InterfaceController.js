@@ -4,7 +4,7 @@ import {div, p} from "./elements";
 import {CoreGamePlay} from "../States/CoreGamePlay";
 import {Tutorial} from "../States/Tutorial";
 import {round} from "../utils/maths";
-import {HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Domain/Aeroplane/aeroplaneStates";
+import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 
 class TargetValue {
     constructor(value) {
@@ -157,29 +157,6 @@ export class InterfaceController {
     }
 
     addStrip = (aeroplane) => {
-        // <div className="aeroplane-strip">
-        //     <div className="overview">
-        //         <div className="value">
-        //             <p className="text">BA123</p>
-        //         </div>
-        //         <div className="target">
-        //             <p className="text">27L</p>
-        //         </div>
-        //     </div>
-        //     <div className="separator"></div>
-        //     <div className="actions-overview">
-        //         <div className="action-target">
-        //             <p className="text">262</p>
-        //         </div>
-        //         <div className="action-target with-direction">
-        //             <p className="text">50</p>
-        //             <p className="text arrow">↘︎︎</p>
-        //         </div>
-        //         <div className="action-target">
-        //             <p className="text">260</p>
-        //         </div>
-        //     </div>
-        // </div>
         const sidebar = document.getElementById("sidebar");
         const strip = div(["aeroplane-strip", aeroplane.type.toLowerCase()], aeroplane.callSign)
 
@@ -198,8 +175,12 @@ export class InterfaceController {
 
     updateStrips = () => {
         this.aeroplaneService.aeroplanes.forEach(plane => {
-            const overviewValues = this._get_overview_values(plane)
+            // State or Call Sign
+            const stateCallSignElement = document.getElementById(`${plane.callSign}-state-call-sign`)
+            stateCallSignElement.innerText = plane.state === FLYING ? plane.shortClass : this._format_state(plane)
 
+
+            const overviewValues = this._get_overview_values(plane)
             // Location
             const locationTextElement = document.getElementById(`${plane.callSign}-location`)
             const locationColourClass = this._colour_class(overviewValues.location);
@@ -242,6 +223,16 @@ export class InterfaceController {
         this._drawGameModeButtons()
     }
 
+    _format_state = (aeroplane) => {
+        const state_map = {
+            READY_TO_TAXI: "Ready",
+            TAXIING: "Taxi",
+            HOLDING_SHORT: aeroplane.positionDescription,
+            TAKING_OFF: "T/O"
+        }
+        return state_map[aeroplane.state]
+    }
+
     _overviewBlock = (aeroplane) => {
         const overview = div(["overview"])
 
@@ -257,10 +248,10 @@ export class InterfaceController {
         targetText.innerText = ""
         target.appendChild(targetText)
 
-        //  Short class
+        //  State or short class
         const shortClass = div(["value"])
-        const shortClassText = p(["text", "right", "short-class"])
-        shortClassText.innerText = aeroplane.shortClass
+        const shortClassText = p(["text", "right", "short-class"], `${aeroplane.callSign}-state-call-sign`)
+        shortClassText.innerText = aeroplane.state === FLYING ? aeroplane.shortClass : this._format_state(aeroplane)
         shortClass.appendChild(shortClassText)
 
         overview.appendChild(callSign)
@@ -275,14 +266,6 @@ export class InterfaceController {
             return new TargetValue('Landing')
         } else if (aeroplane.isHolding()) {
             return new TargetValue('Hold')
-        } else if (aeroplane.state === READY_TO_TAXI) {
-            return new TargetValue('New')
-        } else if (aeroplane.state === TAXIING) {
-            return new TargetValue('Taxi')
-        } else if (aeroplane.state === TAKING_OFF) {
-            return new TargetValue('T/O')
-        } else if (aeroplane.state === HOLDING_SHORT) {
-            return new TargetValue(aeroplane.positionDescription)
         } else {
             if (aeroplane.targetLocation) {
                 return new TargetValue(aeroplane.targetLocation)

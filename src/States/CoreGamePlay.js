@@ -27,9 +27,9 @@ export class CoreGamePlay extends GameState {
             // this.initTestAeroplanes()
             this.initArrival()
         }
-        // if (this.ticks % 105 === 0) {
-        //     this.initDeparture()
-        // }
+        if (this.ticks % 105 === 0) {
+            this.initDeparture()
+        }
         if (this.ticks > 0 && this.ticks % this.specialAircraftInterval === 0) {
             this.initSpecialArrival()
         }
