@@ -278,7 +278,7 @@ export class Aeroplane {
     }
 
     proximalTo = (otherAeroplane) => {
-        if (this.is([TAKING_OFF, FLYING])) {
+        if (this.is([TAKING_OFF, FLYING]) && otherAeroplane.is([TAKING_OFF, FLYING])) {
             const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
             const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
             return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
