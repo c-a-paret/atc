@@ -91,7 +91,11 @@ export class AeroplaneService {
 
     deactivateAeroplanes = () => {
         this.aeroplanes.forEach(plane => {
-            if (plane.isOutsideBoundaries(this.map.mapBoundaries, this.statsService.incrementExited) || plane.hasLanded(this.statsService.incrementLanded)) {
+            if (
+                plane.isArrivalOutsideBoundaries(this.map.mapBoundaries, this.statsService.incrementLost) ||
+                plane.isDepartureOutsideBoundaries(this.map.mapBoundaries, this.statsService.incrementDeparted) ||
+                plane.hasLanded(this.statsService.incrementLanded)
+            ) {
                 this.aeroplanes = this.aeroplanes.filter(activePlane => activePlane !== plane)
             }
         })

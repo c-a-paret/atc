@@ -67,6 +67,10 @@ export class Aeroplane {
         return this.type === ARRIVAL
     }
 
+    isDeparture = () => {
+        return this.type === DEPARTURE
+    }
+
     addAction = (action) => {
         // Nothing overwrites Landing
         if (this.actions.length > 0 && this.actions[0].type() === 'Landing') {
@@ -244,7 +248,21 @@ export class Aeroplane {
         return withinX && withinY
     }
 
-    isOutsideBoundaries = (mapBoundaries, outsideCallback) => {
+    isArrivalOutsideBoundaries = (mapBoundaries, outsideCallback) => {
+        if (this.isArrival()) {
+            return this._isOutsideBoundaries(mapBoundaries, outsideCallback)
+        }
+        return false
+    }
+
+    isDepartureOutsideBoundaries = (mapBoundaries, outsideCallback) => {
+        if (this.isDeparture()) {
+            return this._isOutsideBoundaries(mapBoundaries, outsideCallback)
+        }
+        return false
+    }
+
+    _isOutsideBoundaries = (mapBoundaries, outsideCallback) => {
         const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
         const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
         const outside = outsideX || outsideY;

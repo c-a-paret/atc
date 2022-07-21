@@ -33,7 +33,7 @@ export class InterfaceController {
         this._init()
     }
 
-    setStats = (landedCount, exitedCount, breachedRestrictions) => {
+    setStats = (landedCount, departedCount, exitedCount, breachedRestrictions) => {
         if (exitedCount > 0) {
             document.getElementById("exited-count").classList.remove('good')
             document.getElementById("exited-count").classList.add('bad')
@@ -49,6 +49,7 @@ export class InterfaceController {
             document.getElementById("breached-restrictions").classList.add('good')
         }
         document.getElementById("landed-count").innerText = landedCount
+        document.getElementById("departed-count").innerText = departedCount
         document.getElementById("exited-count").innerText = exitedCount
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }

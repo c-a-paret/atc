@@ -15,26 +15,36 @@ describe('Stats service', () => {
         expect(service.landedCount).toBe(1)
     })
 
-    test('Increments exited count', () => {
+    test('Increments lost count', () => {
         const service = new StatsService({})
 
-        expect(service.exitedBoundaryCount).toBe(0)
+        expect(service.lostCount).toBe(0)
 
-        service.incrementExited()
+        service.incrementLost()
 
-        expect(service.exitedBoundaryCount).toBe(1)
+        expect(service.lostCount).toBe(1)
     })
 
-    test('Increments exited count when existing stats', () => {
+    test('Increments departed count', () => {
+        const service = new StatsService({})
+
+        expect(service.departedCount).toBe(0)
+
+        service.incrementDeparted()
+
+        expect(service.departedCount).toBe(1)
+    })
+
+    test('Increments lost count when existing stats', () => {
         const service = new StatsService({})
         service.landedCount = 3
-        service.exitedBoundaryCount = 5
+        service.lostCount = 5
 
-        expect(service.exitedBoundaryCount).toBe(5)
+        expect(service.lostCount).toBe(5)
 
-        service.incrementExited()
+        service.incrementLost()
 
-        expect(service.exitedBoundaryCount).toBe(6)
+        expect(service.lostCount).toBe(6)
     })
 
 })

@@ -921,7 +921,7 @@ describe("Outside boundaries", () => {
             const x = 50
             const y = -1
             aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
-            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            const result = aeroplane.isArrivalOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
 
@@ -929,7 +929,7 @@ describe("Outside boundaries", () => {
             const x = 101
             const y = 50
             aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
-            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            const result = aeroplane.isArrivalOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
 
@@ -937,7 +937,7 @@ describe("Outside boundaries", () => {
             const x = 50
             const y = 101
             aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
-            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            const result = aeroplane.isArrivalOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
 
@@ -945,7 +945,7 @@ describe("Outside boundaries", () => {
             const x = -1
             const y = 50
             aeroplane = new Aeroplane("AB123", "A321", x, y, 150, 0, 3000, 3)
-            const result = aeroplane.isOutsideBoundaries(mapBoundaries)
+            const result = aeroplane.isArrivalOutsideBoundaries(mapBoundaries)
             expect(result).toBeTruthy()
         })
     })

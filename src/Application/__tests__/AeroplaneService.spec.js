@@ -370,7 +370,7 @@ describe('Remove aeroplanes', () => {
         const exitedCallback = jest.fn();
         const statsService = {
             incrementLanded: landedCallback,
-            incrementExited: exitedCallback
+            incrementLost: exitedCallback
         }
         const service = new AeroplaneService(testGameMap(), statsService, mockState)
 
@@ -404,7 +404,7 @@ describe('Remove aeroplanes', () => {
         const exitedCallback = jest.fn();
         const statsService = {
             incrementLanded: landedCallback,
-            incrementExited: exitedCallback
+            incrementLost: exitedCallback
         }
 
         const service = new AeroplaneService(testGameMap(), statsService, mockState)

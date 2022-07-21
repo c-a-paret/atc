@@ -30,7 +30,8 @@ export class GameLoop {
                 }
                 this.interfaceController.setStats(
                     this.statsService.landedCount,
-                    this.statsService.exitedBoundaryCount,
+                    this.statsService.departedCount,
+                    this.statsService.lostCount,
                     this.statsService.proximityTimer
                 )
             }
