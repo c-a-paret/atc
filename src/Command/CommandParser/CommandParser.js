@@ -32,7 +32,8 @@ export const commandMessage = (acceptedCommands) => {
         acceptedCommands.runway,
         acceptedCommands.hold,
         acceptedCommands.taxiAndHold,
-        acceptedCommands.clearedForTakeoff
+        acceptedCommands.clearedForTakeoff,
+        acceptedCommands.goAround
     ].every(value => value === undefined)) {
         return 'Unrecognised command'
     }
@@ -43,7 +44,8 @@ export const commandMessage = (acceptedCommands) => {
         acceptedCommands.runway,
         acceptedCommands.hold,
         acceptedCommands.taxiAndHold,
-        acceptedCommands.clearedForTakeoff
+        acceptedCommands.clearedForTakeoff,
+        acceptedCommands.goAround
     ].every(value => value === undefined)) {
         return 'No valid commands'
     }
@@ -53,9 +55,10 @@ export const commandMessage = (acceptedCommands) => {
         `${acceptedCommands.altitude ? ' Altitude: ' + acceptedCommands.altitude + 'ft' : ''}` +
         `${acceptedCommands.waypoint ? ' Waypoint: ' + acceptedCommands.waypoint : ''}` +
         `${acceptedCommands.runway ? ' cleared to land runway ' + acceptedCommands.runway : ''}` +
+        `${acceptedCommands.goAround ? ' go around' : ''}` +
         `${acceptedCommands.taxiAndHold ? ' taxi and hold ' + acceptedCommands.taxiAndHold : ''}` +
-        `${acceptedCommands.clearedForTakeoff ? ' cleared for takeoff ' : ''}` +
-        `${Math.abs(acceptedCommands.hold) === 1 ? ` Holding to the ${acceptedCommands.hold === 1 ? 'right' : 'left'} ` : ''}`
+        `${acceptedCommands.clearedForTakeoff ? ' cleared for takeoff' : ''}` +
+        `${Math.abs(acceptedCommands.hold) === 1 ? ` hold to the ${acceptedCommands.hold === 1 ? 'right' : 'left'}` : ''}`
 }
 
 export const parseSpeed = (command) => {
@@ -119,6 +122,14 @@ export const parseClearedForTakeoff = (command) => {
     const matches = command.match(/(.)*?(CTO)(.)*?/);
     if (matches) {
         return matches[2] === "CTO"
+    }
+    return null
+}
+
+export const parseGoAround = (command) => {
+    const matches = command.match(/(.)*?(GA)(.)*?/);
+    if (matches) {
+        return matches[2] === "GA"
     }
     return null
 }
