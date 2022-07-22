@@ -2,7 +2,7 @@ import {ILS_MAX_X} from "../constants";
 
 const x = document.body.clientWidth
 const y = document.body.clientHeight
-const runwayWidth = x / 25
+const runwayWidth = x / 35
 const runwayGap = x / 60
 
 export const EGLL = {
@@ -57,16 +57,16 @@ export const EGLL = {
                         maxY: y / 2 + runwayGap,
                     },
                     landingZone: {
-                        x: x / 2 - (runwayWidth / 5),
+                        x: x / 2 - (runwayWidth / 3.5),
                         y: y / 2,
                     },
                     takeoffPoint: {
-                        x: x / 2 + (runwayWidth / 5),
+                        x: x / 2 + (runwayWidth / 3.5),
                         y: y / 2,
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 - (runwayWidth / 3),
+                            x: x / 2 - (runwayWidth / 2),
                             y: y / 2,
                         },
                         outerMarker: {
@@ -80,16 +80,16 @@ export const EGLL = {
                     heading: 270,
                     altitude: 0,
                     landingZone: {
-                        x: x / 2 + (runwayWidth / 5),
+                        x: x / 2 + (runwayWidth / 3.5),
                         y: y / 2,
                     },
                     takeoffPoint: {
-                        x: x / 2 - (runwayWidth / 5),
+                        x: x / 2 - (runwayWidth / 3.5),
                         y: y / 2,
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 + (runwayWidth / 3),
+                            x: x / 2 + (runwayWidth / 2),
                             y: y / 2,
                         },
                         outerMarker: {
@@ -105,16 +105,16 @@ export const EGLL = {
                     heading: 90,
                     altitude: 0,
                     landingZone: {
-                        x: x / 2 - (runwayWidth / 5),
+                        x: x / 2 - (runwayWidth / 3.5),
                         y: y / 2 + runwayGap,
                     },
                     takeoffPoint: {
-                        x: x / 2 + (runwayWidth / 5),
+                        x: x / 2 + (runwayWidth / 3.5),
                         y: y / 2 + runwayGap,
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 - (runwayWidth / 3),
+                            x: x / 2 - (runwayWidth / 2),
                             y: y / 2 + runwayGap,
                         },
                         outerMarker: {
@@ -128,16 +128,16 @@ export const EGLL = {
                     heading: 270,
                     altitude: 0,
                     landingZone: {
-                        x: x / 2 + (runwayWidth / 5),
+                        x: x / 2 + (runwayWidth / 3.5),
                         y: y / 2 + runwayGap,
                     },
                     takeoffPoint: {
-                        x: x / 2 - (runwayWidth / 5),
+                        x: x / 2 - (runwayWidth / 3.5),
                         y: y / 2 + runwayGap,
                     },
                     ILS: {
                         innerMarker: {
-                            x: x / 2 + (runwayWidth / 3),
+                            x: x / 2 + (runwayWidth / 2),
                             y: y / 2 + runwayGap,
                         },
                         outerMarker: {
