@@ -73,6 +73,11 @@ export const EGLL = {
                             x: x / 2 - (runwayWidth / 2) - ILS_MAX_X,
                             y: y / 2,
                         }
+                    },
+                    goAround: {
+                        targetWaypoint: "CHT",
+                        targetSpeed: 200,
+                        targetAltitude: 4000,
                     }
                 },
                 end: {
@@ -96,6 +101,11 @@ export const EGLL = {
                             x: x / 2 + (runwayWidth / 2) + ILS_MAX_X,
                             y: y / 2,
                         }
+                    },
+                    goAround: {
+                        targetWaypoint: "LAM",
+                        targetSpeed: 200,
+                        targetAltitude: 4000,
                     }
                 }
             },
@@ -121,6 +131,11 @@ export const EGLL = {
                             x: x / 2 - (runwayWidth / 2) - ILS_MAX_X,
                             y: y / 2 + runwayGap,
                         }
+                    },
+                    goAround: {
+                        targetWaypoint: "GWC",
+                        targetSpeed: 200,
+                        targetAltitude: 4000,
                     }
                 },
                 end: {
@@ -144,6 +159,11 @@ export const EGLL = {
                             x: x / 2 + (runwayWidth / 2) + ILS_MAX_X,
                             y: y / 2 + runwayGap,
                         }
+                    },
+                    goAround: {
+                        targetWaypoint: "MAY",
+                        targetSpeed: 200,
+                        targetAltitude: 4000,
                     }
                 }
             }

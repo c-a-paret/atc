@@ -229,7 +229,8 @@ export class InterfaceController {
             READY_TO_TAXI: "Ready",
             TAXIING: "Taxi",
             HOLDING_SHORT: aeroplane.positionDescription,
-            TAKING_OFF: "T/O"
+            TAKING_OFF: "T/O",
+            GOING_AROUND: "G/A"
         }
         return state_map[aeroplane.state]
     }

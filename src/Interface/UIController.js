@@ -1,7 +1,7 @@
 import {COLOURS} from "../config/colours";
 import {ILS_MIN_X} from "../config/constants";
 import {round} from "../utils/maths";
-import {FLYING, HOLDING_SHORT, TAKING_OFF} from "../Domain/Aeroplane/aeroplaneStates";
+import {FLYING, GOING_AROUND, HOLDING_SHORT, TAKING_OFF} from "../Domain/Aeroplane/aeroplaneStates";
 
 export class UIController {
     constructor(map, aeroplaneService, interfaceController) {
@@ -252,7 +252,7 @@ export class UIController {
     }
 
     _drawAeroplanePosition = (aeroplane) => {
-        if (aeroplane.is([HOLDING_SHORT, TAKING_OFF, FLYING])) {
+        if (aeroplane.is([HOLDING_SHORT, TAKING_OFF, FLYING, GOING_AROUND])) {
             if (aeroplane.breachingProximity) {
                 this.aeroplaneContext.strokeStyle = COLOURS.RED;
             } else {
@@ -336,7 +336,7 @@ export class UIController {
     }
 
     _drawProjectedPath = (aeroplane) => {
-        if (this.interfaceController.projectedPathsOn && aeroplane.is([TAKING_OFF, FLYING])) {
+        if (this.interfaceController.projectedPathsOn && aeroplane.is([TAKING_OFF, FLYING, GOING_AROUND])) {
             if (aeroplane.nextPositions.length > 0) {
                 const firstX = aeroplane.nextPositions[0].x
                 const firstY = aeroplane.nextPositions[0].y

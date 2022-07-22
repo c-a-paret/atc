@@ -36,6 +36,7 @@ export class AeroplaneService {
         let holdSet;
         let taxiAndHoldSet;
         let clearedForTakeoff;
+        let goAround;
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
                 callSign = plane.callSign
@@ -64,6 +65,9 @@ export class AeroplaneService {
                 if (command.clearedForTakeoff) {
                     clearedForTakeoff = plane.clearForTakeoff(this.map)
                 }
+                if (command.goAround) {
+                    goAround = plane.goAround(this.map)
+                }
             }
         })
         return {
@@ -75,7 +79,8 @@ export class AeroplaneService {
             "runway": runwaySet,
             "hold": holdSet,
             "taxiAndHold": taxiAndHoldSet,
-            "clearedForTakeoff": clearedForTakeoff
+            "clearedForTakeoff": clearedForTakeoff,
+            "goAround": goAround,
         }
     }
 

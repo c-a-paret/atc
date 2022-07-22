@@ -18,7 +18,8 @@ export const parseCommand = (rawCommand) => {
         runway: parsedRunway,
         hold: parseHold(actionCommands),
         taxiAndHold: parseTaxiAndHold(actionCommands),
-        clearedForTakeoff: parseClearedForTakeoff(command)
+        clearedForTakeoff: parseClearedForTakeoff(command),
+        goAround: parseGoAround(command)
     }
 }
 

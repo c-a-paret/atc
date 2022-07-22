@@ -12,7 +12,7 @@ import {
     TAKEOFF_SPEED
 } from "../../config/constants";
 import {distance, shortestAngle} from "../../utils/geometry";
-import {FLYING, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
+import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
 
 class Action {
     constructor(map, aeroplane, targetValue) {
@@ -79,7 +79,7 @@ export class Speed extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.speed !== this.targetValue && this.aeroplane.is([FLYING])
+        return this.aeroplane.speed !== this.targetValue && this.aeroplane.is([FLYING, GOING_AROUND])
     }
 
     isFutureActionable = () => {
@@ -126,7 +126,7 @@ export class Heading extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.heading !== this.targetValue && this.aeroplane.is([FLYING])
+        return this.aeroplane.heading !== this.targetValue && this.aeroplane.is([FLYING, GOING_AROUND])
     };
 
     isFutureActionable = () => {
@@ -171,7 +171,7 @@ export class Altitude extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.altitude !== this.targetValue && this.aeroplane.is([FLYING])
+        return this.aeroplane.altitude !== this.targetValue && this.aeroplane.is([FLYING, GOING_AROUND])
     }
 
     isFutureActionable = () => {
@@ -228,7 +228,7 @@ export class Waypoint extends Action {
     }
 
     isActionable = () => {
-        if (this.aeroplane.isNot([FLYING])) {
+        if (this.aeroplane.isNot([FLYING, GOING_AROUND])) {
             return false
         }
         const distanceToWaypoint = distance(this.aeroplane.x, this.aeroplane.y, this.targetX, this.targetY)
@@ -489,5 +489,56 @@ export class Takeoff extends Action {
 
     copy = (aeroplane) => {
         return new Takeoff(this.map, aeroplane, this.runway)
+    }
+}
+
+
+export class GoAround extends Action {
+    constructor(map, aeroplane, aimingForRunway) {
+        super(map, aeroplane, null);
+        this.map = map
+        this.aimingForRunway = aimingForRunway
+        this.runway = undefined
+        this.targetWaypoint = undefined
+        this.targetSpeed = undefined
+        this.targetAltitude = undefined
+        this.targetsAdded = false
+        this.executed = false
+
+        if (this.map.runwayExists(aimingForRunway)) {
+            this.runway = this.map.getRunwayInfo(aimingForRunway)
+            this.targetWaypoint = this.runway.goAround.targetWaypoint
+            this.targetSpeed = this.runway.goAround.targetSpeed
+            this.targetAltitude = this.runway.goAround.targetAltitude
+        }
+    }
+
+    isActionable = () => {
+        return !this.targetsAdded || !this.executed
+    }
+
+    isFutureActionable = () => {
+        return false
+    }
+
+    isValid = () => {
+        return this.runway && this.aeroplane.isLanding()
+    }
+
+    apply = () => {
+        if (!this.targetsAdded) {
+            this.aeroplane.addAction(new Waypoint(this.map, this.aeroplane, this.targetWaypoint))
+            this.aeroplane.addAction(new Speed(this.map, this.aeroplane, this.targetSpeed))
+            this.aeroplane.addAction(new Altitude(this.map, this.aeroplane, this.targetAltitude))
+            this.targetsAdded = true
+        }
+        if (this.aeroplane.altitude >= MIN_GROUND_CLEARANCE) {
+            this.aeroplane.state = FLYING
+            this.executed = true
+        }
+    }
+
+    copy = (aeroplane) => {
+        return new GoAround(this.map, aeroplane, this.aimingForRunway)
     }
 }

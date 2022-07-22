@@ -95,7 +95,8 @@ describe('Send command', () => {
             runway: undefined,
             hold: undefined,
             taxiAndHold: undefined,
-            clearedForTakeoff: undefined
+            clearedForTakeoff: undefined,
+            goAround: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -127,7 +128,8 @@ describe('Send command', () => {
             runway: undefined,
             hold: undefined,
             taxiAndHold: undefined,
-            clearedForTakeoff: undefined
+            clearedForTakeoff: undefined,
+            goAround: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -159,7 +161,8 @@ describe('Send command', () => {
             runway: "9L",
             hold: undefined,
             taxiAndHold: undefined,
-            clearedForTakeoff: undefined
+            clearedForTakeoff: undefined,
+            goAround: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -191,7 +194,8 @@ describe('Send command', () => {
             runway: undefined,
             hold: 1,
             taxiAndHold: undefined,
-            clearedForTakeoff: undefined
+            clearedForTakeoff: undefined,
+            goAround: undefined
         })
 
         const unaffectedAeroplane = service.aeroplanes[0]
@@ -226,7 +230,8 @@ describe('Send command', () => {
             runway: undefined,
             hold: undefined,
             taxiAndHold: "9L",
-            clearedForTakeoff: undefined
+            clearedForTakeoff: undefined,
+            goAround: undefined
         })
 
         // TODO: Check actions have been added
@@ -257,7 +262,8 @@ describe('Send command', () => {
             runway: undefined,
             hold: undefined,
             taxiAndHold: undefined,
-            clearedForTakeoff: true
+            clearedForTakeoff: true,
+            goAround: undefined
         })
 
         // TODO: Check actions have been added
@@ -284,7 +290,8 @@ describe('Send command', () => {
             runway: undefined,
             hold: undefined,
             taxiAndHold: undefined,
-            clearedForTakeoff: undefined
+            clearedForTakeoff: undefined,
+            goAround: undefined
         })
 
         const unaffectedAeroplane1 = service.aeroplanes[0]

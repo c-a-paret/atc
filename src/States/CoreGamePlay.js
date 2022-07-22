@@ -24,12 +24,12 @@ export class CoreGamePlay extends GameState {
             this.initialised = true
         }
         if (this.ticks % 140 === 0) {
-            this.initTestAeroplanes()
-            // this.initArrival()
+            // this.initTestAeroplanes()
+            this.initArrival()
         }
-        // if (this.ticks % 105 === 0) {
-        //     this.initDeparture()
-        // }
+        if (this.ticks % 105 === 0) {
+            this.initDeparture()
+        }
         if (this.ticks > 0 && this.ticks % this.specialAircraftInterval === 0) {
             this.initSpecialArrival()
         }
@@ -103,11 +103,11 @@ export class CoreGamePlay extends GameState {
     }
 
     initTestAeroplanes = () => {
-        const aeroplane1 = new Aeroplane("BA123", "A321", 510, 450, 200, 90, 2500, 1)
-        // const aeroplane2 = new Aeroplane("BA999", "A321", 1, 1, 0, 90, 0, 1, DEPARTURE, READY_TO_TAXI)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 510, 450, 200, 90, 2000, 1)
+        const aeroplane2 = new Aeroplane("BA999", "A321", 1, 1, 0, 90, 0, 1, DEPARTURE, READY_TO_TAXI)
         this.machine.aeroplanes = [
             aeroplane1,
-            // aeroplane2
+            aeroplane2
             // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
             // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
             // new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
@@ -122,7 +122,7 @@ export class CoreGamePlay extends GameState {
         ]
 
         aeroplane1.setLanding(this.map, "9R")
-        // aeroplane2.setTaxiAndHold(this.map, "9R")
+        aeroplane2.setTaxiAndHold(this.map, "9R")
 
         // this.machine.aeroplanes.forEach(plane => {
         //     plane.setAltitude(this.map, 4000)

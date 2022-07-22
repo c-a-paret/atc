@@ -1,4 +1,14 @@
-import {Altitude, Heading, HoldingPattern, Landing, Speed, Takeoff, TaxiToRunway, Waypoint} from "../Action/Action";
+import {
+    Altitude,
+    GoAround,
+    Heading,
+    HoldingPattern,
+    Landing,
+    Speed,
+    Takeoff,
+    TaxiToRunway,
+    Waypoint
+} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
@@ -11,7 +21,7 @@ import {
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
-import {FLYING, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
+import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
 
 export class Aeroplane {
     constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING) {
@@ -33,6 +43,7 @@ export class Aeroplane {
         this.targetLocation = undefined
         this.targetAltitude = undefined
         this.targetSpeed = undefined
+        this.aimingForRunway = undefined
         this.positionDescription = ''
     }
 
@@ -72,9 +83,15 @@ export class Aeroplane {
     }
 
     addAction = (action) => {
-        // Nothing overwrites Landing
+        // Only Go Around overwrites Landing
         if (this.actions.length > 0 && this.actions[0].type() === 'Landing') {
-            return
+            if (action.type() === 'GoAround') {
+                this.actions = [action]
+                this._update_targets()
+                return
+            } else {
+                return
+            }
         }
 
         // Landing overwrites everything
@@ -139,6 +156,7 @@ export class Aeroplane {
         const newLanding = new Landing(map, this, runway);
         if (newLanding.isValid()) {
             this.addAction(newLanding)
+            this.aimingForRunway = runway
             return runway
         }
     }
@@ -166,6 +184,16 @@ export class Aeroplane {
             this.state = TAKING_OFF
             this.addAction(takeoff)
             return true
+        }
+    }
+
+    goAround = (map) => {
+        const goAround = new GoAround(map, this, this.aimingForRunway);
+        if (goAround.isValid()) {
+            this.state = GOING_AROUND
+            this.addAction(goAround)
+            return true
+        } else {
         }
     }
 
@@ -296,7 +324,7 @@ export class Aeroplane {
     }
 
     proximalTo = (otherAeroplane) => {
-        if (this.is([TAKING_OFF, FLYING]) && otherAeroplane.is([TAKING_OFF, FLYING])) {
+        if (this.is([TAKING_OFF, FLYING, GOING_AROUND]) && otherAeroplane.is([TAKING_OFF, FLYING, GOING_AROUND])) {
             const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
             const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
             return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
