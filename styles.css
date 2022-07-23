@@ -81,34 +81,29 @@ canvas {
 
 #stats {
     z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
+    color: rgba(255, 255, 255, 0.8);
     font-family: "Courier New", monospace;
     position: absolute;
     top: 1rem;
     right: 1rem;
     backdrop-filter: blur(2px);
+    font-size: 0.85rem;
 }
 
-.metric {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: 0.75rem;
-    font-size: 1rem;
-    max-width: 6rem;
+.stats-table {
+    border-collapse: collapse;
 }
 
-.title {
-    margin: 0;
-    text-align: center;
+.stats-table td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0 0.25rem;
+    border-collapse: collapse;
 }
 
 .value {
     margin: 0;
-    font-size: 1.5rem;
+    padding: 0.1rem;
+    font-size: 0.85rem;
     font-weight: bold;
 }
 
@@ -177,7 +172,7 @@ canvas {
     width: 12%;
     position: absolute;
     right: 1rem;
-    top: 5rem;
+    top: 9rem;
     max-height: 85%;
     display: flex;
     flex-direction: column;
@@ -293,16 +288,15 @@ canvas {
     overflow-y: scroll;
 }
 
-table {
+.help-guide {
     border-collapse: collapse;
 }
 
-
-tr {
+.help-guide tr {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-td {
+.help-guide td {
     padding: 1rem;
 }
 

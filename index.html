@@ -49,30 +49,32 @@
     </div>
 </div>
 <div id="stats">
-    <div class="metric">
-        <p class="title">Total Landed</p>
-        <p class="value good" id="total-landed">0</p>
-    </div>
-    <div class="metric">
-        <p class="title">Landed Correctly</p>
-        <p class="value good" id="correctly-landed-percentage">0%</p>
-    </div>
-    <div class="metric">
-        <p class="title">Total Departed</p>
-        <p class="value good" id="total-departed">0</p>
-    </div>
-    <div class="metric">
-        <p class="title">Departed Correctly</p>
-        <p class="value good" id="correctly-departed-percentage">0%</p>
-    </div>
-    <div class="metric">
-        <p class="title">Lost Aircraft</p>
-        <p class="value good" id="exited-count">0</p>
-    </div>
-    <div class="metric">
-        <p class="title">Breached Restrictions</p>
-        <p class="value good" id="breached-restrictions">00:00</p>
-    </div>
+    <table class="stats-table">
+        <tr>
+            <td>Breached restrictions</td>
+            <td class="center"><p class="value good" id="breached-restrictions">00:00</p></td>
+        </tr>
+        <tr>
+            <td>Total landings</td>
+            <td class="center"><p class="value good" id="total-landed">0</p></td>
+        </tr>
+        <tr>
+            <td>Correct landings</td>
+            <td class="center"><p class="value good" id="correctly-landed-percentage">0%</p></td>
+        </tr>
+        <tr>
+            <td>Total departures</td>
+            <td class="center"><p class="value good" id="total-departed">0</p></td>
+        </tr>
+        <tr>
+            <td>Correct departures</td>
+            <td class="center"><p class="value good" id="correctly-departed-percentage">0%</p></td>
+        </tr>
+        <tr>
+            <td>Lost aircraft</td>
+            <td class="center"><p class="value good" id="exited-count">0</p></td>
+        </tr>
+    </table>
 </div>
 <div class="sidebar" id="sidebar">
     <!--  Populated dynamically  -->
@@ -84,7 +86,7 @@
     <h2>Command Reference</h2>
     Commands always start with the aeroplane call sign (e.g.: BA123, AA739, etc.)<br>
     Multiple commands can be issued at the same time. Simply string them together in one line (see examples below).
-    <table>
+    <table class="help-guide">
         <tr class="header">
             <td>Action</td>
             <td>Command</td>
