@@ -61,6 +61,7 @@ export class UIController {
         this._drawMapCrosses(this.map.features.crosses)
         this._drawTallStructures(this.map.features.tallStructures)
         this._drawTerrain(this.map.terrain)
+        // this._drawRangeIndicators(this.mapBoundaries)
     }
 
     drawAeroplanes = () => {
@@ -388,6 +389,17 @@ export class UIController {
         this.aeroplaneContext.arc(x, y, 4, 0, Math.PI * 2, false);
         this.aeroplaneContext.stroke();
         this.aeroplaneContext.strokeStyle = COLOURS.GREY;
+    }
+
+    _drawRangeIndicators = (mapBoundaries) => {
+        this.featuresContext.strokeStyle = COLOURS.WHITE_TRANSPARENT_MAX;
+        this.featuresContext.lineWidth = 2;
+        [100, 200, 300, 400, 500, 600, 700].forEach(radius => {
+            this.featuresContext.beginPath();
+            this.featuresContext.arc(0.5 * mapBoundaries.maxX, 0.508 * mapBoundaries.maxY, radius, 0, Math.PI * 2, false);
+            this.featuresContext.stroke();
+        })
+        this.featuresContext.strokeStyle = COLOURS.GREY;
     }
 
     _drawVORs = (waypoints) => {
