@@ -3,7 +3,7 @@ import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
 import {DEPARTURE} from "../config/constants";
-import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
+import {READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 
 
 export class CoreGamePlay extends GameState {
@@ -33,6 +33,10 @@ export class CoreGamePlay extends GameState {
         if (this.ticks > 0 && this.ticks % this.specialAircraftInterval === 0) {
             this.initSpecialArrival()
         }
+        // if (this.ticks === 300) {
+        //     this.machine.transitionTo(new TargetsGamePlay())
+        // }
+
         this.ticks += 1
     }
 

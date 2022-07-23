@@ -24,7 +24,7 @@ import {
 import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
 
 export class Aeroplane {
-    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING) {
+    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = []) {
         this.callSign = callSign;
         this.shortClass = shortClass;
         this.weight = weight;
@@ -35,6 +35,7 @@ export class Aeroplane {
         this.altitude = altitude;
         this.type = type;
         this.state = state;
+        this.finalTarget = finalTarget;
         this.actions = []
         this.breachingProximity = false
         this.lastPositions = []

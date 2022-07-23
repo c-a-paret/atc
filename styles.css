@@ -242,6 +242,11 @@ canvas {
     margin: 0;
 }
 
+.overview .final-target {
+    color: rgb(221, 126, 229);
+    font-weight: lighter;
+}
+
 .overview .short-class {
     font-weight: lighter;
 }

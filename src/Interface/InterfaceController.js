@@ -246,8 +246,8 @@ export class InterfaceController {
 
         //  Target
         const target = div(["value"])
-        const targetText = p(["text", "center"])
-        targetText.innerText = ""
+        const targetText = p(["text", "center", "final-target"])
+        targetText.innerText = aeroplane.finalTarget
         target.appendChild(targetText)
 
         //  State or short class
