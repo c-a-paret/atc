@@ -5,6 +5,7 @@ import {GameState} from "./GameState";
 import {ARRIVAL, DEPARTURE} from "../config/constants";
 import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 import {randomChoice} from "../utils/selectors";
+import {CoreGamePlay} from "./CoreGamePlay";
 
 
 export class TargetsGamePlay extends GameState {
@@ -32,6 +33,9 @@ export class TargetsGamePlay extends GameState {
         if (this.ticks === 300) {
             this.landingRunways = ["27L", "27R"]
             this.departureWaypoints = ["CHT", "CPT", "GWC", "MAY", "DET", "LAM"]
+        }
+        if (this.ticks === 300) {
+            this.machine.transitionTo(new CoreGamePlay())
         }
         this.ticks += 1
     }

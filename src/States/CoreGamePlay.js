@@ -8,8 +8,9 @@ import {TargetsGamePlay} from "./TargetsGamePlay";
 
 
 export class CoreGamePlay extends GameState {
-    constructor() {
+    constructor(clearAircraftOnStart = false) {
         super();
+        this.clearAircraftOnStart = clearAircraftOnStart
         this.machine = undefined
         this.initialised = false
         this.specialAircraftInterval = getRandomNumberBetween(480, 720)
@@ -20,8 +21,10 @@ export class CoreGamePlay extends GameState {
     }
 
     tick = () => {
-        if (!this.initialised) {
+        if (!this.initialised && this.clearAircraftOnStart) {
             this.machine.clear()
+            this.initialised = true
+        } else {
             this.initialised = true
         }
         if (this.ticks % 140 === 0) {
@@ -34,9 +37,9 @@ export class CoreGamePlay extends GameState {
         if (this.ticks > 0 && this.ticks % this.specialAircraftInterval === 0) {
             this.initSpecialArrival()
         }
-        // if (this.ticks === 300) {
-        //     this.machine.transitionTo(new TargetsGamePlay())
-        // }
+        if (this.ticks === 300) {
+            this.machine.transitionTo(new TargetsGamePlay())
+        }
 
         this.ticks += 1
     }

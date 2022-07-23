@@ -67,7 +67,7 @@ export class InterfaceController {
     _setGameMode = () => {
         this.hideHint()
         this.blurAttention()
-        this.aeroplaneService.transitionTo(new CoreGamePlay())
+        this.aeroplaneService.transitionTo(new CoreGamePlay(true))
     }
 
     _setTutorialMode = () => {
