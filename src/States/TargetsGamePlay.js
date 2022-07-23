@@ -23,12 +23,12 @@ export class TargetsGamePlay extends GameState {
     }
 
     tick = () => {
-        if (this.ticks !==0 && this.ticks % 160 === 0) {
+        if (this.ticks !== 0 && this.ticks % 160 === 0) {
             this.initArrival()
-            // this.initTestAeroplanes()
         }
         if (this.ticks % 150 === 0) {
-            this.initDeparture()
+            this.initTestAeroplanes()
+            // this.initDeparture()
         }
         if (this.ticks === 300) {
             this.landingRunways = ["27L", "27R"]
@@ -83,11 +83,15 @@ export class TargetsGamePlay extends GameState {
     }
 
     initTestAeroplanes = () => {
-        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 200, 90, 2000, 1, ARRIVAL, FLYING, "9R")
-        const aeroplane2 = new Aeroplane("BA456", "A321", 1000, 325, 200, 30, 7000, 1, DEPARTURE, FLYING, "LAM")
+        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 800, 360, 2000, 1, DEPARTURE, FLYING, "LAM")
+        const aeroplane2 = new Aeroplane("BA456", "A321", 1000, 325, 300, 30, 2000, 1, DEPARTURE, FLYING, "LAM")
+        const aeroplane3 = new Aeroplane("BA789", "A321", 1000, 325, 300, 30, 3000, 1, DEPARTURE, FLYING, "BPK")
+        const aeroplane4 = new Aeroplane("BA101", "A321", 1000, 325, 400, 30, 7000, 1, DEPARTURE, FLYING, "BPK")
         this.machine.aeroplanes = [
             aeroplane1,
-            aeroplane2
+            aeroplane2,
+            aeroplane3,
+            aeroplane4
             // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
             // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
             // new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
@@ -101,8 +105,10 @@ export class TargetsGamePlay extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
-        aeroplane1.setLanding(this.map, "9R")
+        // aeroplane1.setLanding(this.map, "9R")
         aeroplane2.setWaypoint(this.map, "LAM")
+        aeroplane3.setWaypoint(this.map, "BPK")
+        aeroplane4.setWaypoint(this.map, "BPK")
         // aeroplane2.setTaxiAndHold(this.map, "9R")
 
         // this.machine.aeroplanes.forEach(plane => {

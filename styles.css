@@ -111,8 +111,16 @@ canvas {
     color: rgb(0, 213, 170);
 }
 
+.not-ideal {
+    color: rgb(255, 167, 7)
+}
+
 .bad {
     color: rgb(220, 46, 78);
+}
+
+.neutral {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .command-entry {
@@ -241,7 +249,7 @@ canvas {
 
 .overview .final-target {
     color: rgb(221, 126, 229);
-    font-weight: lighter;
+    font-weight: bold;
 }
 
 .overview .short-class {

@@ -49,11 +49,56 @@ export class InterfaceController {
             document.getElementById("breached-restrictions").classList.add('good')
         }
 
+        if (totalLanded === 0) {
+            document.getElementById("correctly-landed-percentage").classList.remove('not-ideal')
+            document.getElementById("correctly-landed-percentage").classList.remove('bad')
+            document.getElementById("correctly-landed-percentage").classList.remove('good')
+            document.getElementById("correctly-landed-percentage").classList.add('neutral')
+        } else if (correctlyLandedPercentage >= 95) {
+            document.getElementById("correctly-landed-percentage").classList.remove('neutral')
+            document.getElementById("correctly-landed-percentage").classList.remove('not-ideal')
+            document.getElementById("correctly-landed-percentage").classList.remove('bad')
+            document.getElementById("correctly-landed-percentage").classList.add('good')
+
+        } else if (correctlyLandedPercentage >= 75) {
+            document.getElementById("correctly-landed-percentage").classList.remove('neutral')
+            document.getElementById("correctly-landed-percentage").classList.remove('good')
+            document.getElementById("correctly-landed-percentage").classList.remove('bad')
+            document.getElementById("correctly-landed-percentage").classList.add('not-ideal')
+        } else {
+            document.getElementById("correctly-landed-percentage").classList.remove('neutral')
+            document.getElementById("correctly-landed-percentage").classList.remove('good')
+            document.getElementById("correctly-landed-percentage").classList.remove('not-ideal')
+            document.getElementById("correctly-landed-percentage").classList.add('bad')
+        }
+
+        if (totalDeparted === 0) {
+            document.getElementById("correctly-departed-percentage").classList.remove('not-ideal')
+            document.getElementById("correctly-departed-percentage").classList.remove('bad')
+            document.getElementById("correctly-departed-percentage").classList.remove('good')
+            document.getElementById("correctly-departed-percentage").classList.add('neutral')
+        } else if (correctlyDepartedPercentage >= 95) {
+            document.getElementById("correctly-departed-percentage").classList.remove('neutral')
+            document.getElementById("correctly-departed-percentage").classList.remove('not-ideal')
+            document.getElementById("correctly-departed-percentage").classList.remove('bad')
+            document.getElementById("correctly-departed-percentage").classList.add('good')
+        } else if (correctlyDepartedPercentage >= 75) {
+            document.getElementById("correctly-departed-percentage").classList.remove('neutral')
+            document.getElementById("correctly-departed-percentage").classList.remove('good')
+            document.getElementById("correctly-departed-percentage").classList.remove('bad')
+            document.getElementById("correctly-departed-percentage").classList.add('not-ideal')
+        } else {
+            document.getElementById("correctly-departed-percentage").classList.remove('neutral')
+            document.getElementById("correctly-departed-percentage").classList.remove('good')
+            document.getElementById("correctly-departed-percentage").classList.remove('not-ideal')
+            document.getElementById("correctly-departed-percentage").classList.add('bad')
+        }
+
         document.getElementById("total-landed").innerText = totalLanded
         document.getElementById("total-departed").innerText = totalDeparted
 
-        document.getElementById("correctly-landed-percentage").innerText = `${correctlyLandedPercentage}%`
-        document.getElementById("correctly-departed-percentage").innerText = `${correctlyDepartedPercentage}%`
+        document.getElementById("correctly-landed-percentage").innerText = totalLanded > 0 ? correctlyLandedPercentage + '%' : '-'
+        document.getElementById("correctly-departed-percentage").innerText = totalDeparted > 0 ? correctlyDepartedPercentage + '%' : '-'
         document.getElementById("exited-count").innerText = exitedCount
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }

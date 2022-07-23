@@ -6,12 +6,13 @@ import {EGLL} from "./config/maps/EGLL";
 import {StatsService} from "./Application/StatsService";
 import {GameMap} from "./Domain/GameMap/GameMap";
 import {CoreGamePlay} from "./States/CoreGamePlay";
+import {TargetsGamePlay} from "./States/TargetsGamePlay";
 
 
 const map = new GameMap(EGLL)
 
 const statsService = new StatsService();
-const startState = new CoreGamePlay(map)
+const startState = new TargetsGamePlay(map)
 
 const aeroplaneService = new AeroplaneService(map, statsService, startState)
 
