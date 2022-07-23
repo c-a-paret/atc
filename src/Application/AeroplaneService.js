@@ -145,7 +145,7 @@ export class AeroplaneService {
 
         // With restricted zones
         this.aeroplanes.forEach(plane => {
-            this.map.features.exclusionZones.forEach(zone => {
+            this.map.features.restrictedZones.forEach(zone => {
                 if (plane.breachingRestrictedZone(this.map, zone)) {
                     plane.markBreachingProximityLimits()
                 }

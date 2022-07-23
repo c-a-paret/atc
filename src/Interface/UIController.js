@@ -53,7 +53,7 @@ export class UIController {
     }
 
     initFeatures = () => {
-        this._drawExclusionZones(this.map.features.exclusionZones)
+        this._drawRestrictedZones(this.map.features.restrictedZones)
         this._drawVORs(this.map.features.waypoints)
         this._drawRunways(this.map.features.runways)
         this._drawILSFeathers(this.map.features.runways)
@@ -76,8 +76,8 @@ export class UIController {
         })
     }
 
-    _drawExclusionZones = (exclusionZones) => {
-        exclusionZones.forEach(zone => {
+    _drawRestrictedZones = (restrictedZones) => {
+        restrictedZones.forEach(zone => {
             const severityColourMap = {
                 critical: {
                     solid: COLOURS.RED,

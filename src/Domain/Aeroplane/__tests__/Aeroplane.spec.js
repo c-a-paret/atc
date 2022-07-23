@@ -1153,7 +1153,7 @@ describe("Restricted zone breached", () => {
             const map = {
                 maxY: 800,
                 features: {
-                    exclusionZones: [
+                    restrictedZones: [
                         zone
                     ]
                 }
@@ -1178,7 +1178,7 @@ describe("Restricted zone breached", () => {
             const map = {
                 maxY: 800,
                 features: {
-                    exclusionZones: [
+                    restrictedZones: [
                         zone
                     ]
                 }
@@ -1205,7 +1205,7 @@ describe("Restricted zone breached", () => {
             const map = {
                 maxY: 800,
                 features: {
-                    exclusionZones: [
+                    restrictedZones: [
                         zone
                     ]
                 }

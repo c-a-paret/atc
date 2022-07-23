@@ -431,7 +431,7 @@ describe('Remove aeroplanes', () => {
 describe('Determine proximal aeroplanes', () => {
 
     test('Lists aeroplanes that breach proximity boundaries', () => {
-        const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {exclusionZones: []}};
+        const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {restrictedZones: []}};
 
         const service = new AeroplaneService(mockMap, {}, {
             setMachine: jest.fn(),

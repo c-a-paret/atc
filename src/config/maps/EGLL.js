@@ -185,7 +185,7 @@ export const EGLL = {
             {type: "RWY", id: "27L", name: "Runway 27L", x: x / 2 + (runwayWidth / 2), y: y / 2 + runwayGap},
             {type: "RWY", id: "27R", name: "Runway 27R", x: x / 2 + (runwayWidth / 2), y: y / 2},
         ],
-        exclusionZones: [
+        restrictedZones: [
             {
                 level: "critical",
                 dashes: 2,
@@ -254,7 +254,7 @@ export const EGLL = {
                 dashes: 2,
                 label: {text: "EG(D)-133", location: {"x": 0.27 * x, "y": 0.455 * y}},
                 minAltitude: 4000,
-                maxAltitude: 40000,
+                maxAltitude: null,
                 boundaries: [
                     {x: (0.29 * x), y: (0.471 * y), inv_y: y - (0.471 * y)},
                     {x: (0.284 * x), y: (0.471 * y), inv_y: y - (0.471 * y)},
@@ -286,19 +286,6 @@ export const EGLL = {
                     {x: (0.681 * x), y: (0.429 * y), inv_y: y - (0.429 * y)},
                     {x: (0.699 * x), y: (0.323 * y), inv_y: y - (0.323 * y)},
                     {x: (0.759 * x), y: (0.358 * y), inv_y: y - (0.358 * y)},
-                ]
-            },
-            {
-                level: "informational",
-                dashes: 0,
-                label: {text: "F79J", location: {"x": 0.353 * x, "y": 0.115 * y}},
-                minAltitude: 5000,
-                maxAltitude: 40000,
-                boundaries: [
-                    {x: 0.4 * x, y: 0.1 * y, inv_y: y - (0.1 * y)},
-                    {x: 0.4 * x, y: 0.15 * y, inv_y: y - (0.15 * y)},
-                    {x: 0.35 * x, y: 0.15 * y, inv_y: y - (0.15 * y)},
-                    {x: 0.35 * x, y: 0.1 * y, inv_y: y - (0.1 * y)},
                 ]
             }
         ],
