@@ -6,6 +6,7 @@ export const COLOURS = {
     BLUE_TRANSPARENT: 'rgb(0,151,255,0.5)',
     RED: 'rgb(253,3,43)',
     RED_TRANSPARENT: 'rgba(220,46,78,0.2)',
+    PURPLE: 'rgb(221, 126, 229)',
     BACKGROUND: 'rgb(8,8,19)',
     WHITE: 'rgb(218,219,243)',
     WHITE_TRANSPARENT: 'rgb(218,219,243,0.5)',

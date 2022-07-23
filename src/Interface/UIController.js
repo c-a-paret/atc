@@ -71,6 +71,7 @@ export class UIController {
             this._drawSpeedLabel(plane)
             this._drawAltitudeLabel(plane)
             this._drawCallSignLabel(plane)
+            this._drawFinalTargetLabel(plane)
             this._drawProjectedPath(plane)
         })
     }
@@ -333,6 +334,18 @@ export class UIController {
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
         this.aeroplaneContext.fillText(aeroplane.callSign, aeroplane.x - 20, aeroplane.y - 30);
+    }
+
+    _drawFinalTargetLabel = (aeroplane) => {
+        if (aeroplane.finalTarget) {
+            this.aeroplaneContext.fillStyle = COLOURS.PURPLE;
+            this.aeroplaneContext.font = "bold 12px Courier New";
+
+            const callSignWidth = this.featuresContext.measureText(aeroplane.callSign).width;
+
+            this.aeroplaneContext.beginPath();
+            this.aeroplaneContext.fillText(aeroplane.finalTarget, aeroplane.x - 10 + callSignWidth, aeroplane.y - 30);
+        }
     }
 
     _drawProjectedPath = (aeroplane) => {

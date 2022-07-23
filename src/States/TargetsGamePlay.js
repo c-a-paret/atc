@@ -27,8 +27,8 @@ export class TargetsGamePlay extends GameState {
             this.initArrival()
         }
         if (this.ticks % 150 === 0) {
-            this.initTestAeroplanes()
-            // this.initDeparture()
+            // this.initTestAeroplanes()
+            this.initDeparture()
         }
         if (this.ticks === 300) {
             this.landingRunways = ["27L", "27R"]
