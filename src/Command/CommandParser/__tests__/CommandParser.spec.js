@@ -1,10 +1,14 @@
 import {
     commandMessage,
-    parseAltitude, parseClearedForTakeoff,
-    parseCommand, parseGoAround,
-    parseHeading, parseHold,
+    parseAltitude,
+    parseClearedForTakeoff,
+    parseCommand,
+    parseGoAround,
+    parseHeading,
+    parseHold,
     parseRunway,
-    parseSpeed, parseTaxiAndHold,
+    parseSpeed,
+    parseTaxiAndHold,
     parseWaypoint
 } from "../CommandParser";
 

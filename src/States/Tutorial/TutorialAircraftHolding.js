@@ -1,6 +1,4 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
-import {TutorialAircraftAltitude} from "./TutorialAircraftAltitude";
-import {MAX_SPEED, MIN_SPEED} from "../../config/constants";
 import {TutorialAircraftMultipleCommands} from "./TutorialAircraftMultipleCommands";
 
 export class TutorialAircraftHolding {

@@ -1,5 +1,4 @@
 import {StatsService} from "../StatsService";
-import {UIController} from "../../Interface/UIController";
 
 jest.mock("../../Interface/UIController");
 

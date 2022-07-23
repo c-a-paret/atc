@@ -1014,7 +1014,8 @@ describe("Landing/Landed state", () => {
 
             expect(callCount).toBe(0)
 
-            aeroplane.hasLanded({}, successfulLandingCallback, () => {})
+            aeroplane.hasLanded({}, successfulLandingCallback, () => {
+            })
 
             expect(callCount).toBe(1)
         })

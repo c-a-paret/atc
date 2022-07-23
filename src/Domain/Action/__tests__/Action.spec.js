@@ -2,7 +2,6 @@ import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../Ac
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {GameMap} from "../../GameMap/GameMap";
 import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../../config/constants";
-import {FLYING} from "../../Aeroplane/aeroplaneStates";
 
 const testGameMap = () => {
     return new GameMap({
