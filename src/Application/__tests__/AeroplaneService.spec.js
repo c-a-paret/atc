@@ -234,7 +234,9 @@ describe('Send command', () => {
             goAround: undefined
         })
 
-        // TODO: Check actions have been added
+        expect(service.aeroplanes[1].actions.length).toBe(1)
+        expect(service.aeroplanes[1].actions[0].type()).toBe('TaxiToRunway')
+        expect(service.aeroplanes[1].actions[0].targetRunway).toBe('9L')
     })
 
     test('Sends cleared for takeoff command to relevant aeroplane', () => {
@@ -266,7 +268,8 @@ describe('Send command', () => {
             goAround: undefined
         })
 
-        // TODO: Check actions have been added
+        expect(service.aeroplanes[1].actions.length).toBe(1)
+        expect(service.aeroplanes[1].actions[0].type()).toBe('Takeoff')
     })
 
 
