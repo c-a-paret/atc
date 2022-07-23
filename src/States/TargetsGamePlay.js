@@ -24,6 +24,7 @@ export class TargetsGamePlay extends GameState {
     tick = () => {
         if (this.ticks !==0 && this.ticks % 160 === 0) {
             this.initArrival()
+            // this.initTestAeroplanes()
         }
         if (this.ticks % 150 === 0) {
             this.initDeparture()
@@ -34,8 +35,6 @@ export class TargetsGamePlay extends GameState {
         }
         this.ticks += 1
     }
-
-
 
     arrivalSpawnLocations = () => [
         {x: 0.2 * this.map.mapBoundaries.maxX, y: 1, heading: 135},
@@ -78,4 +77,33 @@ export class TargetsGamePlay extends GameState {
         const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, READY_TO_TAXI, randomChoice(this.departureWaypoints))
         this.machine.aeroplanes.push(plane)
     }
+
+    initTestAeroplanes = () => {
+        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 200, 90, 2000, 1, ARRIVAL, FLYING, "9R")
+        const aeroplane2 = new Aeroplane("BA456", "A321", 1000, 325, 200, 30, 7000, 1, DEPARTURE, FLYING, "LAM")
+        this.machine.aeroplanes = [
+            aeroplane1,
+            aeroplane2
+            // new Aeroplane("BA789", "A321", 500, 400, 200, 135, 6000, 1),
+            // new Aeroplane("BA101", "A321", 500, 500, 200, 180, 6000, 1),
+            // new Aeroplane("BA112", "A321", 500, 250, 200, 305, 6000, 1),
+            // new Aeroplane("BA131", "A321", 500, 350, 200, 270, 6000, 1),
+            // new Aeroplane("BA415", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA161", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA171", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA181", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA191", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA202", "A321", 500, 450, 200, 225, 6000, 1),
+            // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
+        ]
+
+        aeroplane1.setLanding(this.map, "9R")
+        aeroplane2.setWaypoint(this.map, "LAM")
+        // aeroplane2.setTaxiAndHold(this.map, "9R")
+
+        // this.machine.aeroplanes.forEach(plane => {
+        //     plane.setAltitude(this.map, 4000)
+        // })
+    }
+
 }

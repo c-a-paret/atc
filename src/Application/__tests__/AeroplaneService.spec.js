@@ -400,17 +400,10 @@ describe('Remove aeroplanes', () => {
     })
 
     test('Removes aeroplanes that have landed', () => {
-        const mapBoundaries = {
-            minX: 0,
-            maxX: 100,
-            minY: 0,
-            maxY: 100,
-        }
-
         const landedCallback = jest.fn();
         const exitedCallback = jest.fn();
         const statsService = {
-            incrementLanded: landedCallback,
+            incrementCorrectlyLanded: landedCallback,
             incrementLost: exitedCallback
         }
 

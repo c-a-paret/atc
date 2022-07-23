@@ -5,14 +5,38 @@ jest.mock("../../Interface/UIController");
 
 describe('Stats service', () => {
 
-    test('Increments landed count', () => {
-        const service = new StatsService({})
+    test('Calculates total landed count', () => {
+        const service = new StatsService()
+        service.correctlyLandedCount = 15
+        service.incorrectlyLandedCount = 25
 
-        expect(service.landedCount).toBe(0)
+        expect(service.totalLanded()).toBe(40)
 
-        service.incrementLanded()
+    })
 
-        expect(service.landedCount).toBe(1)
+    test('Calculates total departed count', () => {
+        const service = new StatsService()
+        service.correctlyDepartedCount = 12
+        service.incorrectlyDepartedCount = 19
+
+        expect(service.totalDeparted()).toBe(31)
+
+    })
+
+    test('Calculates correctly landed percentage', () => {
+        const service = new StatsService()
+        service.correctlyLandedCount = 15
+        service.incorrectlyLandedCount = 25
+
+        expect(service.correctlyLandedPercentage()).toBe(38)
+    })
+
+    test('Calculates correctly departed percentage', () => {
+        const service = new StatsService()
+        service.correctlyDepartedCount = 12
+        service.incorrectlyDepartedCount = 43
+
+        expect(service.correctlyDepartedPercentage()).toBe(22)
     })
 
     test('Increments lost count', () => {
@@ -23,16 +47,6 @@ describe('Stats service', () => {
         service.incrementLost()
 
         expect(service.lostCount).toBe(1)
-    })
-
-    test('Increments departed count', () => {
-        const service = new StatsService({})
-
-        expect(service.departedCount).toBe(0)
-
-        service.incrementDeparted()
-
-        expect(service.departedCount).toBe(1)
     })
 
     test('Increments lost count when existing stats', () => {
@@ -46,5 +60,4 @@ describe('Stats service', () => {
 
         expect(service.lostCount).toBe(6)
     })
-
 })

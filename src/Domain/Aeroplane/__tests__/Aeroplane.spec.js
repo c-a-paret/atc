@@ -1006,7 +1006,7 @@ describe("Landing/Landed state", () => {
 
         test("Calls landed callback", () => {
             let callCount = 0;
-            const uponLandingCallback = () => {
+            const successfulLandingCallback = () => {
                 callCount += 1
             };
 
@@ -1014,7 +1014,7 @@ describe("Landing/Landed state", () => {
 
             expect(callCount).toBe(0)
 
-            aeroplane.hasLanded(uponLandingCallback)
+            aeroplane.hasLanded({}, successfulLandingCallback, () => {})
 
             expect(callCount).toBe(1)
         })

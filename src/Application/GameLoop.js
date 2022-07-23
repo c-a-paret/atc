@@ -29,8 +29,10 @@ export class GameLoop {
                     this.statsService.incrementBreachedTimer()
                 }
                 this.interfaceController.setStats(
-                    this.statsService.landedCount,
-                    this.statsService.departedCount,
+                    this.statsService.totalLanded(),
+                    this.statsService.correctlyLandedPercentage(),
+                    this.statsService.totalDeparted(),
+                    this.statsService.correctlyDepartedPercentage(),
                     this.statsService.lostCount,
                     this.statsService.proximityTimer
                 )

@@ -172,7 +172,7 @@ export const EGLL = {
             {type: "VOR", id: "OCK", name: "Ockham", x: (0.51 * x), y: (0.75 * y)},
             {type: "VOR", id: "GWC", name: "Goodwood", x: (0.32 * x), y: (0.84 * y)},
             {type: "VOR", id: "LON", name: "London", x: (0.495 * x), y: (0.48 * y)},
-            {type: "VOR", id: "BPK", name: "Brookman's Park", x: (0.75 * x), y: (0.1 * y)},
+            {type: "VOR", id: "BPK", name: "Brookman's Park", x: (0.8 * x), y: (0.15 * y)},
             {type: "VOR", id: "CPT", name: "Compton", x: (0.15 * x), y: (0.48 * y)},
             {type: "VOR", id: "DET", name: "Detling", x: (0.95 * x), y: (0.85 * y)},
             {type: "VOR", id: "MAY", name: "Mayfield", x: (0.65 * x), y: (0.85 * y)},

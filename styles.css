@@ -98,15 +98,17 @@ canvas {
     align-items: center;
     padding-left: 0.75rem;
     font-size: 1rem;
+    max-width: 6rem;
 }
 
 .title {
     margin: 0;
+    text-align: center;
 }
 
 .value {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 

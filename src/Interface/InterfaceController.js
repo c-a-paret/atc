@@ -33,7 +33,7 @@ export class InterfaceController {
         this._init()
     }
 
-    setStats = (landedCount, departedCount, exitedCount, breachedRestrictions) => {
+    setStats = (totalLanded, correctlyLandedPercentage, totalDeparted, correctlyDepartedPercentage, exitedCount, breachedRestrictions) => {
         if (exitedCount > 0) {
             document.getElementById("exited-count").classList.remove('good')
             document.getElementById("exited-count").classList.add('bad')
@@ -48,8 +48,12 @@ export class InterfaceController {
             document.getElementById("breached-restrictions").classList.remove('bad')
             document.getElementById("breached-restrictions").classList.add('good')
         }
-        document.getElementById("landed-count").innerText = landedCount
-        document.getElementById("departed-count").innerText = departedCount
+
+        document.getElementById("total-landed").innerText = totalLanded
+        document.getElementById("total-departed").innerText = totalDeparted
+
+        document.getElementById("correctly-landed-percentage").innerText = `${correctlyLandedPercentage}%`
+        document.getElementById("correctly-departed-percentage").innerText = `${correctlyDepartedPercentage}%`
         document.getElementById("exited-count").innerText = exitedCount
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }

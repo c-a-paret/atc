@@ -14,6 +14,7 @@ import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
     ARRIVAL,
     DEPARTURE,
+    DEPARTURE_ALTITUDE,
     HORIZONTAL_SEPARATION_MINIMUM,
     LANDED_ALTITUDE,
     MIN_GROUND_CLEARANCE,
@@ -24,7 +25,7 @@ import {
 import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
 
 export class Aeroplane {
-    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = []) {
+    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = null) {
         this.callSign = callSign;
         this.shortClass = shortClass;
         this.weight = weight;
@@ -46,6 +47,10 @@ export class Aeroplane {
         this.targetSpeed = undefined
         this.aimingForRunway = undefined
         this.positionDescription = ''
+    }
+
+    hasFinalTarget = () => {
+        return !!this.finalTarget
     }
 
     _clear_targets = () => {
@@ -279,26 +284,48 @@ export class Aeroplane {
 
     isArrivalOutsideBoundaries = (mapBoundaries, outsideCallback) => {
         if (this.isArrival()) {
-            return this._isOutsideBoundaries(mapBoundaries, outsideCallback)
+            const outside = this._isOutsideBoundaries(mapBoundaries)
+            if (outside && outsideCallback) {
+                outsideCallback()
+            }
+            return outside
         }
         return false
     }
 
-    isDepartureOutsideBoundaries = (mapBoundaries, outsideCallback) => {
+    isDepartureOutsideBoundaries = (mapBoundaries, correctlyDepartedCallback, incorrectlyDepartedCallback) => {
         if (this.isDeparture()) {
-            return this._isOutsideBoundaries(mapBoundaries, outsideCallback)
+            const outside = this._isOutsideBoundaries(mapBoundaries)
+            if (outside && this.hasFinalTarget() && incorrectlyDepartedCallback) {
+                incorrectlyDepartedCallback()
+                return true
+            }
+            if (outside && !this.hasFinalTarget() && correctlyDepartedCallback) {
+                correctlyDepartedCallback()
+                return true
+            }
+            return false
         }
         return false
     }
 
-    _isOutsideBoundaries = (mapBoundaries, outsideCallback) => {
+    hasDeparted = (map, correctlyDepartedCallback) => {
+        if (this.isDeparture()) {
+            const correctAltitude = this.altitude >= DEPARTURE_ALTITUDE
+            const waypoint = map.getWaypointInfo(this.finalTarget)
+            const correctLocation = waypoint && distance(this.x, this.y, waypoint.x, waypoint.y) <= 5
+            if (correctlyDepartedCallback && correctAltitude && correctLocation) {
+                correctlyDepartedCallback()
+                return true
+            }
+        }
+        return false
+    }
+
+    _isOutsideBoundaries = (mapBoundaries) => {
         const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
         const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
-        const outside = outsideX || outsideY;
-        if (outside && outsideCallback) {
-            outsideCallback()
-        }
-        return outside
+        return outsideX || outsideY
     }
 
     isLanding = () => {
@@ -313,15 +340,26 @@ export class Aeroplane {
         return this.actions.length > 0 && this.actions.map(action => action.type()).includes("Altitude")
     }
 
-    hasLanded = (landedCallback) => {
+    hasLanded = (map, correctRunwayCallback, incorrectRunwayCallback) => {
         if (this.isArrival()) {
             const landed = this.altitude < LANDED_ALTITUDE;
-            if (landed && landedCallback) {
-                landedCallback()
+            const correctRunway = this.finalTarget ? this.landedCorrectRunway(map) : true
+            if (landed) {
+                if (correctRunway && correctRunwayCallback) {
+                    correctRunwayCallback()
+                }
+                if (!correctRunway && incorrectRunwayCallback) {
+                    incorrectRunwayCallback()
+                }
             }
             return landed
         }
         return false
+    }
+
+    landedCorrectRunway = (map) => {
+        const runway = map.getRunwayInfo(this.finalTarget)
+        return distance(this.x, this.y, runway.landingZone.x, runway.landingZone.y) <= 5
     }
 
     proximalTo = (otherAeroplane) => {

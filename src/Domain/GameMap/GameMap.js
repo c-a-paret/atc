@@ -38,4 +38,14 @@ export class GameMap {
         }
         return null
     }
+
+    getWaypointInfo = (waypointId) => {
+        for (let x = 0; x < this.features.waypoints.length; x++) {
+            const waypoint = this.features.waypoints[x];
+            if (waypoint.id === waypointId) {
+                return waypoint
+            }
+        }
+        return null
+    }
 }

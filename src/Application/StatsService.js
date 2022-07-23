@@ -1,23 +1,38 @@
+import {round} from "../utils/maths";
+
 export class StatsService {
     constructor() {
-        this.landedCount = 0
-        this.departedCount = 0
+        this.correctlyLandedCount = 0
+        this.incorrectlyLandedCount = 0
+        this.correctlyDepartedCount = 0
+        this.incorrectlyDepartedCount = 0
         this.lostCount = 0
         this.proximityTimer = 0
     }
 
     reset = () => {
-        this.landedCount = 0
+        this.correctlyLandedCount = 0
+        this.incorrectlyLandedCount = 0
+        this.correctlyDepartedCount = 0
+        this.incorrectlyDepartedCount = 0
         this.lostCount = 0
         this.proximityTimer = 0
     }
 
-    incrementLanded = () => {
-        this.landedCount += 1
+    incrementCorrectlyLanded = () => {
+        this.correctlyLandedCount += 1
     }
 
-    incrementDeparted = () => {
-        this.departedCount += 1
+    incrementIncorrectlyLanded = () => {
+        this.incorrectlyLandedCount += 1
+    }
+
+    incrementCorrectlyDeparted = () => {
+        this.correctlyDepartedCount += 1
+    }
+
+    incrementIncorrectlyDeparted = () => {
+        this.incorrectlyDepartedCount += 1
     }
 
     incrementLost = () => {
@@ -26,5 +41,27 @@ export class StatsService {
 
     incrementBreachedTimer = () => {
         this.proximityTimer += 1
+    }
+
+    correctlyLandedPercentage = () => {
+        if (this.totalLanded() === 0) {
+            return 0
+        }
+        return round((this.correctlyLandedCount / this.totalLanded()) * 100, 0)
+    }
+
+    correctlyDepartedPercentage = () => {
+        if (this.totalDeparted() === 0) {
+            return 0
+        }
+        return round((this.correctlyDepartedCount / this.totalDeparted()) * 100, 0)
+    }
+
+    totalLanded = () => {
+        return this.correctlyLandedCount + this.incorrectlyLandedCount;
+    }
+
+    totalDeparted = () => {
+        return this.correctlyDepartedCount + this.incorrectlyDepartedCount;
     }
 }
