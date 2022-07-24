@@ -1,38 +1,9 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
-import {GameMap} from "../../GameMap/GameMap";
 import {Speed} from "../Speed";
 import {Waypoint} from "../Waypoint";
 import {Landing} from "../Landing";
+import {testGameMap} from "./actionTest.utils";
 
-const testGameMap = () => {
-    return new GameMap({
-        features: {
-            runways: [{
-                start: {
-                    label: "9L", heading: 90, altitude: 0, landingZone: {
-                        x: 510, y: 500,
-                    }, ILS: {
-                        innerMarker: {
-                            x: 500, y: 500,
-                        }, outerMarker: {
-                            x: 280, y: 500,
-                        }
-                    }
-                }, end: {
-                    label: "27R", heading: 270, altitude: 0, landingZone: {
-                        x: 490, y: 500,
-                    }, ILS: {
-                        innerMarker: {
-                            x: 500, y: 550,
-                        }, outerMarker: {
-                            x: 720, y: 550,
-                        }
-                    }
-                }
-            }], waypoints: [{type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},]
-        }
-    })
-}
 
 describe("Landing", () => {
     let map;
