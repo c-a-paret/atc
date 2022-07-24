@@ -1,7 +1,12 @@
 import {Aeroplane} from "../Aeroplane";
-import {Altitude, Heading, HoldingPattern, Landing, Speed, Waypoint} from "../../Action/Action";
 import {GameMap} from "../../GameMap/GameMap";
 import {MIN_SPEED} from "../../../config/constants";
+import {Speed} from "../../Action/Speed";
+import {Heading} from "../../Action/Heading";
+import {Altitude} from "../../Action/Altitude";
+import {Waypoint} from "../../Action/Waypoint";
+import {Landing} from "../../Action/Landing";
+import {HoldingPattern} from "../../Action/HoldingPattern";
 
 
 const testGameMap = () => {

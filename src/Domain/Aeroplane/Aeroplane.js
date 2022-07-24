@@ -1,14 +1,3 @@
-import {
-    Altitude,
-    GoAround,
-    Heading,
-    HoldingPattern,
-    Landing,
-    Speed,
-    Takeoff,
-    TaxiToRunway,
-    Waypoint
-} from "../Action/Action";
 import {round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
@@ -23,6 +12,15 @@ import {
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
 import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
+import {Speed} from "../Action/Speed";
+import {Heading} from "../Action/Heading";
+import {Altitude} from "../Action/Altitude";
+import {Waypoint} from "../Action/Waypoint";
+import {Landing} from "../Action/Landing";
+import {HoldingPattern} from "../Action/HoldingPattern";
+import {TaxiToRunway} from "../Action/TaxiToRunway";
+import {Takeoff} from "../Action/Takeoff";
+import {GoAround} from "../Action/GoAround";
 
 export class Aeroplane {
     constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = null) {
