@@ -46,7 +46,7 @@ export class TutorialMapOverview {
         const hints = [
             {
                 hintTitle: "Welcome!",
-                hintBodyBefore: "Your goal in this game is to issue commands to aircraft to guide them to land on a runway.\n\n" +
+                hintBodyBefore: "Your goal in this game is to issue commands to aircraft to guide them to land on a runway or depart correctly.\n\n" +
                     "While doing this, avoid guiding planes into restricted areas or getting the planes too close to one another.",
                 hintCode: "",
                 hintBodyAfter: "",

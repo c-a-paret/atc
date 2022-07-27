@@ -13,7 +13,7 @@ export const EGLL = {
     maxY: y,
     focusableConfig: {
         runways: {
-            minX: x / 2 - (runwayWidth / 2),
+            minX: x / 2 - (runwayWidth / 2) - 5,
             minY: y / 2 - 10,
             maxX: x / 2 + (runwayWidth / 2),
             maxY: y / 2 + runwayGap + 10

@@ -1,5 +1,6 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ILS_MAX_X} from "../../config/constants";
+import {TutorialDeparting} from "./TutorialDeparting";
 
 export class TutorialLanding {
     constructor(map) {
@@ -36,6 +37,10 @@ export class TutorialLanding {
             hint.confirmButtonCallback
         )
         this.hint += 1
+    }
+
+    nextTutorialMode = () => {
+        this.machine.transitionTo(new TutorialDeparting(this.map))
     }
 
     getHint = (index) => {
@@ -178,12 +183,12 @@ export class TutorialLanding {
             },
             {
                 hintTitle: "Congratulations!",
-                hintBodyBefore: "You have landed your first planes and finished the tutorial.\n\n" +
-                    "Click 'Game' at the top of the screen to start playing!",
+                hintBodyBefore: "You have landed your first planes!\n\n" +
+                    "Now let us see how to handle departures.",
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "",
-                confirmButtonCallback: undefined,
+                confirmButtonCallback: this.nextTutorialMode,
             },
         ]
 
