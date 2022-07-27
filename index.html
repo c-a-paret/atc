@@ -138,7 +138,7 @@
             <td class="header-column no-wrap">Landing Clearance</td>
             <td class="no-wrap">ILS&lt;runway&gt;</td>
             <td>ILS9L</td>
-            <td>ILS = Instrument Landing System</td>
+            <td>I(nstrument) L(anding) S(ystem)</td>
             <td>Landing clearance will only be accepted when the plane is:<br>
                 <ul>
                     <li>At or below 3000ft</li>
@@ -149,6 +149,32 @@
                 </ul>
             </td>
         </tr>
+        <tr>
+            <td class="header-column no-wrap">Go Around</td>
+            <td class="no-wrap">GA</td>
+            <td>GA</td>
+            <td>G(o) A(round)</td>
+            <td>The aircraft will abort landing, increase speed to 200, ascend to 4000ft and fly directly to a pre-defined aborted landing waypoint</td>
+        </tr>
+        <tr>
+            <td class="header-column no-wrap">Taxi clearance</td>
+            <td class="no-wrap">TH&lt;runway&gt;</td>
+            <td>TH27R</td>
+            <td>T(axi) and H(old) short of runway</td>
+            <td>Taxi clearance can only be issued when the aircraft is:<br>
+                <ul>
+                    <li>Ready to taxi at the gate</li>
+                    <li>Holding short of a runway</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="header-column no-wrap">Takeoff clearance</td>
+            <td class="no-wrap">CTO</td>
+            <td>CTO</td>
+            <td>C(leared) for T(ake) O(ff)</td>
+            <td>Takeoff clearance can only be issued when the aircraft is holding short of a runway
+        </tr>
     </table>
     <h3>Example commands</h3>
     <table>
@@ -158,15 +184,27 @@
         </tr>
         <tr>
             <td class="header-column">AA636C120T072</td>
-            <td>AA636 climb to 12,000ft (C120) and turn heading 72 degrees (T072)</td>
+            <td>AA636 climb to 12,000ft (C120) and turn to heading 72 degrees (T072)</td>
         </tr>
         <tr>
-            <td class="header-column">LH221.27R.</td>
+            <td class="header-column">LH221ILS27R</td>
             <td>LH221 cleared to land runway 27R</td>
+        </tr>
+        <tr>
+            <td class="header-column">PN776GA</td>
+            <td>PN776 go around</td>
         </tr>
         <tr>
             <td class="header-column">EY897HRD60</td>
             <td>EY897 enter right handed holding pattern (HR) and descend to 6000ft (D60)</td>
+        </tr>
+        <tr>
+            <td class="header-column">VS672TH9LS300A350>MAY</td>
+            <td>VS672 taxi and hold short of runway 9L (TH9L), set speed after takeoff to 300kts (S300), climb and maintain 35,000ft (A350) and fly direct to Mayfield (>MAY)</td>
+        </tr>
+        <tr>
+            <td class="header-column">IH892CTO</td>
+            <td>IH892 cleared for takeoff</td>
         </tr>
     </table>
     <h2>Restrictions</h2>
@@ -180,10 +218,6 @@
             <li>No entry to airspace permitted</li>
         </ul>
         <li><span class="bold orange">Moderate</span></li>
-        <ul>
-            <li>Minimum and/or maximum altitude restrictions apply</li>
-        </ul>
-        <li><span class="bold blue">Informational</span></li>
         <ul>
             <li>Minimum and/or maximum altitude restrictions apply</li>
         </ul>
