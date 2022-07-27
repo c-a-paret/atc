@@ -378,6 +378,9 @@ export class Aeroplane {
         if (zone.minAltitude === null && zone.maxAltitude === null) {
             return true
         }
+        if (zone.minAltitude !== null && zone.maxAltitude === null) {
+            return this.altitude < zone.minAltitude
+        }
         return this.altitude < zone.minAltitude || this.altitude > zone.maxAltitude
     }
 

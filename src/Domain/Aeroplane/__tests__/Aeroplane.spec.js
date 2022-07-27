@@ -1090,7 +1090,7 @@ describe("Altitude restriction breached", () => {
             const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
                 minAltitude: 3000,
-                maxAltitude: undefined,
+                maxAltitude: null,
             }
 
             const result = aeroplane.breachingZoneAltitudeRestriction(zone)
@@ -1102,7 +1102,7 @@ describe("Altitude restriction breached", () => {
             const currentAltitude = 5001;
             const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
-                minAltitude: undefined,
+                minAltitude: null,
                 maxAltitude: 5000,
             }
 
@@ -1118,7 +1118,7 @@ describe("Altitude restriction breached", () => {
             const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
                 minAltitude: 3000,
-                maxAltitude: undefined,
+                maxAltitude: null,
             }
 
             const result = aeroplane.breachingZoneAltitudeRestriction(zone)
@@ -1130,7 +1130,7 @@ describe("Altitude restriction breached", () => {
             const currentAltitude = 5000;
             const aeroplane = new Aeroplane("AB123", "A321", 470, 470, 150, 0, currentAltitude, 3)
             const zone = {
-                minAltitude: undefined,
+                minAltitude: null,
                 maxAltitude: 5000,
             }
 
