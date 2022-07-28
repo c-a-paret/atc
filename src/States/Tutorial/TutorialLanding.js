@@ -57,7 +57,7 @@ export class TutorialLanding {
             {
                 hintTitle: "Landing - Location",
                 hintBodyBefore: "To issue a landing clearance, the aircraft must be within certain tolerances:\n\n"
-                    + "- At or below 3000ft\n"
+                    + "- At or below 3,000ft\n"
                     + "- At or below 200 knots\n"
                     + "- Facing the runway on which to land\n"
                     + "- Within 10 degrees of the runway heading\n"
@@ -132,8 +132,8 @@ export class TutorialLanding {
             {
                 hintTitle: "Landing - Incorrect Altitude",
                 hintBodyBefore: "We are correctly lined up for runway 9L and travelling at a good speed.\n\n"
-                    + "However this aeroplane is too high, currently at 4000ft.\n\n"
-                    + "It should be at or below 3000 feet to accept landing clearance.\n\n"
+                    + "However this aeroplane is too high, currently at 4,000ft.\n\n"
+                    + "It should be at or below 3,000ft to accept landing clearance.\n\n"
                     + "Therefore landing clearance will not be accepted.",
                 hintCode: "",
                 hintBodyAfter: "",
@@ -152,7 +152,7 @@ export class TutorialLanding {
             {
                 hintTitle: "Landing - Correct Configuration",
                 hintBodyBefore: "This aeroplane is facing the runway and within 10 degrees of the runway heading.\n\n"
-                    + "It's speed is below 200 and it is below 3000 feet.\n\n"
+                    + "It's speed is below 200 and it is below 3,000ft.\n\n"
                     + "Therefore landing clearance WILL be accepted.\n\n"
                     + "Let's issue the landing clearance next.",
                 hintCode: "",
@@ -187,7 +187,7 @@ export class TutorialLanding {
                     "Now let us see how to handle departures.",
                 hintCode: "",
                 hintBodyAfter: "",
-                confirmButtonText: "",
+                confirmButtonText: "Next",
                 confirmButtonCallback: this.nextTutorialMode,
             },
         ]

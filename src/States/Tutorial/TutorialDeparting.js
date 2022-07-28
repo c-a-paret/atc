@@ -97,9 +97,9 @@ export class TutorialDeparting {
                 hintBodyBefore: "When an aircraft is holding short of a runway it can accept takeoff clearance.\n\n" +
                     "Issue the C(leared) for T(ake) O(ff) command:",
                 hintCode: "CTO",
-                hintBodyAfter: "The aircraft will accelerate down the runway to reach 200kts, takeoff, fly the runway heading and then climb and maintain 2000ft.\n\n" +
+                hintBodyAfter: "The aircraft will accelerate down the runway to reach 200kts, takeoff, fly the runway heading and then climb and maintain 2,000ft.\n\n" +
                     "If you did NOT issue future commands, the aircraft will continue on this course.\n\n" +
-                    "If you did issue future commands, these will begin to be actioned once 200kts and 2000ft are achieved.\n\n" +
+                    "If you did issue future commands, these will begin to be actioned once 200kts and 2,000ft are achieved.\n\n" +
                     "Hopefully you entered the command in the previous step and should now see the aircraft taking off, climbing, accelerating and turning towards the MAY waypoint.\n\n" +
                     "Turn on Projected Paths above if you haven't done so already to help visualise the route the aircraft will take!",
                 confirmButtonText: "Next",

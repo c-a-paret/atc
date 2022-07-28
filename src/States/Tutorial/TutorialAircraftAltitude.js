@@ -18,12 +18,12 @@ export class TutorialAircraftAltitude {
         this._aircraftSpeed()
         this.machine.interfaceController.showHint(
             "Controlling altitude",
-            "Currently, BA354 is flying at 8000 feet.\n\n" +
+            "Currently, BA354 is flying at 8,000ft.\n\n" +
             "You can see this on the aircraft label and its sidebar strip (the last of the three numbers).\n\n" +
             "Notice that on the aircraft label the altitude is specified in 100s of feet (80) but in the sidebar it is shown in its full form.\n\n" +
             "Select the aircraft and type the command below into the command field after the call sign, and press Enter.",
             "A40",
-            "This will tell the aeroplane to change altitude to 4000 feet.\n\n" +
+            "This will tell the aeroplane to change altitude to 4,000ft.\n\n" +
             "Notice that the altitude command is also specified in 100s of feet.\n\n" +
             "Watch the last number on the aircraft label change as the aircraft descends.\n\n" +
             "Like before, the relevant number on the label and sidebar change.\n\n" +
