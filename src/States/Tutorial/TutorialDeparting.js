@@ -1,13 +1,14 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {DEPARTURE} from "../../config/constants";
 import {READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
+import {TutorialTargets} from "./TutorialTargets";
 
 export class TutorialDeparting {
     constructor(map) {
         this.map = map
         this.machine = undefined
         this.initialised = false
-        this.hint = 1
+        this.hint = 0
     }
 
     setMachine = (machine) => {
@@ -41,11 +42,15 @@ export class TutorialDeparting {
         this.hint += 1
     }
 
+    nextTutorialMode = () => {
+        this.machine.transitionTo(new TutorialTargets(this.map))
+    }
+
     getHint = (index) => {
         const hints = [
             {
                 hintTitle: "Departing aircraft",
-                hintBodyBefore: "So far we have seen how to control aircraft and get them to land.\n\n" +
+                hintBodyBefore: "So far we have seen how to control aircraft and how to get them to land.\n\n" +
                     "Next we will look at how to direct an aircraft to taxi, takeoff and depart in the direction we want.",
                 hintCode: "",
                 hintBodyAfter: "",
@@ -96,7 +101,7 @@ export class TutorialDeparting {
                     "If you did NOT issue future commands, the aircraft will continue on this course.\n\n" +
                     "If you did issue future commands, these will begin to be actioned once 200kts and 2000ft are achieved.\n\n" +
                     "Hopefully you entered the command in the previous step and should now see the aircraft taking off, climbing, accelerating and turning towards the MAY waypoint.\n\n" +
-                    "TUrn on Projected Paths above if you haven't done so already to help visualise the route the aircraft will take!",
+                    "Turn on Projected Paths above if you haven't done so already to help visualise the route the aircraft will take!",
                 confirmButtonText: "Next",
                 confirmButtonCallback: this.next,
             },
@@ -108,17 +113,25 @@ export class TutorialDeparting {
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
-                confirmButtonCallback: this.next,
+                confirmButtonCallback: () => this.next(false),
                 spawnFunction: this.theirTurnDeparture
             },
             {
-                hintTitle: "Congratulations!",
-                hintBodyBefore: "You have finished the tutorial.\n\n" +
-                    "Click 'Game' at the top of the screen to start playing!",
+                hintTitle: "Successful departing aircraft",
+                hintBodyBefore: "A departure counts as successful when the aircraft leaves the map.",
                 hintCode: "",
                 hintBodyAfter: "",
-                confirmButtonText: "",
-                confirmButtonCallback: undefined,
+                confirmButtonText: "Next",
+                confirmButtonCallback: this.next,
+            },
+            {
+                hintTitle: "Congratulations!",
+                hintBodyBefore: "You have learned how to control departing aircraft.\n\n" +
+                    "Next, we will step things up a introduce targets and statistics",
+                hintCode: "",
+                hintBodyAfter: "",
+                confirmButtonText: "Next",
+                confirmButtonCallback: this.nextTutorialMode,
             },
         ]
 
