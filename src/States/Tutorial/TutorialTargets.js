@@ -168,7 +168,7 @@ export class TutorialTargets {
             2,
             ARRIVAL,
             FLYING,
-            '27L')
+            '27R')
         plane.setLanding(this.map, '27R')
         this.machine.machine.aeroplanes.push(plane)
     }

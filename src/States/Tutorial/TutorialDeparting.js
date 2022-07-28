@@ -127,7 +127,7 @@ export class TutorialDeparting {
             {
                 hintTitle: "Congratulations!",
                 hintBodyBefore: "You have learned how to control departing aircraft.\n\n" +
-                    "Next, we will step things up a introduce targets and statistics",
+                    "Next, we will step things up, and introduce targets and statistics",
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
