@@ -3,6 +3,7 @@ export const parseCommand = (rawCommand) => {
     let callSign = command.substring(0, 5).toUpperCase();
     let actionCommands = command.substring(5);
     let parsedHeading = parseHeading(actionCommands);
+    // debugger
     let parsedWaypoint = parseWaypoint(actionCommands);
     let parsedRunway = parseRunway(actionCommands)
 
@@ -88,7 +89,7 @@ export const parseAltitude = (command) => {
 }
 
 export const parseWaypoint = (command) => {
-    const match = command.match(/[>](\w{3})/g);
+    const match = command.match(/[-]([a-zA-Z]{3})/g);
     if (match && match.length === 1) {
         return match[0].substring(1)
     }

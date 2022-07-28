@@ -59,7 +59,7 @@ describe("Parse command", () => {
     })
 
     test("Extracts the desired waypoint", () => {
-        const command = "BA423>OCKD13S200"
+        const command = "BA423-OCKD13S200"
         const expectedWaypoint = "OCK"
 
         const result = parseCommand(command)
@@ -77,7 +77,7 @@ describe("Parse command", () => {
     })
 
     test("Sets heading and waypoint null if both supplied", () => {
-        const command = "BA423>OCKD13T200"
+        const command = "BA423-OCKD13T200"
 
         const result = parseCommand(command)
 
@@ -192,7 +192,7 @@ describe("Altitude commands", () => {
 
 describe("Waypoint commands", () => {
     test("Extracts waypoint inside larger command", () => {
-        const command = "BA423>LAMS200C2"
+        const command = "BA423-LAMS200C2"
         const expectedWaypoint = "LAM"
 
         const result = parseWaypoint(command)
