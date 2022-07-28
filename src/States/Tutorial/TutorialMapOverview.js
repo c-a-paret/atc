@@ -67,6 +67,25 @@ export class TutorialMapOverview {
                 confirmButtonCallback: this.next
             },
             {
+                hintTitle: "Compass directions and heading",
+                hintBodyBefore: "A core idea is that of 'heading'.\n\n"
+                    + "A circle is made up of 360 degrees.\n\n"
+                    + "Now imagine a compass.\n\n"
+                    + "Directly North is 000 or 360 degrees.\n"
+                    + "Directly East is 090 degrees.\n"
+                    + "Directly South is 180 degrees.\n"
+                    + "Directly West is 270 degrees.\n\n"
+                    + "Directly North East is 045 degrees.\n"
+                    + "Directly South West is 225 degrees.\n"
+                    + "etc..\n\n"
+                    + "You can reference any value between 000 and 360. We will see a lot more of this later.\n\n"
+                    + "The map on screen has North (000 degrees) at the top.",
+                hintCode: "",
+                hintBodyAfter: "",
+                confirmButtonText: "Next",
+                confirmButtonCallback: this.next
+            },
+            {
                 hintTitle: "Runways",
                 hintBodyBefore: "In the middle of the map are two horizontal green lines.\n\n"
                     + "These are the runways.\n\n"
