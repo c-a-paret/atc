@@ -28,8 +28,10 @@ export class InterfaceController {
         this.selectedStrip = null
         this.selectedCallSign = null
 
-        this.gamePaused = false;
-        this.projectedPathsOn = false;
+        this.gamePaused = false
+        this.unPauseCallback = undefined
+        this.gameSpeed = 1
+        this.projectedPathsOn = false
         this._init()
     }
 
@@ -271,6 +273,7 @@ export class InterfaceController {
         this._setupPlayPauseInterface()
         this._setupButtonsInterface()
         this._drawGameModeButtons()
+        this._setupGameSpeedButtons()
     }
 
     _format_state = (aeroplane) => {
@@ -494,6 +497,39 @@ export class InterfaceController {
         this._hideHelpMenu()
         document.getElementById("pause-play").style.backgroundColor = 'rgba(22, 145, 203, 0.5)'
         this.gamePaused = false
+        this.unPauseCallback()
+    }
+
+    setUnPauseCallback = (callback) => {
+        this.unPauseCallback = callback
+    }
+
+    _setupGameSpeedButtons = () => {
+        document.addEventListener('keyup', (e) => {
+            if (e.code === "AltLeft") {
+                this.gameSpeed = this.gameSpeed >= 3 ? this.gameSpeed : this.gameSpeed + 1
+            } else if (e.code === "ControlLeft") {
+                this.gameSpeed = this.gameSpeed <= 1 ? this.gameSpeed : this.gameSpeed - 1
+            }
+            document.getElementById("game-speed-text").innerText = `${this.gameSpeed}x`
+            if (this.gameSpeed === 1) {
+                document.getElementById("game-speed-text").classList.remove('bad')
+                document.getElementById("game-speed-text").classList.remove('not-ideal')
+                document.getElementById("game-speed-text").classList.add('neutral')
+            }
+            if (this.gameSpeed === 2) {
+                document.getElementById("game-speed-text").classList.remove('neutral')
+                document.getElementById("game-speed-text").classList.remove('bad')
+                document.getElementById("game-speed-text").classList.add('not-ideal')
+            }
+            if (this.gameSpeed === 3) {
+                document.getElementById("game-speed-text").classList.remove('neutral')
+                document.getElementById("game-speed-text").classList.remove('not-ideal')
+                document.getElementById("game-speed-text").classList.add('bad')
+            }
+            this._focusCommandEntry()
+        });
+
     }
 
     _focusCommandEntry = () => {

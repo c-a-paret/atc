@@ -1,59 +1,64 @@
+import {DEFAULT_TICK_INTERVAL} from "../config/constants";
+
 export class GameLoop {
     constructor(uiController, interfaceController, aeroplaneService, statsService) {
         this.uiController = uiController
         this.interfaceController = interfaceController
         this.aeroplaneService = aeroplaneService
         this.statsService = statsService
-
+        this.interfaceController.setUnPauseCallback(this.start)
     }
 
-    init() {
+    init = () => {
         this.aeroplaneService.tick()
-        // this.aeroplaneService.initTestAeroplanes()
         this.uiController.drawAeroplanes()
         this.interfaceController.drawStrips()
     }
 
-    start() {
-        // State ticker
-        setInterval(() => {
-            if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
-                this.aeroplaneService.tick()
+    stateTick = () => {
+        if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
+            this.aeroplaneService.tick()
+            setTimeout(this.stateTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+        }
+    }
+
+    renderTick = () => {
+        if (!this.interfaceController.gamePaused) {
+            this.uiController.clearAeroplaneLayer()
+
+            this.aeroplaneService.deactivateAeroplanes()
+            this.aeroplaneService.markAeroplanesBreakingProximity()
+            this.aeroplaneService.applyActions()
+
+            this.uiController.drawAeroplanes()
+
+            this.interfaceController.clearInactiveStrips()
+            this.interfaceController.drawStrips()
+            this.interfaceController.updateStrips()
+            setTimeout(this.renderTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+        }
+    }
+
+    statsUpdaterTick = () => {
+        if (!this.interfaceController.gamePaused) {
+            if (this.aeroplaneService.aeroplanes.some(plane => plane.breachingProximity)) {
+                this.statsService.incrementBreachedTimer()
             }
-        }, 1000)
+            this.interfaceController.setStats(
+                this.statsService.totalLanded(),
+                this.statsService.correctlyLandedPercentage(),
+                this.statsService.totalDeparted(),
+                this.statsService.correctlyDepartedPercentage(),
+                this.statsService.lostCount,
+                this.statsService.proximityTimer
+            )
+            setTimeout(this.statsUpdaterTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+        }
+    }
 
-        // Stats updater
-        setInterval(() => {
-            if (!this.interfaceController.gamePaused) {
-                if (this.aeroplaneService.aeroplanes.some(plane => plane.breachingProximity)) {
-                    this.statsService.incrementBreachedTimer()
-                }
-                this.interfaceController.setStats(
-                    this.statsService.totalLanded(),
-                    this.statsService.correctlyLandedPercentage(),
-                    this.statsService.totalDeparted(),
-                    this.statsService.correctlyDepartedPercentage(),
-                    this.statsService.lostCount,
-                    this.statsService.proximityTimer
-                )
-            }
-        }, 1000)
-
-        // Aeroplanes and strips display updater
-        setInterval(() => {
-            if (!this.interfaceController.gamePaused) {
-                this.uiController.clearAeroplaneLayer()
-
-                this.aeroplaneService.deactivateAeroplanes()
-                this.aeroplaneService.markAeroplanesBreakingProximity()
-                this.aeroplaneService.applyActions()
-
-                this.uiController.drawAeroplanes()
-
-                this.interfaceController.clearInactiveStrips()
-                this.interfaceController.drawStrips()
-                this.interfaceController.updateStrips()
-            }
-        }, 900)
+    start = () => {
+        this.stateTick()
+        this.statsUpdaterTick()
+        this.renderTick()
     }
 }

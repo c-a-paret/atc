@@ -35,7 +35,8 @@ canvas {
 .controls {
     z-index: 10;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -61,6 +62,11 @@ canvas {
     cursor: pointer;
 }
 
+.controls .row {
+    display: flex;
+    align-items: center;
+}
+
 .controls .ui-button {
     border: 1px dashed #9d9d9d;
     margin-left: 1rem;
@@ -72,6 +78,22 @@ canvas {
     padding: 0.25rem;
     font-family: "Courier New", monospace;
     font-size: 0.8rem;
+}
+
+.game-speed-indicator {
+    color: #9d9d9d;
+    min-width: 2rem;
+}
+
+#game-speed-text {
+    font-family: "Courier New", monospace;
+    font-size: 1.75rem;
+    text-align: center;
+    margin: 1rem 0 0;
+}
+
+#game-speed-text > span {
+    font-size: 1.1rem;
 }
 
 .controls .ui-button .text:hover {
