@@ -221,7 +221,6 @@ canvas {
 .aeroplane-strip {
     width: 90%;
     max-width: 90%;
-    max-height: 6rem;
     margin: 0.5rem 0 0 0;
     border-radius: 0.25rem;
     display: flex;
@@ -282,7 +281,7 @@ canvas {
 /* State */
 .aeroplane-strip > .state {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     justify-content: center;
 
     border-bottom: 1px solid rgba(115, 118, 129, 0.32);
@@ -291,7 +290,7 @@ canvas {
 .aeroplane-strip > .state .text {
     color: white;
     font-family: "Courier New", monospace;
-    font-size: 1rem;
+    font-size: 0.85rem;
     margin: 0;
 }
 
