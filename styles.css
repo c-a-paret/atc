@@ -80,6 +80,11 @@ canvas {
     font-size: 0.8rem;
 }
 
+.controls .ui-button .text:hover {
+    color: rgb(0, 213, 170);
+    cursor: pointer;
+}
+
 .game-speed-indicator {
     color: #9d9d9d;
     min-width: 2rem;
@@ -94,11 +99,6 @@ canvas {
 
 #game-speed-text > span {
     font-size: 1.1rem;
-}
-
-.controls .ui-button .text:hover {
-    color: rgb(0, 213, 170);
-    cursor: pointer;
 }
 
 #stats {
@@ -197,32 +197,35 @@ canvas {
     padding: 0 1rem;
 }
 
+/* Sidebar */
 .sidebar {
     z-index: 10;
-    width: 12%;
+
     position: absolute;
     right: 1rem;
     top: 9rem;
+
+    width: 13%;
     max-height: 85%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     padding-bottom: 0.5rem;
-    backdrop-filter: blur(2px);
+
+    backdrop-filter: blur(4px);
     overflow-y: scroll;
 }
 
 .aeroplane-strip {
     width: 90%;
     max-width: 90%;
-    height: 4rem;
-    max-height: 4rem;
-    min-height: 4rem;
-    margin: 0.5rem 0 0;
-    padding: 0.5rem 0.5rem 0 0.5rem;
+    max-height: 6rem;
+    margin: 0.5rem 0 0 0;
     border-radius: 0.25rem;
-    display: grid;
-    grid-template-rows: 1fr 0.3fr 1fr;
+    display: flex;
+    flex-direction: column;
 }
 
 .arrival {
@@ -241,18 +244,71 @@ canvas {
     border-left: 5px solid white;
 }
 
-.aeroplane-strip > .separator {
-    width: 100%;
-    height: 1%;
-    background-color: #737681;
+.aeroplane-strip .row {
+    padding: 0.25rem 0.5rem;
 }
 
+/* Overview */
 .aeroplane-strip > .overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: flex-end;
+
+    border-bottom: 1px solid rgba(115, 118, 129, 0.32);
+}
+
+.aeroplane-strip .overview .text {
+    font-family: "Courier New", monospace;
+    color: white;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.aeroplane-strip .overview .final-target {
+    color: rgb(221, 126, 229);
+    font-weight: bold;
+}
+
+.aeroplane-strip .overview .short-class {
+    font-weight: lighter;
+    font-size: 0.8rem;
+}
+
+.aeroplane-strip .overview #call-sign {
+    letter-spacing: 0.1rem;
+}
+
+/* State */
+.aeroplane-strip > .state {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+
+    border-bottom: 1px solid rgba(115, 118, 129, 0.32);
+}
+
+.aeroplane-strip > .state .text {
+    color: white;
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Actions */
+.aeroplane-strip > .actions-overview {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     justify-content: center;
 }
 
+.aeroplane-strip > .actions-overview .text {
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Value formats */
 .target-value {
     color: rgb(4, 230, 255);
     font-weight: bold;
@@ -260,22 +316,6 @@ canvas {
 
 .current-value {
     color: rgb(255, 255, 255);
-}
-
-.overview .text {
-    font-family: "Courier New", monospace;
-    color: white;
-    font-size: 1rem;
-    margin: 0;
-}
-
-.overview .final-target {
-    color: rgb(221, 126, 229);
-    font-weight: bold;
-}
-
-.overview .short-class {
-    font-weight: lighter;
 }
 
 .center {
@@ -286,17 +326,8 @@ canvas {
     text-align: end;
 }
 
-.actions-overview {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-content: center;
-}
 
-.actions-overview .text {
-    font-family: "Courier New", monospace;
-    font-size: 1rem;
-    margin: 0;
-}
+/* Help Menu */
 
 .help-menu {
     display: none;

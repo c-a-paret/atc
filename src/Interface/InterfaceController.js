@@ -302,11 +302,11 @@ export class InterfaceController {
         const strip = div(["aeroplane-strip", aeroplane.type.toLowerCase()], aeroplane.callSign)
 
         const overview = this._overviewBlock(aeroplane)
-        const separator = div(["separator"])
+        const state = this._stateBlock(aeroplane)
         const actionsOverview = this._actionsOverviewBlock(aeroplane)
 
         strip.appendChild(overview)
-        strip.appendChild(separator)
+        strip.appendChild(state)
         strip.appendChild(actionsOverview)
 
         strip.addEventListener('click', () => this._selectStrip(strip))
@@ -316,12 +316,12 @@ export class InterfaceController {
 
     updateStrips = () => {
         this.aeroplaneService.aeroplanes.forEach(plane => {
-            // State or Call Sign
+            // State
             const stateCallSignElement = document.getElementById(`${plane.callSign}-state-call-sign`)
-            stateCallSignElement.innerText = plane.state === FLYING ? plane.shortClass : this._format_state(plane)
+            stateCallSignElement.innerText = this._format_state(plane)
 
 
-            const overviewValues = this._get_overview_values(plane)
+            const overviewValues = this._get_action_overview_values(plane)
             // Location
             const locationTextElement = document.getElementById(`${plane.callSign}-location`)
             const locationColourClass = this._colour_class(overviewValues.location);
@@ -355,43 +355,97 @@ export class InterfaceController {
         })
     }
 
+    _overviewBlock = (aeroplane) => {
+        const overview = div(["row", "overview"])
+
+        //  Call Sign
+        const callSign = div(["value"])
+        const callSignText = p(["text"], "call-sign")
+        callSignText.innerText = aeroplane.callSign
+        callSign.appendChild(callSignText)
+
+        //  Short class
+        const shortClass = div(["value"])
+        const shortClassText = p(["text", "center", "short-class"])
+        shortClassText.innerText = aeroplane.shortClass
+        shortClass.appendChild(shortClassText)
+
+        //  Target
+        const target = div(["value"])
+        const targetText = p(["text", "right", "final-target"])
+        targetText.innerText = aeroplane.finalTarget
+        target.appendChild(targetText)
+
+
+        overview.appendChild(callSign)
+        overview.appendChild(shortClass)
+        overview.appendChild(target)
+
+        return overview
+    }
+
+    _stateBlock = (aeroplane) => {
+        const stateBlock = div(["row", "state"])
+
+        const state = div([])
+        const stateText = p(["text"], `${aeroplane.callSign}-state-call-sign`)
+        stateText.innerText = this._format_state(aeroplane)
+        state.appendChild(stateText)
+
+        stateBlock.appendChild(state)
+
+        return stateBlock
+    }
+
+    _actionsOverviewBlock = (aeroplane) => {
+        const actionsOverview = div(["row", "actions-overview"])
+
+        const overviewValues = this._get_action_overview_values(aeroplane)
+
+        //  Speed
+        const speed = div(["action-target"])
+        const speedText = p(["text", this._colour_class(overviewValues.speed)], `${aeroplane.callSign}-speed`)
+        speedText.innerText = overviewValues.speed.value
+        speed.appendChild(speedText)
+
+        //  Location
+        const location = div(["action-target"])
+        const locationText = p(["text", "center", this._colour_class(overviewValues.location)], `${aeroplane.callSign}-location`)
+        locationText.innerText = overviewValues.location.value
+        location.appendChild(locationText)
+
+        //  Altitude
+        const altitude = div(["action-target"])
+        const altitudeText = p(["text", this._colour_class(overviewValues.altitude), "right"], `${aeroplane.callSign}-altitude`)
+        altitudeText.innerText = overviewValues.altitude.value
+        altitude.appendChild(altitudeText)
+
+
+        actionsOverview.appendChild(speed)
+        actionsOverview.appendChild(location)
+        actionsOverview.appendChild(altitude)
+
+        return actionsOverview
+    }
+
     _format_state = (aeroplane) => {
         const state_map = {
-            READY_TO_TAXI: "Ready",
-            TAXIING: "Taxi",
-            HOLDING_SHORT: aeroplane.positionDescription,
+            READY_TO_TAXI: "READY",
+            TAXIING: "TAXI",
+            HOLDING_SHORT: `SHORT ${aeroplane.positionDescription}`,
             TAKING_OFF: "T/O",
-            GOING_AROUND: "G/A"
+            FLYING: "FLYING",
+            GOING_AROUND: "G/A",
         }
         return state_map[aeroplane.state]
     }
 
-    _overviewBlock = (aeroplane) => {
-        const overview = div(["overview"])
-
-        //  Call Sign
-        const callSign = div(["value"])
-        const callSignText = p(["text"])
-        callSignText.innerText = aeroplane.callSign
-        callSign.appendChild(callSignText)
-
-        //  Target
-        const target = div(["value"])
-        const targetText = p(["text", "center", "final-target"])
-        targetText.innerText = aeroplane.finalTarget
-        target.appendChild(targetText)
-
-        //  State or short class
-        const shortClass = div(["value"])
-        const shortClassText = p(["text", "right", "short-class"], `${aeroplane.callSign}-state-call-sign`)
-        shortClassText.innerText = aeroplane.state === FLYING ? aeroplane.shortClass : this._format_state(aeroplane)
-        shortClass.appendChild(shortClassText)
-
-        overview.appendChild(callSign)
-        overview.appendChild(target)
-        overview.appendChild(shortClass)
-
-        return overview
+    _get_action_overview_values = (aeroplane) => {
+        return {
+            location: this._get_location(aeroplane),
+            altitude: this._get_altitude(aeroplane),
+            speed: this._get_speed(aeroplane)
+        }
     }
 
     _get_location = (aeroplane) => {
@@ -427,14 +481,6 @@ export class InterfaceController {
         return new CurrentValue('')
     }
 
-    _get_overview_values = (aeroplane) => {
-        return {
-            location: this._get_location(aeroplane),
-            altitude: this._get_altitude(aeroplane),
-            speed: this._get_speed(aeroplane)
-        }
-    }
-
     _colour_class = (value) => {
         if (value.isTarget) {
             return 'target-value'
@@ -447,37 +493,6 @@ export class InterfaceController {
             return 'current-value'
         }
         return 'target-value'
-    }
-
-    _actionsOverviewBlock = (aeroplane) => {
-        const actionsOverview = div(["actions-overview"])
-
-        const overviewValues = this._get_overview_values(aeroplane)
-
-        //  Location
-        const location = div(["action-target"])
-        const locationText = p(["text", this._colour_class(overviewValues.location)], `${aeroplane.callSign}-location`)
-        locationText.innerText = overviewValues.location.value
-        location.appendChild(locationText)
-
-        //  Speed
-        const speed = div(["action-target"])
-        const speedText = p(["text", this._colour_class(overviewValues.speed), "center"], `${aeroplane.callSign}-speed`)
-        speedText.innerText = overviewValues.speed.value
-        speed.appendChild(speedText)
-
-        //  Altitude
-        const altitude = div(["action-target"])
-        const altitudeText = p(["text", this._colour_class(overviewValues.altitude), "right"], `${aeroplane.callSign}-altitude`)
-        altitudeText.innerText = overviewValues.altitude.value
-        altitude.appendChild(altitudeText)
-
-
-        actionsOverview.appendChild(location)
-        actionsOverview.appendChild(speed)
-        actionsOverview.appendChild(altitude)
-
-        return actionsOverview
     }
 
     _clearStripFocus = () => {

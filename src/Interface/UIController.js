@@ -290,7 +290,7 @@ export class UIController {
         }
     }
 
-    _drawHeadingLabel = (aeroplane) => {
+    _drawSpeedLabel = (aeroplane) => {
         if (aeroplane.breachingProximity) {
             this.aeroplaneContext.fillStyle = COLOURS.RED;
         } else {
@@ -298,10 +298,10 @@ export class UIController {
         }
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.fillText(`${round(aeroplane.heading, 0)}`, aeroplane.x - 20, aeroplane.y - 20);
+        this.aeroplaneContext.fillText(`${round(aeroplane.speed, 0)}`, aeroplane.x - 20, aeroplane.y - 20);
     }
 
-    _drawSpeedLabel = (aeroplane) => {
+    _drawHeadingLabel = (aeroplane) => {
         if (aeroplane.breachingProximity) {
             this.aeroplaneContext.fillStyle = COLOURS.RED;
         } else {
@@ -309,8 +309,8 @@ export class UIController {
         }
         this.aeroplaneContext.font = "bold 12px Courier New";
         this.aeroplaneContext.beginPath();
-        const headingLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.heading, 0)}`).width;
-        this.aeroplaneContext.fillText(`${round(aeroplane.speed, 0)}`, aeroplane.x - 20 + headingLabelWidth + 5, aeroplane.y - 20);
+        const speedLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.speed, 0)}`).width;
+        this.aeroplaneContext.fillText(`${round(aeroplane.heading, 0)}`, aeroplane.x - 20 + speedLabelWidth + 5, aeroplane.y - 20);
     }
 
     _drawAltitudeLabel = (aeroplane) => {
