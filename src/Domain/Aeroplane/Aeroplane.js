@@ -1,4 +1,4 @@
-import {round, toRadians} from "../../utils/maths";
+import {getRandomNumberBetween, round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
     ARRIVAL,
@@ -23,7 +23,7 @@ import {Takeoff} from "../Action/Takeoff";
 import {GoAround} from "../Action/GoAround";
 
 export class Aeroplane {
-    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = null) {
+    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = null, fuelLevel) {
         this.callSign = callSign;
         this.shortClass = shortClass;
         this.weight = weight;
@@ -35,6 +35,7 @@ export class Aeroplane {
         this.type = type;
         this.state = state;
         this.finalTarget = finalTarget;
+        this.fuelLevel = fuelLevel ? fuelLevel : getRandomNumberBetween(20, 100);
         this.actions = []
         this.breachingProximity = false
         this.lastPositions = []

@@ -320,7 +320,6 @@ export class InterfaceController {
             const stateCallSignElement = document.getElementById(`${plane.callSign}-state-call-sign`)
             stateCallSignElement.innerText = this._format_state(plane)
 
-
             const overviewValues = this._get_action_overview_values(plane)
             // Location
             const locationTextElement = document.getElementById(`${plane.callSign}-location`)
@@ -342,6 +341,9 @@ export class InterfaceController {
             speedTextElement.classList.add(speedColourClass)
             speedTextElement.classList.remove(this._invert(speedColourClass))
             speedTextElement.innerText = overviewValues.speed.value
+
+            // Fuel
+            this.updateFuelIndicator(plane)
         })
     }
 
@@ -387,6 +389,7 @@ export class InterfaceController {
     _stateBlock = (aeroplane) => {
         const stateBlock = div(["row", "state"])
 
+        // State
         const state = div([])
         const stateText = p(["text"], `${aeroplane.callSign}-state-call-sign`)
         stateText.innerText = this._format_state(aeroplane)
@@ -394,7 +397,67 @@ export class InterfaceController {
 
         stateBlock.appendChild(state)
 
+        // Fuel
+        if (aeroplane.fuelLevel !== null) {
+            const fuelContainer = div(["fuel-container"])
+            const fuelIndicator = this._fuelIndicator(aeroplane)
+            fuelContainer.appendChild(fuelIndicator)
+
+            stateBlock.appendChild(fuelContainer)
+        }
+
+
         return stateBlock
+    }
+
+    _fuelIndicator = (aeroplane) => {
+        const pip1 = div(["fuel-indicator-pip", "pip1"], `${aeroplane.callSign}-pip1`)
+        const pip2 = div(["fuel-indicator-pip", "pip2"], `${aeroplane.callSign}-pip2`)
+        const pip3 = div(["fuel-indicator-pip", "pip3"], `${aeroplane.callSign}-pip3`)
+        const pip4 = div(["fuel-indicator-pip", "pip4"], `${aeroplane.callSign}-pip4`)
+        const pip5 = div(["fuel-indicator-pip", "pip5"], `${aeroplane.callSign}-pip5`)
+
+        const fuelIndicator = div(["fuel-indicator", "align-right"])
+
+        fuelIndicator.appendChild(pip1)
+        fuelIndicator.appendChild(pip2)
+        fuelIndicator.appendChild(pip3)
+        fuelIndicator.appendChild(pip4)
+        fuelIndicator.appendChild(pip5)
+
+        return fuelIndicator
+    }
+
+    updateFuelIndicator = (aeroplane) => {
+        const pips = [
+            document.getElementById(`${aeroplane.callSign}-pip1`),
+            document.getElementById(`${aeroplane.callSign}-pip2`),
+            document.getElementById(`${aeroplane.callSign}-pip3`),
+            document.getElementById(`${aeroplane.callSign}-pip4`),
+            document.getElementById(`${aeroplane.callSign}-pip5`)
+        ]
+
+        const fuelLevel = aeroplane.fuelLevel
+        const numFilled = Math.ceil(fuelLevel / 20)
+        const fillColour = this._fuelIndicatorColour(fuelLevel)
+
+        pips.forEach((pip, index) => {
+            pip.classList.remove('pip-green', 'pip-orange', 'pip-red')
+            pip.classList.add(`pip-border-${fillColour}`)
+            if (index < numFilled) {
+                pip.classList.add(`background-${fillColour}`)
+            }
+        })
+    }
+
+    _fuelIndicatorColour = (fuelLevel) => {
+        if (fuelLevel <= 20) {
+            return 'red'
+        } else if (fuelLevel <= 60) {
+            return 'orange'
+        } else {
+            return 'green'
+        }
     }
 
     _actionsOverviewBlock = (aeroplane) => {
