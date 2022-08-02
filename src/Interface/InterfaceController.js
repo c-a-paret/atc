@@ -35,6 +35,101 @@ export class InterfaceController {
         this._init()
     }
 
+    _init = () => {
+        this._setupCommandInterface()
+        this._setupClickInterface()
+        this._setupPlayPauseInterface()
+        this._setupButtonsInterface()
+        this._drawGameModeButtons()
+        this._setupGameSpeedButtons()
+        this._focusCommandEntry()
+    }
+
+    _setupCommandInterface = () => {
+        document.getElementById("send-command").addEventListener("click", this._newCommandHandler)
+        document.addEventListener('keyup', (e) => {
+            if (e.code === "Enter") {
+                this._newCommandHandler()
+            }
+        });
+        document.addEventListener('keyup', (e) => {
+            if (e.code === "ArrowUp") {
+                this._previousCallSignHandler()
+            }
+        });
+    }
+
+    _setupClickInterface = () => {
+        document.addEventListener('click', (e) => {
+            const clickedX = e.clientX
+            const clickedY = e.clientY
+            const callSign = this.aeroplaneService.getCallSignByPosition(clickedX, clickedY)
+            if (callSign) {
+                let commandField = document.getElementById("command-entry-field");
+                commandField.value = callSign
+                this.lastCallSign = callSign
+                const strip = this._getStripFor(callSign)
+                this._selectStrip(strip)
+                this._focusCommandEntry()
+            }
+        });
+    }
+
+    _setupPlayPauseInterface = () => {
+        document.getElementById("pause-play").addEventListener("click", this._playPauseHandler)
+    }
+
+    _setupButtonsInterface = () => {
+        const helpButton = document.getElementById('help')
+        helpButton.addEventListener('click', (_) => {
+            this._handleHelpMenu()
+        });
+    }
+
+    _drawGameModeButtons = () => {
+        document.getElementById("game").addEventListener("click", this._setGameMode)
+        document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
+        document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
+    }
+
+    _setupGameSpeedButtons = () => {
+        document.addEventListener('keyup', (e) => {
+            if (e.code === "AltLeft") {
+                this.gameSpeed = this.gameSpeed >= 3 ? this.gameSpeed : this.gameSpeed + 1
+            } else if (e.code === "ControlLeft") {
+                this.gameSpeed = this.gameSpeed <= 1 ? this.gameSpeed : this.gameSpeed - 1
+            }
+            document.getElementById("game-speed-text").innerText = `${this.gameSpeed}x`
+            if (this.gameSpeed === 1) {
+                document.getElementById("game-speed-text").classList.remove('bad')
+                document.getElementById("game-speed-text").classList.remove('not-ideal')
+                document.getElementById("game-speed-text").classList.add('neutral')
+            }
+            if (this.gameSpeed === 2) {
+                document.getElementById("game-speed-text").classList.remove('neutral')
+                document.getElementById("game-speed-text").classList.remove('bad')
+                document.getElementById("game-speed-text").classList.add('not-ideal')
+            }
+            if (this.gameSpeed === 3) {
+                document.getElementById("game-speed-text").classList.remove('neutral')
+                document.getElementById("game-speed-text").classList.remove('not-ideal')
+                document.getElementById("game-speed-text").classList.add('bad')
+            }
+            this._focusCommandEntry()
+        });
+
+    }
+
+    _focusCommandEntry = () => {
+        document.getElementById("command-entry-field").focus()
+    }
+
+    // Public Methods
+
+    setUnPauseCallback = (callback) => {
+        this.unPauseCallback = callback
+    }
+
     setStats = (totalLanded, correctlyLandedPercentage, totalDeparted, correctlyDepartedPercentage, exitedCount, breachedRestrictions) => {
         if (exitedCount > 0) {
             document.getElementById("exited-count").classList.remove('good')
@@ -103,32 +198,6 @@ export class InterfaceController {
         document.getElementById("correctly-departed-percentage").innerText = totalDeparted > 0 ? correctlyDepartedPercentage + '%' : '-'
         document.getElementById("exited-count").innerText = exitedCount
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
-    }
-
-    _drawGameModeButtons = () => {
-        document.getElementById("game").addEventListener("click", this._setGameMode)
-        document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
-        document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
-    }
-
-    _setGameMode = () => {
-        this.hideHint()
-        this.blurAttention()
-        this.aeroplaneService.transitionTo(new CoreGamePlay(true))
-    }
-
-    _setTutorialMode = () => {
-        this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
-    }
-
-    _toggleProjectedPaths = () => {
-        if (this.projectedPathsOn) {
-            this.projectedPathsOn = false
-            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths On'
-        } else {
-            this.projectedPathsOn = true
-            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths Off'
-        }
     }
 
     showHint = (hintTitle, hintBodyBefore, hintCode, hintBodyAfter, confirmButtonText, confirmButtonCallback) => {
@@ -200,6 +269,26 @@ export class InterfaceController {
         document.getElementById("attention-focus").style.display = 'none';
     }
 
+    clearCommandEntry = () => {
+        let commandField = document.getElementById("command-entry-field");
+        commandField.value = ""
+    }
+
+    // Message
+
+    _displayMessage = (message) => {
+        let messageContainer = document.getElementById("message-container");
+        let messageField = document.getElementById("message-display");
+        messageContainer.style.display = "flex"
+        messageField.innerText = message
+    }
+
+    _clearMessage = () => {
+        document.getElementById("message-display").innerText = ""
+        document.getElementById("message-container").style.display = "none"
+    }
+
+    // Sidebar strips
     drawStrips = () => {
         this.aeroplaneService.aeroplanes.forEach(plane => {
             if (!this._getStripFor(plane.callSign)) {
@@ -264,16 +353,6 @@ export class InterfaceController {
                 strip.remove()
             }
         })
-    }
-
-    _init = () => {
-        this._setupCommandInterface()
-        this._setupClickInterface()
-        this._focusCommandEntry()
-        this._setupPlayPauseInterface()
-        this._setupButtonsInterface()
-        this._drawGameModeButtons()
-        this._setupGameSpeedButtons()
     }
 
     _format_state = (aeroplane) => {
@@ -424,62 +503,9 @@ export class InterfaceController {
         return document.getElementById(callSign)
     }
 
-    _newCommandHandler = () => {
-        let commandField = document.getElementById("command-entry-field");
-        const acceptedCommands = this.aeroplaneService.sendCommand(commandField.value)
-        this.lastCallSign = acceptedCommands.callSign
-        commandField.value = ""
-        this._clearStripFocus()
-        this._displayMessage(commandMessage(acceptedCommands))
-        setTimeout(() => {
-            this._clearMessage()
-            this.selectedCallSign = ""
-        }, 2000)
-    };
+    // Event handlers
 
-    clearCommandEntry = () => {
-        let commandField = document.getElementById("command-entry-field");
-        commandField.value = ""
-    }
-
-    _displayMessage = (message) => {
-        let messageContainer = document.getElementById("message-container");
-        let messageField = document.getElementById("message-display");
-        messageContainer.style.display = "flex"
-        messageField.innerText = message
-    }
-
-    _clearMessage = () => {
-        document.getElementById("message-display").innerText = ""
-        document.getElementById("message-container").style.display = "none"
-    }
-
-    _previousCallSignHandler = () => {
-        let commandField = document.getElementById("command-entry-field");
-        commandField.value = this.lastCallSign
-        this.selectedCallSign = this.lastCallSign
-        const strip = this._getStripFor(this.lastCallSign)
-        this._selectStrip(strip)
-    };
-
-    _setupCommandInterface = () => {
-        document.getElementById("send-command").addEventListener("click", this._newCommandHandler)
-        document.addEventListener('keyup', (e) => {
-            if (e.code === "Enter") {
-                this._newCommandHandler()
-            }
-        });
-        document.addEventListener('keyup', (e) => {
-            if (e.code === "ArrowUp") {
-                this._previousCallSignHandler()
-            }
-        });
-    }
-
-    _setupPlayPauseInterface = () => {
-        document.getElementById("pause-play").addEventListener("click", this._playPauseHandler)
-    }
-
+    // -> Play & Pause
     _playPauseHandler = () => {
         if (this.gamePaused) {
             this._unPauseGame()
@@ -500,65 +526,7 @@ export class InterfaceController {
         this.unPauseCallback()
     }
 
-    setUnPauseCallback = (callback) => {
-        this.unPauseCallback = callback
-    }
-
-    _setupGameSpeedButtons = () => {
-        document.addEventListener('keyup', (e) => {
-            if (e.code === "AltLeft") {
-                this.gameSpeed = this.gameSpeed >= 3 ? this.gameSpeed : this.gameSpeed + 1
-            } else if (e.code === "ControlLeft") {
-                this.gameSpeed = this.gameSpeed <= 1 ? this.gameSpeed : this.gameSpeed - 1
-            }
-            document.getElementById("game-speed-text").innerText = `${this.gameSpeed}x`
-            if (this.gameSpeed === 1) {
-                document.getElementById("game-speed-text").classList.remove('bad')
-                document.getElementById("game-speed-text").classList.remove('not-ideal')
-                document.getElementById("game-speed-text").classList.add('neutral')
-            }
-            if (this.gameSpeed === 2) {
-                document.getElementById("game-speed-text").classList.remove('neutral')
-                document.getElementById("game-speed-text").classList.remove('bad')
-                document.getElementById("game-speed-text").classList.add('not-ideal')
-            }
-            if (this.gameSpeed === 3) {
-                document.getElementById("game-speed-text").classList.remove('neutral')
-                document.getElementById("game-speed-text").classList.remove('not-ideal')
-                document.getElementById("game-speed-text").classList.add('bad')
-            }
-            this._focusCommandEntry()
-        });
-
-    }
-
-    _focusCommandEntry = () => {
-        document.getElementById("command-entry-field").focus()
-    }
-
-    _setupClickInterface = () => {
-        document.addEventListener('click', (e) => {
-            const clickedX = e.clientX
-            const clickedY = e.clientY
-            const callSign = this.aeroplaneService.getCallSignByPosition(clickedX, clickedY)
-            if (callSign) {
-                let commandField = document.getElementById("command-entry-field");
-                commandField.value = callSign
-                this.lastCallSign = callSign
-                const strip = this._getStripFor(callSign)
-                this._selectStrip(strip)
-                this._focusCommandEntry()
-            }
-        });
-    }
-
-    _setupButtonsInterface = () => {
-        const helpButton = document.getElementById('help')
-        helpButton.addEventListener('click', (_) => {
-            this._handleHelpMenu()
-        });
-    }
-
+    // -> Help Menu
     _handleHelpMenu = () => {
         const helpMenu = document.getElementById('help-menu')
         if (this.gamePaused) {
@@ -583,5 +551,50 @@ export class InterfaceController {
         const helpMenu = document.getElementById('help-menu')
         helpMenu.style.display = 'block'
     }
+
+    // -> Game mode
+    _setGameMode = () => {
+        this.hideHint()
+        this.blurAttention()
+        this.aeroplaneService.transitionTo(new CoreGamePlay(true))
+    }
+
+    _setTutorialMode = () => {
+        this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
+    }
+
+    // -> Projected Paths
+    _toggleProjectedPaths = () => {
+        if (this.projectedPathsOn) {
+            this.projectedPathsOn = false
+            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths On'
+        } else {
+            this.projectedPathsOn = true
+            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths Off'
+        }
+    }
+
+    // -> Command handling
+
+    _newCommandHandler = () => {
+        let commandField = document.getElementById("command-entry-field");
+        const acceptedCommands = this.aeroplaneService.sendCommand(commandField.value)
+        this.lastCallSign = acceptedCommands.callSign
+        commandField.value = ""
+        this._clearStripFocus()
+        this._displayMessage(commandMessage(acceptedCommands))
+        setTimeout(() => {
+            this._clearMessage()
+            this.selectedCallSign = ""
+        }, 2000)
+    };
+
+    _previousCallSignHandler = () => {
+        let commandField = document.getElementById("command-entry-field");
+        commandField.value = this.lastCallSign
+        this.selectedCallSign = this.lastCallSign
+        const strip = this._getStripFor(this.lastCallSign)
+        this._selectStrip(strip)
+    };
 
 }
