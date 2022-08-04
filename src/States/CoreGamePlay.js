@@ -2,7 +2,7 @@ import {AIRCRAFT, SPECIAL_AIRCRAFT} from "../config/aircraft";
 import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
-import {DEPARTURE} from "../config/constants";
+import {ARRIVAL, DEPARTURE} from "../config/constants";
 import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 import {TargetsGamePlay} from "./TargetsGamePlay";
 
@@ -111,7 +111,7 @@ export class CoreGamePlay extends GameState {
     }
 
     initTestAeroplanes = () => {
-        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 200, 90, 2000, 1)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 280, 90, 3000, 1, ARRIVAL, FLYING, "9R", 0.2)
         const aeroplane2 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "LAM")
         this.machine.aeroplanes = [
             aeroplane1,
@@ -129,7 +129,7 @@ export class CoreGamePlay extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
-        aeroplane1.setLanding(this.map, "9R")
+        // aeroplane1.setLanding(this.map, "9R")
         aeroplane2.setTaxiAndHold(this.map, "27R")
 
         // this.machine.aeroplanes.forEach(plane => {

@@ -405,6 +405,14 @@ export class Aeroplane {
         this.breachingProximity = false
     }
 
+    outOfFuel = (outOfFuelCallback) => {
+        const outOfFuel = this.fuelLevel <= 0;
+        if (outOfFuel) {
+            outOfFuelCallback()
+        }
+        return outOfFuel
+    }
+
     consumeFuel = () => {
         if (this.fuelLevel - DEFAULT_FUEL_CONSUMPTION_RATE <= 0) {
             this.fuelLevel = 0

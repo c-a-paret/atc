@@ -130,7 +130,7 @@ export class InterfaceController {
         this.unPauseCallback = callback
     }
 
-    setStats = (totalLanded, correctlyLandedPercentage, totalDeparted, correctlyDepartedPercentage, exitedCount, breachedRestrictions) => {
+    setStats = (totalLanded, correctlyLandedPercentage, totalDeparted, correctlyDepartedPercentage, exitedCount, breachedRestrictions, outOfFuelCount) => {
         if (exitedCount > 0) {
             document.getElementById("exited-count").classList.remove('good')
             document.getElementById("exited-count").classList.add('bad')
@@ -138,6 +138,15 @@ export class InterfaceController {
             document.getElementById("exited-count").classList.remove('bad')
             document.getElementById("exited-count").classList.add('good')
         }
+
+        if (outOfFuelCount > 0) {
+            document.getElementById("out-of-fuel").classList.remove('good')
+            document.getElementById("out-of-fuel").classList.add('bad')
+        } else {
+            document.getElementById("out-of-fuel").classList.remove('bad')
+            document.getElementById("out-of-fuel").classList.add('good')
+        }
+
         if (breachedRestrictions > 0) {
             document.getElementById("breached-restrictions").classList.remove('good')
             document.getElementById("breached-restrictions").classList.add('bad')
@@ -197,6 +206,7 @@ export class InterfaceController {
         document.getElementById("correctly-landed-percentage").innerText = totalLanded > 0 ? correctlyLandedPercentage + '%' : '-'
         document.getElementById("correctly-departed-percentage").innerText = totalDeparted > 0 ? correctlyDepartedPercentage + '%' : '-'
         document.getElementById("exited-count").innerText = exitedCount
+        document.getElementById("out-of-fuel").innerText = outOfFuelCount
         document.getElementById("breached-restrictions").innerText = timeStringFromSeconds(breachedRestrictions)
     }
 

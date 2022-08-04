@@ -16,6 +16,7 @@ export class StatsService {
         this.correctlyDepartedCount = 0
         this.incorrectlyDepartedCount = 0
         this.lostCount = 0
+        this.outOfFuelCount = 0
         this.proximityTimer = 0
     }
 
@@ -37,6 +38,10 @@ export class StatsService {
 
     incrementLost = () => {
         this.lostCount += 1
+    }
+
+    incrementOutOfFuelCount = () => {
+        this.outOfFuelCount += 1
     }
 
     incrementBreachedTimer = () => {

@@ -202,8 +202,8 @@ canvas {
     z-index: 10;
 
     position: absolute;
-    right: 1rem;
-    top: 9rem;
+    right: 0.5rem;
+    top: 10.5rem;
 
     width: 13%;
     max-height: 80%;

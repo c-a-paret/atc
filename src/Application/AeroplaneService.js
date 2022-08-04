@@ -112,6 +112,9 @@ export class AeroplaneService {
                     this.map,
                     this.statsService.incrementCorrectlyLanded,
                     this.statsService.incrementIncorrectlyLanded,
+                ) ||
+                plane.outOfFuel(
+                    this.statsService.incrementOutOfFuelCount
                 )
             ) {
                 this.aeroplanes = this.aeroplanes.filter(activePlane => activePlane !== plane)

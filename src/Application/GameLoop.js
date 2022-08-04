@@ -51,7 +51,8 @@ export class GameLoop {
                 this.statsService.totalDeparted(),
                 this.statsService.correctlyDepartedPercentage(),
                 this.statsService.lostCount,
-                this.statsService.proximityTimer
+                this.statsService.proximityTimer,
+                this.statsService.outOfFuelCount
             )
             setTimeout(this.statsUpdaterTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
         }
