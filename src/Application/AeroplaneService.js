@@ -126,6 +126,12 @@ export class AeroplaneService {
         })
     }
 
+    consumeFuel = () => {
+        this.aeroplanes.forEach(plane => {
+            plane.consumeFuel()
+        })
+    }
+
     markAeroplanesBreakingProximity = () => {
         this.aeroplanes.forEach(plane => {
             plane.markAdheringProximityLimits()

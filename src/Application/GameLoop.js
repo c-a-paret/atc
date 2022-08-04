@@ -29,6 +29,7 @@ export class GameLoop {
             this.aeroplaneService.deactivateAeroplanes()
             this.aeroplaneService.markAeroplanesBreakingProximity()
             this.aeroplaneService.applyActions()
+            this.aeroplaneService.consumeFuel()
 
             this.uiController.drawAeroplanes()
 
@@ -41,9 +42,9 @@ export class GameLoop {
 
     statsUpdaterTick = () => {
         if (!this.interfaceController.gamePaused) {
-            if (this.aeroplaneService.aeroplanes.some(plane => plane.breachingProximity)) {
-                this.statsService.incrementBreachedTimer()
-            }
+            // if (this.aeroplaneService.aeroplanes.some(plane => plane.breachingProximity)) {
+            // }
+            this.statsService.incrementBreachedTimer()
             this.interfaceController.setStats(
                 this.statsService.totalLanded(),
                 this.statsService.correctlyLandedPercentage(),

@@ -442,7 +442,11 @@ export class InterfaceController {
         const fillColour = this._fuelIndicatorColour(fuelLevel)
 
         pips.forEach((pip, index) => {
-            pip.classList.remove('pip-green', 'pip-orange', 'pip-red')
+            pip.classList.remove(
+                'pip-green', 'pip-orange', 'pip-red',
+                'background-green', 'background-orange', 'background-red',
+                'pip-border-green', 'pip-border-orange', 'pip-border-red'
+            )
             pip.classList.add(`pip-border-${fillColour}`)
             if (index < numFilled) {
                 pip.classList.add(`background-${fillColour}`)

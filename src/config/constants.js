@@ -16,6 +16,7 @@ export const VERTICAL_SEPARATION_MINIMUM = 1000
 export const HORIZONTAL_SEPARATION_MINIMUM = 70
 export const SPEED_TAIL_LENGTH = 10
 export const NUM_PROJECTED_TICKS = 67 // 67 ticks at 900ms per tick ~= 60s
+export const DEFAULT_FUEL_CONSUMPTION_RATE = 0.02
 
 export const ARRIVAL = "ARRIVAL"
 export const DEPARTURE = "DEPARTURE"

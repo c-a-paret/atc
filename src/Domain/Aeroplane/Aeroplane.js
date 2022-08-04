@@ -1,7 +1,7 @@
 import {getRandomNumberBetween, round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
-    ARRIVAL,
+    ARRIVAL, DEFAULT_FUEL_CONSUMPTION_RATE,
     DEPARTURE,
     DEPARTURE_ALTITUDE,
     HORIZONTAL_SEPARATION_MINIMUM,
@@ -35,7 +35,7 @@ export class Aeroplane {
         this.type = type;
         this.state = state;
         this.finalTarget = finalTarget;
-        this.fuelLevel = fuelLevel ? fuelLevel : getRandomNumberBetween(20, 100);
+        this.fuelLevel = fuelLevel ? fuelLevel : this._determineStartingFuel();
         this.actions = []
         this.breachingProximity = false
         this.lastPositions = []
@@ -46,6 +46,14 @@ export class Aeroplane {
         this.targetSpeed = undefined
         this.aimingForRunway = undefined
         this.positionDescription = ''
+    }
+
+    _determineStartingFuel = () => {
+        if (this.isArrival()) {
+            return getRandomNumberBetween(15, 25)
+        } else {
+            return getRandomNumberBetween(90, 100)
+        }
     }
 
     hasFinalTarget = () => {
@@ -395,5 +403,25 @@ export class Aeroplane {
 
     markAdheringProximityLimits = () => {
         this.breachingProximity = false
+    }
+
+    consumeFuel = () => {
+        if (this.fuelLevel - DEFAULT_FUEL_CONSUMPTION_RATE <= 0) {
+            this.fuelLevel = 0
+        } else {
+            let rate = DEFAULT_FUEL_CONSUMPTION_RATE
+            if (this.targetAltitude && this.targetAltitude > this.altitude) {
+                rate += 0.005
+            } else {
+                rate -= 0.005
+            }
+            if (this.speed >= 240) {
+                rate += 0.005
+            }
+            if (this.speed <= 200) {
+                rate -= 0.005
+            }
+            this.fuelLevel -= rate
+        }
     }
 }
