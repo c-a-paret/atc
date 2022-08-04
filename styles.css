@@ -206,7 +206,7 @@ canvas {
     top: 9rem;
 
     width: 13%;
-    max-height: 85%;
+    max-height: 80%;
 
     display: flex;
     flex-direction: column;
@@ -215,7 +215,13 @@ canvas {
     padding-bottom: 0.5rem;
 
     backdrop-filter: blur(4px);
+
     overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .aeroplane-strip {
