@@ -20,3 +20,8 @@ export const DEFAULT_FUEL_CONSUMPTION_RATE = 0.02
 
 export const ARRIVAL = "ARRIVAL"
 export const DEPARTURE = "DEPARTURE"
+
+export const Difficulty = {
+    EASY: "EASY",
+    HARD: "HARD"
+}

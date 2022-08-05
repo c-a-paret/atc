@@ -1,10 +1,11 @@
 import {commandMessage} from "../Command/CommandParser/CommandParser";
 import {timeStringFromSeconds} from "../utils/timeFormatters";
 import {div, p} from "./elements";
-import {CoreGamePlay} from "../States/CoreGamePlay";
 import {Tutorial} from "../States/Tutorial";
 import {round} from "../utils/maths";
 import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
+import {StartGameState} from "../States/StartGameState";
+import {Difficulty} from "../config/constants";
 
 class TargetValue {
     constructor(value) {
@@ -32,6 +33,7 @@ export class InterfaceController {
         this.unPauseCallback = undefined
         this.gameSpeed = 1
         this.projectedPathsOn = false
+        this.difficulty = Difficulty.EASY
         this._init()
     }
 
@@ -40,7 +42,7 @@ export class InterfaceController {
         this._setupClickInterface()
         this._setupPlayPauseInterface()
         this._setupButtonsInterface()
-        this._drawGameModeButtons()
+        this._setupSettingsButtons()
         this._setupGameSpeedButtons()
         this._focusCommandEntry()
     }
@@ -86,9 +88,10 @@ export class InterfaceController {
         });
     }
 
-    _drawGameModeButtons = () => {
-        document.getElementById("game").addEventListener("click", this._setGameMode)
+    _setupSettingsButtons = () => {
         document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
+        document.getElementById("easy").addEventListener("click", this._setDifficulty)
+        document.getElementById("hard").addEventListener("click", this._setDifficulty)
         document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
     }
 
@@ -645,14 +648,20 @@ export class InterfaceController {
     }
 
     // -> Game mode
-    _setGameMode = () => {
-        this.hideHint()
-        this.blurAttention()
-        this.aeroplaneService.transitionTo(new CoreGamePlay(true))
-    }
-
     _setTutorialMode = () => {
         this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
+    }
+
+    _setDifficulty = () => {
+        this.hideHint()
+        this.blurAttention()
+        if (this.difficulty === Difficulty.EASY) {
+            this.difficulty = Difficulty.HARD
+            this.aeroplaneService.transitionTo(new StartGameState(true, Difficulty.HARD))
+        } else {
+            this.difficulty = Difficulty.EASY
+            this.aeroplaneService.transitionTo(new StartGameState(true, Difficulty.EASY))
+        }
     }
 
     // -> Projected Paths

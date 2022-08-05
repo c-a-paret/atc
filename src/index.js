@@ -5,13 +5,14 @@ import {InterfaceController} from "./Interface/InterfaceController";
 import {EGLL} from "./config/maps/EGLL";
 import {StatsService} from "./Application/StatsService";
 import {GameMap} from "./Domain/GameMap/GameMap";
-import {CoreGamePlay} from "./States/CoreGamePlay";
+import {StartGameState} from "./States/StartGameState";
+import {Difficulty} from "./config/constants";
 
 
 const map = new GameMap(EGLL)
 
 const statsService = new StatsService();
-const startState = new CoreGamePlay(map)
+const startState = new StartGameState(true, Difficulty.EASY)
 
 const aeroplaneService = new AeroplaneService(map, statsService, startState)
 
