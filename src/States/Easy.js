@@ -32,10 +32,10 @@ export class Easy extends GameState {
             this.initialised = true
         }
         if (this.ticks % this.arrivalSpawnInterval === 0) {
-            this.initDeparture()
+            this.initArrival()
         }
         if (this.ticks !== 0 && this.ticks % this.departureSpawnInterval === 0) {
-            this.initArrival()
+            this.initDeparture()
         }
 
         this.ticks += 1
