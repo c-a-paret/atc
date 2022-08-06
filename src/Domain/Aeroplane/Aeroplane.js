@@ -1,7 +1,8 @@
 import {getRandomNumberBetween, round, toRadians} from "../../utils/maths";
 import {distance, isInsidePolygon} from "../../utils/geometry";
 import {
-    ARRIVAL, DEFAULT_FUEL_CONSUMPTION_RATE,
+    ARRIVAL,
+    BASE_FUEL_CONSUMPTION_RATE,
     DEPARTURE,
     DEPARTURE_ALTITUDE,
     HORIZONTAL_SEPARATION_MINIMUM,
@@ -413,11 +414,26 @@ export class Aeroplane {
         return outOfFuel
     }
 
+    _stateFuelConsumptionRate = () => {
+        const consumptionRateMap = {
+            READY_TO_TAXI: 0.001,
+            TAXIING: 0.002,
+            HOLDING_SHORT: 0.001,
+            TAKING_OFF: 0.05,
+            FLYING: 0,
+            GOING_AROUND: 0,
+        }
+        return this.state ? consumptionRateMap[this.state] : 0
+    }
+
     consumeFuel = () => {
-        if (this.fuelLevel - DEFAULT_FUEL_CONSUMPTION_RATE <= 0) {
+        if (this.fuelLevel - BASE_FUEL_CONSUMPTION_RATE <= 0) {
             this.fuelLevel = 0
         } else {
-            let rate = DEFAULT_FUEL_CONSUMPTION_RATE
+            let rate = BASE_FUEL_CONSUMPTION_RATE
+
+            rate += this._stateFuelConsumptionRate()
+
             if (this.targetAltitude && this.targetAltitude > this.altitude) {
                 rate += 0.005
             } else {
