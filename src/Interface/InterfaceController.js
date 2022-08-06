@@ -5,6 +5,7 @@ import {Tutorial} from "../States/Tutorial";
 import {round} from "../utils/maths";
 import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 import {Easy} from "../States/Easy";
+import {Hard} from "../States/Hard";
 
 class TargetValue {
     constructor(value) {
@@ -663,7 +664,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("hard-text").classList.add('selected-red')
-        this.aeroplaneService.transitionTo(new Easy(true))
+        this.aeroplaneService.transitionTo(new Hard(true))
     }
 
     _clearGameModeSelection = () => {
