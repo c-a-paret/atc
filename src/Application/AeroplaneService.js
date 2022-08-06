@@ -1,10 +1,11 @@
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 
 export class AeroplaneService {
-    constructor(map, statsService) {
+    constructor(map, statsService, weather) {
         this.aeroplanes = []
         this.map = map
         this.statsService = statsService
+        this.weather = weather
 
         this.state = undefined
     }

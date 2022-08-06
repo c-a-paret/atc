@@ -15,6 +15,13 @@ export class GameLoop {
         this.interfaceController.drawStrips()
     }
 
+    weatherTick = () => {
+        if (!this.interfaceController.gamePaused) {
+            this.aeroplaneService.weather.tick()
+            setTimeout(this.weatherTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+        }
+    }
+
     stateTick = () => {
         if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
             this.aeroplaneService.tick()
@@ -36,6 +43,9 @@ export class GameLoop {
             this.interfaceController.clearInactiveStrips()
             this.interfaceController.drawStrips()
             this.interfaceController.updateStrips()
+
+            this.interfaceController.updateWindIndicator()
+
             setTimeout(this.renderTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
         }
     }
@@ -59,6 +69,7 @@ export class GameLoop {
     }
 
     start = () => {
+        this.weatherTick()
         this.stateTick()
         this.statsUpdaterTick()
         this.renderTick()

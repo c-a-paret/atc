@@ -288,6 +288,17 @@ export class InterfaceController {
         commandField.value = ""
     }
 
+    // Wind Indicator
+    updateWindIndicator = () => {
+        const windDirection = this.aeroplaneService.weather.wind.direction
+        const windArrow = document.getElementById("wind-arrow");
+        windArrow.style.transform = `rotate(${windDirection}deg)`
+
+        const windSpeed = this.aeroplaneService.weather.wind.speed
+        const windSpeedIndicator = document.getElementById("wind-speed");
+        windSpeedIndicator.innerText = windSpeed
+    }
+
     // Message
 
     _displayMessage = (message) => {

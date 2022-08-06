@@ -25,6 +25,7 @@ export class Easy extends GameState {
 
     tick = () => {
         if (!this.initialised && this.clearAircraftOnStart) {
+            this.machine.weather.reset()
             this.machine.clear()
             this.initialised = true
         } else {

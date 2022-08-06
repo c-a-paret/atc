@@ -103,6 +103,52 @@ canvas {
     background: rgba(253, 3, 43, 0.2);
 }
 
+.wind-indicator {
+    z-index: 12;
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid #9D9D9D;
+    border-radius: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    backdrop-filter: blur(2px);
+}
+
+
+.wind-arrow {
+    display: flex;
+    flex-direction: column;
+    transform-origin: center;
+    transform: rotate(137deg);
+}
+
+.wind-arrow-segment {
+    width: 0.1rem;
+    height: 0.4rem;
+}
+
+.marker {
+    background-color: rgb(0, 213, 170);
+}
+
+.wind-arrow-segment + .filler {
+    background-color: transparent;
+}
+
+#wind-speed {
+    color: white;
+    position: absolute;
+    margin: 0;
+    top: 0.6rem;
+    font-family: "Courier New", monospace;
+}
+
 .game-speed-indicator {
     color: #9d9d9d;
     min-width: 2rem;

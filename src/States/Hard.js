@@ -31,6 +31,16 @@ export class Hard extends GameState {
 
     setMachine = (machine) => {
         this.machine = machine
+        this.init()
+    }
+
+    init = () => {
+        this.machine.weather.reset()
+        if (this.machine.weather.wind.easterly()) {
+            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
+        } else {
+            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
+        }
     }
 
     tick = () => {
