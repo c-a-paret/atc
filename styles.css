@@ -87,8 +87,16 @@ canvas {
     cursor: pointer;
 }
 
+#realistic {
+    display: none;
+}
+
 .selected-green {
     background: rgba(0, 213, 170, 0.2);
+}
+
+.selected-orange {
+    background: rgba(255, 167, 7, 0.2);
 }
 
 .selected-red {

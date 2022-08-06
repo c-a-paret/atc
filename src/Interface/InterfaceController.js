@@ -6,6 +6,7 @@ import {round} from "../utils/maths";
 import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 import {Easy} from "../States/Easy";
 import {Hard} from "../States/Hard";
+import {RealisticStart} from "../States/Realistic/RealisticStart";
 
 class TargetValue {
     constructor(value) {
@@ -91,6 +92,7 @@ export class InterfaceController {
         document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
         document.getElementById("easy").addEventListener("click", this.startEasyMode)
         document.getElementById("hard").addEventListener("click", this.startHardMode)
+        document.getElementById("realistic").addEventListener("click", this.startRealisticMode)
         document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
     }
 
@@ -665,6 +667,14 @@ export class InterfaceController {
         this._clearGameModeSelection()
         document.getElementById("hard-text").classList.add('selected-red')
         this.aeroplaneService.transitionTo(new Hard(true))
+    }
+
+    startRealisticMode = () => {
+        this.hideHint()
+        this.blurAttention()
+        this._clearGameModeSelection()
+        document.getElementById("realistic-text").classList.add('selected-orange')
+        this.aeroplaneService.transitionTo(new RealisticStart(true))
     }
 
     _clearGameModeSelection = () => {
