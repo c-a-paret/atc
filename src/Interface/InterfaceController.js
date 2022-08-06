@@ -4,8 +4,7 @@ import {div, p} from "./elements";
 import {Tutorial} from "../States/Tutorial";
 import {round} from "../utils/maths";
 import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
-import {StartGameState} from "../States/StartGameState";
-import {Difficulty} from "../config/constants";
+import {Easy} from "../States/Easy";
 
 class TargetValue {
     constructor(value) {
@@ -33,7 +32,6 @@ export class InterfaceController {
         this.unPauseCallback = undefined
         this.gameSpeed = 1
         this.projectedPathsOn = false
-        this.difficulty = Difficulty.EASY
         this._init()
     }
 
@@ -90,8 +88,8 @@ export class InterfaceController {
 
     _setupSettingsButtons = () => {
         document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
-        document.getElementById("easy").addEventListener("click", this._setDifficulty)
-        document.getElementById("hard").addEventListener("click", this._setDifficulty)
+        document.getElementById("easy").addEventListener("click", this.startEasyMode)
+        document.getElementById("hard").addEventListener("click", this.startHardMode)
         document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
     }
 
@@ -652,16 +650,25 @@ export class InterfaceController {
         this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
     }
 
-    _setDifficulty = () => {
+    startEasyMode = () => {
         this.hideHint()
         this.blurAttention()
-        if (this.difficulty === Difficulty.EASY) {
-            this.difficulty = Difficulty.HARD
-            this.aeroplaneService.transitionTo(new StartGameState(true, Difficulty.HARD))
-        } else {
-            this.difficulty = Difficulty.EASY
-            this.aeroplaneService.transitionTo(new StartGameState(true, Difficulty.EASY))
-        }
+        this._clearGameModeSelection()
+        document.getElementById("easy-text").classList.add('selected-green')
+        this.aeroplaneService.transitionTo(new Easy(true))
+    }
+
+    startHardMode = () => {
+        this.hideHint()
+        this.blurAttention()
+        this._clearGameModeSelection()
+        document.getElementById("hard-text").classList.add('selected-red')
+        this.aeroplaneService.transitionTo(new Easy(true))
+    }
+
+    _clearGameModeSelection = () => {
+        document.getElementById("easy-text").classList.remove('selected-green')
+        document.getElementById("hard-text").classList.remove('selected-red')
     }
 
     // -> Projected Paths

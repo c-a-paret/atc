@@ -1,13 +1,12 @@
 import {parseCommand} from "../Command/CommandParser/CommandParser";
 
 export class AeroplaneService {
-    constructor(map, statsService, initialState) {
+    constructor(map, statsService) {
         this.aeroplanes = []
         this.map = map
         this.statsService = statsService
 
         this.state = undefined
-        this.transitionTo(initialState)
     }
 
     transitionTo = (state) => {
