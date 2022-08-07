@@ -15,17 +15,25 @@ export class GameLoop {
         this.interfaceController.drawStrips()
     }
 
+    _determineGameSpeed = () => {
+        return {
+            1: 900,
+            2: 300,
+            3: 100
+        }[this.interfaceController.gameSpeed]
+    }
+
     weatherTick = () => {
         if (!this.interfaceController.gamePaused) {
             this.aeroplaneService.weather.tick()
-            setTimeout(this.weatherTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+            setTimeout(this.weatherTick, this._determineGameSpeed())
         }
     }
 
     stateTick = () => {
         if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
             this.aeroplaneService.tick()
-            setTimeout(this.stateTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+            setTimeout(this.stateTick, this._determineGameSpeed())
         }
     }
 
@@ -46,7 +54,7 @@ export class GameLoop {
 
             this.interfaceController.updateWindIndicator()
 
-            setTimeout(this.renderTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+            setTimeout(this.renderTick, this._determineGameSpeed())
         }
     }
 
@@ -64,7 +72,7 @@ export class GameLoop {
                 this.statsService.proximityTimer,
                 this.statsService.outOfFuelCount
             )
-            setTimeout(this.statsUpdaterTick, DEFAULT_TICK_INTERVAL / this.interfaceController.gameSpeed)
+            setTimeout(this.statsUpdaterTick, this._determineGameSpeed())
         }
     }
 
