@@ -4,10 +4,11 @@ import {round} from "../utils/maths";
 import {FLYING, GOING_AROUND, HOLDING_SHORT, TAKING_OFF} from "../Domain/Aeroplane/aeroplaneStates";
 
 export class UIController {
-    constructor(map, aeroplaneService, interfaceController) {
+    constructor(map, aeroplaneService, interfaceController, weatherService) {
         this.map = map
         this.aeroplaneService = aeroplaneService
         this.interfaceController = interfaceController
+        this.weatherService = weatherService
 
         this.backgroundCanvas = document.getElementById("background");
         this.backgroundContext = this.backgroundCanvas.getContext('2d');
@@ -74,6 +75,7 @@ export class UIController {
             this._drawCallSignLabel(plane)
             this._drawFinalTargetLabel(plane)
             this._drawProjectedPath(plane)
+            this.drawWeather()
         })
     }
 
@@ -439,6 +441,53 @@ export class UIController {
                 this.featuresContext.closePath()
                 this.featuresContext.fill();
             })
+        })
+    }
+
+    drawWeather = () => {
+        this.weatherService.thunderstorms.forEach(thunderstorm => {
+            if (thunderstorm.type === "SMALL") {
+                const pattern = document.createElement("canvas");
+                pattern.classList.add("weather")
+                pattern.width = 10;
+                pattern.height = 10;
+                const patternContext = pattern.getContext('2d');
+                patternContext.fillStyle = COLOURS.MINT
+                patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
+                patternContext.fill();
+                const dotPattern = patternContext.createPattern(pattern, "repeat");
+
+                this.aeroplaneContext.fillStyle = dotPattern
+                this.aeroplaneContext.lineWidth = 10
+                this.aeroplaneContext.beginPath()
+                // Border
+                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y)
+                this.aeroplaneContext.lineTo(thunderstorm.x + 80, thunderstorm.y + 20);
+                this.aeroplaneContext.lineTo(thunderstorm.x + 50, thunderstorm.y + 80);
+                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y + 40);
+            } else {
+                const pattern = document.createElement("canvas");
+                pattern.classList.add("weather")
+                pattern.width = 10;
+                pattern.height = 10;
+                const patternContext = pattern.getContext('2d');
+                patternContext.fillStyle = COLOURS.ORANGE
+                patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
+                patternContext.fill();
+                const dotPattern = patternContext.createPattern(pattern, "repeat");
+
+                this.aeroplaneContext.fillStyle = dotPattern
+                this.aeroplaneContext.lineWidth = 10
+                this.aeroplaneContext.beginPath()
+                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y)
+                this.aeroplaneContext.lineTo(thunderstorm.x + 80, thunderstorm.y - 10);
+                this.aeroplaneContext.lineTo(thunderstorm.x + 150, thunderstorm.y + 40);
+                this.aeroplaneContext.lineTo(thunderstorm.x + 100, thunderstorm.y + 100);
+                this.aeroplaneContext.lineTo(thunderstorm.x + 40, thunderstorm.y + 100);
+                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y + 40);
+            }
+            this.aeroplaneContext.closePath()
+            this.aeroplaneContext.fill()
         })
     }
 }

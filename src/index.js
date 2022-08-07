@@ -16,7 +16,7 @@ const statsService = new StatsService();
 const aeroplaneService = new AeroplaneService(map, statsService, weather)
 
 const interfaceController = new InterfaceController(aeroplaneService)
-const uiController = new UIController(map, aeroplaneService, interfaceController)
+const uiController = new UIController(map, aeroplaneService, interfaceController, weather)
 
 const gameLoop = new GameLoop(uiController, interfaceController, aeroplaneService, statsService)
 

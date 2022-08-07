@@ -53,6 +53,7 @@ export class GameLoop {
             this.interfaceController.updateStrips()
 
             this.interfaceController.updateWindIndicator()
+            this.uiController.drawWeather()
 
             setTimeout(this.renderTick, this._determineGameSpeed())
         }
