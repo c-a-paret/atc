@@ -375,7 +375,7 @@ export class Aeroplane {
             const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
             const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
             return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
-                && verticalDistance <= VERTICAL_SEPARATION_MINIMUM
+                && verticalDistance < VERTICAL_SEPARATION_MINIMUM
         }
     }
 
