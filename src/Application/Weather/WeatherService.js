@@ -1,15 +1,13 @@
 import {DefaultStaticWind} from "./States/DefaultStaticWind";
-import {CloudCell} from "./States/CloudCell";
+import {ScatteredCloud} from "./States/ScatteredCloud";
 
 export class Weather {
-    constructor() {
+    constructor(map) {
+        this.map = map
         this.wind = undefined
-        this.thunderstorms = [
-            new CloudCell(9, 90, 120),
-            new CloudCell(18, 40, 80),
-            new CloudCell(18, 40, 80),
-        ]
+        this.clouds = undefined
         this.transitionWindTo(new DefaultStaticWind())
+        this.transitionCloudsTo(new ScatteredCloud())
     }
 
     transitionWindTo = (windState) => {
@@ -17,13 +15,20 @@ export class Weather {
         this.wind.setMachine(this)
     }
 
+    transitionCloudsTo = (cloudState) => {
+        this.clouds = cloudState
+        this.clouds.setMachine(this)
+    }
+
     tick = () => {
         this.wind.tick()
-        this.thunderstorms = this.thunderstorms.filter(thunderstorm => !thunderstorm.evaporated())
-        this.thunderstorms.forEach(thunderstorm => thunderstorm.tick())
+        this.clouds.clouds = this.clouds.clouds.filter(cloud => !cloud.evaporated(this.map))
+        this.clouds.tick(this.map)
+        this.clouds.clouds.forEach(cloud => cloud.tick())
     }
 
     reset = () => {
         this.transitionWindTo(new DefaultStaticWind())
+        this.transitionCloudsTo(new ScatteredCloud())
     }
 }

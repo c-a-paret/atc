@@ -1,14 +1,13 @@
-import {getRandomFloatBetween, getRandomNumberBetween} from "../../../utils/maths";
+import {getRandomFloatBetween, getRandomNumberBetween, round} from "../../../utils/maths";
 
 export class CloudCell {
-    constructor(numEdgePoints, startRadiusMin, startRadiusMax) {
-        this.MIN_SIZE = 2
+    constructor(startX, startY, numEdgePoints, startRadiusMin, startRadiusMax, wind, stable = false) {
+        this.MIN_SIZE = 25
+        this.wind = wind
+        this.stable = stable
 
-        this.startX = getRandomNumberBetween(100, 1100)
-        this.startY = getRandomNumberBetween(100, 700)
-
-        this.x = this.startX
-        this.y = this.startY
+        this.x = startX
+        this.y = startY
 
         this.angleInterval = Math.floor(360 / numEdgePoints)
 
@@ -16,11 +15,6 @@ export class CloudCell {
         for (let a = 0; a < 360; a += this.angleInterval) {
             this.points.push({angle: a, radius: getRandomNumberBetween(startRadiusMin, startRadiusMax)})
         }
-
-        const endpoint = getRandomNumberBetween(100, 1100)
-
-        this.endX = endpoint
-        this.endY = endpoint
     }
 
     _update_edges = (rate) => {
@@ -33,25 +27,33 @@ export class CloudCell {
     }
 
     tick = () => {
-        if (this.x < this.endX) {
-            this.x += 0.5
-        } else {
-            this.x -= 0.5
-        }
-        if (this.y < this.endY) {
-            this.y += 0.5
-        } else {
-            this.y -= 0.5
-        }
+        const windTravelDirection = this.wind.direction + 180
+
+        const windRadians = (Math.PI / 180) * windTravelDirection
+        const normalisedSpeed = Math.max(1, this.wind.speed / 18)
+
+        this.x = round(this.x + normalisedSpeed * Math.sin(windRadians), 2);
+        this.y = round(this.y - normalisedSpeed * Math.cos(windRadians), 2);
+
         this.updatePoints()
     }
 
     updatePoints = () => {
-        const rate = getRandomFloatBetween(0.1, 0.4);
-        this._update_edges(-rate)
+        if (!this.stable) {
+            const rate = getRandomFloatBetween(0.1, 0.4);
+            this._update_edges(-rate)
+        }
     }
 
-    evaporated = () => {
-        return this.points.every(point => point.radius < this.MIN_SIZE)
+    evaporated = (map) => {
+        if (this.stable) {
+            const averageRadius = this.points.map(point => point.radius).reduce((a, b) => a + b, 0) / this.points.length
+            const outsideX = (this.x < map.mapBoundaries.minX - averageRadius || this.x > map.mapBoundaries.maxX + averageRadius)
+            const outsideY = (this.y < map.mapBoundaries.minY - averageRadius || this.y > map.mapBoundaries.maxY + averageRadius)
+            return outsideX || outsideY
+        } else {
+            return this.points.every(point => point.radius < this.MIN_SIZE)
+        }
+
     }
 }

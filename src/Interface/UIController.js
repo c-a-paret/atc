@@ -445,13 +445,17 @@ export class UIController {
     }
 
     drawWeather = () => {
-        this.weatherService.thunderstorms.forEach(thunderstorm => {
+        this.weatherService.clouds.clouds.forEach(cloud => {
             const pattern = document.createElement("canvas");
             pattern.classList.add("weather")
             pattern.width = 10;
             pattern.height = 10;
             const patternContext = pattern.getContext('2d');
-            patternContext.fillStyle = COLOURS.WHITE_TRANSPARENT
+            if (cloud.stable) {
+                patternContext.fillStyle = COLOURS.RED
+            } else {
+                patternContext.fillStyle = COLOURS.WHITE_TRANSPARENT
+            }
             patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
             patternContext.fill();
 
@@ -461,10 +465,10 @@ export class UIController {
             this.aeroplaneContext.beginPath()
 
             // Border
-            thunderstorm.points.forEach((point, index) => {
+            cloud.points.forEach((point, index) => {
                 if (index !== 0) {
-                    let x = thunderstorm.x + point.radius * Math.sin(toRadians(point.angle));
-                    let y = thunderstorm.y - point.radius * Math.cos(toRadians(point.angle));
+                    let x = cloud.x + point.radius * Math.sin(toRadians(point.angle));
+                    let y = cloud.y - point.radius * Math.cos(toRadians(point.angle));
                     this.aeroplaneContext.lineTo(x, y)
                 }
             })

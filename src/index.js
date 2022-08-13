@@ -9,7 +9,7 @@ import {Weather} from "./Application/Weather/WeatherService";
 
 
 const map = new GameMap(EGLL)
-const weather = new Weather()
+const weather = new Weather(map)
 
 const statsService = new StatsService();
 
