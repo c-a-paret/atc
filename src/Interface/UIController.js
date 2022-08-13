@@ -1,6 +1,6 @@
 import {COLOURS} from "../config/colours";
 import {ILS_MIN_X} from "../config/constants";
-import {round} from "../utils/maths";
+import {round, toRadians} from "../utils/maths";
 import {FLYING, GOING_AROUND, HOLDING_SHORT, TAKING_OFF} from "../Domain/Aeroplane/aeroplaneStates";
 
 export class UIController {
@@ -446,48 +446,32 @@ export class UIController {
 
     drawWeather = () => {
         this.weatherService.thunderstorms.forEach(thunderstorm => {
-            if (thunderstorm.type === "SMALL") {
-                const pattern = document.createElement("canvas");
-                pattern.classList.add("weather")
-                pattern.width = 10;
-                pattern.height = 10;
-                const patternContext = pattern.getContext('2d');
-                patternContext.fillStyle = COLOURS.MINT
-                patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
-                patternContext.fill();
-                const dotPattern = patternContext.createPattern(pattern, "repeat");
+            const pattern = document.createElement("canvas");
+            pattern.classList.add("weather")
+            pattern.width = 10;
+            pattern.height = 10;
+            const patternContext = pattern.getContext('2d');
+            patternContext.fillStyle = COLOURS.WHITE_TRANSPARENT
+            patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
+            patternContext.fill();
 
-                this.aeroplaneContext.fillStyle = dotPattern
-                this.aeroplaneContext.lineWidth = 10
-                this.aeroplaneContext.beginPath()
-                // Border
-                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y)
-                this.aeroplaneContext.lineTo(thunderstorm.x + 80, thunderstorm.y + 20);
-                this.aeroplaneContext.lineTo(thunderstorm.x + 50, thunderstorm.y + 80);
-                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y + 40);
-            } else {
-                const pattern = document.createElement("canvas");
-                pattern.classList.add("weather")
-                pattern.width = 10;
-                pattern.height = 10;
-                const patternContext = pattern.getContext('2d');
-                patternContext.fillStyle = COLOURS.ORANGE
-                patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
-                patternContext.fill();
-                const dotPattern = patternContext.createPattern(pattern, "repeat");
+            this.aeroplaneContext.fillStyle = patternContext.createPattern(pattern, "repeat")
+            // this.aeroplaneContext.strokeStyle = COLOURS.PURPLE
+            this.aeroplaneContext.lineWidth = 1
+            this.aeroplaneContext.beginPath()
 
-                this.aeroplaneContext.fillStyle = dotPattern
-                this.aeroplaneContext.lineWidth = 10
-                this.aeroplaneContext.beginPath()
-                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y)
-                this.aeroplaneContext.lineTo(thunderstorm.x + 80, thunderstorm.y - 10);
-                this.aeroplaneContext.lineTo(thunderstorm.x + 150, thunderstorm.y + 40);
-                this.aeroplaneContext.lineTo(thunderstorm.x + 100, thunderstorm.y + 100);
-                this.aeroplaneContext.lineTo(thunderstorm.x + 40, thunderstorm.y + 100);
-                this.aeroplaneContext.lineTo(thunderstorm.x, thunderstorm.y + 40);
-            }
+            // Border
+            thunderstorm.points.forEach((point, index) => {
+                if (index !== 0) {
+                    let x = thunderstorm.x + point.radius * Math.sin(toRadians(point.angle));
+                    let y = thunderstorm.y - point.radius * Math.cos(toRadians(point.angle));
+                    this.aeroplaneContext.lineTo(x, y)
+                }
+            })
+
             this.aeroplaneContext.closePath()
             this.aeroplaneContext.fill()
+            // this.aeroplaneContext.stroke()
         })
     }
 }

@@ -1,14 +1,14 @@
 import {DefaultStaticWind} from "./States/DefaultStaticWind";
-import {SmallThunderstorm} from "./States/SmallThunderstorm";
-import {LargeThunderstorm} from "./States/LargeThunderstorm";
+import {CloudCell} from "./States/CloudCell";
 
 export class Weather {
     constructor() {
         this.wind = undefined
-        // this.thunderstorms = [
-        //     new SmallThunderstorm(),
-        //     new LargeThunderstorm()
-        // ]
+        this.thunderstorms = [
+            new CloudCell(9, 90, 120),
+            new CloudCell(18, 40, 80),
+            new CloudCell(18, 40, 80),
+        ]
         this.transitionWindTo(new DefaultStaticWind())
     }
 
@@ -19,7 +19,8 @@ export class Weather {
 
     tick = () => {
         this.wind.tick()
-        // this.thunderstorms.forEach(thunderstorm => thunderstorm.tick())
+        this.thunderstorms = this.thunderstorms.filter(thunderstorm => !thunderstorm.evaporated())
+        this.thunderstorms.forEach(thunderstorm => thunderstorm.tick())
     }
 
     reset = () => {
