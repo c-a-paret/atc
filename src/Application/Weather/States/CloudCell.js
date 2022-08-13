@@ -15,6 +15,9 @@ export class CloudCell {
         for (let a = 0; a < 360; a += this.angleInterval) {
             this.points.push({angle: a, radius: getRandomNumberBetween(startRadiusMin, startRadiusMax)})
         }
+
+        this.red = 256
+        this.green = 0
     }
 
     _update_edges = (rate) => {

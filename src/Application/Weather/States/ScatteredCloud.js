@@ -17,9 +17,9 @@ export class ScatteredCloud {
     initialise = () => {
         this.clouds = [
             new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 9, 90, 120, this.machine.wind),
-            new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 18, 40, 80, this.machine.wind),
-            new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 18, 40, 80, this.machine.wind),
-            new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 18, 40, 80, this.machine.wind)
+            new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 18, 20, 40, this.machine.wind),
+            new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 18, 10, 20, this.machine.wind),
+            new CloudCell(getRandomNumberBetween(100, 1100), getRandomNumberBetween(100, 700), 18, 10, 20, this.machine.wind),
         ]
     }
 
@@ -27,8 +27,8 @@ export class ScatteredCloud {
         if (this.clouds.length < this.minClouds) {
             const maxX = map.maxX
             const maxY = map.maxY
-            const startRadiusMin = getRandomNumberBetween(120, 180)
-            const startRadiusMax = getRandomNumberBetween(180, 260)
+            const startRadiusMin = getRandomNumberBetween(80, 120)
+            const startRadiusMax = getRandomNumberBetween(120, 160)
 
             const newCloudSpawnLocations = {
                 0: {
@@ -51,7 +51,7 @@ export class ScatteredCloud {
             const windDirection = this.machine.wind.directionIndex();
             const newX = newCloudSpawnLocations[windDirection].x
             const newY = newCloudSpawnLocations[windDirection].y
-            const stable = randomChoice([true, false]);
+            const stable = randomChoice([true, false, false, false, false]);
             this.clouds.push(
                 new CloudCell(
                     newX,

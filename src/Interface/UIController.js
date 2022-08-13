@@ -451,11 +451,21 @@ export class UIController {
             pattern.width = 10;
             pattern.height = 10;
             const patternContext = pattern.getContext('2d');
-            if (cloud.stable) {
-                patternContext.fillStyle = COLOURS.RED
-            } else {
-                patternContext.fillStyle = COLOURS.WHITE_TRANSPARENT
+
+            if (cloud.points[0].radius < 60) {
+                cloud.green += 1
             }
+            if (cloud.points[0].radius < 80) {
+                cloud.red -= 2
+            }
+            if (cloud.points[0].radius < 100) {
+                cloud.green += 1
+            }
+
+            cloud.red = Math.max(128, cloud.red)
+            cloud.green = Math.min(cloud.green, 212)
+            patternContext.fillStyle = `rgba(${cloud.red}, ${cloud.green}, 0, 0.8)`
+
             patternContext.arc(5, 5, 1, 0, Math.PI * 2, false);
             patternContext.fill();
 
