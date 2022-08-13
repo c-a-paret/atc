@@ -1,12 +1,13 @@
 import {Aeroplane} from "../Aeroplane";
 import {GameMap} from "../../GameMap/GameMap";
-import {MIN_SPEED} from "../../../config/constants";
+import {ARRIVAL, MIN_SPEED} from "../../../config/constants";
 import {Speed} from "../../Action/Speed";
 import {Heading} from "../../Action/Heading";
 import {Altitude} from "../../Action/Altitude";
 import {Waypoint} from "../../Action/Waypoint";
 import {Landing} from "../../Action/Landing";
 import {HoldingPattern} from "../../Action/HoldingPattern";
+import {FLYING, GOING_AROUND} from "../aeroplaneStates";
 
 
 const testGameMap = () => {
@@ -30,6 +31,11 @@ const testGameMap = () => {
                             x: 280,
                             y: 500,
                         }
+                    },
+                    goAround: {
+                        targetWaypoint: "CHT",
+                        targetSpeed: 200,
+                        targetAltitude: 4000,
                     }
                 },
                 end: {
@@ -49,6 +55,11 @@ const testGameMap = () => {
                             x: 720,
                             y: 550,
                         }
+                    },
+                    goAround: {
+                        targetWaypoint: "OCK",
+                        targetSpeed: 220,
+                        targetAltitude: 5000,
                     }
                 }
             }],
@@ -193,6 +204,33 @@ describe("Set Landing", () => {
 
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].targetRunway).toBe(desiredRunway)
+    })
+
+    test("Does not set landing when not valid", () => {
+        let desiredRunway = "24C";
+
+        aeroplane.setLanding(map, desiredRunway)
+
+        expect(aeroplane.actions.length).toBe(0)
+    })
+})
+
+describe("Go Around", () => {
+    let aeroplane;
+    let map;
+    beforeEach(() => {
+        map = testGameMap()
+        aeroplane = new Aeroplane("AB123", "A321", 290, 500, 190, 90, 2500, 3, ARRIVAL)
+    })
+
+    test("Sets go around action when valid", () => {
+        aeroplane.isLanding = () => true
+        aeroplane.aimingForRunway = "9L"
+
+        aeroplane.goAround(map)
+
+        expect(aeroplane.actions.length).toBe(1)
+        expect(aeroplane.state).toBe(GOING_AROUND)
     })
 
     test("Does not set landing when not valid", () => {
@@ -1222,4 +1260,16 @@ describe("Restricted zone breached", () => {
         })
     })
 
+})
+
+describe("Final target", () => {
+    test("Returns that aeroplane has a final target", () => {
+        const aeroplane = new Aeroplane("AB123", "A321", 100, 700, 150, 0, 2800, 3, ARRIVAL, FLYING, "27R")
+        expect(aeroplane.hasFinalTarget()).toBeTruthy()
+    })
+
+    test("Returns that aeroplane does not have a final target", () => {
+        const aeroplane = new Aeroplane("AB123", "A321", 100, 700, 150, 0, 2800, 3)
+        expect(aeroplane.hasFinalTarget()).toBeFalsy()
+    })
 })
