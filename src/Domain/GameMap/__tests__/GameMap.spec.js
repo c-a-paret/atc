@@ -61,7 +61,33 @@ describe('Runway information', () => {
         expect(result.key).toBe("Value2")
     })
 
-    test('Returns null ofr non-existent runway', () => {
+    test('Returns null for non-existent runway', () => {
         expect(map.getRunwayInfo("12R")).toBeNull()
+    })
+})
+
+describe('Waypoint information', () => {
+    let map;
+
+    beforeEach(() => {
+        map = new GameMap({
+            features: {
+                waypoints: [
+                    {type: "VOR", id: "OCK", name: "Ockham", x: 134, y: 354},
+                    {type: "VOR", id: "GWC", name: "Goodwood", x: 721, y: 859},
+                ]
+            }
+        })
+    })
+
+    test('Gets existing waypoint', () => {
+        const result = map.getWaypointInfo("GWC");
+        expect(result.name).toBe("Goodwood")
+        expect(result.x).toBe(721)
+        expect(result.y).toBe(859)
+    })
+
+    test('Returns null for non-existent waypoint', () => {
+        expect(map.getWaypointInfo("XXX")).toBeNull()
     })
 })
