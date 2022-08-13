@@ -118,8 +118,8 @@ export class TutorialMapOverview {
                     "Just above the aeroplane, is a label that shows current information about the aeroplane.\n\n" +
                     "At the top is its Call Sign (AB123). This is how you refer to the plane.\n\n" +
                     "The three numbers underneath show:\n\n" +
-                    "- Heading (90 degrees, directly East)\n" +
                     "- Speed (200 knots)\n" +
+                    "- Heading (90 degrees, directly East)\n" +
                     "- Altitude (6000ft)\n\n" +
                     "Note: altitude is specified in 100s of feet",
                 hintCode: "",

@@ -73,7 +73,7 @@ export class TutorialDeparting {
                 hintTitle: "Future Commands (optional)",
                 hintBodyBefore: "At any point before takeoff, you may issue commands to the aircraft that will be actioned once the aircraft is flying. You can change these as often as you like.\n\n" +
                     "Try issuing a waypoint, speed and altitude command, e.g.:",
-                hintCode: ">MAYS300A280",
+                hintCode: "-MAYS300A280",
                 hintBodyAfter: "Notice that the target values have been updated on the sidebar strip, but that there is no aircraft on the map yet.\n\n" +
                     "Later we will see what happens after takeoff if you decide not to issue commands in advance.",
                 confirmButtonText: "Next",
