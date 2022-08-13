@@ -530,6 +530,11 @@ canvas {
     overflow-y: scroll;
 }
 
+.hint::-webkit-scrollbar {
+    display: none;
+}
+
+
 #hint-title {
     font-size: 1.1rem;
 }
