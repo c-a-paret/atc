@@ -202,10 +202,10 @@ export class TutorialTargets {
             DEPARTURE,
             HOLDING_SHORT,
             'MAY')
-        plane.setSpeed(this.map,300)
-        plane.setAltitude(this.map,25000)
-        plane.setWaypoint(this.map,'MAY')
-        plane.setTaxiAndHold(this.map,'9R')
+        plane.setSpeed(this.map, 300)
+        plane.setAltitude(this.map, 25000)
+        plane.setWaypoint(this.map, 'MAY')
+        plane.setTaxiAndHold(this.map, '9R')
         this.machine.machine.aeroplanes.push(plane)
     }
 }

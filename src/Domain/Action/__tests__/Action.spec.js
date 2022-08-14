@@ -1,5 +1,4 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
-import {Waypoint} from "../Waypoint";
 import {wouldEndUpTurningBeyondTarget} from "../Action";
 
 describe("Would End Up Turning Beyond Target", () => {

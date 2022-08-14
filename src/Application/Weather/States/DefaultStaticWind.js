@@ -23,7 +23,7 @@ export class DefaultStaticWind {
     directionIndex = () => {
         if (this.direction > 45 && this.direction <= 135) {
             return 1 // East
-        } else if (this.direction > 135 && this.direction <= 225 ) {
+        } else if (this.direction > 135 && this.direction <= 225) {
             return 2 // South
         } else if (this.direction >= 225 && this.direction <= 315) {
             return 3 // West

@@ -1,5 +1,4 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
-import {Speed} from "../Speed";
 import {TaxiToRunway} from "../TaxiToRunway";
 import {testGameMap} from "./actionTest.utils";
 import {HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";

@@ -1,5 +1,3 @@
-import {DEFAULT_TICK_INTERVAL} from "../config/constants";
-
 export class GameLoop {
     constructor(uiController, interfaceController, aeroplaneService, statsService) {
         this.uiController = uiController

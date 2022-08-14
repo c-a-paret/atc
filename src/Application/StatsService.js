@@ -7,6 +7,7 @@ export class StatsService {
         this.correctlyDepartedCount = 0
         this.incorrectlyDepartedCount = 0
         this.lostCount = 0
+        this.outOfFuelCount = 0
         this.proximityTimer = 0
     }
 
