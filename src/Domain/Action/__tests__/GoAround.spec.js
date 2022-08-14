@@ -2,7 +2,7 @@ import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {ARRIVAL} from "../../../config/constants";
 import {Altitude} from "../Altitude";
 import {GoAround} from "../GoAround";
-import {FLYING} from "../../Aeroplane/aeroplaneStates";
+import {FLYING, GOING_AROUND} from "../../Aeroplane/aeroplaneStates";
 import {Landing} from "../Landing";
 import {testGameMap} from "./actionTest.utils";
 
@@ -28,6 +28,36 @@ describe("Go Around", () => {
         expect(aeroplane.actions[1].type()).toBe('Waypoint')
         expect(aeroplane.actions[2].type()).toBe('Speed')
         expect(aeroplane.actions[3].type()).toBe('Altitude')
+    })
+
+    test("Completes go around execution when at correct altitude", () => {
+        const correctRunway = '9L';
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 1900, 3, GOING_AROUND, FLYING, correctRunway)
+
+        const landing = new Landing(testGameMap(), aeroplane, correctRunway);
+        landing.isValid()
+        aeroplane.addAction(landing)
+
+        const goAround = new GoAround(testGameMap(), aeroplane, correctRunway);
+        goAround.isValid()
+        aeroplane.addAction(goAround)
+
+        aeroplane.applyActions()
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(1920)
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(1940)
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(1960)
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(1980)
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(2000)
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(2020)
+        expect(goAround.executed).toBeTruthy()
+        expect(aeroplane.state).toBe(FLYING)
+
     })
 
     test("Is not valid if the runway aiming for does not exist", () => {
