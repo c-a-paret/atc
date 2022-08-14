@@ -26,6 +26,14 @@ describe("Takeoff", () => {
         expect(action.targetY).toBe(undefined)
     })
 
+    test("Initialises with provided runway", () => {
+        const action = new Takeoff(map, {}, '16C')
+
+        expect(action.runway).toBe('16C')
+        expect(action.targetX).toBe(undefined)
+        expect(action.targetY).toBe(undefined)
+    })
+
     test("Is actionable when not executed", () => {
         const action = new Takeoff(map, {})
 

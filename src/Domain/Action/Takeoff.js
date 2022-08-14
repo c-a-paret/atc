@@ -16,6 +16,8 @@ export class Takeoff extends Action {
             this.runway = this.map.getRunwayInfo(this.aeroplane.positionDescription)
             this.targetX = this.runway.takeoffPoint.x
             this.targetY = this.runway.takeoffPoint.y
+        } else {
+            this.runway = runway
         }
     }
 
