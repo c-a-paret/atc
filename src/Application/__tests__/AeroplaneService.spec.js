@@ -1,65 +1,8 @@
 import {AeroplaneService} from "../AeroplaneService";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
-import {GameMap} from "../../Domain/GameMap/GameMap";
-import {DEPARTURE, LANDED_ALTITUDE} from "../../config/constants";
-import {HOLDING_SHORT, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
-
-const testGameMap = () => {
-    return new GameMap({
-        maxX: 1000,
-        maxY: 1000,
-        features: {
-            runways: [{
-                start: {
-                    label: "9L",
-                    heading: 90,
-                    altitude: 0,
-                    landingZone: {
-                        x: 510,
-                        y: 500,
-                    },
-                    takeoffPoint: {
-                        x: 550,
-                        y: 500,
-                    },
-                    ILS: {
-                        innerMarker: {
-                            x: 500,
-                            y: 500,
-                        },
-                        outerMarker: {
-                            x: 280,
-                            y: 500,
-                        }
-                    }
-                },
-                end: {
-                    label: "27R",
-                    heading: 270,
-                    altitude: 0,
-                    landingZone: {
-                        x: 490,
-                        y: 500,
-                    },
-                    takeoffPoint: {
-                        x: 440,
-                        y: 500,
-                    },
-                    ILS: {
-                        innerMarker: {
-                            x: 500,
-                            y: 550,
-                        },
-                        outerMarker: {
-                            x: 720,
-                            y: 550,
-                        }
-                    }
-                }
-            }], waypoints: [{type: "VOR", id: "LAM", name: "Lambourne", x: 500, y: 500},]
-        }
-    })
-}
+import {ARRIVAL, DEPARTURE, LANDED_ALTITUDE} from "../../config/constants";
+import {FLYING, HOLDING_SHORT, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
+import {testGameMap} from "../../Domain/Action/__tests__/actionTest.utils";
 
 
 describe('Send command', () => {
@@ -272,6 +215,56 @@ describe('Send command', () => {
         expect(service.aeroplanes[1].actions[0].type()).toBe('Takeoff')
     })
 
+    test('Sends go around command to relevant aeroplane', () => {
+        const service = new AeroplaneService(map, {}, mockState)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3)
+        const aeroplane2 = new Aeroplane("BA456", "A321", 300, 500, 190, 90, 1800, 3, ARRIVAL, FLYING)
+
+        service.aeroplanes = [
+            aeroplane1,
+            aeroplane2,
+        ]
+
+        const rawCommand = "BA456ILS9L"
+
+        const result = service.sendCommand(rawCommand)
+
+        expect(result).toStrictEqual({
+            callSign: "BA456",
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: '9L',
+            hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined,
+            goAround: undefined
+        })
+
+        expect(service.aeroplanes[1].actions.length).toBe(1)
+        expect(service.aeroplanes[1].actions[0].type()).toBe('Landing')
+
+        const rawGoAroundCommand = "BA456GA"
+
+        const goAroundResult = service.sendCommand(rawGoAroundCommand)
+
+        expect(goAroundResult).toStrictEqual({
+            callSign: "BA456",
+            speed: undefined,
+            heading: undefined,
+            altitude: undefined,
+            waypoint: undefined,
+            runway: undefined,
+            hold: undefined,
+            taxiAndHold: undefined,
+            clearedForTakeoff: undefined,
+            goAround: true
+        })
+
+        expect(service.aeroplanes[1].actions.length).toBe(1)
+        expect(service.aeroplanes[1].actions[0].type()).toBe('GoAround')
+    })
 
     test('All aeroplanes unaffected if command not valid', () => {
         const service = new AeroplaneService(map, {}, mockState)
@@ -460,5 +453,85 @@ describe('Determine proximal aeroplanes', () => {
         expect(service.aeroplanes[3].breachingProximity).toBeTruthy()
 
         expect(service.aeroplanes[4].breachingProximity).toBeFalsy()
+    })
+})
+
+describe('Clear service', () => {
+
+    test('Removes all aircraft', () => {
+        const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {restrictedZones: []}};
+        const mockStatsService = {reset: jest.fn()}
+        const service = new AeroplaneService(mockMap, mockStatsService, {})
+
+        service.aeroplanes = [
+            new Aeroplane("BA123_BREACH", "A321", 50, 50, 120, 90, 5000),
+            new Aeroplane("BA456_BREACH", "A321", 50, 50, 120, 90, 5500),
+        ]
+
+        expect(service.aeroplanes.length).toBe(2)
+
+        service.clear()
+
+        expect(service.aeroplanes.length).toBe(0)
+    })
+
+    test('Resets the stats service', () => {
+        const mockMap = {mapBoundaries: {maxX: 1000, maxY: 1000}, features: {restrictedZones: []}};
+        const mockStatsService = {reset: jest.fn()}
+        const service = new AeroplaneService(mockMap, mockStatsService, {})
+
+        service.clear()
+
+        expect(mockStatsService.reset).toHaveBeenCalled()
+    })
+})
+
+describe('Apply actions', () => {
+
+    test('Applies all aeroplane actions and simulates path', () => {
+        const service = new AeroplaneService({}, {}, {})
+
+        const aeroplane1 = {applyActions: jest.fn(), simulatePath: jest.fn()};
+        const aeroplane2 = {applyActions: jest.fn(), simulatePath: jest.fn()};
+
+        service.aeroplanes = [
+            aeroplane1,
+            aeroplane2,
+        ]
+
+        expect(aeroplane1.applyActions).not.toHaveBeenCalled()
+        expect(aeroplane1.applyActions).not.toHaveBeenCalled()
+
+        expect(aeroplane1.simulatePath).not.toHaveBeenCalled()
+        expect(aeroplane2.simulatePath).not.toHaveBeenCalled()
+
+        service.applyActions()
+
+        expect(aeroplane1.applyActions).toHaveBeenCalled()
+        expect(aeroplane2.applyActions).toHaveBeenCalled()
+
+        expect(aeroplane1.simulatePath).toHaveBeenCalled()
+        expect(aeroplane2.simulatePath).toHaveBeenCalled()
+    })
+
+    test('Has all aeroplanes consume fuel', () => {
+        const service = new AeroplaneService({}, {}, {})
+
+        const aeroplane1 = {consumeFuel: jest.fn()};
+        const aeroplane2 = {consumeFuel: jest.fn()};
+
+        service.aeroplanes = [
+            aeroplane1,
+            aeroplane2,
+        ]
+
+        expect(aeroplane1.consumeFuel).not.toHaveBeenCalled()
+        expect(aeroplane1.consumeFuel).not.toHaveBeenCalled()
+
+        service.consumeFuel()
+
+        expect(aeroplane1.consumeFuel).toHaveBeenCalled()
+        expect(aeroplane1.consumeFuel).toHaveBeenCalled()
+
     })
 })
