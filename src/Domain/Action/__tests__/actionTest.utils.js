@@ -14,6 +14,10 @@ export const testGameMap = () => {
                             x: 280, y: 500,
                         }
                     },
+                    takeoffPoint: {
+                        x: 510,
+                        y: 500,
+                    },
                     goAround: {
                         targetWaypoint: "CHT",
                         targetSpeed: 200,
@@ -28,6 +32,10 @@ export const testGameMap = () => {
                         }, outerMarker: {
                             x: 720, y: 550,
                         }
+                    },
+                    takeoffPoint: {
+                        x: 490,
+                        y: 550,
                     },
                     goAround: {
                         targetWaypoint: "LAM",
