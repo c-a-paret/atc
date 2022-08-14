@@ -29,8 +29,10 @@ export class GameLoop {
     }
 
     stateTick = () => {
-        if (!this.interfaceController.gamePaused && this.aeroplaneService.aeroplanes.length < 10) {
-            this.aeroplaneService.tick()
+        if (!this.interfaceController.gamePaused) {
+            if (this.aeroplaneService.aeroplanes.length < 10) {
+                this.aeroplaneService.tick()
+            }
             setTimeout(this.stateTick, this._determineGameSpeed())
         }
     }
