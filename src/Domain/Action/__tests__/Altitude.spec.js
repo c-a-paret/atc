@@ -33,6 +33,51 @@ describe("Altitude", () => {
         expect(aeroplane.altitude).toBe(1060)
     })
 
+    test("Descends faster at higher altitude", () => {
+        let currentAltitude = 15000;
+        let desiredAltitude = 12000;
+
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, currentAltitude, 3)
+
+        const action = new Altitude({}, aeroplane, desiredAltitude)
+
+        expect(aeroplane.altitude).toBe(currentAltitude)
+        action.apply()
+        expect(aeroplane.altitude).toBe(14920)
+        action.apply()
+        expect(aeroplane.altitude).toBe(14840)
+    })
+
+    test("Descends slower at medium altitude", () => {
+        let currentAltitude = 10000;
+        let desiredAltitude = 5000;
+
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, currentAltitude, 3)
+
+        const action = new Altitude({}, aeroplane, desiredAltitude)
+
+        expect(aeroplane.altitude).toBe(currentAltitude)
+        action.apply()
+        expect(aeroplane.altitude).toBe(9950)
+        action.apply()
+        expect(aeroplane.altitude).toBe(9900)
+    })
+
+    test("Descends slowly at low altitude", () => {
+        let currentAltitude = 5000;
+        let desiredAltitude = 3000;
+
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, currentAltitude, 3)
+
+        const action = new Altitude({}, aeroplane, desiredAltitude)
+
+        expect(aeroplane.altitude).toBe(currentAltitude)
+        action.apply()
+        expect(aeroplane.altitude).toBe(4980)
+        action.apply()
+        expect(aeroplane.altitude).toBe(4960)
+    })
+
     test("Is not valid if the target altitude is below minimum altitude", () => {
         let desiredAltitude = MIN_ALTITUDE - 1;
 
