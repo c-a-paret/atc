@@ -20,17 +20,7 @@ export class TaxiToRunway extends Action {
     }
 
     isActionable = () => {
-        if (this.taxiTime > 0) {
-            return true
-        }
-        if (this.taxiTime <= 0) {
-            this.aeroplane.x = this.targetX
-            this.aeroplane.y = this.targetY
-            this.aeroplane.state = HOLDING_SHORT
-            this.aeroplane.heading = this.runway.heading
-            this.aeroplane.positionDescription = this.targetRunway
-            return false
-        }
+        return this.taxiTime > 0
     }
 
     isFutureActionable = () => {
@@ -43,6 +33,13 @@ export class TaxiToRunway extends Action {
 
     apply = () => {
         this.taxiTime -= 1
+        if (this.taxiTime <= 0) {
+            this.aeroplane.x = this.targetX
+            this.aeroplane.y = this.targetY
+            this.aeroplane.state = HOLDING_SHORT
+            this.aeroplane.heading = this.runway.heading
+            this.aeroplane.positionDescription = this.targetRunway
+        }
     };
 
     copy = (aeroplane) => {

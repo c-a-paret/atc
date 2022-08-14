@@ -1,6 +1,8 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {Waypoint} from "../Waypoint";
 import {testGameMap} from "./actionTest.utils";
+import {ARRIVAL} from "../../../config/constants";
+import {HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";
 
 describe("Waypoint", () => {
     let map;
@@ -79,6 +81,20 @@ describe("Waypoint", () => {
         let waypoint = "LAM";
 
         expect(new Waypoint(map, aeroplane, waypoint).isActionable()).toBeFalsy()
+    })
+
+    test("Is not actionable if aeroplane is not flying or going around", () => {
+        let waypoint = "LAM";
+
+        const aeroplane1 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, READY_TO_TAXI)
+        expect(new Waypoint(map, aeroplane1, waypoint).isActionable()).toBeFalsy()
+
+        const aeroplane2 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, TAXIING)
+        expect(new Waypoint(map, aeroplane2, waypoint).isActionable()).toBeFalsy()
+
+        const aeroplane3 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, HOLDING_SHORT)
+        expect(new Waypoint(map, aeroplane3, waypoint).isActionable()).toBeFalsy()
+
     })
 })
 
