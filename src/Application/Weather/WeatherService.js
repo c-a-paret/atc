@@ -1,5 +1,6 @@
 import {DefaultStaticWind} from "./States/DefaultStaticWind";
 import {ScatteredCloud} from "./States/ScatteredCloud";
+import {DynamicWind} from "./States/DynamicWind";
 
 export class Weather {
     constructor(map) {
@@ -27,8 +28,13 @@ export class Weather {
         this.clouds.clouds.forEach(cloud => cloud.tick())
     }
 
-    reset = () => {
+    static = () => {
         this.transitionWindTo(new DefaultStaticWind())
+        this.transitionCloudsTo(new ScatteredCloud())
+    }
+
+    dynamic = () => {
+        this.transitionWindTo(new DynamicWind())
         this.transitionCloudsTo(new ScatteredCloud())
     }
 }

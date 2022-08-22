@@ -18,10 +18,8 @@ export const SPEED_TAIL_LENGTH = 10
 export const NUM_PROJECTED_TICKS = 67 // 67 ticks at 900ms per tick ~= 60s
 export const BASE_FUEL_CONSUMPTION_RATE = 0.02
 
+export const MIN_WIND_SPEED = 1
+export const MAX_WIND_SPEED = 22
+
 export const ARRIVAL = "ARRIVAL"
 export const DEPARTURE = "DEPARTURE"
-
-export const Difficulty = {
-    EASY: "EASY",
-    HARD: "HARD"
-}

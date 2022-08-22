@@ -35,21 +35,22 @@ export class Hard extends GameState {
     }
 
     init = () => {
-        this.machine.weather.reset()
-        if (this.machine.weather.wind.easterly()) {
-            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
-        } else {
-            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
-        }
-    }
-
-    tick = () => {
+        this.machine.weather.dynamic()
         if (!this.initialised && this.clearAircraftOnStart) {
             this.machine.clear()
             this.initialised = true
         } else {
             this.initialised = true
         }
+    }
+
+    tick = () => {
+        if (this.machine.weather.wind.easterly()) {
+            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
+        } else {
+            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
+        }
+
         if (this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
         }
