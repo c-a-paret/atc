@@ -18,7 +18,7 @@ export class DynamicWind extends Wind {
     }
 
     tick = () => {
-        if (this.tickNum % 20 === 0) {
+        if (this.tickNum % 30 === 0) {
             this.directionDifference = roundToNearest(getRandomNumberBetween(-20, 20), 1);
             this.targetDirection = (this.direction + this.directionDifference) % 360
             this.targetSpeed = Math.min(Math.max(this.speed + roundToNearest(getRandomNumberBetween(-5, 5), 1), MIN_WIND_SPEED), MAX_WIND_SPEED)
