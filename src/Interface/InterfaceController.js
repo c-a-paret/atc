@@ -691,6 +691,7 @@ export class InterfaceController {
     _clearGameModeSelection = () => {
         document.getElementById("easy-text").classList.remove('selected-green')
         document.getElementById("hard-text").classList.remove('selected-red')
+        document.getElementById("realistic-text").classList.remove('selected-orange')
     }
 
     // -> Projected Paths

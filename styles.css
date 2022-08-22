@@ -87,10 +87,6 @@ canvas {
     cursor: pointer;
 }
 
-#realistic {
-    display: none;
-}
-
 .selected-green {
     background: rgba(0, 213, 170, 0.2);
 }

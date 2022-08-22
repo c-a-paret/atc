@@ -5,11 +5,12 @@ import {getRandomNumberBetween, roundToNearest} from "../../utils/maths";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ARRIVAL, DEPARTURE} from "../../config/constants";
 import {FLYING, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
+import {CoreGamePlay} from "../CoreGamePlay";
 
 
 export class RealisticStart extends GameState {
     constructor(clearAircraftOnStart = false) {
-        super();
+        super()
         this.clearAircraftOnStart = clearAircraftOnStart
         this.machine = undefined
         this.initialised = false
@@ -27,19 +28,33 @@ export class RealisticStart extends GameState {
             ["OCK"],
             ["DET"],
         ])
+
+        this.numArrivals = 2
+        this.numDepartures = 2
+
+        this.spawnedArrivals = 0
+        this.spawnedDepartures = 0
     }
 
     setMachine = (machine) => {
         this.machine = machine
+        this.init()
+    }
+
+    init = () => {
+        this.machine.weather.dynamic()
+        if (this.clearAircraftOnStart) {
+            this.machine.clear()
+        }
     }
 
     tick = () => {
-        if (!this.initialised && this.clearAircraftOnStart) {
-            this.machine.clear()
-            this.initialised = true
+        if (this.machine.weather.wind.easterly()) {
+            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
         } else {
-            this.initialised = true
+            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
         }
+
         if (this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
         }
@@ -47,16 +62,23 @@ export class RealisticStart extends GameState {
             this.initDeparture(randomChoice(this.targetWaypoints))
         }
 
+        if (this.spawnedArrivals >= this.numArrivals && this.spawnedDepartures >= this.numDepartures) {
+            this.machine.transitionTo(new CoreGamePlay())
+        }
+
         this.ticks += 1
+
     }
 
     arrivalSpawnLocations = () => [
-        {x: 0.2 * this.map.mapBoundaries.maxX, y: 1, heading: 180},
-        {x: 0.5 * this.map.mapBoundaries.maxX, y: 1, heading: 180},
-        {x: 0.7 * this.map.mapBoundaries.maxX, y: 1, heading: 225},
+        {x: 1, y: 0.2 * this.map.mapBoundaries.maxY, heading: 90},
+        {x: 1, y: 0.8 * this.map.mapBoundaries.maxY, heading: 90},
+
+        {x: this.map.mapBoundaries.maxX, y: 0.2 * this.map.mapBoundaries.maxY, heading: 270},
+        {x: this.map.mapBoundaries.maxX, y: 0.8 * this.map.mapBoundaries.maxY, heading: 270},
     ]
 
-    initArrival = (targetWaypoint = null) => {
+    initArrival = (targetRunway = null) => {
         const aeroplaneConfig = AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)]
         const callSign = `${aeroplaneConfig.operatorIATA}${getRandomNumberBetween(100, 999)}`
         const shortClass = aeroplaneConfig.shortClass
@@ -79,12 +101,13 @@ export class RealisticStart extends GameState {
             weight,
             ARRIVAL,
             FLYING,
-            targetWaypoint
+            targetRunway
         )
         this.machine.aeroplanes.push(plane)
+        this.spawnedArrivals += 1
     }
 
-    initDeparture = (targetRunway = null) => {
+    initDeparture = (targetWaypoint = null) => {
         const aeroplaneConfig = AIRCRAFT[Math.floor(Math.random() * AIRCRAFT.length)]
         const callSign = `${aeroplaneConfig.operatorIATA}${getRandomNumberBetween(100, 999)}`
         const shortClass = aeroplaneConfig.shortClass
@@ -105,9 +128,10 @@ export class RealisticStart extends GameState {
             weight,
             DEPARTURE,
             READY_TO_TAXI,
-            targetRunway
+            targetWaypoint
         )
         this.machine.aeroplanes.push(plane)
+        this.spawnedDepartures += 1
     }
 
 }
