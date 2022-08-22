@@ -65,6 +65,16 @@ export class Hard extends GameState {
         {x: 0.2 * this.map.mapBoundaries.maxX, y: 1, heading: 180},
         {x: 0.5 * this.map.mapBoundaries.maxX, y: 1, heading: 180},
         {x: 0.7 * this.map.mapBoundaries.maxX, y: 1, heading: 225},
+
+        {x: 0.2 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 350},
+        {x: 0.5 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 290},
+        {x: 0.7 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 360},
+
+        {x: 1, y: 0.2 * this.map.mapBoundaries.maxY, heading: 90},
+        {x: 1, y: 0.8 * this.map.mapBoundaries.maxY, heading: 90},
+
+        {x: this.map.mapBoundaries.maxX, y: 0.2 * this.map.mapBoundaries.maxY, heading: 270},
+        {x: this.map.mapBoundaries.maxX, y: 0.8 * this.map.mapBoundaries.maxY, heading: 270},
     ]
 
     initArrival = (targetWaypoint = null) => {
