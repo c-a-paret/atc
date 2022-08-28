@@ -1,30 +1,24 @@
 import {randomChoice} from "../../utils/selectors";
-import {Quiet} from "./Quiet";
+import {RealisticStart} from "./RealisticStart";
 import {RealisticBase} from "./RealisticBase";
 
 
-export class RealisticStart extends RealisticBase {
+export class Flurry extends RealisticBase {
     constructor(initStandalone = false) {
         super(initStandalone)
+        console.log('Flurry mode')
 
-        this.arrivalSpawnInterval = 120
-        this.departureSpawnInterval = 100
+        this.arrivalSpawnInterval = 30
+        this.departureSpawnInterval = 40
         this.speedRange = [220, 280]
         this.altitudeRange = [9000, 15000]
 
-        this.targetArrivals = 2
+        this.targetArrivals = 5
         this.targetDepartures = 5
     }
 
     tick = () => {
         this.determineRunways()
-
-        if (this.initStandalone && !this.initialised) {
-            for (let x = 0; x < 3; x++) {
-                this.initDeparture(randomChoice(this.targetWaypoints))
-            }
-            this.initialised = true
-        }
 
         if (this.ticks !== 0 && this.machine.statsService.spawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
@@ -33,10 +27,11 @@ export class RealisticStart extends RealisticBase {
             this.initDeparture(randomChoice(this.targetWaypoints))
         }
 
-        if (this.machine.statsService.instanceTotalFailed() >= (this.targetArrivals + this.targetDepartures) || this.machine.statsService.instanceLanded() >= this.targetArrivals - 1 && this.machine.statsService.instanceDeparted() >= this.targetDepartures - 1) {
-            this.machine.transitionTo(new Quiet())
+        if (this.machine.statsService.totalLanded() === this.targetArrivals - 1 && this.machine.statsService.totalDeparted() >= this.targetDepartures - 1) {
+            this.machine.transitionTo(new RealisticStart())
         }
 
         this.ticks += 1
     }
+
 }
