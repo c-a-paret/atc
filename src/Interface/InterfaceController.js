@@ -717,7 +717,7 @@ export class InterfaceController {
     _newCommandHandler = () => {
         let commandField = document.getElementById("command-entry-field");
         const acceptedCommands = this.aeroplaneService.sendCommand(commandField.value)
-        this.lastCallSign = acceptedCommands.callSign
+        this.lastCallSign = acceptedCommands.callSign ? acceptedCommands.callSign : this.lastCallSign
         commandField.value = ""
         this._clearStripFocus()
         this._displayMessage(commandMessage(acceptedCommands))
