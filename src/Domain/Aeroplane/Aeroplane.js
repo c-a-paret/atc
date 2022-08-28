@@ -195,7 +195,6 @@ export class Aeroplane {
     clearForTakeoff = (map) => {
         const takeoff = new Takeoff(map, this);
         if (takeoff.isValid()) {
-            this.state = TAKING_OFF
             this.addAction(takeoff)
             return true
         }
@@ -250,7 +249,7 @@ export class Aeroplane {
         if (this.isLanding()) {
             this.nextPositions = []
         } else {
-            const simulatedAeroplane = new Aeroplane(null, null, this.x, this.y, this.speed, this.heading, this.altitude, this.weight)
+            const simulatedAeroplane = new Aeroplane(null, null, this.x, this.y, this.speed, this.heading, this.altitude, this.weight, this.type, this.state, this.finalTarget, this.fuelLevel)
             this.actions.forEach(action => {
                 const copiedAction = action.copy(simulatedAeroplane);
                 if (copiedAction) {

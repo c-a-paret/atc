@@ -1,4 +1,4 @@
-import {FLYING, HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../Aeroplane/aeroplaneStates";
+import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
 import {MIN_GROUND_CLEARANCE, TAKEOFF_SPEED} from "../../config/constants";
 import {Action} from "./Action";
 
@@ -22,18 +22,26 @@ export class Takeoff extends Action {
     }
 
     isActionable = () => {
-        return !this.executed
+        return !this.executed && this.aeroplane.is([HOLDING_SHORT, TAKING_OFF, FLYING])
     }
 
     isFutureActionable = () => {
-        return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
+        return this.aeroplane.is([READY_TO_TAXI, TAXIING])
     }
 
     isValid = () => {
-        return this.map.runwayExists(this.runway.label) && this.aeroplane.is([HOLDING_SHORT])
+        return this.aeroplane.isNot([FLYING, TAKING_OFF, GOING_AROUND])
     }
 
     apply = () => {
+        if (this.map.runwayExists(this.aeroplane.positionDescription)) {
+            this.runway = this.map.getRunwayInfo(this.aeroplane.positionDescription)
+            this.targetX = this.runway.takeoffPoint.x
+            this.targetY = this.runway.takeoffPoint.y
+        }
+
+        this.aeroplane.state = TAKING_OFF
+
         this.aeroplane.heading = this.runway.heading
 
         // Speed

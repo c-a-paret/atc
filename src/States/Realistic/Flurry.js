@@ -6,7 +6,6 @@ import {RealisticBase} from "./RealisticBase";
 export class Flurry extends RealisticBase {
     constructor(initStandalone = false) {
         super(initStandalone)
-        console.log('Flurry mode')
 
         this.arrivalSpawnInterval = 30
         this.departureSpawnInterval = 40

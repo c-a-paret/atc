@@ -6,7 +6,6 @@ import {RealisticBase} from "./RealisticBase";
 export class Quiet extends RealisticBase {
     constructor(initStandalone = false) {
         super(initStandalone)
-        console.log('Quiet mode')
 
         this.arrivalSpawnInterval = 120
         this.speedRange = [220, 280]
