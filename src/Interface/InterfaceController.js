@@ -81,6 +81,11 @@ export class InterfaceController {
 
     _setupPlayPauseInterface = () => {
         document.getElementById("pause-play").addEventListener("click", this._playPauseHandler)
+        document.addEventListener('keyup', (e) => {
+            if (e.code === "Escape") {
+                this._playPauseHandler()
+            }
+        })
     }
 
     _setupButtonsInterface = () => {
