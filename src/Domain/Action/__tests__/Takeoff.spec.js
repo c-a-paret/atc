@@ -35,7 +35,7 @@ describe("Takeoff", () => {
     })
 
     test("Is actionable when not executed", () => {
-        const action = new Takeoff(map, {})
+        const action = new Takeoff(map, {is: () => true})
 
         expect(action.isActionable()).toBeTruthy()
     })
@@ -65,7 +65,7 @@ describe("Takeoff", () => {
         const state = HOLDING_SHORT;
         const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 0, 90, 0, 1, DEPARTURE, state)
         const action = new Takeoff(map, aeroplane)
-        expect(action.isFutureActionable()).toBeTruthy()
+        expect(action.isFutureActionable()).toBeFalsy()
     })
 
     test("Is future actionable when flying", () => {
