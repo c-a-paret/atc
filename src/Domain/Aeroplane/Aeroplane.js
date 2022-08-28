@@ -257,6 +257,10 @@ export class Aeroplane {
                 }
             })
 
+            if (this.positionDescription) {
+                simulatedAeroplane.positionDescription = this.positionDescription
+            }
+
             const projectedLocations = []
             let altitudeMarker = false
             for (let x = 0; x < NUM_PROJECTED_TICKS; x++) {
