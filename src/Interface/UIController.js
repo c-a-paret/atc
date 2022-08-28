@@ -369,7 +369,7 @@ export class UIController {
     }
 
     _drawProjectedPath = (aeroplane) => {
-        if (this.interfaceController.projectedPathsOn && aeroplane.is([TAKING_OFF, FLYING])) {
+        if (this.interfaceController.projectedPathsOn && aeroplane.is([TAKING_OFF, FLYING, GOING_AROUND])) {
             if (aeroplane.nextPositions.length > 0) {
                 const firstX = aeroplane.nextPositions[0].x
                 const firstY = aeroplane.nextPositions[0].y

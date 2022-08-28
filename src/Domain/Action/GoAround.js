@@ -52,6 +52,6 @@ export class GoAround extends Action {
     }
 
     copy = (aeroplane) => {
-        return new GoAround(this.map, aeroplane, this.aimingForRunway)
+
     }
 }
