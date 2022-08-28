@@ -1,7 +1,14 @@
 import {COLOURS} from "../config/colours";
 import {ILS_MIN_X} from "../config/constants";
 import {round, toRadians} from "../utils/maths";
-import {FLYING, GOING_AROUND, HOLDING_SHORT, TAKING_OFF} from "../Domain/Aeroplane/aeroplaneStates";
+import {
+    FLYING,
+    GOING_AROUND,
+    HOLDING_SHORT,
+    READY_TO_TAXI,
+    TAKING_OFF,
+    TAXIING
+} from "../Domain/Aeroplane/aeroplaneStates";
 
 export class UIController {
     constructor(map, aeroplaneService, interfaceController, weatherService) {
@@ -293,61 +300,71 @@ export class UIController {
     }
 
     _drawSpeedLabel = (aeroplane) => {
-        if (aeroplane.breachingProximity) {
-            this.aeroplaneContext.fillStyle = COLOURS.RED;
-        } else {
-            this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        if (aeroplane.isNot([READY_TO_TAXI, TAXIING])) {
+            if (aeroplane.breachingProximity) {
+                this.aeroplaneContext.fillStyle = COLOURS.RED;
+            } else {
+                this.aeroplaneContext.fillStyle = COLOURS.MINT;
+            }
+            this.aeroplaneContext.font = "bold 12px Courier New";
+            this.aeroplaneContext.beginPath();
+            this.aeroplaneContext.fillText(`${round(aeroplane.speed, 0)}`, aeroplane.x - 20, aeroplane.y - 20);
         }
-        this.aeroplaneContext.font = "bold 12px Courier New";
-        this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.fillText(`${round(aeroplane.speed, 0)}`, aeroplane.x - 20, aeroplane.y - 20);
     }
 
     _drawHeadingLabel = (aeroplane) => {
-        if (aeroplane.breachingProximity) {
-            this.aeroplaneContext.fillStyle = COLOURS.RED;
-        } else {
-            this.aeroplaneContext.fillStyle = COLOURS.YELLOW;
+        if (aeroplane.isNot([READY_TO_TAXI, TAXIING])) {
+            if (aeroplane.breachingProximity) {
+                this.aeroplaneContext.fillStyle = COLOURS.RED;
+            } else {
+                this.aeroplaneContext.fillStyle = COLOURS.YELLOW;
+            }
+            this.aeroplaneContext.font = "bold 12px Courier New";
+            this.aeroplaneContext.beginPath();
+            const speedLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.speed, 0)}`).width;
+            this.aeroplaneContext.fillText(`${round(aeroplane.heading, 0)}`, aeroplane.x - 20 + speedLabelWidth + 5, aeroplane.y - 20);
         }
-        this.aeroplaneContext.font = "bold 12px Courier New";
-        this.aeroplaneContext.beginPath();
-        const speedLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.speed, 0)}`).width;
-        this.aeroplaneContext.fillText(`${round(aeroplane.heading, 0)}`, aeroplane.x - 20 + speedLabelWidth + 5, aeroplane.y - 20);
     }
 
     _drawAltitudeLabel = (aeroplane) => {
-        if (aeroplane.breachingProximity) {
-            this.aeroplaneContext.fillStyle = COLOURS.RED;
-        } else {
-            this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        if (aeroplane.isNot([READY_TO_TAXI, TAXIING])) {
+            if (aeroplane.breachingProximity) {
+                this.aeroplaneContext.fillStyle = COLOURS.RED;
+            } else {
+                this.aeroplaneContext.fillStyle = COLOURS.MINT;
+            }
+            this.aeroplaneContext.font = "bold 12px Courier New";
+            this.aeroplaneContext.beginPath();
+            const headingLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.heading, 0)}`).width;
+            const speedLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.speed, 0)}`).width;
+            this.aeroplaneContext.fillText(`${Math.round(aeroplane.altitude / 100)}`, aeroplane.x - 20 + (headingLabelWidth + 5) + (speedLabelWidth + 5), aeroplane.y - 20);
         }
-        this.aeroplaneContext.font = "bold 12px Courier New";
-        this.aeroplaneContext.beginPath();
-        const headingLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.heading, 0)}`).width;
-        const speedLabelWidth = this.aeroplaneContext.measureText(`${round(aeroplane.speed, 0)}`).width;
-        this.aeroplaneContext.fillText(`${Math.round(aeroplane.altitude / 100)}`, aeroplane.x - 20 + (headingLabelWidth + 5) + (speedLabelWidth + 5), aeroplane.y - 20);
     }
 
     _drawCallSignLabel = (aeroplane) => {
-        if (aeroplane.breachingProximity) {
-            this.aeroplaneContext.fillStyle = COLOURS.RED;
-        } else {
-            this.aeroplaneContext.fillStyle = COLOURS.MINT;
+        if (aeroplane.isNot([READY_TO_TAXI, TAXIING])) {
+            if (aeroplane.breachingProximity) {
+                this.aeroplaneContext.fillStyle = COLOURS.RED;
+            } else {
+                this.aeroplaneContext.fillStyle = COLOURS.MINT;
+            }
+            this.aeroplaneContext.font = "bold 12px Courier New";
+            this.aeroplaneContext.beginPath();
+            this.aeroplaneContext.fillText(aeroplane.callSign, aeroplane.x - 20, aeroplane.y - 30);
         }
-        this.aeroplaneContext.font = "bold 12px Courier New";
-        this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.fillText(aeroplane.callSign, aeroplane.x - 20, aeroplane.y - 30);
     }
 
     _drawFinalTargetLabel = (aeroplane) => {
-        if (aeroplane.finalTarget) {
-            this.aeroplaneContext.fillStyle = COLOURS.PURPLE;
-            this.aeroplaneContext.font = "bold 12px Courier New";
+        if (aeroplane.isNot([READY_TO_TAXI, TAXIING])) {
+            if (aeroplane.finalTarget) {
+                this.aeroplaneContext.fillStyle = COLOURS.PURPLE;
+                this.aeroplaneContext.font = "bold 12px Courier New";
 
-            const callSignWidth = this.featuresContext.measureText(aeroplane.callSign).width;
+                const callSignWidth = this.featuresContext.measureText(aeroplane.callSign).width;
 
-            this.aeroplaneContext.beginPath();
-            this.aeroplaneContext.fillText(aeroplane.finalTarget, aeroplane.x - 10 + callSignWidth, aeroplane.y - 30);
+                this.aeroplaneContext.beginPath();
+                this.aeroplaneContext.fillText(aeroplane.finalTarget, aeroplane.x - 10 + callSignWidth, aeroplane.y - 30);
+            }
         }
     }
 
