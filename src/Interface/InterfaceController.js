@@ -7,6 +7,7 @@ import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 import {Easy} from "../States/Easy";
 import {Hard} from "../States/Hard";
 import {RealisticStart} from "../States/Realistic/RealisticStart";
+import {Dynamic} from "../States/Dynamic";
 
 class TargetValue {
     constructor(value) {
@@ -96,8 +97,9 @@ export class InterfaceController {
     _setupSettingsButtons = () => {
         document.getElementById("tutorial").addEventListener("click", this.startTutorialMode)
         document.getElementById("easy").addEventListener("click", this.startEasyMode)
-        document.getElementById("hard").addEventListener("click", this.startHardMode)
         document.getElementById("realistic").addEventListener("click", this.startRealisticMode)
+        document.getElementById("hard").addEventListener("click", this.startHardMode)
+        document.getElementById("dynamic").addEventListener("click", this.startDynamicMode)
         document.getElementById("projected-paths").addEventListener("click", this._toggleProjectedPaths)
     }
 
@@ -699,14 +701,6 @@ export class InterfaceController {
         this.aeroplaneService.transitionTo(new Easy(true))
     }
 
-    startHardMode = () => {
-        this.hideHint()
-        this.blurAttention()
-        this._clearGameModeSelection()
-        document.getElementById("hard-text").classList.add('selected-red')
-        this.aeroplaneService.transitionTo(new Hard(true))
-    }
-
     startRealisticMode = () => {
         this.hideHint()
         this.blurAttention()
@@ -715,11 +709,28 @@ export class InterfaceController {
         this.aeroplaneService.transitionTo(new RealisticStart(true))
     }
 
+    startHardMode = () => {
+        this.hideHint()
+        this.blurAttention()
+        this._clearGameModeSelection()
+        document.getElementById("hard-text").classList.add('selected-red')
+        this.aeroplaneService.transitionTo(new Hard(true))
+    }
+
+    startDynamicMode = () => {
+        this.hideHint()
+        this.blurAttention()
+        this._clearGameModeSelection()
+        document.getElementById("dynamic-text").classList.add('selected-red')
+        this.aeroplaneService.transitionTo(new Dynamic(true))
+    }
+
     _clearGameModeSelection = () => {
         document.getElementById("tutorial-text").classList.remove('selected-green')
         document.getElementById("easy-text").classList.remove('selected-green')
-        document.getElementById("hard-text").classList.remove('selected-red')
         document.getElementById("realistic-text").classList.remove('selected-orange')
+        document.getElementById("hard-text").classList.remove('selected-red')
+        document.getElementById("dynamic-text").classList.remove('selected-red')
     }
 
     // -> Projected Paths

@@ -110,6 +110,10 @@ export class StatsService {
         this.instanceOutOfFuelCount += 1
     }
 
+    incrementBreachedTimer = () => {
+        this.proximityTimer += 1
+    }
+
     instanceComplete = () => {
         return this.instanceIncorrectlyLandedCount
             + this.instanceIncorrectlyDepartedCount
@@ -119,8 +123,16 @@ export class StatsService {
             + this.instanceOutOfFuelCount
     }
 
-    incrementBreachedTimer = () => {
-        this.proximityTimer += 1
+    totalArrivalsSpawned = () => {
+        return this.spawnedArrivals
+    }
+
+    totalLanded = () => {
+        return this.correctlyLandedCount + this.incorrectlyLandedCount;
+    }
+
+    totalDeparted = () => {
+        return this.correctlyDepartedCount + this.incorrectlyDepartedCount;
     }
 
     correctlyLandedPercentage = () => {
@@ -137,19 +149,10 @@ export class StatsService {
         return round((this.correctlyDepartedCount / this.totalDeparted()) * 100, 0)
     }
 
-    totalLanded = () => {
-        return this.correctlyLandedCount + this.incorrectlyLandedCount;
-    }
-
-    totalDeparted = () => {
-        return this.correctlyDepartedCount + this.incorrectlyDepartedCount;
-    }
-
-    instanceLanded = () => {
-        return this.instanceCorrectlyLandedCount + this.instanceIncorrectlyLandedCount;
-    }
-
-    instanceDeparted = () => {
-        return this.instanceCorrectlyDepartedCount + this.instanceIncorrectlyDepartedCount;
+    lostPercentage() {
+        if (this.totalArrivalsSpawned() === 0) {
+            return 0
+        }
+        return round((this.lostCount / this.totalArrivalsSpawned()) * 100, 0)
     }
 }
