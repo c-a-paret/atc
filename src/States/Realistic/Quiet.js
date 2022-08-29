@@ -17,11 +17,11 @@ export class Quiet extends RealisticBase {
     tick = () => {
         this.determineRunways()
 
-        if (this.machine.statsService.spawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
+        if (this.machine.statsService.instanceSpawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
         }
 
-        if (this.machine.statsService.totalLanded() === this.targetArrivals - 1) {
+        if (this.machine.statsService.instanceTotalFailed() >= this.targetArrivals || this.machine.statsService.instanceLanded() >= this.targetArrivals - 1) {
             this.machine.transitionTo(new Flurry())
         }
 

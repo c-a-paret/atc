@@ -26,14 +26,14 @@ export class RealisticStart extends RealisticBase {
             this.initialised = true
         }
 
-        if (this.ticks !== 0 && this.machine.statsService.spawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
+        if (this.ticks !== 0 && this.machine.statsService.instanceSpawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
         }
-        if (this.ticks !== 0 && this.machine.statsService.spawnedArrivals < this.targetDepartures && this.ticks % this.departureSpawnInterval === 0) {
+        if (this.ticks !== 0 && this.machine.statsService.instanceSpawnedDepartures < this.targetDepartures && this.ticks % this.departureSpawnInterval === 0) {
             this.initDeparture(randomChoice(this.targetWaypoints))
         }
 
-        if (this.machine.statsService.instanceTotalFailed() >= (this.targetArrivals + this.targetDepartures) || this.machine.statsService.instanceLanded() >= this.targetArrivals - 1 && this.machine.statsService.instanceDeparted() >= this.targetDepartures - 1) {
+        if (this.machine.statsService.instanceTotalFailed() >= (this.targetArrivals + this.targetDepartures) || (this.machine.statsService.instanceLanded() >= this.targetArrivals - 1 && this.machine.statsService.instanceDeparted() >= this.targetDepartures - 1)) {
             this.machine.transitionTo(new Quiet())
         }
 

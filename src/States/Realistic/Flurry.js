@@ -12,21 +12,21 @@ export class Flurry extends RealisticBase {
         this.speedRange = [220, 280]
         this.altitudeRange = [9000, 15000]
 
-        this.targetArrivals = 5
-        this.targetDepartures = 5
+        this.targetArrivals = 2
+        this.targetDepartures = 2
     }
 
     tick = () => {
         this.determineRunways()
 
-        if (this.ticks !== 0 && this.machine.statsService.spawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
+        if (this.ticks !== 0 && this.machine.statsService.instanceSpawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
         }
-        if (this.ticks !== 0 && this.machine.statsService.spawnedArrivals < this.targetDepartures && this.ticks % this.departureSpawnInterval === 0) {
+        if (this.ticks !== 0 && this.machine.statsService.instanceSpawnedDepartures < this.targetDepartures && this.ticks % this.departureSpawnInterval === 0) {
             this.initDeparture(randomChoice(this.targetWaypoints))
         }
 
-        if (this.machine.statsService.totalLanded() === this.targetArrivals - 1 && this.machine.statsService.totalDeparted() >= this.targetDepartures - 1) {
+        if (this.machine.statsService.instanceTotalFailed() >= (this.targetArrivals + this.targetDepartures) || (this.machine.statsService.instanceLanded() >= this.targetArrivals - 1 && this.machine.statsService.instanceDeparted() >= this.targetDepartures - 1)) {
             this.machine.transitionTo(new RealisticStart())
         }
 

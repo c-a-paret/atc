@@ -11,8 +11,8 @@ export class StatsService {
         this.instanceCorrectlyDepartedCount = 0
         this.instanceIncorrectlyLandedCount = 0
         this.instanceIncorrectlyDepartedCount = 0
-        this.instanceLostCount
-        this.instanceOutOfFuelCount
+        this.instanceLostCount = 0
+        this.instanceOutOfFuelCount = 0
 
         this.correctlyLandedCount = 0
         this.incorrectlyLandedCount = 0
@@ -26,15 +26,14 @@ export class StatsService {
     reset = () => {
         this.spawnedArrivals = 0
         this.spawnedDepartures = 0
-
         this.instanceSpawnedArrivals = 0
         this.instanceSpawnedDepartures = 0
         this.instanceCorrectlyLandedCount = 0
         this.instanceCorrectlyDepartedCount = 0
         this.instanceIncorrectlyLandedCount = 0
         this.instanceIncorrectlyDepartedCount = 0
-        this.instanceLostCount
-        this.instanceOutOfFuelCount
+        this.instanceLostCount = 0
+        this.instanceOutOfFuelCount = 0
 
         this.correctlyLandedCount = 0
         this.incorrectlyLandedCount = 0
@@ -52,8 +51,23 @@ export class StatsService {
         this.instanceCorrectlyDepartedCount = 0
         this.instanceIncorrectlyLandedCount = 0
         this.instanceIncorrectlyDepartedCount = 0
-        this.instanceLostCount
-        this.instanceOutOfFuelCount
+        this.instanceLostCount = 0
+        this.instanceOutOfFuelCount = 0
+    }
+
+    seeInstance = () => {
+        console.table({
+            'spawnedArrivals': this.spawnedArrivals,
+            'spawnedDepartures': this.spawnedDepartures,
+            'instanceSpawnedArrivals': this.instanceSpawnedArrivals,
+            'instanceSpawnedDepartures': this.instanceSpawnedDepartures,
+            'instanceCorrectlyLandedCount': this.instanceCorrectlyLandedCount,
+            'instanceCorrectlyDepartedCount': this.instanceCorrectlyDepartedCount,
+            'instanceIncorrectlyLandedCount': this.instanceIncorrectlyLandedCount,
+            'instanceIncorrectlyDepartedCount': this.instanceIncorrectlyDepartedCount,
+            'instanceLostCount': this.instanceLostCount,
+            'instanceOutOfFuelCount': this.instanceOutOfFuelCount,
+        })
     }
 
     incrementSpawnedArrivalCount = () => {
@@ -97,7 +111,10 @@ export class StatsService {
     }
 
     instanceTotalFailed = () => {
-        return this.instanceLostCount + this.instanceOutOfFuelCount
+        return this.instanceIncorrectlyLandedCount
+            + this.instanceIncorrectlyDepartedCount
+            + this.instanceLostCount
+            + this.instanceOutOfFuelCount
     }
 
     incrementBreachedTimer = () => {
