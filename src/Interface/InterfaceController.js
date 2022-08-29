@@ -625,8 +625,10 @@ export class InterfaceController {
     _playPauseHandler = () => {
         if (this.gamePaused) {
             this._unPauseGame()
+            this._hidePauseMenu()
         } else {
             this._pauseGame()
+            this._showPauseMenu()
         }
     }
 
@@ -637,9 +639,21 @@ export class InterfaceController {
 
     _unPauseGame = () => {
         this._hideHelpMenu()
+        this._hidePauseMenu()
         document.getElementById("pause-play").style.backgroundColor = 'rgba(22, 145, 203, 0.5)'
         this.gamePaused = false
         this.unPauseCallback()
+    }
+
+    // -> Pause Menu
+    _hidePauseMenu = () => {
+        const helpMenu = document.getElementById('pause-menu')
+        helpMenu.style.display = 'none'
+    }
+
+    _showPauseMenu = () => {
+        const helpMenu = document.getElementById('pause-menu')
+        helpMenu.style.display = 'flex'
     }
 
     // -> Help Menu
@@ -712,10 +726,10 @@ export class InterfaceController {
     _toggleProjectedPaths = () => {
         if (this.projectedPathsOn) {
             this.projectedPathsOn = false
-            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths On'
+            document.getElementById("projected-paths-text").innerText = 'Off'
         } else {
             this.projectedPathsOn = true
-            document.getElementById("projected-paths-text").innerText = 'Turn Projected Paths Off'
+            document.getElementById("projected-paths-text").innerText = 'On'
         }
     }
 

@@ -441,6 +441,55 @@ canvas {
     text-align: end;
 }
 
+/* Pause Menu */
+
+.pause-menu {
+    display: none;
+    z-index: 13;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    right: 20%;
+    bottom: 20%;
+    background-color: rgba(52, 62, 68, 0.8);
+    border-radius: 0.25rem;
+    backdrop-filter: blur(2px);
+
+    flex-direction: column;
+    align-items: center;
+
+    padding: 1rem 2rem;
+
+    font-family: "Courier New", monospace;
+    color: white;
+
+    overflow-y: scroll;
+}
+
+.pause-menu .mode-buttons {
+    width: 30%;
+}
+
+.pause-menu .ui-button {
+    border: 1px dashed #9d9d9d;
+    margin-left: 1rem;
+}
+
+.pause-menu .ui-button .text {
+    color: #9d9d9d;
+    margin: 0;
+    padding: 0.25rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.pause-menu .ui-button .text:hover {
+    color: rgb(0, 213, 170);
+    cursor: pointer;
+}
+
+
 
 /* Help Menu */
 
