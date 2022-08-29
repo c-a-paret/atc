@@ -7,8 +7,6 @@ import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 import {Easy} from "../States/Easy";
 import {Hard} from "../States/Hard";
 import {RealisticStart} from "../States/Realistic/RealisticStart";
-import {Flurry} from "../States/Realistic/Flurry";
-import {Quiet} from "../States/Realistic/Quiet";
 
 class TargetValue {
     constructor(value) {

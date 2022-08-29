@@ -1,6 +1,7 @@
 import {randomChoice} from "../../utils/selectors";
 import {Flurry} from "./Flurry";
 import {RealisticBase} from "./RealisticBase";
+import {Consistent} from "./Consistent";
 
 
 export class Quiet extends RealisticBase {
@@ -11,7 +12,7 @@ export class Quiet extends RealisticBase {
         this.speedRange = [220, 280]
         this.altitudeRange = [9000, 15000]
 
-        this.targetArrivals = 2
+        this.targetArrivals = 4
     }
 
     tick = () => {
@@ -23,7 +24,12 @@ export class Quiet extends RealisticBase {
         }
 
         if (this.machine.statsService.instanceComplete() >= this.targetArrivals) {
-            this.machine.transitionTo(new Flurry())
+            const random = Math.random()
+            if (random < 0.5) {
+                this.machine.transitionTo(new Consistent())
+            } else {
+                this.machine.transitionTo(new Flurry())
+            }
         }
 
         this.ticks += 1

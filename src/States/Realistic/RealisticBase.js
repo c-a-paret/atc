@@ -5,7 +5,6 @@ import {getRandomNumberBetween, roundToNearest} from "../../utils/maths";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ARRIVAL, DEPARTURE} from "../../config/constants";
 import {FLYING, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
-import {Quiet} from "./Quiet";
 
 
 export class RealisticBase extends GameState {
@@ -25,6 +24,7 @@ export class RealisticBase extends GameState {
             ["OCK"],
             ["DET"],
         ])
+        this.targetRunwayPrefix = ''
     }
 
     setMachine = (machine) => {
@@ -47,14 +47,16 @@ export class RealisticBase extends GameState {
     determineRunways = () => {
         if (this.machine.weather.wind.easterly()) {
             this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
+            this.targetRunwayPrefix = '9'
         } else {
             this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
+            this.targetRunwayPrefix = '27'
         }
     }
 
     updateTargets = () => {
         this.machine.aeroplanes.forEach(aeroplane => {
-            if (aeroplane.isArrival() && !aeroplane.finalTarget.startsWith(this.targetRunwayPrefix)) {
+            if (aeroplane.isArrival() && !aeroplane.isLanding() && aeroplane.altitude > 3500 && !aeroplane.finalTarget.startsWith(this.targetRunwayPrefix)) {
                 aeroplane.finalTarget = randomChoice(this.targetRunways)
             }
         })

@@ -73,7 +73,7 @@ export class Hard extends GameState {
 
     updateTargets = () => {
         this.machine.aeroplanes.forEach(aeroplane => {
-            if (aeroplane.isArrival() && !aeroplane.finalTarget.startsWith(this.targetRunwayPrefix)) {
+            if (aeroplane.isArrival() && !aeroplane.isLanding() && aeroplane.altitude > 3500 && !aeroplane.finalTarget.startsWith(this.targetRunwayPrefix)) {
                 aeroplane.finalTarget = randomChoice(this.targetRunways)
             }
         })
