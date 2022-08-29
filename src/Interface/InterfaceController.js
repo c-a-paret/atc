@@ -94,7 +94,7 @@ export class InterfaceController {
     }
 
     _setupSettingsButtons = () => {
-        document.getElementById("tutorial").addEventListener("click", this._setTutorialMode)
+        document.getElementById("tutorial").addEventListener("click", this.startTutorialMode)
         document.getElementById("easy").addEventListener("click", this.startEasyMode)
         document.getElementById("hard").addEventListener("click", this.startHardMode)
         document.getElementById("realistic").addEventListener("click", this.startRealisticMode)
@@ -669,7 +669,11 @@ export class InterfaceController {
     }
 
     // -> Game mode
-    _setTutorialMode = () => {
+    startTutorialMode = () => {
+        this.hideHint()
+        this.blurAttention()
+        this._clearGameModeSelection()
+        document.getElementById("tutorial-text").classList.add('selected-green')
         this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
     }
 
@@ -698,6 +702,7 @@ export class InterfaceController {
     }
 
     _clearGameModeSelection = () => {
+        document.getElementById("tutorial-text").classList.remove('selected-green')
         document.getElementById("easy-text").classList.remove('selected-green')
         document.getElementById("hard-text").classList.remove('selected-red')
         document.getElementById("realistic-text").classList.remove('selected-orange')
