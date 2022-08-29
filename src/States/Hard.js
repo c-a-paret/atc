@@ -20,6 +20,7 @@ export class Hard extends GameState {
         this.altitudeRange = [9000, 15000]
         this.targetRunways = randomChoice([["9L", "9R"], ["27L", "27R"], ["9L"], ["9R"], ["27L"], ["27R"]])
         this.targetWaypoints = randomChoice([
+            ["CPT", "CHT", "BPK", "DET", "EPM", "OCK"],
             ["LAM", "BPK", "MAY", "DET"],
             ["CPT", "CHT"],
             ["OCK", "EPM", "MAY"],
@@ -27,6 +28,7 @@ export class Hard extends GameState {
             ["OCK"],
             ["DET"],
         ])
+        this.targetRunwayPrefix = ''
     }
 
     setMachine = (machine) => {
@@ -45,11 +47,9 @@ export class Hard extends GameState {
     }
 
     tick = () => {
-        if (this.machine.weather.wind.easterly()) {
-            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
-        } else {
-            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
-        }
+
+        this.determineRunways()
+        this.updateTargets()
 
         if (this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))
@@ -59,6 +59,24 @@ export class Hard extends GameState {
         }
 
         this.ticks += 1
+    }
+
+    determineRunways = () => {
+        if (this.machine.weather.wind.easterly()) {
+            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
+            this.targetRunwayPrefix = '9'
+        } else {
+            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
+            this.targetRunwayPrefix = '27'
+        }
+    }
+
+    updateTargets = () => {
+        this.machine.aeroplanes.forEach(aeroplane => {
+            if (aeroplane.isArrival() && !aeroplane.finalTarget.startsWith(this.targetRunwayPrefix)) {
+                aeroplane.finalTarget = randomChoice(this.targetRunways)
+            }
+        })
     }
 
     arrivalSpawnLocations = () => [

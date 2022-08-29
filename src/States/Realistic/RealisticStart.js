@@ -18,6 +18,7 @@ export class RealisticStart extends RealisticBase {
 
     tick = () => {
         this.determineRunways()
+        this.updateTargets()
 
         if (this.initStandalone && !this.initialised) {
             for (let x = 0; x < 3; x++) {

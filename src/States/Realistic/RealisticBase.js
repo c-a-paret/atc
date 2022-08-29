@@ -52,6 +52,15 @@ export class RealisticBase extends GameState {
         }
     }
 
+    updateTargets = () => {
+        this.machine.aeroplanes.forEach(aeroplane => {
+            if (aeroplane.isArrival() && !aeroplane.finalTarget.startsWith(this.targetRunwayPrefix)) {
+                aeroplane.finalTarget = randomChoice(this.targetRunways)
+            }
+        })
+    }
+
+
     arrivalSpawnLocations = () => [
         {x: 1, y: 0.2 * this.map.mapBoundaries.maxY, heading: 90},
         {x: 1, y: 0.8 * this.map.mapBoundaries.maxY, heading: 90},

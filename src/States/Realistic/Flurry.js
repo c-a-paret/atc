@@ -18,6 +18,7 @@ export class Flurry extends RealisticBase {
 
     tick = () => {
         this.determineRunways()
+        this.updateTargets()
 
         if (this.ticks !== 0 && this.machine.statsService.instanceSpawnedArrivals < this.targetArrivals && this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival(randomChoice(this.targetRunways))

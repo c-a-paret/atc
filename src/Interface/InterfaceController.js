@@ -348,6 +348,10 @@ export class InterfaceController {
 
     updateStrips = () => {
         this.aeroplaneService.aeroplanes.forEach(plane => {
+            // Final Target
+            const finalTargetElement = document.getElementById(`${plane.callSign}-final-target`)
+            finalTargetElement.innerText = plane.finalTarget
+
             // State
             const stateCallSignElement = document.getElementById(`${plane.callSign}-state-call-sign`)
             stateCallSignElement.innerText = this._format_state(plane)
@@ -406,7 +410,7 @@ export class InterfaceController {
 
         //  Target
         const target = div(["value"])
-        const targetText = p(["text", "right", "final-target"])
+        const targetText = p(["text", "right", "final-target"], `${aeroplane.callSign}-final-target`)
         targetText.innerText = aeroplane.finalTarget
         target.appendChild(targetText)
 
