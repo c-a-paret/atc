@@ -56,10 +56,10 @@ export const commandMessage = (acceptedCommands) => {
         `${acceptedCommands.heading ? ' Heading: ' + acceptedCommands.heading : ''}` +
         `${acceptedCommands.altitude ? ' Altitude: ' + acceptedCommands.altitude + 'ft' : ''}` +
         `${acceptedCommands.waypoint ? ' Waypoint: ' + acceptedCommands.waypoint : ''}` +
-        `${acceptedCommands.runway ? ' cleared to land runway ' + acceptedCommands.runway : ''}` +
+        `${acceptedCommands.runway ? ' Cleared to land runway ' + acceptedCommands.runway : ''}` +
         `${acceptedCommands.goAround ? ' go around' : ''}` +
         `${acceptedCommands.taxiAndHold ? ' taxi and hold ' + acceptedCommands.taxiAndHold : ''}` +
-        `${acceptedCommands.clearedForTakeoff ? ' cleared for takeoff' : ''}` +
+        `${acceptedCommands.clearedForTakeoff ? ' Cleared for takeoff' : ''}` +
         `${Math.abs(acceptedCommands.hold) === 1 ? ` hold to the ${acceptedCommands.hold === 1 ? 'right' : 'left'}` : ''}`
 }
 

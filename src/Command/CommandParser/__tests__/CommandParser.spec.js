@@ -467,7 +467,7 @@ describe("Command message", () => {
 
         const result = commandMessage(commands)
 
-        expect(result).toBe("BA123 cleared to land runway 27R")
+        expect(result).toBe("BA123 Cleared to land runway 27R")
     })
 
     test("Returns message with defined commands [Hold right]", () => {
@@ -524,7 +524,7 @@ describe("Command message", () => {
 
         const result = commandMessage(commands)
 
-        expect(result).toBe("BA123 cleared for takeoff")
+        expect(result).toBe("BA123 Cleared for takeoff")
     })
 
     test("Returns message with defined commands [Go around]", () => {
