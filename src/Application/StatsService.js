@@ -110,9 +110,11 @@ export class StatsService {
         this.instanceOutOfFuelCount += 1
     }
 
-    instanceTotalFailed = () => {
+    instanceComplete = () => {
         return this.instanceIncorrectlyLandedCount
             + this.instanceIncorrectlyDepartedCount
+            + this.instanceCorrectlyLandedCount
+            + this.instanceCorrectlyDepartedCount
             + this.instanceLostCount
             + this.instanceOutOfFuelCount
     }

@@ -21,7 +21,7 @@ export class Quiet extends RealisticBase {
             this.initArrival(randomChoice(this.targetRunways))
         }
 
-        if (this.machine.statsService.instanceTotalFailed() >= this.targetArrivals || this.machine.statsService.instanceLanded() >= this.targetArrivals - 1) {
+        if (this.machine.statsService.instanceComplete() >= this.targetArrivals) {
             this.machine.transitionTo(new Flurry())
         }
 

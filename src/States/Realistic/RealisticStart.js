@@ -33,7 +33,7 @@ export class RealisticStart extends RealisticBase {
             this.initDeparture(randomChoice(this.targetWaypoints))
         }
 
-        if (this.machine.statsService.instanceTotalFailed() >= (this.targetArrivals + this.targetDepartures) || (this.machine.statsService.instanceLanded() >= this.targetArrivals - 1 && this.machine.statsService.instanceDeparted() >= this.targetDepartures - 1)) {
+        if (this.machine.statsService.instanceComplete() >= (this.targetArrivals + this.targetDepartures)) {
             this.machine.transitionTo(new Quiet())
         }
 
