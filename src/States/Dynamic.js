@@ -14,13 +14,13 @@ export class Dynamic extends GameState {
         this.machine = undefined
         this.initialised = false
 
-        this.difficulty_adjusting_interval = 240
+        this.difficulty_adjusting_interval = 120
 
         this.difficultyScore = 0
         this.currentDifficultyConfig = undefined
 
-        this.targetRunways = randomChoice([["9L", "9R"], ["27L", "27R"], ["9L"], ["9R"], ["27L"], ["27R"]]),
-            this.targetRunwayPrefix = ''
+        this.targetRunways = randomChoice([["9L", "9R"], ["27L", "27R"], ["9L"], ["9R"], ["27L"], ["27R"]])
+        this.targetRunwayPrefix = ''
 
     }
 
@@ -63,25 +63,27 @@ export class Dynamic extends GameState {
 
     determineDifficulty = () => {
         if (this.userPerformingWell()) {
-            this.difficultyScore = Math.min(this.difficultyScore + 1, 4)
+            this.difficultyScore = Math.min(this.difficultyScore + 1, 11)
+            this.difficulty_adjusting_interval += 60
         } else if (this.userPerformingPoorly()) {
             this.difficultyScore = Math.max(0, this.difficultyScore - 1)
+            this.difficulty_adjusting_interval -= 60
         }
         this.currentDifficultyConfig = this.difficultyConfig(this.difficultyScore)
     }
 
     userPerformingWell = () => {
         // return this.ticks !== 0 && true
-        return this.machine.statsService.correctlyLandedPercentage() > 80
-            && this.machine.statsService.correctlyDepartedPercentage() > 80
-            && this.machine.statsService.lostPercentage() < 10
+        return this.machine.statsService.correctlyLandedPercentage() > 90
+            && this.machine.statsService.correctlyDepartedPercentage() > 90
+            && this.machine.statsService.lostPercentage() < 25
     }
 
     userPerformingPoorly = () => {
         // return false
-        return this.machine.statsService.correctlyLandedPercentage() < 60
-            && this.machine.statsService.correctlyDepartedPercentage() < 60
-            && this.machine.statsService.lostPercentage() > 25
+        return this.machine.statsService.correctlyLandedPercentage() < 90
+            || this.machine.statsService.correctlyDepartedPercentage() < 90
+            || this.machine.statsService.lostPercentage() > 25
     }
 
     difficultyConfig = (difficultyScore) => {
