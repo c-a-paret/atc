@@ -67,6 +67,15 @@ export class TutorialMapOverview {
                 confirmButtonCallback: this.next
             },
             {
+                hintTitle: "Projected paths",
+                hintBodyBefore: "Before we begin, press the Escape key and set Projected Paths to 'On'.\n\n"
+                    + "The tutorial will be more enjoyable!",
+                hintCode: "",
+                hintBodyAfter: "Press Escape to close the pause menu again",
+                confirmButtonText: "Next",
+                confirmButtonCallback: this.next
+            },
+            {
                 hintTitle: "Compass directions and heading",
                 hintBodyBefore: "A core idea is that of 'heading'.\n\n"
                     + "A circle is made up of 360 degrees.\n\n"

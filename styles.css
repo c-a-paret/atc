@@ -527,6 +527,7 @@ canvas {
 
 .header, .header-column {
     font-weight: bold;
+    min-width: 16rem;
 }
 
 .no-wrap {
@@ -536,6 +537,10 @@ canvas {
 
 .blue {
     color: rgb(4, 230, 255);
+}
+
+.purple {
+    color: rgb(221, 126, 229);
 }
 
 .green {

@@ -23,7 +23,7 @@ export class TutorialAircraftHeading {
             "T180",
             "This will tell the aeroplane to turn to heading 180 degrees (directly south).\n\n" +
             "Watch the middle number on the aircraft label change as the aircraft turns.\n\n" +
-            "Notice also that the first number on the sidebar has changed to Blue and shows the target heading value.\n\n" +
+            "Notice also that the middle number on the sidebar has changed to Blue and shows the target heading value.\n\n" +
             "Once the aircraft has reached the target heading, the sidebar value will display the current heading again, in White.\n\n" +
             "You can choose any value between 000 and 360 degrees, always as three digits.",
             "Next",

@@ -212,7 +212,7 @@
             <td>Taxi clearance can only be issued when the aircraft is:<br>
                 <ul>
                     <li>Ready to taxi at the gate</li>
-                    <li>Holding short of a runway</li>
+                    <li>Holding short of a runway (to taxi to a different runway)</li>
                 </ul>
             </td>
         </tr>
@@ -221,11 +221,16 @@
             <td class="no-wrap">CTO</td>
             <td>CTO</td>
             <td>C(leared) for T(ake) O(ff)</td>
-            <td>Takeoff clearance can only be issued when the aircraft is holding short of a runway
+            <td>
+                <ul>
+                    <li>Takeoff clearance can be issued when the aircraft is on the ground.</li>
+                    <li>Clearance can be issued in advance of reaching the runway.</li>
+                    <li>Clearance cannot be revoked.</li>
+                </ul>
         </tr>
     </table>
     <h3>Example commands</h3>
-    <table>
+    <table class="help-guide">
         <tr>
             <td class="header-column">BA123S180D30</td>
             <td>BA123 set speed to 180kts (S180) and descend to 3000ft (D30)</td>
@@ -247,9 +252,9 @@
             <td>EY897 enter right handed holding pattern (HR) and descend to 6000ft (D60)</td>
         </tr>
         <tr>
-            <td class="header-column">VS672TH9LS300A350-MAY</td>
+            <td class="header-column">VS672TH9L-MAYS300A350CTO</td>
             <td>VS672 taxi and hold short of runway 9L (TH9L), set speed after takeoff to 300kts (S300), climb and
-                maintain 35,000ft (A350) and fly direct to Mayfield (-MAY)
+                maintain 35,000ft (A350) and fly direct to Mayfield (-MAY), cleared for immediate takeoff (CTO)
             </td>
         </tr>
         <tr>
@@ -257,6 +262,143 @@
             <td>IH892 cleared for takeoff</td>
         </tr>
     </table>
+    <h2>Game modes</h2>
+    <table class="help-guide">
+        <tr>
+            <td>Mode</td>
+            <td>Detail</td>
+        </tr>
+        <tr>
+            <td>Easy</td>
+            <td>
+                <ul>
+                    <li>Spawn rate is low</li>
+                    <li>Aircraft do not have targets</li>
+                    <li>Aircraft spawn speed and altitude values are lower</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Realistic</td>
+            <td>
+                <ul>
+                    <li>Aircraft spawn in flurries or quiet periods with more departures or arrivals at different
+                        times
+                    </li>
+                    <li>Aircraft all have target departure waypoints or landing runways</li>
+                    <li>Aircraft targets change according to wind direction</li>
+                    <li>Aircraft spawn speed and altitude values are variable</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Hard</td>
+            <td>
+                <ul>
+                    <li>Aircraft spawn rate is high</li>
+                    <li>Aircraft all have target departure waypoints or landing runways</li>
+                    <li>Aircraft targets change according to wind direction</li>
+                    <li>Aircraft spawn speed and altitude values are high</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Dynamic</td>
+            <td>
+                <ul>
+                    <li>Difficulty changes over time with your performance; the better you are the harder it gets</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Aircraft</h2>
+    Aircraft appear like this on the map:
+    <br>
+    <br>
+    <img src="images/aeroplane.png" alt="aeroplane">
+    <br>
+    Information displayed:
+    <ul>
+        <li>Call Sign (LH578)</li>
+        <li>Current <span class="green">speed</span> (190 knots)</li>
+        <li>Current <span class="orange">heading</span> (94 degrees)</li>
+        <li>Current <span class="green">altitude</span> (7000 feet)</li>
+    </ul>
+    The trail of slashes extend <em>behind</em> the aircraft and the gap between the slashes denotes the speed of the
+    aircraft, i.e.: the greater the gap, the greater the speed.
+    <br>
+    <br>
+    You can turn on the projected path that aircraft will take in the pause menu. This is a faded grey line extending
+    <em>ahead</em> of the aircraft.
+
+    <h2>Aircraft information strips</h2>
+    There are two types of information strips, arrivals and departures.
+    <h3>Arrivals</h3>
+    <img src="images/sidebar_strip_arrival.png" alt="sidebar_strip_arrival"></li>
+    <br>
+    <br>
+    The background is a translucent dark grey.
+    <br>
+    <br>
+    Information shown in this case:
+    <ul>
+        <li>Top row</li>
+        <ul>
+            <li>The call sign (VS983)</li>
+            <li>The aircraft type (B747, for Boeing 747)</li>
+            <li>The target heading/waypoint if defined (in <span class="bold purple">purple</span>) (9R)</li>
+        </ul>
+        <li>Middle row</li>
+        <ul>
+            <li>The current state (<span class="bold">READY</span> at gate, <span class="bold">TAXI</span>-ing, <span
+                    class="bold">FLYING</span>, etc.) (FLYING)
+            </li>
+            <li>The fuel indicator (nearing empty fuel)</li>
+        </ul>
+        <li>Bottom row</li>
+        <ul>
+            <li>The <span class="bold">current</span> or <span class="bold blue">target</span> speed (260)</li>
+            <li>The <span class="bold">current</span> or <span class="bold blue">target</span> heading (290)</li>
+            <li>The <span class="bold">current</span> or <span class="bold blue">target</span> altitude (11500)</li>
+            <li>If the aeroplane is currently landing</li>
+            <li>If the aeroplane is currently in a holding pattern</li>
+        </ul>
+    </ul>
+
+    <h3>Departures</h3>
+    <img src="images/sidebar_strip_departure.png" alt="sidebar_strip_arrival"></li>
+    <br>
+    <br>
+    The background is a translucent blue green.
+    <br>
+    <br>
+    Information shown in this case:
+    <ul>
+        <li>Top row</li>
+        <ul>
+            <li>The call sign (EZ362)</li>
+            <li>The aircraft type (A319, for Airbus 319)</li>
+            <li>The target heading/waypoint if defined (in <span class="bold purple">purple</span>) (DET)</li>
+        </ul>
+        <li>Middle row</li>
+        <ul>
+            <li>The current state (<span class="bold">READY</span> at gate, <span class="bold">TAXI</span>-ing, <span
+                    class="bold">FLYING</span>, etc.) (READY)
+            </li>
+            <li>The fuel indicator (full fuel)</li>
+        </ul>
+        <li>Bottom row</li>
+        <ul>
+            <li>The <span class="bold">current</span> or <span class="bold blue">target</span> speed (0)</li>
+            <li>The <span class="bold">current</span> or <span class="bold blue">target</span> heading (0)</li>
+            <li>The <span class="bold">current</span> or <span class="bold blue">target</span> altitude (0)</li>
+        </ul>
+    </ul>
+
+    Target values are shown in <span class="bold blue">Blue</span> and current values are in <span
+        class="bold">White</span>
+
     <h2>Restrictions</h2>
     Breaching restrictions will cause the 'restrictions' timer to count up. Aim to minimise the amount of time you are
     breaching restrictions.
@@ -294,42 +436,13 @@
         <li>Less than 1 nautical mile horizontal separation</li>
     </ul>
 
-    <h2>Aircraft</h2>
-    Aircraft appear like this on the map:
-    <br>
-    <br>
-    <img src="images/aeroplane.png" alt="aeroplane">
-    <br>
-    Information displayed:
-    <ul>
-        <li>Call Sign (BA123)</li>
-        <li>Current <span class="green">speed</span> (240 knots)</li>
-        <li>Current <span class="orange">heading</span> (97 degrees)</li>
-        <li>Current <span class="green">altitude</span> (6200 feet)</li>
-    </ul>
-    The trail of slashes extend <em>behind</em> the aircraft and the gap between the slashes denotes the speed of the
-    aircraft, i.e.: the greater the gap, the greater the speed.
-
-    <h2>Aircraft information strips</h2>
-    Aeroplane information strips on the right-hand sidebar show:
-    <ul>
-        <li>The call sign (BA123, etc.)</li>
-        <li>The aircraft type (B777, A320, etc.)</li>
-        <li>The current or target heading/waypoint</li>
-        <li>The current or target speed</li>
-        <li>The current or target altitude</li>
-        <li>If the aeroplane is currently landing</li>
-        <li>If the aeroplane is currently in a holding pattern</li>
-    </ul>
-    Target values are shown in <span class="bold blue">Blue</span> and current values are in <span
-        class="bold">White</span>
-
     <h2>General Gameplay</h2>
     Aircraft will spawn on the map, and you will need to guide them in to land on one of the runways by issuing
     commands.
 
     <h3>Pausing the game</h3>
-    Pause the game by pressing the circle in the top right of the screen. Opening this help guide also pauses the game.
+    Pause the game by pressing `Esc` or clicking the circle in the top right of the screen. Opening this help guide also
+    pauses the game.
     <br>
     <br>
     <img src="images/pause.png" alt="pause">
@@ -361,7 +474,8 @@
     <br>
     <br>
     Sequentially issuing the same command with different values, e.g.: BA123T045 -> BA123T090 -> BA123T182 will override
-    the existing command (in this case the target heading for BA123). This will be reflected on the aircraft strips in
+    the existing command (in this case the target heading for BA123, from 45 degrees to 90 degrees and finally to 182
+    degrees). This will be reflected on the aircraft strips in
     the right-hand sidebar.
 
     <br>

@@ -24,7 +24,7 @@ export class TutorialAircraftSpeed {
             "S200",
             "This will tell the aeroplane to slow down to 200 knots.\n\n" +
             "Watch the first number on the aircraft label change as the aircraft slows down.\n\n" +
-            "Like before, the second number on the sidebar has changed to Blue and shows the target speed value and will change back to white once the aircraft has reached the target speed.\n\n" +
+            "Like before, the first number on the sidebar has changed to Blue and shows the target speed value and will change back to white once the aircraft has reached the target speed.\n\n" +
             `You can choose any value between ${MIN_SPEED} and ${MAX_SPEED} knots.\n\n` +
             "Notice how the length of the tail of the aircraft becomes shorter as the speed reduces.",
             "Next",

@@ -71,7 +71,7 @@ export class TutorialDeparting {
             },
             {
                 hintTitle: "Future Commands (optional)",
-                hintBodyBefore: "At any point before takeoff, you may issue commands to the aircraft that will be actioned once the aircraft is flying. You can change these as often as you like.\n\n" +
+                hintBodyBefore: "At any point before takeoff, you may issue commands to the aircraft that will be actioned once the aircraft is flying. You can change these as often as you like, except for takeoff clearance.\n\n" +
                     "Try issuing a waypoint, speed and altitude command, e.g.:",
                 hintCode: "-MAYS300A280",
                 hintBodyAfter: "Notice that the target values have been updated on the sidebar strip, but that there is no aircraft on the map yet.\n\n" +
@@ -94,7 +94,7 @@ export class TutorialDeparting {
             },
             {
                 hintTitle: "Clearing for takeoff",
-                hintBodyBefore: "When an aircraft is holding short of a runway it can accept takeoff clearance.\n\n" +
+                hintBodyBefore: "An aircraft can accept takeoff clearance at any point when it is on the ground. Once issued, it cannot be revoked.\n\n" +
                     "Issue the C(leared) for T(ake) O(ff) command:",
                 hintCode: "CTO",
                 hintBodyAfter: "The aircraft will accelerate down the runway to reach 200kts, takeoff, fly the runway heading and then climb and maintain 2,000ft.\n\n" +
@@ -109,7 +109,7 @@ export class TutorialDeparting {
                 hintTitle: "Departing aircraft - your turn",
                 hintBodyBefore: "Now it is your turn.\n\n"
                     + "Guide the waiting aircraft to depart towards Brookman's Park (BPK).\n\n"
-                    + "Consider which runway makes most sense and T(axi) and H(old) before issuing the C(leared) for T(ake) O(ff) command.",
+                    + "Consider which runway makes most sense and T(axi) and H(old) and issue the C(leared) for T(ake) O(ff) command.",
                 hintCode: "",
                 hintBodyAfter: "",
                 confirmButtonText: "Next",
