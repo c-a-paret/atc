@@ -466,6 +466,10 @@ canvas {
     overflow-y: scroll;
 }
 
+#pause-menu::-webkit-scrollbar {
+    display: none;
+}
+
 .pause-menu .mode-buttons {
     width: 30%;
 }
