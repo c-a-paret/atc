@@ -14,19 +14,16 @@ export class Hard extends GameState {
         this.machine = undefined
         this.initialised = false
 
-        this.arrivalSpawnInterval = 120
-        this.departureSpawnInterval = 100
-        this.speedRange = [220, 280]
-        this.altitudeRange = [9000, 15000]
-        this.targetRunways = randomChoice([["9L", "9R"], ["27L", "27R"], ["9L"], ["9R"], ["27L"], ["27R"]])
+        this.arrivalSpawnInterval = 60
+        this.departureSpawnInterval = 90
+        this.speedRange = [240, 320]
+        this.altitudeRange = [10000, 18000]
+        this.targetRunways = randomChoice([["9L", "9R"], ["27L", "27R"]])
         this.targetWaypoints = randomChoice([
             ["CPT", "CHT", "BPK", "DET", "EPM", "OCK"],
-            ["LAM", "BPK", "MAY", "DET"],
-            ["CPT", "CHT"],
-            ["OCK", "EPM", "MAY"],
-            ["CHT", "LAM", "BPK"],
-            ["OCK"],
-            ["DET"],
+            ["CPT", "CHT", "LON"],
+            ["OCK", "EPM"],
+            ["CPT"],
         ])
         this.targetRunwayPrefix = ''
     }
@@ -63,10 +60,10 @@ export class Hard extends GameState {
 
     determineRunways = () => {
         if (this.machine.weather.wind.easterly()) {
-            this.targetRunways = randomChoice([["9L", "9R"], ["9L"], ["9R"]])
+            this.targetRunways = ["9L", "9R"]
             this.targetRunwayPrefix = '9'
         } else {
-            this.targetRunways = randomChoice([["27L", "27R"], ["27L"], ["27R"]])
+            this.targetRunways = ["27L", "27R"]
             this.targetRunwayPrefix = '27'
         }
     }
@@ -85,7 +82,9 @@ export class Hard extends GameState {
         {x: 0.7 * this.map.mapBoundaries.maxX, y: 1, heading: 225},
 
         {x: 0.2 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 350},
+        {x: 0.4 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 10},
         {x: 0.5 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 290},
+        {x: 0.6 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 20},
         {x: 0.7 * this.map.mapBoundaries.maxX, y: this.map.mapBoundaries.maxY, heading: 360},
 
         {x: 1, y: 0.2 * this.map.mapBoundaries.maxY, heading: 90},
