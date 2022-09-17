@@ -131,10 +131,6 @@ export class StatsService {
         return this.correctlyLandedCount + this.incorrectlyLandedCount;
     }
 
-    correctlyLanded = () => {
-        return this.correctlyLandedCount;
-    }
-
     totalDeparted = () => {
         return this.correctlyDepartedCount + this.incorrectlyDepartedCount;
     }

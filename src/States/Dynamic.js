@@ -14,7 +14,8 @@ export class Dynamic extends GameState {
         this.machine = undefined
         this.initialised = false
 
-        this.difficulty_adjusting_interval = 120
+        this.num_handled_interval = 4
+        this.total_handled_at_last_difficulty_change = 0
 
         this.difficultyScore = 0
         this.currentDifficultyConfig = undefined
@@ -30,6 +31,7 @@ export class Dynamic extends GameState {
     }
 
     init = () => {
+        this.machine.statsService.resetInstanceStats()
         this.machine.weather.dynamic()
         if (!this.initialised && this.clearAircraftOnStart) {
             this.machine.clear()
@@ -57,33 +59,35 @@ export class Dynamic extends GameState {
     }
 
     shouldDetermineDifficulty = () => {
-        return this.ticks === 0 ||
-            (this.ticks !== 0 && this.ticks % this.difficulty_adjusting_interval === 0)
+        if (this.ticks === 0) {
+            return true
+        } else if (this.ticks !== 0) {
+            const totalHandled = this.machine.statsService.instanceComplete()
+            if (totalHandled > this.total_handled_at_last_difficulty_change) {
+                if (totalHandled > 0 && totalHandled % this.num_handled_interval === 0) {
+                    this.total_handled_at_last_difficulty_change = totalHandled
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     determineDifficulty = () => {
         if (this.userPerformingWell()) {
             this.difficultyScore = Math.min(this.difficultyScore + 1, 11)
-            this.difficulty_adjusting_interval += 60
-        } else if (this.userPerformingPoorly()) {
+            this.num_handled_interval = 4
+        } else {
             this.difficultyScore = Math.max(0, this.difficultyScore - 1)
-            this.difficulty_adjusting_interval -= 60
+            this.num_handled_interval = 2
         }
         this.currentDifficultyConfig = this.difficultyConfig(this.difficultyScore)
     }
 
     userPerformingWell = () => {
-        // return this.ticks !== 0 && true
         return this.machine.statsService.correctlyLandedPercentage() > 90
             && this.machine.statsService.correctlyDepartedPercentage() > 90
-            && this.machine.statsService.lostPercentage() < 25
-    }
-
-    userPerformingPoorly = () => {
-        // return false
-        return this.machine.statsService.correctlyLandedPercentage() < 90
-            || this.machine.statsService.correctlyDepartedPercentage() < 90
-            || this.machine.statsService.lostPercentage() > 25
+            && this.machine.statsService.lostPercentage() < 10
     }
 
     difficultyConfig = (difficultyScore) => {
