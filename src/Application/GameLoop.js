@@ -16,7 +16,7 @@ export class GameLoop {
     _determineGameSpeed = () => {
         return {
             1: 900,
-            2: 300,
+            2: 500,
             3: 100
         }[this.interfaceController.gameSpeed]
     }
