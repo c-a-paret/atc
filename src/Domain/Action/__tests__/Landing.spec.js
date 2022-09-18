@@ -22,8 +22,7 @@ describe("Landing", () => {
         const aeroplane = new Aeroplane("BA123", "A321", x, y, speed, heading, altitude, 3)
 
         expect(aeroplane.actions.length).toBe(0)
-        const landing = new Landing(map, aeroplane, correctRunway);
-        aeroplane.addAction(landing)
+        aeroplane.clearForLanding(testGameMap(), correctRunway)
 
         expect(aeroplane.actions.length).toBe(1)
 
