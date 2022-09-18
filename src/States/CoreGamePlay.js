@@ -129,7 +129,7 @@ export class CoreGamePlay extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
-        // aeroplane1.setLanding(this.map, "9R")
+        // aeroplane1.clearForLanding(this.map, "9R")
         aeroplane2.setTaxiAndHold(this.map, "27R")
 
         // this.machine.aeroplanes.forEach(plane => {

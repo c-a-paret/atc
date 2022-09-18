@@ -2,7 +2,7 @@ import {commandMessage} from "../Command/CommandParser/CommandParser";
 import {timeStringFromSeconds} from "../utils/timeFormatters";
 import {div, p} from "./elements";
 import {Tutorial} from "../States/Tutorial";
-import {round} from "../utils/maths";
+import {round, roundToNearest} from "../utils/maths";
 import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 import {Easy} from "../States/Easy";
 import {Hard} from "../States/Hard";
@@ -538,6 +538,8 @@ export class InterfaceController {
             HOLDING_SHORT: `SHORT ${aeroplane.positionDescription}`,
             TAKING_OFF: "T/O",
             FLYING: "FLYING",
+            HOLDING_PATTERN: "HOLD",
+            LANDING: "LANDING",
             GOING_AROUND: "G/A",
         }
         return state_map[aeroplane.state]
@@ -552,10 +554,8 @@ export class InterfaceController {
     }
 
     _get_location = (aeroplane) => {
-        if (aeroplane.isLanding()) {
-            return new TargetValue('Landing')
-        } else if (aeroplane.isHolding()) {
-            return new TargetValue('Hold')
+        if (aeroplane.isInHoldingPattern()) {
+            return new TargetValue('-')
         } else {
             if (aeroplane.targetLocation) {
                 return new TargetValue(aeroplane.targetLocation)
@@ -565,23 +565,17 @@ export class InterfaceController {
     }
 
     _get_altitude = (aeroplane) => {
-        if (!aeroplane.isLanding()) {
-            if (aeroplane.targetAltitude) {
-                return new TargetValue(aeroplane.targetAltitude)
-            }
-            return new CurrentValue(aeroplane.altitude)
+        if (aeroplane.targetAltitude) {
+            return new TargetValue(aeroplane.targetAltitude)
         }
-        return new CurrentValue('')
+        return new CurrentValue(roundToNearest(aeroplane.altitude, 10))
     }
 
     _get_speed = (aeroplane) => {
-        if (!aeroplane.isLanding()) {
-            if (aeroplane.targetSpeed) {
-                return new TargetValue(aeroplane.targetSpeed)
-            }
-            return new CurrentValue(aeroplane.speed)
+        if (aeroplane.targetSpeed) {
+            return new TargetValue(aeroplane.targetSpeed)
         }
-        return new CurrentValue('')
+        return new CurrentValue(aeroplane.speed)
     }
 
     _colour_class = (value) => {

@@ -12,7 +12,16 @@ import {
     SPEED_TAIL_LENGTH,
     VERTICAL_SEPARATION_MINIMUM
 } from "../../config/constants";
-import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "./aeroplaneStates";
+import {
+    FLYING,
+    GOING_AROUND,
+    HOLDING_PATTERN,
+    HOLDING_SHORT,
+    LANDING,
+    READY_TO_TAXI,
+    TAKING_OFF,
+    TAXIING
+} from "./aeroplaneStates";
 import {Speed} from "../Action/Speed";
 import {Heading} from "../Action/Heading";
 import {Altitude} from "../Action/Altitude";
@@ -49,43 +58,8 @@ export class Aeroplane {
         this.positionDescription = ''
     }
 
-    _determineStartingFuel = () => {
-        if (this.isArrival()) {
-            return getRandomNumberBetween(15, 25)
-        } else {
-            return getRandomNumberBetween(90, 100)
-        }
-    }
-
     hasFinalTarget = () => {
         return !!this.finalTarget
-    }
-
-    _clear_targets = () => {
-        const activeActions = this.actions.map(action => action.type())
-        if (activeActions.every(action => !["Waypoint", "Heading", "Landing"].includes(action))) {
-            this.targetLocation = undefined
-        }
-        this.targetAltitude = activeActions.includes('Altitude') ? this.targetAltitude : undefined
-        this.targetSpeed = activeActions.includes('Speed') ? this.targetSpeed : undefined
-    }
-
-    _update_targets = () => {
-        // Add targets from current actions
-        this.actions.forEach(action => {
-            if (action.type() === "Waypoint") {
-                this.targetLocation = action.targetWaypoint
-            }
-            if (["Heading", "Landing"].includes(action.type())) {
-                this.targetLocation = action.targetValue
-            }
-            if (action.type() === "Altitude") {
-                this.targetAltitude = action.targetValue
-            }
-            if (action.type() === "Speed") {
-                this.targetSpeed = action.targetValue
-            }
-        })
     }
 
     isArrival = () => {
@@ -98,7 +72,7 @@ export class Aeroplane {
 
     addAction = (action) => {
         // Only Go Around overwrites Landing
-        if (this.actions.length > 0 && this.actions[0].type() === 'Landing') {
+        if (this.state === LANDING) {
             if (action.type() === 'GoAround') {
                 this.actions = [action]
                 this._update_targets()
@@ -146,6 +120,7 @@ export class Aeroplane {
         const newHeading = new Heading(map, this, heading);
         if (newHeading.isValid()) {
             this.addAction(newHeading)
+            this.state = this.state === HOLDING_PATTERN ? FLYING : this.state
             return heading
         }
     }
@@ -162,15 +137,17 @@ export class Aeroplane {
         const newWaypoint = new Waypoint(map, this, waypoint);
         if (newWaypoint.isValid()) {
             this.addAction(newWaypoint)
+            this.state = this.state === HOLDING_PATTERN ? FLYING : this.state
             return waypoint
         }
     }
 
-    setLanding = (map, runway) => {
+    clearForLanding = (map, runway) => {
         const newLanding = new Landing(map, this, runway);
         if (newLanding.isValid()) {
             this.addAction(newLanding)
             this.aimingForRunway = runway
+            this.state = LANDING
             return runway
         }
     }
@@ -179,6 +156,7 @@ export class Aeroplane {
         const newHoldingPattern = new HoldingPattern(map, this, direction);
         if (newHoldingPattern.isValid()) {
             this.addAction(newHoldingPattern)
+            this.state = HOLDING_PATTERN
             return direction
         }
     }
@@ -186,8 +164,8 @@ export class Aeroplane {
     setTaxiAndHold = (map, runway) => {
         const newTaxiAndHold = new TaxiToRunway(map, this, runway);
         if (newTaxiAndHold.isValid()) {
-            this.state = TAXIING
             this.addAction(newTaxiAndHold)
+            this.state = TAXIING
             return runway
         }
     }
@@ -196,6 +174,7 @@ export class Aeroplane {
         const takeoff = new Takeoff(map, this);
         if (takeoff.isValid()) {
             this.addAction(takeoff)
+            // Takeoff state is set when applying the action as it is future actionable
             return true
         }
     }
@@ -203,16 +182,11 @@ export class Aeroplane {
     goAround = (map) => {
         const goAround = new GoAround(map, this, this.aimingForRunway);
         if (goAround.isValid()) {
-            this.state = GOING_AROUND
             this.addAction(goAround)
+            this.state = GOING_AROUND
             return true
         } else {
         }
-    }
-
-    _clean_actions = () => {
-        this.actions = this.actions.filter(action => action.isFutureActionable() || action.isActionable())
-        this._clear_targets()
     }
 
     is = (states) => {
@@ -333,18 +307,12 @@ export class Aeroplane {
         return false
     }
 
-    _isOutsideBoundaries = (mapBoundaries) => {
-        const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
-        const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
-        return outsideX || outsideY
-    }
-
     isLanding = () => {
-        return this.actions.length > 0 && this.actions[0].type() === "Landing"
+        return this.state === LANDING
     }
 
-    isHolding = () => {
-        return this.actions.length > 0 && this.actions.map(action => action.type()).includes("HoldingPattern")
+    isInHoldingPattern = () => {
+        return this.state === HOLDING_PATTERN
     }
 
     isChangingAltitude = () => {
@@ -417,18 +385,6 @@ export class Aeroplane {
         return outOfFuel
     }
 
-    _stateFuelConsumptionRate = () => {
-        const consumptionRateMap = {
-            READY_TO_TAXI: 0.001,
-            TAXIING: 0.002,
-            HOLDING_SHORT: 0.001,
-            TAKING_OFF: 0.05,
-            FLYING: 0,
-            GOING_AROUND: 0,
-        }
-        return this.state ? consumptionRateMap[this.state] : 0
-    }
-
     consumeFuel = () => {
         if (this.fuelLevel - BASE_FUEL_CONSUMPTION_RATE <= 0) {
             this.fuelLevel = 0
@@ -450,5 +406,65 @@ export class Aeroplane {
             }
             this.fuelLevel -= rate
         }
+    }
+
+    _clean_actions = () => {
+        this.actions = this.actions.filter(action => action.isFutureActionable() || action.isActionable())
+        this._clear_targets()
+    }
+
+    _isOutsideBoundaries = (mapBoundaries) => {
+        const outsideX = (this.x < mapBoundaries.minX || this.x > mapBoundaries.maxX)
+        const outsideY = (this.y < mapBoundaries.minY || this.y > mapBoundaries.maxY)
+        return outsideX || outsideY
+    }
+
+    _determineStartingFuel = () => {
+        if (this.isArrival()) {
+            return getRandomNumberBetween(15, 25)
+        } else {
+            return getRandomNumberBetween(90, 100)
+        }
+    }
+
+    _stateFuelConsumptionRate = () => {
+        const consumptionRateMap = {
+            READY_TO_TAXI: 0.001,
+            TAXIING: 0.002,
+            HOLDING_SHORT: 0.001,
+            TAKING_OFF: 0.05,
+            FLYING: 0,
+            LANDING: 0,
+            HOLDING_PATTERN: 0,
+            GOING_AROUND: 0,
+        }
+        return this.state ? consumptionRateMap[this.state] : 0
+    }
+
+    _clear_targets = () => {
+        const activeActions = this.actions.map(action => action.type())
+        if (activeActions.every(action => !["Waypoint", "Heading", "Landing"].includes(action))) {
+            this.targetLocation = undefined
+        }
+        this.targetAltitude = activeActions.includes('Altitude') ? this.targetAltitude : undefined
+        this.targetSpeed = activeActions.includes('Speed') ? this.targetSpeed : undefined
+    }
+
+    _update_targets = () => {
+        // Add targets from current actions
+        this.actions.forEach(action => {
+            if (action.type() === "Waypoint") {
+                this.targetLocation = action.targetWaypoint
+            }
+            if (["Heading", "Landing"].includes(action.type())) {
+                this.targetLocation = action.targetValue
+            }
+            if (action.type() === "Altitude") {
+                this.targetAltitude = action.targetValue
+            }
+            if (action.type() === "Speed") {
+                this.targetSpeed = action.targetValue
+            }
+        })
     }
 }

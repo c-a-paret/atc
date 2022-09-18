@@ -7,7 +7,7 @@ import {Altitude} from "../../Action/Altitude";
 import {Waypoint} from "../../Action/Waypoint";
 import {Landing} from "../../Action/Landing";
 import {HoldingPattern} from "../../Action/HoldingPattern";
-import {FLYING, GOING_AROUND} from "../aeroplaneStates";
+import {FLYING, GOING_AROUND, HOLDING_PATTERN, LANDING} from "../aeroplaneStates";
 
 
 const testGameMap = () => {
@@ -200,18 +200,20 @@ describe("Set Landing", () => {
     test("Sets landing action when valid", () => {
         let desiredRunway = "9L";
 
-        aeroplane.setLanding(map, desiredRunway)
+        aeroplane.clearForLanding(map, desiredRunway)
 
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].targetRunway).toBe(desiredRunway)
+        expect(aeroplane.state).toBe(LANDING)
     })
 
     test("Does not set landing when not valid", () => {
         let desiredRunway = "24C";
 
-        aeroplane.setLanding(map, desiredRunway)
+        aeroplane.clearForLanding(map, desiredRunway)
 
         expect(aeroplane.actions.length).toBe(0)
+        expect(aeroplane.state).toBe(FLYING)
     })
 })
 
@@ -236,9 +238,10 @@ describe("Go Around", () => {
     test("Does not set landing when not valid", () => {
         let desiredRunway = "24C";
 
-        aeroplane.setLanding(map, desiredRunway)
+        aeroplane.clearForLanding(map, desiredRunway)
 
         expect(aeroplane.actions.length).toBe(0)
+        expect(aeroplane.state).toBe(FLYING)
     })
 })
 
@@ -462,7 +465,7 @@ describe("Add Actions", () => {
 
     describe('Nothing overwrites landing', () => {
         test('Hold does not overwrite Landing', () => {
-            const aeroplane = new Aeroplane("AB123", "A321", 500, 425, 300, 90, 3000, 3)
+            const aeroplane = new Aeroplane("AB123", "A321", 500, 425, 300, 90, 3000, 3, ARRIVAL, LANDING)
             aeroplane.actions = [
                 new Landing(testGameMap(), aeroplane, "9L")
             ]
@@ -938,7 +941,7 @@ describe("Sequential Actions", () => {
         expect(aeroplane.actions[1].targetValue).toBe(2000)
         expect(aeroplane.actions[2].targetValue).toBe(90)
 
-        aeroplane.setLanding(map, "9L")
+        aeroplane.clearForLanding(map, "9L")
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].type()).toBe("Landing")
     })
@@ -996,20 +999,22 @@ describe("Outside boundaries", () => {
 
 describe("Holding state", () => {
     test("Aeroplane is landing", () => {
-        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
-        aeroplane.actions = [
-            new HoldingPattern(testGameMap(), aeroplane, 1),
-            new Speed(testGameMap(), aeroplane, 240)
-        ]
-        expect(aeroplane.isHolding()).toBeTruthy()
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, HOLDING_PATTERN)
+        expect(aeroplane.isInHoldingPattern()).toBeTruthy()
     })
 
     test("Aeroplane is not holding", () => {
-        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
-        aeroplane.actions = [
-            new Speed(testGameMap(), aeroplane, 220)
-        ]
-        expect(aeroplane.isHolding()).toBeFalsy()
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, FLYING)
+        expect(aeroplane.isInHoldingPattern()).toBeFalsy()
+    })
+
+    test("Clears holding state when heading command issued", () => {
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, HOLDING_PATTERN)
+        aeroplane.actions.push(new HoldingPattern(testGameMap(), aeroplane, "left"))
+        expect(aeroplane.isInHoldingPattern()).toBeTruthy()
+
+        aeroplane.setHeading(testGameMap(), 180)
+        expect(aeroplane.isInHoldingPattern()).toBeFalsy()
     })
 })
 
@@ -1017,10 +1022,7 @@ describe("Landing/Landed state", () => {
 
     describe("Determines when landing", () => {
         test("Aeroplane is landing", () => {
-            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
-            aeroplane.actions = [
-                new Landing(testGameMap(), aeroplane, "9R")
-            ]
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, LANDING)
             expect(aeroplane.isLanding()).toBeTruthy()
         })
 

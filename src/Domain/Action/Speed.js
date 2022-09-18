@@ -1,4 +1,12 @@
-import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
+import {
+    FLYING,
+    GOING_AROUND,
+    HOLDING_PATTERN,
+    HOLDING_SHORT, LANDING,
+    READY_TO_TAXI,
+    TAKING_OFF,
+    TAXIING
+} from "../Aeroplane/aeroplaneStates";
 import {MIN_SPEED} from "../../config/constants";
 import {Action} from "./Action";
 
@@ -14,7 +22,7 @@ export class Speed extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.speed !== this.targetValue && this.aeroplane.is([FLYING, GOING_AROUND])
+        return this.aeroplane.speed !== this.targetValue && this.aeroplane.is([FLYING,HOLDING_PATTERN, LANDING, GOING_AROUND])
     }
 
     isFutureActionable = () => {

@@ -1,4 +1,4 @@
-import {FLYING} from "../Aeroplane/aeroplaneStates";
+import {FLYING, HOLDING_PATTERN} from "../Aeroplane/aeroplaneStates";
 import {Action, turning_change_rate} from "./Action";
 
 export class HoldingPattern extends Action {
@@ -10,7 +10,7 @@ export class HoldingPattern extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.is([FLYING])
+        return this.aeroplane.is([FLYING, HOLDING_PATTERN])
     }
 
     isFutureActionable = () => {
@@ -18,7 +18,7 @@ export class HoldingPattern extends Action {
     }
 
     isValid = () => {
-        return true
+        return this.aeroplane.is([FLYING, HOLDING_PATTERN])
     }
 
     apply = () => {

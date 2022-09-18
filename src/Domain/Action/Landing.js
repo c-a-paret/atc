@@ -1,4 +1,4 @@
-import {FLYING} from "../Aeroplane/aeroplaneStates";
+import {FLYING, LANDING} from "../Aeroplane/aeroplaneStates";
 import {ILS_MAX_X, ILS_MIN_X, LANDED_ALTITUDE, LANDING_SPEED, MIN_APPROACH_SPEED} from "../../config/constants";
 import {Speed} from "./Speed";
 import {Waypoint} from "./Waypoint";
@@ -16,7 +16,7 @@ export class Landing extends Action {
     }
 
     isActionable = () => {
-        return !this.executed && this.aeroplane.is([FLYING])
+        return !this.executed && this.aeroplane.is([FLYING, LANDING])
     }
 
     isFutureActionable = () => {

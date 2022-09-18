@@ -1,4 +1,12 @@
-import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
+import {
+    FLYING,
+    GOING_AROUND,
+    HOLDING_PATTERN,
+    HOLDING_SHORT,
+    READY_TO_TAXI,
+    TAKING_OFF,
+    TAXIING
+} from "../Aeroplane/aeroplaneStates";
 import {shortestAngle} from "../../utils/geometry";
 import {Action, turning_change_rate, wouldEndUpTurningBeyondTarget} from "./Action";
 
@@ -8,7 +16,7 @@ export class Heading extends Action {
     }
 
     isActionable = () => {
-        return this.aeroplane.heading !== this.targetValue && this.aeroplane.is([FLYING, GOING_AROUND])
+        return this.aeroplane.heading !== this.targetValue && this.aeroplane.is([FLYING, HOLDING_PATTERN, GOING_AROUND])
     };
 
     isFutureActionable = () => {

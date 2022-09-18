@@ -54,7 +54,7 @@ export class AeroplaneService {
                     waypointSet = plane.setWaypoint(this.map, command.waypoint)
                 }
                 if (command.runway) {
-                    runwaySet = plane.setLanding(this.map, command.runway)
+                    runwaySet = plane.clearForLanding(this.map, command.runway)
                 }
                 if (command.hold) {
                     holdSet = plane.setHold(this.map, command.hold)

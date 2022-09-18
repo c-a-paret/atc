@@ -2,7 +2,7 @@ import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {ARRIVAL} from "../../../config/constants";
 import {Altitude} from "../Altitude";
 import {GoAround} from "../GoAround";
-import {FLYING, GOING_AROUND} from "../../Aeroplane/aeroplaneStates";
+import {FLYING, GOING_AROUND, LANDING} from "../../Aeroplane/aeroplaneStates";
 import {Landing} from "../Landing";
 import {testGameMap} from "./actionTest.utils";
 
@@ -10,18 +10,18 @@ import {testGameMap} from "./actionTest.utils";
 describe("Go Around", () => {
     test("Adds relevant actions to aeroplane", () => {
         const correctRunway = '9L';
-        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 1900, 3, ARRIVAL, FLYING, correctRunway)
+        const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, ARRIVAL, FLYING, correctRunway)
+        expect(aeroplane.state).toBe(FLYING)
 
-        const landing = new Landing(testGameMap(), aeroplane, correctRunway);
-        landing.isValid()
-        aeroplane.addAction(landing)
+        aeroplane.clearForLanding(testGameMap(),  correctRunway)
 
-        const goAround = new GoAround(testGameMap(), aeroplane, correctRunway);
-        goAround.isValid()
-        aeroplane.addAction(goAround)
-        goAround.apply()
+        expect(aeroplane.state).toBe(LANDING)
 
-        expect(goAround.targetsAdded).toBeTruthy()
+        aeroplane.goAround(testGameMap())
+
+        expect(aeroplane.state).toBe(GOING_AROUND)
+
+        aeroplane.applyActions()
 
         expect(aeroplane.actions.length).toBe(4)
         expect(aeroplane.actions[0].type()).toBe('GoAround')
@@ -32,15 +32,14 @@ describe("Go Around", () => {
 
     test("Completes go around execution when at correct altitude", () => {
         const correctRunway = '9L';
-        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 1900, 3, GOING_AROUND, FLYING, correctRunway)
 
-        const landing = new Landing(testGameMap(), aeroplane, correctRunway);
-        landing.isValid()
-        aeroplane.addAction(landing)
+        const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, GOING_AROUND, FLYING, correctRunway)
 
-        const goAround = new GoAround(testGameMap(), aeroplane, correctRunway);
-        goAround.isValid()
-        aeroplane.addAction(goAround)
+        expect(aeroplane.state).toBe(FLYING)
+        aeroplane.clearForLanding(testGameMap(), correctRunway)
+        expect(aeroplane.state).toBe(LANDING)
+        aeroplane.goAround(testGameMap())
+        expect(aeroplane.state).toBe(GOING_AROUND)
 
         aeroplane.applyActions()
         aeroplane.applyActions()
@@ -55,8 +54,16 @@ describe("Go Around", () => {
         expect(aeroplane.altitude).toBe(2000)
         aeroplane.applyActions()
         expect(aeroplane.altitude).toBe(2020)
-        expect(goAround.executed).toBeTruthy()
+
+        // Transition to flying when 2000ft achieved
         expect(aeroplane.state).toBe(FLYING)
+
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(2040)
+        aeroplane.applyActions()
+        expect(aeroplane.altitude).toBe(2060)
+
+        // etc...
 
     })
 

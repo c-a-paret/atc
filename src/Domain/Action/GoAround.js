@@ -39,15 +39,15 @@ export class GoAround extends Action {
     }
 
     apply = () => {
+        if (this.aeroplane.altitude >= MIN_GROUND_CLEARANCE) {
+            this.aeroplane.state = FLYING
+            this.executed = true
+        }
         if (!this.targetsAdded) {
             this.aeroplane.addAction(new Waypoint(this.map, this.aeroplane, this.targetWaypoint))
             this.aeroplane.addAction(new Speed(this.map, this.aeroplane, this.targetSpeed))
             this.aeroplane.addAction(new Altitude(this.map, this.aeroplane, this.targetAltitude))
             this.targetsAdded = true
-        }
-        if (this.aeroplane.altitude >= MIN_GROUND_CLEARANCE) {
-            this.aeroplane.state = FLYING
-            this.executed = true
         }
     }
 

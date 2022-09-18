@@ -2,8 +2,8 @@ import {AIRCRAFT} from "../config/aircraft";
 import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
-import {DEPARTURE} from "../config/constants";
-import {READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
+import {ARRIVAL, DEPARTURE} from "../config/constants";
+import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 
 
 export class Easy extends GameState {
@@ -100,8 +100,8 @@ export class Easy extends GameState {
 
     initTestAeroplanes = () => {
         // const aeroplane1 = new Aeroplane("BA123", "A321", 1150, 470, 200, 270, 3000, 1)
-        // const aeroplane1 = new Aeroplane("BA123", "A321", 750, 470, 200, 90, 3000, 1)
-        const aeroplane1 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "GWC")
+        const aeroplane1 = new Aeroplane("BA123", "A321", 750, 470, 200, 90, 3000, 1, ARRIVAL, FLYING, null, 100)
+        // const aeroplane1 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "GWC")
         this.machine.aeroplanes = [
             aeroplane1,
             // aeroplane2,
@@ -118,11 +118,11 @@ export class Easy extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
-        // aeroplane1.setLanding(this.map, "9R")
-        aeroplane1.setTaxiAndHold(this.map, "27L")
-        aeroplane1.setWaypoint(this.map, "GWC")
-        aeroplane1.setSpeed(this.map, 300)
-        aeroplane1.setAltitude(this.map, 40000)
+        aeroplane1.clearForLanding(this.map, "9L")
+        // aeroplane1.setTaxiAndHold(this.map, "27L")
+        // aeroplane1.setWaypoint(this.map, "GWC")
+        // aeroplane1.setSpeed(this.map, 300)
+        // aeroplane1.setAltitude(this.map, 40000)
 
         // this.machine.aeroplanes.forEach(plane => {
         //     plane.setAltitude(this.map, 4000)
