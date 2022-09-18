@@ -40,6 +40,7 @@ export class Takeoff extends Action {
             this.targetY = this.runway.takeoffPoint.y
         }
 
+        this.aeroplane.hasTakeoffClearance = false
         this.aeroplane.state = TAKING_OFF
 
         this.aeroplane.heading = this.runway.heading

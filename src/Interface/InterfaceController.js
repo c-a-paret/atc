@@ -8,6 +8,7 @@ import {Easy} from "../States/Easy";
 import {Hard} from "../States/Hard";
 import {RealisticStart} from "../States/Realistic/RealisticStart";
 import {Dynamic} from "../States/Dynamic";
+import {COLOURS} from "../config/colours";
 
 class TargetValue {
     constructor(value) {
@@ -380,7 +381,18 @@ export class InterfaceController {
 
             // Fuel
             this.updateFuelIndicator(plane)
+
+            // State indicator
+            const indicator = document.getElementById(`${plane.callSign}-state-indicator`)
+            indicator.style.backgroundColor = this.determineStateIndicatorColour(plane)
         })
+    }
+
+    determineStateIndicatorColour = (plane) => {
+        if (plane.hasTakeoffClearance) {
+            return COLOURS.ORANGE
+        }
+        return 'transparent'
     }
 
     clearInactiveStrips = () => {
@@ -425,13 +437,18 @@ export class InterfaceController {
     _stateBlock = (aeroplane) => {
         const stateBlock = div(["row", "state"])
 
+        // State block
         // State
-        const state = div([])
+        const state = div([], 'aircraft-state')
         const stateText = p(["text"], `${aeroplane.callSign}-state-call-sign`)
         stateText.innerText = this._format_state(aeroplane)
         state.appendChild(stateText)
+        // State indicator
+        const stateIndicator = div(['state-indicator'], `${aeroplane.callSign}-state-indicator`)
+        state.appendChild(stateIndicator)
 
         stateBlock.appendChild(state)
+
 
         // Fuel
         if (aeroplane.fuelLevel !== null) {

@@ -56,6 +56,7 @@ export class Aeroplane {
         this.targetSpeed = undefined
         this.aimingForRunway = undefined
         this.positionDescription = ''
+        this.hasTakeoffClearance = false
     }
 
     hasFinalTarget = () => {
@@ -174,6 +175,7 @@ export class Aeroplane {
         const takeoff = new Takeoff(map, this);
         if (takeoff.isValid()) {
             this.addAction(takeoff)
+            this.hasTakeoffClearance = true
             // Takeoff state is set when applying the action as it is future actionable
             return true
         }
@@ -185,7 +187,6 @@ export class Aeroplane {
             this.addAction(goAround)
             this.state = GOING_AROUND
             return true
-        } else {
         }
     }
 
