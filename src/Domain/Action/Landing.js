@@ -16,7 +16,7 @@ export class Landing extends Action {
     }
 
     isActionable = () => {
-        return !this.executed && this.aeroplane.is([FLYING, LANDING])
+        return !this.executed && this.aeroplane.is([LANDING])
     }
 
     isFutureActionable = () => {

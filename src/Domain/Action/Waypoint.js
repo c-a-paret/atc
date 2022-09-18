@@ -1,4 +1,12 @@
-import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
+import {
+    FLYING,
+    GOING_AROUND,
+    HOLDING_SHORT,
+    LANDING,
+    READY_TO_TAXI,
+    TAKING_OFF,
+    TAXIING
+} from "../Aeroplane/aeroplaneStates";
 import {distance, shortestAngle} from "../../utils/geometry";
 import {toDegrees} from "../../utils/maths";
 import {Action, turning_change_rate, wouldEndUpTurningBeyondTarget} from "./Action";
@@ -18,7 +26,7 @@ export class Waypoint extends Action {
     }
 
     isActionable = () => {
-        if (this.aeroplane.isNot([FLYING, GOING_AROUND])) {
+        if (this.aeroplane.isNot([FLYING, LANDING, GOING_AROUND])) {
             return false
         }
         const distanceToWaypoint = distance(this.aeroplane.x, this.aeroplane.y, this.targetX, this.targetY)
