@@ -220,7 +220,7 @@ export class Aeroplane {
         this._clean_actions()
     }
 
-    simulatePath = () => {
+    simulatePath = (map, restrictedZones) => {
         if (this.isLanding()) {
             this.nextPositions = []
         } else {
@@ -238,13 +238,37 @@ export class Aeroplane {
 
             const projectedLocations = []
             let altitudeMarker = false
+            let speedMarker = false
             for (let x = 0; x < NUM_PROJECTED_TICKS; x++) {
                 simulatedAeroplane.applyActions()
+
+                let baseLocation = {x: simulatedAeroplane.x, y: simulatedAeroplane.y, headingAtPoint: simulatedAeroplane.heading, markers: []}
+
+                // Altitude achieved
                 if (!altitudeMarker && this.isChangingAltitude() && simulatedAeroplane.altitude === this.targetAltitude) {
-                    projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, marker: true})
+                    baseLocation.markers.push({type: 'altitude'})
                     altitudeMarker = true
                 }
-                projectedLocations.push({x: simulatedAeroplane.x, y: simulatedAeroplane.y, marker: false})
+
+                // Speed achieved
+                if (!speedMarker && simulatedAeroplane.is([HOLDING_PATTERN, FLYING]) && this.isChangingSpeed() && simulatedAeroplane.speed === this.targetSpeed) {
+                    baseLocation.markers.push({type: 'speed'})
+                    speedMarker = true
+                }
+
+                // Breaching ground clearance
+                if (simulatedAeroplane.is([HOLDING_PATTERN, FLYING]) && simulatedAeroplane.altitude < MIN_GROUND_CLEARANCE) {
+                    baseLocation.markers.push({type: 'breaching'})
+                }
+
+                // Breaching restricted zone
+                restrictedZones.forEach(zone => {
+                    if (simulatedAeroplane.is([HOLDING_PATTERN, FLYING]) && simulatedAeroplane.breachingRestrictedZone(map, zone)) {
+                        baseLocation.markers.push({type: 'breaching'})
+                    }
+                })
+
+                projectedLocations.push(baseLocation)
             }
             this.nextPositions = projectedLocations
         }
@@ -320,6 +344,10 @@ export class Aeroplane {
         return this.actions.length > 0 && this.actions.map(action => action.type()).includes("Altitude")
     }
 
+    isChangingSpeed = () => {
+        return this.actions.length > 0 && this.actions.map(action => action.type()).includes("Speed")
+    }
+
     hasLanded = (map, correctRunwayCallback, incorrectRunwayCallback) => {
         if (this.isArrival()) {
             const landed = this.altitude < LANDED_ALTITUDE;
@@ -367,7 +395,7 @@ export class Aeroplane {
     }
 
     breachingGroundClearance = () => {
-        return !this.isLanding() && this.is([FLYING]) && this.altitude < MIN_GROUND_CLEARANCE
+        return !this.isLanding() && this.is([HOLDING_PATTERN, FLYING]) && this.altitude < MIN_GROUND_CLEARANCE
     }
 
     markBreachingProximityLimits = () => {

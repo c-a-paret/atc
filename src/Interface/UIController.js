@@ -1,10 +1,12 @@
 import {COLOURS} from "../config/colours";
-import {ILS_MIN_X} from "../config/constants";
+import {ILS_MIN_X, MIN_GROUND_CLEARANCE} from "../config/constants";
 import {round, toRadians} from "../utils/maths";
 import {
     FLYING,
-    GOING_AROUND, HOLDING_PATTERN,
-    HOLDING_SHORT, LANDING,
+    GOING_AROUND,
+    HOLDING_PATTERN,
+    HOLDING_SHORT,
+    LANDING,
     READY_TO_TAXI,
     TAKING_OFF,
     TAXIING
@@ -391,23 +393,49 @@ export class UIController {
                 })
                 this.aeroplaneContext.stroke();
 
-                // Marker
+                // Markers
                 aeroplane.nextPositions.forEach(position => {
-                    if (position.marker) {
-                        this._drawMarker(position.x, position.y)
+                    if (position.markers) {
+                        position.markers.forEach(marker => {
+                            this._drawMarker(position.x, position.y, position.headingAtPoint, marker.type)
+                        })
                     }
                 })
             }
         }
     }
 
-    _drawMarker = (x, y) => {
-        this.aeroplaneContext.strokeStyle = COLOURS.MINT;
+    _drawMarker = (x, y, heading, type) => {
+        if (type === 'speed') {
+            this.aeroplaneContext.strokeStyle = COLOURS.ORANGE;
+        } else if (type === 'altitude') {
+            this.aeroplaneContext.strokeStyle = COLOURS.MINT;
+        } else {
+            this.aeroplaneContext.strokeStyle = COLOURS.RED;
+        }
+
+        const perpendicularHeadingRight = (heading + 90) % 360
+        const perpendicularHeadingLeft = (perpendicularHeadingRight + 180) % 360
+
+        const perpendicularHeadingRightRadians = toRadians(perpendicularHeadingRight)
+        const perpendicularHeadingLeftRadians = toRadians(perpendicularHeadingLeft)
+
+        const markerWidth = 5
+
+        const rightX = x + markerWidth * Math.sin(perpendicularHeadingRightRadians);
+        const rightY = y - markerWidth * Math.cos(perpendicularHeadingRightRadians);
+
+        const leftX = x + markerWidth * Math.sin(perpendicularHeadingLeftRadians);
+        const leftY = y - markerWidth * Math.cos(perpendicularHeadingLeftRadians);
+
+        // debugger
+
         this.aeroplaneContext.lineWidth = 2;
         this.aeroplaneContext.beginPath();
-        this.aeroplaneContext.arc(x, y, 4, 0, Math.PI * 2, false);
+
+        this.aeroplaneContext.moveTo(rightX, rightY)
+        this.aeroplaneContext.lineTo(leftX, leftY)
         this.aeroplaneContext.stroke();
-        this.aeroplaneContext.strokeStyle = COLOURS.GREY;
     }
 
     _drawRangeIndicators = (mapBoundaries) => {

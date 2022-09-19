@@ -118,7 +118,7 @@ export class Easy extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
-        aeroplane1.clearForLanding(this.map, "9L")
+        // aeroplane1.clearForLanding(this.map, "9L")
         // aeroplane1.setTaxiAndHold(this.map, "27L")
         // aeroplane1.setWaypoint(this.map, "GWC")
         // aeroplane1.setSpeed(this.map, 300)

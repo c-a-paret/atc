@@ -125,7 +125,7 @@ export class AeroplaneService {
     applyActions = () => {
         this.aeroplanes.forEach(plane => {
             plane.applyActions()
-            plane.simulatePath()
+            plane.simulatePath(this.map, this.map.features.restrictedZones)
         })
     }
 

@@ -489,7 +489,7 @@ describe('Clear service', () => {
 describe('Apply actions', () => {
 
     test('Applies all aeroplane actions and simulates path', () => {
-        const service = new AeroplaneService({}, {}, {})
+        const service = new AeroplaneService(testGameMap(), {}, {})
 
         const aeroplane1 = {applyActions: jest.fn(), simulatePath: jest.fn()};
         const aeroplane2 = {applyActions: jest.fn(), simulatePath: jest.fn()};
