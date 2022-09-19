@@ -423,12 +423,12 @@ export class Aeroplane {
             rate += this._stateFuelConsumptionRate()
 
             if (this.targetAltitude && this.targetAltitude > this.altitude) {
-                rate += 0.005
+                rate += 0.04
             } else {
                 rate -= 0.005
             }
             if (this.speed >= 240) {
-                rate += 0.005
+                rate += 0.04
             }
             if (this.speed <= 200) {
                 rate -= 0.005
@@ -458,10 +458,10 @@ export class Aeroplane {
 
     _stateFuelConsumptionRate = () => {
         const consumptionRateMap = {
-            READY_TO_TAXI: 0.001,
-            TAXIING: 0.002,
-            HOLDING_SHORT: 0.001,
-            TAKING_OFF: 0.05,
+            READY_TO_TAXI: 0.1,
+            TAXIING: 0.1,
+            HOLDING_SHORT: 0.1,
+            TAKING_OFF: 0.5,
             FLYING: 0,
             LANDING: 0,
             HOLDING_PATTERN: 0,
