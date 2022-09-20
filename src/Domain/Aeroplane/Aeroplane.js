@@ -242,7 +242,12 @@ export class Aeroplane {
             for (let x = 0; x < NUM_PROJECTED_TICKS; x++) {
                 simulatedAeroplane.applyActions()
 
-                let baseLocation = {x: simulatedAeroplane.x, y: simulatedAeroplane.y, headingAtPoint: simulatedAeroplane.heading, markers: []}
+                let baseLocation = {
+                    x: simulatedAeroplane.x,
+                    y: simulatedAeroplane.y,
+                    headingAtPoint: simulatedAeroplane.heading,
+                    markers: []
+                }
 
                 // Altitude achieved
                 if (!altitudeMarker && this.isChangingAltitude() && simulatedAeroplane.altitude === this.targetAltitude) {
@@ -371,7 +376,7 @@ export class Aeroplane {
     }
 
     proximalTo = (otherAeroplane) => {
-        if (this.is([TAKING_OFF, FLYING, GOING_AROUND]) && otherAeroplane.is([TAKING_OFF, FLYING, GOING_AROUND])) {
+        if (this.is([TAKING_OFF,FLYING, HOLDING_PATTERN, GOING_AROUND]) && otherAeroplane.is([TAKING_OFF, FLYING, HOLDING_PATTERN, GOING_AROUND])) {
             const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
             const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
             return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM
