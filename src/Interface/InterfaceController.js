@@ -564,20 +564,9 @@ export class InterfaceController {
 
     _get_action_overview_values = (aeroplane) => {
         return {
-            location: this._get_location(aeroplane),
             altitude: this._get_altitude(aeroplane),
+            location: this._get_location(aeroplane),
             speed: this._get_speed(aeroplane)
-        }
-    }
-
-    _get_location = (aeroplane) => {
-        if (aeroplane.isInHoldingPattern()) {
-            return new TargetValue('-')
-        } else {
-            if (aeroplane.targetLocation) {
-                return new TargetValue(aeroplane.targetLocation)
-            }
-            return new CurrentValue(aeroplane.heading)
         }
     }
 
@@ -588,11 +577,22 @@ export class InterfaceController {
         return new CurrentValue(roundToNearest(aeroplane.altitude, 10))
     }
 
+    _get_location = (aeroplane) => {
+        if (aeroplane.isInHoldingPattern()) {
+            return new TargetValue('-')
+        } else {
+            if (aeroplane.targetLocation) {
+                return new TargetValue(aeroplane.targetLocation)
+            }
+            return new CurrentValue(roundToNearest(aeroplane.heading, 1))
+        }
+    }
+
     _get_speed = (aeroplane) => {
         if (aeroplane.targetSpeed) {
             return new TargetValue(aeroplane.targetSpeed)
         }
-        return new CurrentValue(aeroplane.speed)
+        return new CurrentValue(roundToNearest(aeroplane.speed, 1))
     }
 
     _colour_class = (value) => {

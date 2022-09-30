@@ -43,6 +43,21 @@ describe("range", () => {
 })
 
 describe("round", () => {
+    test("Rounds number to 0dp", () => {
+        const result = round(12.4, 0)
+        expect(result).toBe(12)
+    })
+
+    test("Rounds 1sf number to 1dp", () => {
+        const result = round(12.4, 1)
+        expect(result).toBe(12.4)
+    })
+
+    test("Rounds 3sf number to 1dp", () => {
+        const result = round(12.446, 1)
+        expect(result).toBe(12.4)
+    })
+
     test("Rounds number to 2dp", () => {
         const result = round(12.779, 2)
         expect(result).toBe(12.78)
@@ -51,6 +66,11 @@ describe("round", () => {
     test("Rounds number to 3dp", () => {
         const result = round(12.44523, 3)
         expect(result).toBe(12.445)
+    })
+
+    test("Rounds already rounded number", () => {
+        const result = round(12, 0)
+        expect(result).toBe(12)
     })
 })
 
