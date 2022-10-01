@@ -121,7 +121,7 @@ canvas {
     display: flex;
     flex-direction: column;
     transform-origin: center;
-    transform: rotate(137deg);
+    /*transform: rotate(137deg);*/
 }
 
 .wind-arrow-segment {
