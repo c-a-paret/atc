@@ -1,8 +1,5 @@
-export const DEFAULT_TICK_INTERVAL = 900;
-
 export const MIN_SPEED = 120;
 export const MAX_SPEED = 999;
-export const LANDING_SPEED = 140;
 export const TAKEOFF_SPEED = 200;
 export const LANDED_ALTITUDE = 40
 export const DEPARTURE_ALTITUDE = 3000

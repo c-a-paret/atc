@@ -1,5 +1,5 @@
-import {FLYING, HOLDING_PATTERN, LANDING, READY_TO_TAXI} from "../Aeroplane/aeroplaneStates";
-import {ILS_MAX_X, ILS_MIN_X, LANDED_ALTITUDE, LANDING_SPEED, MIN_APPROACH_SPEED} from "../../config/constants";
+import {FLYING, HOLDING_PATTERN, LANDING} from "../Aeroplane/aeroplaneStates";
+import {ILS_MAX_X, ILS_MIN_X, LANDED_ALTITUDE, MIN_APPROACH_SPEED} from "../../config/constants";
 import {Speed} from "./Speed";
 import {Waypoint} from "./Waypoint";
 import {distance} from "../../utils/geometry";
@@ -67,7 +67,7 @@ export class Landing extends Action {
 
     apply = () => {
         if (!this.speedSet && !this.waypointSet) {
-            this.aeroplane.actions.push(new Speed(this.map, this.aeroplane, LANDING_SPEED))
+            this.aeroplane.actions.push(new Speed(this.map, this.aeroplane, this.determineLandingSpeed()))
             this.aeroplane.actions.push(new Waypoint(this.map, this.aeroplane, this.targetRunway))
             this.speedSet = true
             this.waypointSet = true
@@ -82,6 +82,15 @@ export class Landing extends Action {
         const rateOfDescent = (this.aeroplane.altitude - runway.altitude) / distanceToRunway * 2
         this.aeroplane.altitude -= rateOfDescent
     };
+
+    determineLandingSpeed = () => {
+        const landingSpeedMap = {
+            3: 155,
+            2: 145,
+            1: 135,
+        }
+        return landingSpeedMap[this.aeroplane.weight]
+    }
 
     copy = (aeroplane) => {
 

@@ -1,5 +1,5 @@
 import {COLOURS} from "../config/colours";
-import {ILS_MIN_X, MIN_GROUND_CLEARANCE} from "../config/constants";
+import {ILS_MIN_X} from "../config/constants";
 import {round, toRadians} from "../utils/maths";
 import {
     FLYING,
