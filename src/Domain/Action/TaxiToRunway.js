@@ -27,8 +27,23 @@ export class TaxiToRunway extends Action {
         return this.aeroplane.is([READY_TO_TAXI, TAXIING])
     }
 
-    isValid = () => {
-        return this.map.runwayExists(this.targetRunway) && this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT])
+    validate = () => {
+        let warnings = []
+        let errors = []
+
+        if (!this.map.runwayExists(this.targetRunway)) {
+            errors.push(`Runway ${this.targetRunway} does not exist`)
+        }
+        if (this.aeroplane.isNot([READY_TO_TAXI, TAXIING, HOLDING_SHORT])) {
+            errors.push('Cannot accept taxi command right now')
+        }
+
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     }
 
     apply = () => {

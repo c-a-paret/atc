@@ -3,7 +3,6 @@ import {ARRIVAL} from "../../../config/constants";
 import {Altitude} from "../Altitude";
 import {GoAround} from "../GoAround";
 import {FLYING, GOING_AROUND, LANDING} from "../../Aeroplane/aeroplaneStates";
-import {Landing} from "../Landing";
 import {testGameMap} from "./actionTest.utils";
 
 
@@ -13,7 +12,7 @@ describe("Go Around", () => {
         const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, ARRIVAL, FLYING, correctRunway)
         expect(aeroplane.state).toBe(FLYING)
 
-        aeroplane.clearForLanding(testGameMap(),  correctRunway)
+        aeroplane.clearForLanding(testGameMap(), correctRunway)
 
         expect(aeroplane.state).toBe(LANDING)
 
@@ -69,9 +68,20 @@ describe("Go Around", () => {
 
     test("Is not valid if the runway aiming for does not exist", () => {
         const aimingForRunway = "16C"
-        const goAround = new GoAround(testGameMap(), {}, aimingForRunway);
+        const aeroplane = {isLanding: () => true}
 
-        expect(goAround.isValid()).toBeFalsy()
+        const goAround = new GoAround(testGameMap(), aeroplane, aimingForRunway);
+
+        const expected = {
+            "errors": [
+                "Cannot go around",
+            ],
+            "isValid": false,
+            "targetValue": null,
+            "warnings": [],
+        }
+
+        expect(goAround.validate()).toStrictEqual(expected)
     })
 
     test("Is not valid if the aircraft is not landing", () => {
@@ -79,7 +89,17 @@ describe("Go Around", () => {
         const aeroplane = {isLanding: () => false}
 
         const goAround = new GoAround(testGameMap(), aeroplane, correctRunway);
-        expect(goAround.isValid()).toBeFalsy()
+
+        const expected = {
+            "errors": [
+                "Cannot go around, aircraft not landing",
+            ],
+            "isValid": false,
+            "targetValue": null,
+            "warnings": [],
+        }
+
+        expect(goAround.validate()).toStrictEqual(expected)
     })
 
     test("Is actionable when targets not added or not executed", () => {

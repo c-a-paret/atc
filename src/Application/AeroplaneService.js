@@ -27,61 +27,55 @@ export class AeroplaneService {
 
     sendCommand = (rawCommand) => {
         const command = parseCommand(rawCommand)
-        let callSign;
-        let speedSet;
-        let headingSet;
-        let altitudeSet;
-        let waypointSet;
-        let runwaySet;
-        let holdSet;
-        let taxiAndHoldSet;
-        let clearedForTakeoff;
-        let goAround;
+
+        let passedCommands = {
+            "callSign": undefined,
+            "speed": {passed: false},
+            "heading": {passed: false},
+            "altitude": {passed: false},
+            "waypoint": {passed: false},
+            "runway": {passed: false},
+            "hold": {passed: false},
+            "taxiAndHold": {passed: false},
+            "clearedForTakeoff": {passed: false},
+            "goAround": {passed: false},
+        }
+
         this.aeroplanes.forEach(plane => {
             if (plane.callSign === command.callSign) {
-                callSign = plane.callSign
+                passedCommands.callSign = plane.callSign
 
                 if (command.speed) {
-                    speedSet = plane.setSpeed(this.map, command.speed)
+                    passedCommands.speed = {...plane.setSpeed(this.map, command.speed), passed: true}
                 }
                 if (command.heading) {
-                    headingSet = plane.setHeading(this.map, command.heading)
+                    passedCommands.heading = {...plane.setHeading(this.map, command.heading), passed: true}
                 }
                 if (command.altitude) {
-                    altitudeSet = plane.setAltitude(this.map, command.altitude)
+                    passedCommands.altitude = {...plane.setAltitude(this.map, command.altitude), passed: true}
                 }
                 if (command.waypoint) {
-                    waypointSet = plane.setWaypoint(this.map, command.waypoint)
+                    passedCommands.waypoint = {...plane.setWaypoint(this.map, command.waypoint), passed: true}
                 }
                 if (command.runway) {
-                    runwaySet = plane.clearForLanding(this.map, command.runway)
+                    passedCommands.runway = {...plane.clearForLanding(this.map, command.runway), passed: true}
                 }
                 if (command.hold) {
-                    holdSet = plane.setHold(this.map, command.hold)
+                    passedCommands.hold = {...plane.setHold(this.map, command.hold), passed: true}
                 }
                 if (command.taxiAndHold) {
-                    taxiAndHoldSet = plane.setTaxiAndHold(this.map, command.taxiAndHold)
+                    passedCommands.taxiAndHold = {...plane.setTaxiAndHold(this.map, command.taxiAndHold), passed: true}
                 }
                 if (command.clearedForTakeoff) {
-                    clearedForTakeoff = plane.clearForTakeoff(this.map)
+                    passedCommands.clearedForTakeoff = {...plane.clearForTakeoff(this.map), passed: true}
                 }
                 if (command.goAround) {
-                    goAround = plane.goAround(this.map)
+                    passedCommands.goAround = {...plane.goAround(this.map), passed: true}
                 }
             }
         })
-        return {
-            "callSign": callSign,
-            "speed": speedSet,
-            "heading": headingSet,
-            "altitude": altitudeSet,
-            "waypoint": waypointSet,
-            "runway": runwaySet,
-            "hold": holdSet,
-            "taxiAndHold": taxiAndHoldSet,
-            "clearedForTakeoff": clearedForTakeoff,
-            "goAround": goAround,
-        }
+
+        return passedCommands
     }
 
     getCallSignByPosition = (x, y) => {

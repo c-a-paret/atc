@@ -29,10 +29,27 @@ export class Speed extends Action {
         return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
-    isValid = () => {
-        return this.targetValue
-            && this.targetValue !== this.aeroplane.speed
-            && this.targetValue >= MIN_SPEED
+    validate = () => {
+        let warnings = []
+        let errors = []
+        if (!this.targetValue) {
+            errors.push('Value must be provided')
+        }
+        if (this.aeroplane.is([LANDING])) {
+            warnings.push('Cannot set speed when landing')
+        }
+        if (this.targetValue === this.aeroplane.speed) {
+            warnings.push('Speed already set')
+        }
+        if (this.targetValue < MIN_SPEED) {
+            errors.push(`Cannot set speed lower than ${MIN_SPEED}`)
+        }
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     }
 
     apply = () => {

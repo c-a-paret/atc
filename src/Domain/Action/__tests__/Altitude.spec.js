@@ -79,26 +79,70 @@ describe("Altitude", () => {
     })
 
     test("Is not valid if the target altitude is below minimum altitude", () => {
-        let desiredAltitude = MIN_ALTITUDE - 1;
+        let desiredAltitude = MIN_ALTITUDE - 20;
 
-        expect(new Altitude({}, {altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 3000, 3)
+
+        const expected = {
+            "errors": [
+                "Cannot set altitude lower than 1000"
+            ],
+            "isValid": false,
+            "targetValue": 980,
+            "warnings": [],
+        }
+
+        expect(new Altitude({}, aeroplane, desiredAltitude).validate()).toStrictEqual(expected)
     })
 
     test("Is not valid if the target altitude is above max altitude", () => {
-        let desiredAltitude = MAX_ALTITUDE + 1;
+        let desiredAltitude = MAX_ALTITUDE + 20;
 
-        expect(new Altitude({}, {altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 3000, 3)
+
+        const expected = {
+            "errors": [
+                "Cannot set altitude higher than 40000",
+            ],
+            "isValid": false,
+            "targetValue": 40020,
+            "warnings": [],
+        }
+
+        expect(new Altitude({}, aeroplane, desiredAltitude).validate()).toStrictEqual(expected)
     })
 
     test("Is not valid if the target altitude is same as current altitude", () => {
         let currentAltitude = 2000;
 
-        expect(new Altitude({}, {altitude: currentAltitude}, currentAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, currentAltitude, 3)
+
+        const expected = {
+            "errors": [],
+            "isValid": false,
+            "targetValue": 2000,
+            "warnings": [
+                "Altitude already set"
+            ],
+        }
+
+        expect(new Altitude({}, aeroplane, currentAltitude).validate()).toStrictEqual(expected)
     })
 
     test("Is not valid if the target altitude is not multiple of 20", () => {
         let desiredAltitude = 2116;
 
-        expect(new Altitude({}, {altitude: 3000}, desiredAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 3000, 3)
+
+        const expected = {
+            "errors": [
+                "Altitude must be in increments of 20",
+            ],
+            "isValid": false,
+            "targetValue": 2116,
+            "warnings": [],
+        }
+
+        expect(new Altitude({}, aeroplane, desiredAltitude).validate()).toStrictEqual(expected)
     })
 })

@@ -56,7 +56,15 @@ describe("Holding Pattern", () => {
 
         const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, FLYING)
         const hold = new HoldingPattern(map, aeroplane, holdDirection);
-        expect(hold.isValid()).toBeTruthy()
+
+        const expected = {
+            "errors": [],
+            "isValid": true,
+            "targetValue": "right",
+            "warnings": [],
+        }
+
+        expect(hold.validate()).toStrictEqual(expected)
     })
 
     test("Is valid when in holding pattern", () => {
@@ -69,7 +77,15 @@ describe("Holding Pattern", () => {
 
         const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, HOLDING_PATTERN)
         const hold = new HoldingPattern(map, aeroplane, holdDirection);
-        expect(hold.isValid()).toBeTruthy()
+
+        const expected = {
+            "errors": [],
+            "isValid": true,
+            "targetValue": "right",
+            "warnings": [],
+        }
+
+        expect(hold.validate()).toStrictEqual(expected)
     })
 
 
@@ -83,7 +99,17 @@ describe("Holding Pattern", () => {
 
         const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, LANDING)
         const hold = new HoldingPattern(map, aeroplane, holdDirection);
-        expect(hold.isValid()).toBeFalsy()
+
+        const expected = {
+            "errors": [
+                "Cannot enter holding pattern right now",
+            ],
+            "isValid": false,
+            "targetValue": "right",
+            "warnings": [],
+        }
+
+        expect(hold.validate()).toStrictEqual(expected)
     })
 
 

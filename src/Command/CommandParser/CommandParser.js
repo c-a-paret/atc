@@ -3,7 +3,6 @@ export const parseCommand = (rawCommand) => {
     let callSign = command.substring(0, 5).toUpperCase();
     let actionCommands = command.substring(5);
     let parsedHeading = parseHeading(actionCommands);
-    // debugger
     let parsedWaypoint = parseWaypoint(actionCommands);
     let parsedRunway = parseRunway(actionCommands)
 
@@ -24,43 +23,93 @@ export const parseCommand = (rawCommand) => {
     }
 }
 
-export const commandMessage = (acceptedCommands) => {
-    if ([
-        acceptedCommands.callSign,
-        acceptedCommands.speed,
-        acceptedCommands.heading,
-        acceptedCommands.altitude,
-        acceptedCommands.waypoint,
-        acceptedCommands.runway,
-        acceptedCommands.hold,
-        acceptedCommands.taxiAndHold,
-        acceptedCommands.clearedForTakeoff,
-        acceptedCommands.goAround
-    ].every(value => value === undefined)) {
-        return 'Unrecognised command'
+export const commandMessage = (passedCommands) => {
+    if (passedCommands.callSign === undefined) {
+        return {success: false, callSign: null, messages: [{state: 'error', text:'Unrecognised aircraft'}]}
     }
-    if ([acceptedCommands.speed,
-        acceptedCommands.heading,
-        acceptedCommands.altitude,
-        acceptedCommands.waypoint,
-        acceptedCommands.runway,
-        acceptedCommands.hold,
-        acceptedCommands.taxiAndHold,
-        acceptedCommands.clearedForTakeoff,
-        acceptedCommands.goAround
-    ].every(value => value === undefined)) {
-        return 'No valid commands'
+
+    return {
+        success: true,
+        callSign: passedCommands.callSign,
+        messages: [
+            buildMessage(passedCommands.speed, 'Speed:'),
+            buildMessage(passedCommands.heading, 'Heading:'),
+            buildMessage(passedCommands.altitude, 'Altitude:', 'ft'),
+            buildMessage(passedCommands.waypoint, 'Direct to'),
+            buildMessage(passedCommands.runway, 'Cleared to land runway'),
+            buildGoAroundMessage(passedCommands.goAround, 'Go around'),
+            buildMessage(passedCommands.taxiAndHold, 'Taxi and hold'),
+            buildTakeoffMessage(passedCommands.clearedForTakeoff, 'Cleared for takeoff'),
+            buildHoldingPatternMessage(passedCommands.hold, 'Hold to the')
+        ].filter(message => !!message)
     }
-    return `${acceptedCommands.callSign}` +
-        `${acceptedCommands.speed ? ' Speed: ' + acceptedCommands.speed : ''}` +
-        `${acceptedCommands.heading ? ' Heading: ' + acceptedCommands.heading : ''}` +
-        `${acceptedCommands.altitude ? ' Altitude: ' + acceptedCommands.altitude + 'ft' : ''}` +
-        `${acceptedCommands.waypoint ? ' Waypoint: ' + acceptedCommands.waypoint : ''}` +
-        `${acceptedCommands.runway ? ' Cleared to land runway ' + acceptedCommands.runway : ''}` +
-        `${acceptedCommands.goAround ? ' go around' : ''}` +
-        `${acceptedCommands.taxiAndHold ? ' taxi and hold ' + acceptedCommands.taxiAndHold : ''}` +
-        `${acceptedCommands.clearedForTakeoff ? ' Cleared for takeoff' : ''}` +
-        `${Math.abs(acceptedCommands.hold) === 1 ? ` hold to the ${acceptedCommands.hold === 1 ? 'right' : 'left'}` : ''}`
+}
+
+const buildMessage = (aspect, prefix, suffix) => {
+    if (aspect.passed) {
+        if (aspect.isValid) {
+            return {
+                state: 'valid',
+                text: `${prefix} ${aspect.targetValue}${suffix ? suffix : ''}`
+            }
+        }
+        return handleInvalidAspect(aspect)
+    }
+    return null
+}
+
+const buildTakeoffMessage = (aspect, prefix) => {
+    if (aspect.passed) {
+        if (aspect.isValid) {
+            return {
+                state: 'valid',
+                text: `${prefix}`
+            }
+        }
+        return handleInvalidAspect(aspect)
+    }
+    return null
+}
+
+const buildGoAroundMessage = (aspect, prefix) => {
+    if (aspect.passed) {
+        if (aspect.isValid) {
+            return {
+                state: 'valid',
+                text: `${prefix}`
+            }
+        }
+        return handleInvalidAspect(aspect)
+    }
+    return null
+}
+
+const buildHoldingPatternMessage = (aspect, prefix) => {
+    if (aspect.passed) {
+        if (aspect.isValid) {
+            return {
+                state: 'valid',
+                text: `${prefix} ${aspect.targetValue === -1 ? 'left' : 'right'}`
+            }
+        }
+        return handleInvalidAspect(aspect)
+    }
+    return null
+}
+
+const handleInvalidAspect = (aspect) => {
+    if (aspect.errors.length > 0) {
+        return {
+            state: 'error',
+            text: aspect.errors[0]
+        }
+    }
+    if (aspect.warnings.length > 0) {
+        return {
+            state: 'warning',
+            text: aspect.warnings[0]
+        }
+    }
 }
 
 export const parseSpeed = (command) => {

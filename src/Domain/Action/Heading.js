@@ -2,13 +2,14 @@ import {
     FLYING,
     GOING_AROUND,
     HOLDING_PATTERN,
-    HOLDING_SHORT,
+    HOLDING_SHORT, LANDING,
     READY_TO_TAXI,
     TAKING_OFF,
     TAXIING
 } from "../Aeroplane/aeroplaneStates";
 import {shortestAngle} from "../../utils/geometry";
 import {Action, turning_change_rate, wouldEndUpTurningBeyondTarget} from "./Action";
+import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../config/constants";
 
 export class Heading extends Action {
     constructor(map, aeroplane, targetHeading) {
@@ -23,11 +24,30 @@ export class Heading extends Action {
         return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
-    isValid = () => {
-        return this.targetValue
-            && this.targetValue !== this.aeroplane.heading
-            && this.targetValue >= 0
-            && this.targetValue <= 360
+    validate = () => {
+        let warnings = []
+        let errors = []
+        if (!this.targetValue) {
+            errors.push('Value must be provided')
+        }
+        if (this.aeroplane.is([LANDING])) {
+            warnings.push('Cannot set heading when landing')
+        }
+        if (this.targetValue === this.aeroplane.heading) {
+            warnings.push('Heading already set')
+        }
+        if (this.targetValue < 0) {
+            errors.push('Heading must be between 000 and 360')
+        }
+        if (this.targetValue > 360) {
+            errors.push('Heading must be between 000 and 360')
+        }
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     };
 
     apply = () => {

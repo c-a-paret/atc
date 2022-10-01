@@ -1,7 +1,7 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {TaxiToRunway} from "../TaxiToRunway";
 import {testGameMap} from "./actionTest.utils";
-import {HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";
+import {FLYING, HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";
 import {DEPARTURE} from "../../../config/constants";
 
 describe("Taxi to runway", () => {
@@ -58,18 +58,58 @@ describe("Taxi to runway", () => {
     test("Is valid when ready to taxi", () => {
         const aeroplane = new Aeroplane("BA123", "A321", 1, 1, 0, 0, 0, 3, DEPARTURE, READY_TO_TAXI)
         const action = new TaxiToRunway(map, aeroplane, "9L")
-        expect(action.isValid()).toBeTruthy()
+
+        const expected = {
+            "errors": [],
+            "isValid": true,
+            "targetValue": "9L",
+            "warnings": [],
+        }
+
+        expect(action.validate()).toStrictEqual(expected)
     })
 
     test("Is valid when taxiing", () => {
         const aeroplane = new Aeroplane("BA123", "A321", 1, 1, 0, 0, 0, 3, DEPARTURE, TAXIING)
         const action = new TaxiToRunway(map, aeroplane, "9L")
-        expect(action.isValid()).toBeTruthy()
+
+        const expected = {
+            "errors": [],
+            "isValid": true,
+            "targetValue": "9L",
+            "warnings": [],
+        }
+
+        expect(action.validate()).toStrictEqual(expected)
     })
 
     test("Is valid when holding short", () => {
         const aeroplane = new Aeroplane("BA123", "A321", 1, 1, 0, 0, 0, 3, DEPARTURE, HOLDING_SHORT)
         const action = new TaxiToRunway(map, aeroplane, "9L")
-        expect(action.isValid()).toBeTruthy()
+
+        const expected = {
+            "errors": [],
+            "isValid": true,
+            "targetValue": "9L",
+            "warnings": [],
+        }
+
+        expect(action.validate()).toStrictEqual(expected)
+    })
+
+    test("Is not valid when flying", () => {
+        const aeroplane = new Aeroplane("BA123", "A321", 575, 450, 190, 90, 3001, 3)
+        const action = new TaxiToRunway(map, aeroplane, "9L")
+
+        const expected = {
+            "errors": [
+                "Cannot accept taxi command right now",
+            ],
+            "isValid": false,
+            "targetValue": "9L",
+            "warnings": [],
+        }
+
+        expect(action.validate()).toStrictEqual(expected)
     })
 })

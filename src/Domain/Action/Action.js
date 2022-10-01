@@ -17,7 +17,7 @@ export class Action {
 
     }
 
-    isValid = () => {
+    validate = () => {
 
     };
 

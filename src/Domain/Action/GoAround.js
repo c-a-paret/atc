@@ -27,15 +27,31 @@ export class GoAround extends Action {
         return false
     }
 
-    isValid = () => {
-        if (this.map.runwayExists(this.aimingForRunway) && this.aeroplane.isLanding()) {
-            this.runway = this.map.getRunwayInfo(this.aimingForRunway)
-            this.targetWaypoint = this.runway.goAround.targetWaypoint
-            this.targetSpeed = this.runway.goAround.targetSpeed
-            this.targetAltitude = this.runway.goAround.targetAltitude
-            return true
+    validate = () => {
+        let warnings = []
+        let errors = []
+
+        if (!this.aeroplane.isLanding()) {
+            errors.push('Cannot go around, aircraft not landing')
+        } else {
+            if (this.map.runwayExists(this.aimingForRunway)) {
+                this.runway = this.map.getRunwayInfo(this.aimingForRunway)
+                this.targetWaypoint = this.runway.goAround.targetWaypoint
+                this.targetSpeed = this.runway.goAround.targetSpeed
+                this.targetAltitude = this.runway.goAround.targetAltitude
+            } else {
+                errors.push('Cannot go around')
+            }
         }
-        return false
+
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
+
+
     }
 
     apply = () => {

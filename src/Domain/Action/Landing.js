@@ -1,4 +1,4 @@
-import {FLYING, LANDING} from "../Aeroplane/aeroplaneStates";
+import {FLYING, HOLDING_PATTERN, LANDING, READY_TO_TAXI} from "../Aeroplane/aeroplaneStates";
 import {ILS_MAX_X, ILS_MIN_X, LANDED_ALTITUDE, LANDING_SPEED, MIN_APPROACH_SPEED} from "../../config/constants";
 import {Speed} from "./Speed";
 import {Waypoint} from "./Waypoint";
@@ -23,7 +23,15 @@ export class Landing extends Action {
         return false
     }
 
-    isValid = () => {
+    validate = () => {
+        let warnings = []
+        let errors = []
+        let isValid = false
+
+        if (this.aeroplane.isNot([FLYING, HOLDING_PATTERN])) {
+            errors.push('Cannot clear for landing right now')
+        }
+
         if (this.map.runwayExists(this.targetRunway)) {
             const runway = this.map.getRunwayInfo(this.targetRunway)
 
@@ -34,15 +42,27 @@ export class Landing extends Action {
             const withinMaximumSpeed = this.aeroplane.speed <= MIN_APPROACH_SPEED;
             const withinRunwayHeading = Math.abs(runway.heading - this.aeroplane.heading) <= 10;
 
-            return this._onCorrectSideOfRunway(this.aeroplane, runway)
+            isValid = this._onCorrectSideOfRunway(this.aeroplane, runway)
                 && withinMaximumX
                 && withinMinimumX
                 && withinY
                 && withinMaximumAltitude
                 && withinMaximumSpeed
                 && withinRunwayHeading
+        } else {
+            errors.push(`Runway ${this.targetRunway} does not exist`)
         }
-        return false
+
+        if (!isValid) {
+            errors.push('Not correctly configured for landing')
+        }
+
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     }
 
     apply = () => {

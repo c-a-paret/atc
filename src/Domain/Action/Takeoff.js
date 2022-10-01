@@ -29,8 +29,20 @@ export class Takeoff extends Action {
         return this.aeroplane.is([READY_TO_TAXI, TAXIING])
     }
 
-    isValid = () => {
-        return this.aeroplane.isNot([FLYING, TAKING_OFF, GOING_AROUND])
+    validate = () => {
+        let warnings = []
+        let errors = []
+
+        if (this.aeroplane.is([FLYING, TAKING_OFF, GOING_AROUND])) {
+            errors.push('Cannot accept takeoff command right now')
+        }
+
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     }
 
     apply = () => {

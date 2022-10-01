@@ -17,8 +17,20 @@ export class HoldingPattern extends Action {
         return false
     }
 
-    isValid = () => {
-        return this.aeroplane.is([FLYING, HOLDING_PATTERN])
+    validate = () => {
+        let warnings = []
+        let errors = []
+
+        if (this.aeroplane.isNot([FLYING, HOLDING_PATTERN])) {
+            errors.push('Cannot enter holding pattern right now')
+        }
+
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     }
 
     apply = () => {

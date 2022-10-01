@@ -27,20 +27,52 @@ describe('Send command', () => {
 
         const rawCommand = "BA456S140A120T070"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": 12000,
+                "warnings": []
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": 70,
+                "warnings": []
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": 140,
+                "warnings": []
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: 140,
-            heading: 70,
-            altitude: 12000,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         const unaffectedAeroplane = service.aeroplanes[0]
         expect(unaffectedAeroplane.callSign).toBe("BA123")
@@ -60,20 +92,44 @@ describe('Send command', () => {
 
         const rawCommand = "BA456-LAM"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": "LAM",
+                "warnings": []
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: "LAM",
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         const unaffectedAeroplane = service.aeroplanes[0]
         expect(unaffectedAeroplane.callSign).toBe("BA123")
@@ -93,20 +149,44 @@ describe('Send command', () => {
 
         const rawCommand = "BA456ILS9L"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": "9L",
+                "warnings": []
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: "9L",
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         const unaffectedAeroplane = service.aeroplanes[0]
         expect(unaffectedAeroplane.callSign).toBe("BA123")
@@ -126,20 +206,48 @@ describe('Send command', () => {
 
         const rawCommand = "BA456S140HR"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": "right",
+                "warnings": []
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": 140,
+                "warnings": []
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: 140,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: 1,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         const unaffectedAeroplane = service.aeroplanes[0]
         expect(unaffectedAeroplane.callSign).toBe("BA123")
@@ -162,20 +270,44 @@ describe('Send command', () => {
 
         const rawCommand = "BA456TH9L"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": "9L",
+                "warnings": []
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: "9L",
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         expect(service.aeroplanes[1].actions.length).toBe(1)
         expect(service.aeroplanes[1].actions[0].type()).toBe('TaxiToRunway')
@@ -196,20 +328,44 @@ describe('Send command', () => {
 
         const rawCommand = "BA456CTO"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": null,
+                "warnings": []
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: true,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         expect(service.aeroplanes[1].actions.length).toBe(1)
         expect(service.aeroplanes[1].actions[0].type()).toBe('Takeoff')
@@ -227,20 +383,44 @@ describe('Send command', () => {
 
         const rawCommand = "BA456ILS9L"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": "9L",
+                "warnings": []
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: '9L',
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         expect(service.aeroplanes[1].actions.length).toBe(1)
         expect(service.aeroplanes[1].actions[0].type()).toBe('Landing')
@@ -249,18 +429,42 @@ describe('Send command', () => {
 
         const goAroundResult = service.sendCommand(rawGoAroundCommand)
 
-        expect(goAroundResult).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: true
-        })
+        const expectedGoAround = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "errors": [],
+                "isValid": true,
+                "passed": true,
+                "targetValue": null,
+                "warnings": []
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
+        expect(goAroundResult).toStrictEqual(expectedGoAround)
 
         expect(service.aeroplanes[1].actions.length).toBe(1)
         expect(service.aeroplanes[1].actions[0].type()).toBe('GoAround')
@@ -275,20 +479,40 @@ describe('Send command', () => {
 
         const rawCommand = "BA456X140Y12P070"
 
+        const expected = {
+            "callSign": "BA456",
+            "altitude": {
+                "passed": false
+            },
+            "clearedForTakeoff": {
+                "passed": false
+            },
+            "goAround": {
+                "passed": false
+            },
+            "heading": {
+                "passed": false
+            },
+            "hold": {
+                "passed": false
+            },
+            "runway": {
+                "passed": false
+            },
+            "speed": {
+                "passed": false
+            },
+            "taxiAndHold": {
+                "passed": false
+            },
+            "waypoint": {
+                "passed": false
+            }
+        }
+
         const result = service.sendCommand(rawCommand)
 
-        expect(result).toStrictEqual({
-            callSign: "BA456",
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined
-        })
+        expect(result).toStrictEqual(expected)
 
         const unaffectedAeroplane1 = service.aeroplanes[0]
         expect(unaffectedAeroplane1.callSign).toBe("BA123")

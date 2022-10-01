@@ -2,12 +2,12 @@ import {
     FLYING,
     GOING_AROUND,
     HOLDING_PATTERN,
-    HOLDING_SHORT,
+    HOLDING_SHORT, LANDING,
     READY_TO_TAXI,
     TAKING_OFF,
     TAXIING
 } from "../Aeroplane/aeroplaneStates";
-import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../config/constants";
+import {MAX_ALTITUDE, MIN_ALTITUDE, MIN_SPEED} from "../../config/constants";
 import {Action} from "./Action";
 
 export class Altitude extends Action {
@@ -23,12 +23,33 @@ export class Altitude extends Action {
         return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
-    isValid = () => {
-        return this.targetValue
-            && this.targetValue !== this.aeroplane.altitude
-            && this.targetValue >= MIN_ALTITUDE
-            && this.targetValue <= MAX_ALTITUDE
-            && this.targetValue % 20 === 0
+    validate = () => {
+        let warnings = []
+        let errors = []
+        if (!this.targetValue) {
+            errors.push('Value must be provided')
+        }
+        if (this.aeroplane.is([LANDING])) {
+            warnings.push('Cannot set altitude when landing')
+        }
+        if (this.targetValue === this.aeroplane.altitude) {
+            warnings.push('Altitude already set')
+        }
+        if (this.targetValue < MIN_ALTITUDE) {
+            errors.push(`Cannot set altitude lower than ${MIN_ALTITUDE}`)
+        }
+        if (this.targetValue > MAX_ALTITUDE) {
+            errors.push(`Cannot set altitude higher than ${MAX_ALTITUDE}`)
+        }
+        if (this.targetValue % 20 !== 0) {
+            errors.push(`Altitude must be in increments of 20`)
+        }
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetValue
+        }
     }
 
     apply = () => {

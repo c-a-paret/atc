@@ -375,174 +375,79 @@ describe("Cleared for takeoff commands", () => {
 })
 
 describe("Command message", () => {
-    test("Returns unrecognised when all command fields are undefined", () => {
+    test("Returns unrecognised aircraft when callsign is undefined", () => {
         const commands = {
             callSign: undefined,
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined,
         }
 
         const result = commandMessage(commands)
 
-        expect(result).toBe('Unrecognised command')
+        expect(result).toStrictEqual({
+            success: false,
+            callSign: null,
+            messages: [{state: 'error', text: 'Unrecognised aircraft'}]
+        })
     })
 
-    test("Returns no valid commands when only call sign defined", () => {
+    test("Returns messages [assuming all are valid]", () => {
         const commands = {
             callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined,
+            speed: {isValid: true, warnings: [], errors: [], targetValue: 340, passed: true},
+            heading: {isValid: true, warnings: [], errors: [], targetValue: 50, passed: true},
+            altitude: {isValid: true, warnings: [], errors: [], targetValue: 12000, passed: true},
+            waypoint: {isValid: true, warnings: [], errors: [], targetValue: 'JAM', passed: true},
+            runway: {isValid: true, warnings: [], errors: [], targetValue: '27R', passed: true},
+            hold: {isValid: true, warnings: [], errors: [], targetValue: 'right', passed: true},
+            taxiAndHold: {isValid: true, warnings: [], errors: [], targetValue: '27R', passed: true},
+            clearedForTakeoff: {isValid: true, warnings: [], errors: [], targetValue: true, passed: true},
+            goAround: {isValid: true, warnings: [], errors: [], targetValue: true, passed: true},
         }
 
         const result = commandMessage(commands)
 
-        expect(result).toBe('No valid commands')
-    })
-
-    test("Returns message with defined commands [Heading, Speed, Altitude]", () => {
-        const commands = {
+        const expected = {
+            success: true,
             callSign: 'BA123',
-            speed: 340,
-            heading: 50,
-            altitude: 12000,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined,
+            messages: [
+                {
+                    "state": "valid",
+                    "text": "Speed: 340",
+                },
+                {
+                    "state": "valid",
+                    "text": "Heading: 50",
+                },
+                {
+                    "state": "valid",
+                    "text": "Altitude: 12000ft",
+                },
+                {
+                    "state": "valid",
+                    "text": "Direct to JAM",
+                },
+                {
+                    "state": "valid",
+                    "text": "Cleared to land runway 27R",
+                },
+                {
+                    "state": "valid",
+                    "text": "Go around",
+                },
+                {
+                    "state": "valid",
+                    "text": "Taxi and hold 27R",
+                },
+                {
+                    "state": "valid",
+                    "text": "Cleared for takeoff",
+                },
+                {
+                    "state": "valid",
+                    "text": "Hold to the right",
+                },
+            ]
         }
 
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 Speed: 340 Heading: 50 Altitude: 12000ft")
-    })
-
-    test("Returns message with defined commands [Waypoint]", () => {
-        const commands = {
-            callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: "JAM",
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined,
-        }
-
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 Waypoint: JAM")
-    })
-
-    test("Returns message with defined commands [Landing]", () => {
-        const commands = {
-            callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: "27R",
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined,
-        }
-
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 Cleared to land runway 27R")
-    })
-
-    test("Returns message with defined commands [Hold right]", () => {
-        const commands = {
-            callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: 1,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: undefined,
-        }
-
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 hold to the right")
-    })
-
-    test("Returns message with defined commands [Taxi]", () => {
-        const commands = {
-            callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: '27R',
-            clearedForTakeoff: undefined,
-            goAround: undefined,
-        }
-
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 taxi and hold 27R")
-    })
-
-    test("Returns message with defined commands [Takeoff]", () => {
-        const commands = {
-            callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: true,
-            goAround: undefined,
-        }
-
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 Cleared for takeoff")
-    })
-
-    test("Returns message with defined commands [Go around]", () => {
-        const commands = {
-            callSign: 'BA123',
-            speed: undefined,
-            heading: undefined,
-            altitude: undefined,
-            waypoint: undefined,
-            runway: undefined,
-            hold: undefined,
-            taxiAndHold: undefined,
-            clearedForTakeoff: undefined,
-            goAround: true,
-        }
-
-        const result = commandMessage(commands)
-
-        expect(result).toBe("BA123 go around")
+        expect(result).toStrictEqual(expected)
     })
 })

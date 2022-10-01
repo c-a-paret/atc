@@ -34,21 +34,37 @@ describe("Speed", () => {
         expect(aeroplane.speed).toBe(297)
     })
 
-    test("Is not valid if the target speed is below 0", () => {
-        let desiredSpeed = -12;
-
-        expect(new Speed({}, {speed: 200}, desiredSpeed).isValid()).toBeFalsy()
-    })
-
     test("Is not valid if the target speed is same as current speed", () => {
         let desiredSpeed = 200;
 
-        expect(new Speed({}, {speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 575, 429, 200, 90, 2800, 3)
+
+        const expected = {
+            "errors": [],
+            "isValid": false,
+            "targetValue": 200,
+            "warnings": [
+                "Speed already set"
+            ]
+        }
+
+        expect(new Speed({}, aeroplane, desiredSpeed).validate()).toStrictEqual(expected)
     })
 
     test("Is not valid if the target speed is lower than the minimum speed", () => {
         let desiredSpeed = 10;
 
-        expect(new Speed({}, {speed: 200}, desiredSpeed).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 575, 429, 200, 90, 2800, 3)
+
+        const expected = {
+            "errors": [
+                "Cannot set speed lower than 120"
+            ],
+            "isValid": false,
+            "targetValue": 10,
+            "warnings": []
+        }
+
+        expect(new Speed({}, aeroplane, desiredSpeed).validate()).toStrictEqual(expected)
     })
 })

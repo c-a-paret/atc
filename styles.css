@@ -239,18 +239,29 @@ canvas {
     align-items: center;
     margin-bottom: 0.5rem;
     background-color: rgba(255, 255, 255, 0.1);
-    min-width: 500px;
-    height: 35px;
+    min-width: 600px;
     border-radius: 1rem;
     backdrop-filter: blur(2px);
+    color: white;
+    padding: 0.3rem 0;
 }
 
-#message-display {
-    width: fit-content;
-    text-align: center;
+.message-item {
+    margin: 0.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.message {
+.message-item-indicator {
+    margin: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 100%;
+}
+
+.message-item-message {
+    margin: 0;
     font-family: "Courier New", monospace;
     font-size: 1.25rem;
     color: rgb(234, 234, 234);

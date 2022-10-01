@@ -111,83 +111,93 @@ export class Aeroplane {
 
     setSpeed = (map, speed) => {
         const newSpeed = new Speed(map, this, speed);
-        if (newSpeed.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newSpeed.validate();
+        if (isValid) {
             this.addAction(newSpeed)
-            return speed
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     setHeading = (map, heading) => {
         const newHeading = new Heading(map, this, heading);
-        if (newHeading.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newHeading.validate();
+        if (isValid) {
             this.addAction(newHeading)
             this.state = this.state === HOLDING_PATTERN ? FLYING : this.state
-            return heading
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     setAltitude = (map, altitude) => {
         const newAltitude = new Altitude(map, this, altitude);
-        if (newAltitude.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newAltitude.validate();
+        if (isValid) {
             this.addAction(newAltitude)
-            return altitude
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     setWaypoint = (map, waypoint) => {
         const newWaypoint = new Waypoint(map, this, waypoint);
-        if (newWaypoint.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newWaypoint.validate();
+
+        if (isValid) {
             this.addAction(newWaypoint)
             this.state = this.state === HOLDING_PATTERN ? FLYING : this.state
-            return waypoint
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     clearForLanding = (map, runway) => {
         const newLanding = new Landing(map, this, runway);
-        if (newLanding.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newLanding.validate();
+        if (isValid) {
             this.addAction(newLanding)
             this.aimingForRunway = runway
             this.state = LANDING
-            return runway
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     setHold = (map, direction) => {
         const newHoldingPattern = new HoldingPattern(map, this, direction);
-        if (newHoldingPattern.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newHoldingPattern.validate();
+        if (isValid) {
             this.addAction(newHoldingPattern)
             this.state = HOLDING_PATTERN
-            return direction
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     setTaxiAndHold = (map, runway) => {
         const newTaxiAndHold = new TaxiToRunway(map, this, runway);
-        if (newTaxiAndHold.isValid()) {
+        const {isValid, warnings, errors, targetValue} = newTaxiAndHold.validate();
+        if (isValid) {
             this.addAction(newTaxiAndHold)
             this.state = TAXIING
-            return runway
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     clearForTakeoff = (map) => {
         const takeoff = new Takeoff(map, this);
-        if (takeoff.isValid()) {
+        const {isValid, warnings, errors, targetValue} = takeoff.validate();
+        if (isValid) {
             this.addAction(takeoff)
             this.hasTakeoffClearance = true
             // Takeoff state is set when applying the action as it is future actionable
-            return true
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     goAround = (map) => {
         const goAround = new GoAround(map, this, this.aimingForRunway);
-        if (goAround.isValid()) {
+        const {isValid, warnings, errors, targetValue} = goAround.validate();
+        if (isValid) {
             this.addAction(goAround)
             this.state = GOING_AROUND
-            return true
         }
+        return {isValid, warnings, errors, targetValue}
     }
 
     is = (states) => {

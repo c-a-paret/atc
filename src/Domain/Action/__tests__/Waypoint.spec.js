@@ -2,7 +2,7 @@ import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {Waypoint} from "../Waypoint";
 import {testGameMap} from "./actionTest.utils";
 import {ARRIVAL} from "../../../config/constants";
-import {HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";
+import {HOLDING_SHORT, LANDING, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";
 
 describe("Waypoint", () => {
     let map;
@@ -62,11 +62,39 @@ describe("Waypoint", () => {
         expect(aeroplane.heading).toBeGreaterThan(357)
     })
 
+    test("Is not valid if aircraft is landing", () => {
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 5000, 3)
+        aeroplane.state = LANDING
+
+        let desiredWaypoint = "LAM";
+
+        const expected = {
+            "errors": [],
+            "isValid": false,
+            "targetValue": "LAM",
+            "warnings": [
+                "Cannot set waypoint when landing",
+            ],
+        }
+
+        expect(new Waypoint(map, aeroplane, desiredWaypoint).validate()).toStrictEqual(expected)
+    })
+
+
     test("Is not valid if the waypoint does not exist", () => {
         const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 5000, 3)
         let incorrectWaypoint = "BIP";
 
-        expect(new Waypoint(map, aeroplane, incorrectWaypoint).isValid()).toBeFalsy()
+        const expected = {
+            "errors": [
+                "BIP does not exist",
+            ],
+            "isValid": false,
+            "targetValue": "BIP",
+            "warnings": [],
+        }
+
+        expect(new Waypoint(map, aeroplane, incorrectWaypoint).validate()).toStrictEqual(expected)
     })
 
     test("Is actionable if far away from waypoint", () => {

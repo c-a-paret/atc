@@ -309,15 +309,44 @@ export class InterfaceController {
 
     // Message
 
-    _displayMessage = (message) => {
+    _displayCommandMessage = (success, callSign, messages) => {
         let messageContainer = document.getElementById("message-container");
-        let messageField = document.getElementById("message-display");
-        messageContainer.style.display = "flex"
-        messageField.innerText = message
+
+        const messageItem = div(["message-item"])
+        const messageItemMessage = p(["message-item-message", "bold"])
+
+        messageItemMessage.innerText = callSign ? callSign : ''
+
+        messageItem.appendChild(messageItemMessage)
+        messageContainer.append(messageItem)
+
+        messages.forEach(message => {
+            if (message) {
+                const messageItem = div(["message-item"])
+                const messageItemIndicator = p(["message-item-indicator"])
+                const messageItemMessage = p(["message-item-message"])
+
+                if (message.state === 'valid') {
+                    messageItemIndicator.classList.add('background-green')
+                } else if (message.state === 'error') {
+                    messageItemIndicator.classList.add('background-red')
+                } else {
+                    messageItemIndicator.classList.add('background-orange')
+                }
+
+                messageItemMessage.innerText = message.text ? message.text : ''
+
+                messageItem.appendChild(messageItemIndicator)
+                messageItem.appendChild(messageItemMessage)
+                messageContainer.append(messageItem)
+            }
+        })
+        messageContainer.style.border = success ? '' : '1px solid red'
+        messageContainer.style.display = "block"
     }
 
     _clearMessage = () => {
-        document.getElementById("message-display").innerText = ""
+        document.getElementById("message-container").innerHTML = ''
         document.getElementById("message-container").style.display = "none"
     }
 
@@ -759,11 +788,12 @@ export class InterfaceController {
 
     _newCommandHandler = () => {
         let commandField = document.getElementById("command-entry-field");
-        const acceptedCommands = this.aeroplaneService.sendCommand(commandField.value)
-        this.lastCallSign = acceptedCommands.callSign ? acceptedCommands.callSign : this.lastCallSign
+        const passedCommands = this.aeroplaneService.sendCommand(commandField.value)
+        this.lastCallSign = passedCommands.callSign ? passedCommands.callSign : this.lastCallSign
         commandField.value = ""
         this._clearStripFocus()
-        this._displayMessage(commandMessage(acceptedCommands))
+        const {success, callSign, messages} = commandMessage(passedCommands);
+        this._displayCommandMessage(success, callSign, messages)
         setTimeout(() => {
             this._clearMessage()
             this.selectedCallSign = ""

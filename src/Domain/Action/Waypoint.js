@@ -38,13 +38,31 @@ export class Waypoint extends Action {
         return this.aeroplane.is([READY_TO_TAXI, TAXIING, HOLDING_SHORT, TAKING_OFF])
     }
 
-    isValid = () => {
+    validate = () => {
+        let warnings = []
+        let errors = []
+        let validWaypoint = false
+
+        if (this.aeroplane.is([LANDING])) {
+            warnings.push('Cannot set waypoint when landing')
+        }
+
         for (let x = 0; x < this.map.features.waypoints.length; x++) {
             if (this.map.features.waypoints[x].id === this.targetWaypoint) {
-                return true
+                validWaypoint = true
             }
         }
-        return false;
+
+        if (!validWaypoint) {
+            errors.push(`${this.targetWaypoint} does not exist`)
+        }
+
+        return {
+            isValid: errors.length === 0 && warnings.length === 0,
+            warnings: warnings,
+            errors: errors,
+            targetValue: this.targetWaypoint
+        }
     }
 
     apply = () => {

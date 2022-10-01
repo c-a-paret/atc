@@ -1,5 +1,7 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {Heading} from "../Heading";
+import {LANDING} from "../../Aeroplane/aeroplaneStates";
+import {ARRIVAL} from "../../../config/constants";
 
 describe("Heading", () => {
     test.each`
@@ -479,21 +481,72 @@ describe("Heading", () => {
     })
 
     test("Is not valid if the target heading is same as current heading", () => {
-        let desiredAltitude = 243;
+        let desiredHeading = 243;
 
-        expect(new Heading({}, {heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 220, desiredHeading, 5000, 1)
+
+        const expected = {
+            "errors": [],
+            "isValid": false,
+            "targetValue": 243,
+            "warnings": [
+                "Heading already set",
+            ],
+        }
+
+        expect(new Heading({}, aeroplane, desiredHeading).validate()).toStrictEqual(expected)
     })
 
     test("Is not valid if the target heading is less than zero", () => {
-        let desiredAltitude = -1;
+        let desiredHeading = -1;
 
-        expect(new Heading({}, {heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 220, 270, 5000, 1)
+
+        const expected = {
+            "errors": [
+                "Heading must be between 000 and 360",
+            ],
+            "isValid": false,
+            "targetValue": -1,
+            "warnings": [],
+        }
+
+        expect(new Heading({}, aeroplane, desiredHeading).validate()).toStrictEqual(expected)
+
     })
 
     test("Is not valid if the target heading is greater than 360", () => {
-        let desiredAltitude = 361;
+        let desiredHeading = 361;
 
-        expect(new Heading({}, {heading: 243}, desiredAltitude).isValid()).toBeFalsy()
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 220, 270, 5000, 1)
+
+        const expected = {
+            "errors": [
+                "Heading must be between 000 and 360",
+            ],
+            "isValid": false,
+            "targetValue": 361,
+            "warnings": [],
+        }
+
+        expect(new Heading({}, aeroplane, desiredHeading).validate()).toStrictEqual(expected)
+    })
+
+    test("Is not valid if aircraft is landing", () => {
+        let desiredHeading = 256;
+
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 220, 270, 5000, 1, ARRIVAL, LANDING)
+
+        const expected = {
+            "errors": [],
+            "isValid": false,
+            "targetValue": 256,
+            "warnings": [
+                "Cannot set heading when landing",
+            ],
+        }
+
+        expect(new Heading({}, aeroplane, desiredHeading).validate()).toStrictEqual(expected)
     })
 
     test.each`
