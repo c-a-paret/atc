@@ -89,7 +89,7 @@ const buildHoldingPatternMessage = (aspect, prefix) => {
         if (aspect.isValid) {
             return {
                 state: 'valid',
-                text: `${prefix} ${aspect.targetValue === -1 ? 'left' : 'right'}`
+                text: `${prefix} ${aspect.targetValue}`
             }
         }
         return handleInvalidAspect(aspect)

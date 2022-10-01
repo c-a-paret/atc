@@ -2,11 +2,13 @@ import {FLYING, HOLDING_PATTERN} from "../Aeroplane/aeroplaneStates";
 import {Action, turning_change_rate} from "./Action";
 
 export class HoldingPattern extends Action {
-    constructor(map, aeroplane, direction) {
+    constructor(map, aeroplane, direction, turningChangeRate, tick= 0) {
         const directionName = direction === 1 ? 'right' : 'left'
         super(map, aeroplane, directionName);
         this.map = map
         this.direction = direction
+        this.turningChangeRate = turningChangeRate ? turningChangeRate : turning_change_rate(this.aeroplane)
+        this.tick = tick
     }
 
     isActionable = () => {
@@ -34,17 +36,29 @@ export class HoldingPattern extends Action {
     }
 
     apply = () => {
-        let newHeading = this.aeroplane.heading + (this.direction * turning_change_rate(this.aeroplane))
-        if (newHeading < 360) {
-            newHeading = 360 + newHeading
+        if (this.tick !== 0) {  // start holding pattern off current heading
+            const turningCircle = 180 / this.turningChangeRate;
+            const zone = Math.floor(this.tick / turningCircle) % 4
+            let newHeading = this.aeroplane.heading
+
+            if ([0, 2].includes(zone)) {
+                let newHeading = this.aeroplane.heading + (this.direction * this.turningChangeRate)
+                if (newHeading < 360) {
+                    newHeading += 360
+                }
+                if (newHeading > 360) {
+                    newHeading -= 360
+                }
+                this.aeroplane.heading = newHeading
+            } else {
+                this.aeroplane.heading = newHeading
+                this.tick += 2
+            }
         }
-        if (newHeading > 360) {
-            newHeading = newHeading - 360
-        }
-        this.aeroplane.heading = newHeading
+        this.tick += 1
     };
 
     copy = (aeroplane) => {
-        return new HoldingPattern(this.map, aeroplane, this.direction)
+        return new HoldingPattern(this.map, aeroplane, this.direction, this.turningChangeRate, this.tick)
     }
 }

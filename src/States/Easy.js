@@ -27,13 +27,13 @@ export class Easy extends GameState {
         if (!this.initialised && this.clearAircraftOnStart) {
             this.machine.weather.static()
             this.machine.clear()
+            // this.initTestAeroplanes()
             this.initialised = true
         } else {
             this.initialised = true
         }
         if (this.ticks % this.arrivalSpawnInterval === 0) {
             this.initArrival()
-            // this.initTestAeroplanes()
         }
         if (this.ticks !== 0 && this.ticks % this.departureSpawnInterval === 0) {
             this.initDeparture()
@@ -100,7 +100,7 @@ export class Easy extends GameState {
 
     initTestAeroplanes = () => {
         // const aeroplane1 = new Aeroplane("BA123", "A321", 1150, 470, 200, 270, 3000, 1)
-        const aeroplane1 = new Aeroplane("BA123", "A321", 750, 470, 200, 90, 3000, 1, ARRIVAL, FLYING, null, 100)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 750, 470, 200, 90, 3000, 3, ARRIVAL, FLYING, null, 100)
         // const aeroplane1 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "GWC")
         this.machine.aeroplanes = [
             aeroplane1,
@@ -118,6 +118,7 @@ export class Easy extends GameState {
             // new Aeroplane("BA212", "A321", 500, 450, 200, 225, 6000, 1),
         ]
 
+        // aeroplane1.setHold(this.map, -1)
         // aeroplane1.clearForLanding(this.map, "9L")
         // aeroplane1.setTaxiAndHold(this.map, "27L")
         // aeroplane1.setWaypoint(this.map, "GWC")
