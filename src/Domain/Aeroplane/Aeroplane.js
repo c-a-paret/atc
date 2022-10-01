@@ -119,7 +119,7 @@ export class Aeroplane {
     }
 
     setHeading = (map, heading) => {
-        const newHeading = new Heading(map, this, heading);
+        const newHeading = new Heading(map, this, heading.heading, heading.direction);
         const {isValid, warnings, errors, targetValue} = newHeading.validate();
         if (isValid) {
             this.addAction(newHeading)

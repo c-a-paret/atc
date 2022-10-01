@@ -567,7 +567,7 @@ describe("Heading", () => {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            targetHeadingAfterFirstApply
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }) => {
         const aeroplane = new Aeroplane("BA123", "A321", 500, 500, speed, currentHeading, 3000, weight)
-        aeroplane.setHeading({}, 180)
+        aeroplane.setHeading({}, {heading: 180, direction: 0})
 
         expect(aeroplane.heading).toBe(currentHeading)
 

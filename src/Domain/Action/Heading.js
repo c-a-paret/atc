@@ -2,18 +2,19 @@ import {
     FLYING,
     GOING_AROUND,
     HOLDING_PATTERN,
-    HOLDING_SHORT, LANDING,
+    HOLDING_SHORT,
+    LANDING,
     READY_TO_TAXI,
     TAKING_OFF,
     TAXIING
 } from "../Aeroplane/aeroplaneStates";
 import {shortestAngle} from "../../utils/geometry";
 import {Action, turning_change_rate, wouldEndUpTurningBeyondTarget} from "./Action";
-import {MAX_ALTITUDE, MIN_ALTITUDE} from "../../config/constants";
 
 export class Heading extends Action {
-    constructor(map, aeroplane, targetHeading) {
+    constructor(map, aeroplane, targetHeading, direction= 0) {
         super(null, aeroplane, targetHeading);
+        this.direction = direction
     }
 
     isActionable = () => {
@@ -59,17 +60,24 @@ export class Heading extends Action {
             return
         }
 
-        if (shortestAngle(currentHeading, targetHeading) > 0) {
-            // turn right
-            this.aeroplane.heading = (this.aeroplane.heading + turning_change_rate(this.aeroplane)) % 360;
-        } else {
-            // turn left
+        if (this.direction === -1) {
             let newHeading = this.aeroplane.heading - turning_change_rate(this.aeroplane);
             this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
+        } else if (this.direction === 1) {
+            this.aeroplane.heading = (this.aeroplane.heading + turning_change_rate(this.aeroplane)) % 360;
+        } else {
+            if (shortestAngle(currentHeading, targetHeading) > 0) {
+                // turn right
+                this.aeroplane.heading = (this.aeroplane.heading + turning_change_rate(this.aeroplane)) % 360;
+            } else {
+                // turn left
+                let newHeading = this.aeroplane.heading - turning_change_rate(this.aeroplane);
+                this.aeroplane.heading = newHeading < 0 ? newHeading + 360 : newHeading;
+            }
         }
     };
 
     copy = (aeroplane) => {
-        return new Heading(this.map, aeroplane, this.targetValue)
+        return new Heading(this.map, aeroplane, this.targetValue, this.direction)
     }
 }

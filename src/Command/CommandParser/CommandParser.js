@@ -121,10 +121,22 @@ export const parseSpeed = (command) => {
 }
 
 export const parseHeading = (command) => {
-    const match = command.match(/T(\d{3})/g);
-    if (match && match.length === 1) {
-        let heading = parseInt(match[0].substring(1));
-        return heading === 0 ? 360 : heading
+    const myRegexp = /T([LR])?(\d{3})/g
+    const match = myRegexp.exec(command);
+    if (match) {
+        let heading = parseInt(match[2]);
+
+        let direction = 0
+        if (match[1] === 'L') {
+            direction = -1
+        } else if (match[1] === 'R') {
+            direction = 1
+        }
+
+        return {
+            heading: heading === 0 ? 360 : heading,
+            direction: direction
+        }
     }
     return null
 }

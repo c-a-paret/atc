@@ -33,11 +33,11 @@ describe("Parse command", () => {
 
     test("Extracts the desired heading", () => {
         const command = "BA423T342S200"
-        const expectedSpeed = 342
+        const expectedHeading = 342
 
         const result = parseCommand(command)
 
-        expect(result.heading).toBe(expectedSpeed)
+        expect(result.heading).toStrictEqual({heading: expectedHeading, direction: 0})
     })
 
     test("Extracts the desired two digit altitude", () => {
@@ -150,7 +150,7 @@ describe("Heading commands", () => {
 
         const result = parseHeading(command)
 
-        expect(result).toBe(expectedHeading)
+        expect(result).toStrictEqual({heading: expectedHeading, direction: 0})
     })
 
     test("Extracts heading of 000 to 360", () => {
@@ -159,7 +159,27 @@ describe("Heading commands", () => {
 
         const result = parseHeading(command)
 
-        expect(result).toBe(expectedHeading)
+        expect(result).toStrictEqual({heading: expectedHeading, direction: 0})
+    })
+
+    test("Extracts turn direction to the left", () => {
+        const command = "BA423S200TL067WLAM"
+        const expectedHeading = 67
+        const expectedDirection = -1
+
+        const result = parseHeading(command)
+
+        expect(result).toStrictEqual({heading: expectedHeading, direction: expectedDirection})
+    })
+
+    test("Extracts turn direction to the right", () => {
+        const command = "BA423S200TR067WLAM"
+        const expectedHeading = 67
+        const expectedDirection = 1
+
+        const result = parseHeading(command)
+
+        expect(result).toStrictEqual({heading: expectedHeading, direction: expectedDirection})
     })
 
     test("Returns null if no heading command found", () => {

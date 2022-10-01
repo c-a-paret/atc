@@ -114,7 +114,7 @@ describe("Set Heading", () => {
     test("Sets heading action when valid", () => {
         let desiredHeading = 100;
 
-        aeroplane.setHeading(map, desiredHeading)
+        aeroplane.setHeading(map, {heading: desiredHeading, direction: 0})
 
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].targetValue).toBe(desiredHeading)
@@ -133,7 +133,7 @@ describe("Set Heading", () => {
     })
 
     test("Does not set heading when null", () => {
-        let desiredHeading = null;
+        let desiredHeading = {heading: null, direction: null};
         aeroplane.setHeading(map, desiredHeading)
         expect(aeroplane.actions.length).toBe(0)
     })
@@ -822,7 +822,7 @@ describe("Apply Actions", () => {
             const aeroplane = new Aeroplane("AB123", "A321", 50, 100, 150, 90, 5000, 3)
 
             aeroplane.setSpeed(map, 160)
-            aeroplane.setHeading(map, 100)
+            aeroplane.setHeading(map, {heading: 100, direction: 0})
             aeroplane.setAltitude(map, 10000)
 
             aeroplane.applyActions()
@@ -857,11 +857,11 @@ describe("Sequential Actions", () => {
         })
 
         test("Heading", () => {
-            aeroplane.setHeading(map, 90)
+            aeroplane.setHeading(map, {heading: 90, direction: 0})
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(90)
 
-            aeroplane.setHeading(map, 180)
+            aeroplane.setHeading(map, {heading: 180, direction: 0})
             expect(aeroplane.actions.length).toBe(1)
             expect(aeroplane.actions[0].targetValue).toBe(180)
         })
@@ -888,7 +888,7 @@ describe("Sequential Actions", () => {
 
         test("Speed", () => {
             aeroplane.setSpeed(map, 160)
-            aeroplane.setHeading(map, 90)
+            aeroplane.setHeading(map, {heading: 90, direction: 0})
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(90)
@@ -901,12 +901,12 @@ describe("Sequential Actions", () => {
 
         test("Heading", () => {
             aeroplane.setSpeed(map, 160)
-            aeroplane.setHeading(map, 90)
+            aeroplane.setHeading(map, {heading: 90, direction: 0})
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(90)
 
-            aeroplane.setHeading(map, 180)
+            aeroplane.setHeading(map, {heading: 180, direction: 0})
             expect(aeroplane.actions.length).toBe(2)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(180)
@@ -915,7 +915,7 @@ describe("Sequential Actions", () => {
         test("Altitude", () => {
             aeroplane.setSpeed(map, 160)
             aeroplane.setAltitude(map, 5000)
-            aeroplane.setHeading(map, 90)
+            aeroplane.setHeading(map, {heading: 90, direction: 0})
             expect(aeroplane.actions.length).toBe(3)
             expect(aeroplane.actions[0].targetValue).toBe(160)
             expect(aeroplane.actions[1].targetValue).toBe(5000)
@@ -935,7 +935,7 @@ describe("Sequential Actions", () => {
 
         aeroplane.setSpeed(map, 160)
         aeroplane.setAltitude(map, 2000)
-        aeroplane.setHeading(map, 90)
+        aeroplane.setHeading(map, {heading: 90, direction: 0})
         expect(aeroplane.actions.length).toBe(3)
         expect(aeroplane.actions[0].targetValue).toBe(160)
         expect(aeroplane.actions[1].targetValue).toBe(2000)
@@ -1013,7 +1013,7 @@ describe("Holding state", () => {
         aeroplane.actions.push(new HoldingPattern(testGameMap(), aeroplane, "left"))
         expect(aeroplane.isInHoldingPattern()).toBeTruthy()
 
-        aeroplane.setHeading(testGameMap(), 180)
+        aeroplane.setHeading(testGameMap(), {heading: 180, direction: 0})
         expect(aeroplane.isInHoldingPattern()).toBeFalsy()
     })
 })
