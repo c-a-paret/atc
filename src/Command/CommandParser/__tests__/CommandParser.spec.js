@@ -104,6 +104,16 @@ describe("Parse command", () => {
         expect(result.waypoint).toBeNull()
         expect(result.runway).toBe("27R")
     })
+
+    test("Does not parse speed when landing clearance issued", () => {
+        const command = "JN123ILS27R"
+
+        const result = parseCommand(command)
+
+        expect(result.speed).toBeNull()
+        expect(result.runway).toBe("27R")
+    })
+
 })
 
 describe("Speed commands", () => {
@@ -125,13 +135,13 @@ describe("Speed commands", () => {
         expect(result).toBe(expectedSpeed)
     })
 
-    test("Extracts two digit speed from correctly formatted command", () => {
+    test("Does not extract two digit speed from correctly formatted command", () => {
         const command = "S80"
         const expectedSpeed = 80
 
         const result = parseSpeed(command)
 
-        expect(result).toBe(expectedSpeed)
+        expect(result).toBeNull()
     })
 
     test("Returns null if no speed command found", () => {

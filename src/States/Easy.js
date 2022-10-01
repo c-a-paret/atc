@@ -100,7 +100,7 @@ export class Easy extends GameState {
 
     initTestAeroplanes = () => {
         // const aeroplane1 = new Aeroplane("BA123", "A321", 1150, 470, 200, 270, 3000, 1)
-        const aeroplane1 = new Aeroplane("BA123", "A321", 750, 470, 200, 90, 3000, 3, ARRIVAL, FLYING, null, 100)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 1200, 470, 200, 270, 3000, 3, ARRIVAL, FLYING, null, 100)
         // const aeroplane1 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "GWC")
         this.machine.aeroplanes = [
             aeroplane1,
