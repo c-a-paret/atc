@@ -58,6 +58,11 @@ export class Dynamic extends GameState {
         this.ticks += 1
     }
 
+    applyActions = (weather) => {
+        console.log('Applying dynamic actions')
+        this.currentDifficultyConfig.applyActions(weather)
+    }
+
     shouldDetermineDifficulty = () => {
         if (this.ticks === 0) {
             return true
@@ -106,6 +111,12 @@ export class Dynamic extends GameState {
                 updateLandingTargets: () => {
                 },
                 determineLandingRunways: () => {
+                },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
                 }
             },
             1: {
@@ -126,6 +137,12 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
+                }
             },
             2: {
                 arrivalSpawnInterval: 140,
@@ -146,6 +163,12 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
+                }
             },
             3: {
                 arrivalSpawnInterval: 110,
@@ -166,6 +189,12 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
+                }
             },
             4: {
                 arrivalSpawnInterval: 100,
@@ -190,6 +219,12 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
+                }
             },
             5: {
                 arrivalSpawnInterval: 100,
@@ -216,6 +251,12 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
+                }
             },
             6: {
                 arrivalSpawnInterval: 100,
@@ -242,6 +283,12 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: () => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                    })
+                }
             },
             7: {
                 arrivalSpawnInterval: 120,
@@ -268,6 +315,13 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                 },
+                applyActions: (weather) => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                        plane.applyEffectOfWind(this.map, weather)
+                    })
+                }
             },
             8: {
                 arrivalSpawnInterval: 120,
@@ -300,6 +354,13 @@ export class Dynamic extends GameState {
                 determineLandingRunways: () => {
                     this.determineLandingRunwayDirections()
                 },
+                applyActions: (weather) => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                        plane.applyEffectOfWind(this.map, weather)
+                    })
+                }
             },
             9: {
                 arrivalSpawnInterval: 120,
@@ -332,6 +393,13 @@ export class Dynamic extends GameState {
                 determineLandingRunways: () => {
                     this.determineLandingRunwayDirections()
                 },
+                applyActions: (weather) => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                        plane.applyEffectOfWind(this.map, weather)
+                    })
+                }
             },
             10: {
                 arrivalSpawnInterval: 120,
@@ -360,6 +428,13 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                     this.determineLandingRunwayDirections()
+                },
+                applyActions: (weather) => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                        plane.applyEffectOfWind(this.map, weather)
+                    })
                 }
             },
             11: {
@@ -389,6 +464,13 @@ export class Dynamic extends GameState {
                 },
                 determineLandingRunways: () => {
                     this.determineLandingRunwayDirections()
+                },
+                applyActions: (weather) => {
+                    this.machine.aeroplanes.forEach(plane => {
+                        plane.applyActions()
+                        plane.simulatePath(this.map, this.map.features.restrictedZones)
+                        plane.applyEffectOfWind(this.map, weather)
+                    })
                 }
             },
         };
