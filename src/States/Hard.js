@@ -58,6 +58,14 @@ export class Hard extends GameState {
         this.ticks += 1
     }
 
+    applyActions = (weather) => {
+        this.machine.aeroplanes.forEach(plane => {
+            plane.applyActions()
+            plane.applyEffectOfWind(this.map, weather)
+            plane.simulatePath(this.map, this.map.features.restrictedZones)
+        })
+    }
+
     determineRunways = () => {
         if (this.machine.weather.wind.easterly()) {
             this.targetRunways = ["9L", "9R"]

@@ -230,6 +230,26 @@ export class Aeroplane {
         this._clean_actions()
     }
 
+    applyEffectOfWind = (map, weather) => {
+        if (
+            this.is([FLYING, HOLDING_PATTERN])
+            && this.x < map.mapBoundaries.maxX - 20
+            && this.x > map.mapBoundaries.minX + 20
+            && this.y < map.mapBoundaries.maxY - 20
+            && this.y > map.mapBoundaries.minY + 20
+        ) {
+            const windTravelDirection = (weather.wind.direction + 180) % 360
+
+            const windRadians = (Math.PI / 180) * windTravelDirection
+            const normalisedSpeed = Math.max(0, weather.wind.speed / 18)
+
+            const componentX = round(normalisedSpeed * Math.sin(windRadians), 2);
+            const componentY = -round(normalisedSpeed * Math.cos(windRadians), 2);
+            this.x += componentX
+            this.y += componentY
+        }
+    }
+
     simulatePath = (map, restrictedZones) => {
         if (this.isLanding()) {
             this.nextPositions = []
@@ -386,7 +406,7 @@ export class Aeroplane {
     }
 
     proximalTo = (otherAeroplane) => {
-        if (this.is([TAKING_OFF,FLYING, HOLDING_PATTERN, GOING_AROUND]) && otherAeroplane.is([TAKING_OFF, FLYING, HOLDING_PATTERN, GOING_AROUND])) {
+        if (this.is([TAKING_OFF, FLYING, HOLDING_PATTERN, GOING_AROUND]) && otherAeroplane.is([TAKING_OFF, FLYING, HOLDING_PATTERN, GOING_AROUND])) {
             const horizontalDistance = distance(this.x, this.y, otherAeroplane.x, otherAeroplane.y);
             const verticalDistance = Math.abs(this.altitude - otherAeroplane.altitude)
             return horizontalDistance < HORIZONTAL_SEPARATION_MINIMUM

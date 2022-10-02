@@ -3,6 +3,7 @@ import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ARRIVAL, DEPARTURE, LANDED_ALTITUDE} from "../../config/constants";
 import {FLYING, HOLDING_SHORT, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
 import {testGameMap} from "../../Domain/Action/__tests__/actionTest.utils";
+import {Easy} from "../../States/Easy";
 
 
 describe('Send command', () => {
@@ -714,6 +715,7 @@ describe('Apply actions', () => {
 
     test('Applies all aeroplane actions and simulates path', () => {
         const service = new AeroplaneService(testGameMap(), {}, {})
+        service.transitionTo(new Easy())
 
         const aeroplane1 = {applyActions: jest.fn(), simulatePath: jest.fn()};
         const aeroplane2 = {applyActions: jest.fn(), simulatePath: jest.fn()};

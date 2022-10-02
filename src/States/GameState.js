@@ -17,4 +17,10 @@ export class GameState {
 
     }
 
+    applyActions = (weather) => {
+        this.machine.aeroplanes.forEach(plane => {
+            plane.applyActions()
+            plane.simulatePath(this.map, this.map.features.restrictedZones)
+        })
+    }
 }
