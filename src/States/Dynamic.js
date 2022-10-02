@@ -58,9 +58,8 @@ export class Dynamic extends GameState {
         this.ticks += 1
     }
 
-    applyActions = (weather) => {
-        console.log('Applying dynamic actions')
-        this.currentDifficultyConfig.applyActions(weather)
+    applyActions = (map, weather) => {
+        this.currentDifficultyConfig.applyActions(map, weather)
     }
 
     shouldDetermineDifficulty = () => {
@@ -317,9 +316,8 @@ export class Dynamic extends GameState {
                 },
                 applyActions: (weather) => {
                     this.machine.aeroplanes.forEach(plane => {
-                        plane.applyActions()
+                        plane.applyActions(this.map, weather)
                         plane.simulatePath(this.map, this.map.features.restrictedZones)
-                        plane.applyEffectOfWind(this.map, weather)
                     })
                 }
             },
@@ -356,9 +354,8 @@ export class Dynamic extends GameState {
                 },
                 applyActions: (weather) => {
                     this.machine.aeroplanes.forEach(plane => {
-                        plane.applyActions()
+                        plane.applyActions(this.map, weather)
                         plane.simulatePath(this.map, this.map.features.restrictedZones)
-                        plane.applyEffectOfWind(this.map, weather)
                     })
                 }
             },
@@ -395,9 +392,8 @@ export class Dynamic extends GameState {
                 },
                 applyActions: (weather) => {
                     this.machine.aeroplanes.forEach(plane => {
-                        plane.applyActions()
+                        plane.applyActions(this.map, weather)
                         plane.simulatePath(this.map, this.map.features.restrictedZones)
-                        plane.applyEffectOfWind(this.map, weather)
                     })
                 }
             },
@@ -431,9 +427,8 @@ export class Dynamic extends GameState {
                 },
                 applyActions: (weather) => {
                     this.machine.aeroplanes.forEach(plane => {
-                        plane.applyActions()
+                        plane.applyActions(this.map, weather)
                         plane.simulatePath(this.map, this.map.features.restrictedZones)
-                        plane.applyEffectOfWind(this.map, weather)
                     })
                 }
             },

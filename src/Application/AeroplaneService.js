@@ -117,7 +117,7 @@ export class AeroplaneService {
     }
 
     applyActions = () => {
-        this.state.applyActions(this.weather)
+        this.state.applyActions(this.map, this.weather)
     }
 
     consumeFuel = () => {

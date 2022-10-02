@@ -58,11 +58,10 @@ export class Hard extends GameState {
         this.ticks += 1
     }
 
-    applyActions = (weather) => {
+    applyActions = (map, weather) => {
         this.machine.aeroplanes.forEach(plane => {
-            plane.applyActions()
-            plane.applyEffectOfWind(this.map, weather)
-            plane.simulatePath(this.map, this.map.features.restrictedZones)
+            plane.applyActions(map, weather)
+            plane.simulatePath(this.map, this.map.features.restrictedZones, weather)
         })
     }
 

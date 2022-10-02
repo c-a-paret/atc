@@ -208,7 +208,7 @@ export class Aeroplane {
         return !this.is(states)
     }
 
-    applyActions = () => {
+    applyActions = (map, weather) => {
         this.actions.forEach(action => {
             if (action.isActionable()) {
                 action.apply()
@@ -224,6 +224,8 @@ export class Aeroplane {
         const distancePerTick = 1 + (Math.max(30, this.speed - 100) / 20 * 0.5)
         this.x = round(this.x + distancePerTick * Math.sin(headingRadians), 2);
         this.y = round(this.y - distancePerTick * Math.cos(headingRadians), 2);
+
+        weather && this.applyEffectOfWind(map, weather)
 
         this.updateLastPositions(this.x, this.y)
 
@@ -250,7 +252,7 @@ export class Aeroplane {
         }
     }
 
-    simulatePath = (map, restrictedZones) => {
+    simulatePath = (map, restrictedZones, weather) => {
         if (this.isLanding()) {
             this.nextPositions = []
         } else {
@@ -270,7 +272,7 @@ export class Aeroplane {
             let altitudeMarker = false
             let speedMarker = false
             for (let x = 0; x < NUM_PROJECTED_TICKS; x++) {
-                simulatedAeroplane.applyActions()
+                simulatedAeroplane.applyActions(map, weather)
 
                 let baseLocation = {
                     x: simulatedAeroplane.x,
