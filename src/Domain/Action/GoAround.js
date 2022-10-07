@@ -2,8 +2,8 @@ import {Waypoint} from "./Waypoint";
 import {Speed} from "./Speed";
 import {Altitude} from "./Altitude";
 import {MIN_GROUND_CLEARANCE} from "../../config/constants";
-import {FLYING} from "../Aeroplane/aeroplaneStates";
 import {Action} from "./Action";
+import {Flying} from "../Aeroplane/states/Flying";
 
 export class GoAround extends Action {
     constructor(map, aeroplane, aimingForRunway) {
@@ -56,7 +56,7 @@ export class GoAround extends Action {
 
     apply = () => {
         if (this.aeroplane.altitude >= MIN_GROUND_CLEARANCE) {
-            this.aeroplane.state = FLYING
+            this.aeroplane.transitionTo(new Flying())
             this.executed = true
         }
         if (!this.targetsAdded) {

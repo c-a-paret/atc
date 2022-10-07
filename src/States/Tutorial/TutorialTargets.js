@@ -1,6 +1,8 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ARRIVAL, DEPARTURE, ILS_MAX_X} from "../../config/constants";
-import {FLYING, HOLDING_SHORT, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
+import {ReadyToTaxi} from "../../Domain/Aeroplane/states/ReadyToTaxi";
+import {Flying} from "../../Domain/Aeroplane/states/Flying";
+import {Holding} from "../../Domain/Aeroplane/states/Holding";
 
 export class TutorialTargets {
     constructor(map) {
@@ -151,7 +153,7 @@ export class TutorialTargets {
             5000,
             2,
             ARRIVAL,
-            FLYING,
+            new Flying(),
             '27R')
         this.machine.machine.aeroplanes.push(plane)
     }
@@ -167,7 +169,7 @@ export class TutorialTargets {
             2800,
             2,
             ARRIVAL,
-            FLYING,
+            new Flying(),
             '27R')
         plane.clearForLanding(this.map, '27R')
         this.machine.machine.aeroplanes.push(plane)
@@ -184,7 +186,7 @@ export class TutorialTargets {
             0,
             2,
             DEPARTURE,
-            READY_TO_TAXI,
+            new ReadyToTaxi(),
             'MAY')
         this.machine.machine.aeroplanes.push(plane)
     }
@@ -200,7 +202,7 @@ export class TutorialTargets {
             0,
             2,
             DEPARTURE,
-            HOLDING_SHORT,
+            new Holding(),
             'MAY')
         plane.setSpeed(this.map, 300)
         plane.setAltitude(this.map, 25000)

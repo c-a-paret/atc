@@ -1,9 +1,11 @@
 import {AeroplaneService} from "../AeroplaneService";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ARRIVAL, DEPARTURE, LANDED_ALTITUDE} from "../../config/constants";
-import {FLYING, HOLDING_SHORT, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
 import {testGameMap} from "../../Domain/Action/__tests__/actionTest.utils";
 import {Easy} from "../../States/Easy";
+import {ReadyToTaxi} from "../../Domain/Aeroplane/states/ReadyToTaxi";
+import {Flying} from "../../Domain/Aeroplane/states/Flying";
+import {Holding} from "../../Domain/Aeroplane/states/Holding";
 
 
 describe('Send command', () => {
@@ -265,8 +267,8 @@ describe('Send command', () => {
     test('Sends taxi and hold command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {}, mockState)
         service.aeroplanes = [
-            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3),
-            new Aeroplane("BA456", "A321", 500, 350, 0, 360, 0, 3, DEPARTURE, READY_TO_TAXI),
+            new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3, ARRIVAL, new Flying()),
+            new Aeroplane("BA456", "A321", 500, 350, 0, 360, 0, 3, DEPARTURE, new ReadyToTaxi()),
         ]
 
         const rawCommand = "BA456TH9L"
@@ -318,7 +320,7 @@ describe('Send command', () => {
     test('Sends cleared for takeoff command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {}, mockState)
         const aeroplane1 = new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3)
-        const aeroplane2 = new Aeroplane("BA456", "A321", 500, 350, 0, 270, 0, 3, DEPARTURE, HOLDING_SHORT)
+        const aeroplane2 = new Aeroplane("BA456", "A321", 500, 350, 0, 270, 0, 3, DEPARTURE, new Holding())
 
         aeroplane2.positionDescription = "9L"
 
@@ -375,7 +377,7 @@ describe('Send command', () => {
     test('Sends go around command to relevant aeroplane', () => {
         const service = new AeroplaneService(map, {}, mockState)
         const aeroplane1 = new Aeroplane("BA123", "A321", 500, 300, 120, 180, 5000, 3)
-        const aeroplane2 = new Aeroplane("BA456", "A321", 300, 500, 190, 90, 1800, 3, ARRIVAL, FLYING)
+        const aeroplane2 = new Aeroplane("BA456", "A321", 300, 500, 190, 90, 1800, 3)
 
         service.aeroplanes = [
             aeroplane1,

@@ -31,9 +31,14 @@ import {HoldingPattern} from "../Action/HoldingPattern";
 import {TaxiToRunway} from "../Action/TaxiToRunway";
 import {Takeoff} from "../Action/Takeoff";
 import {GoAround} from "../Action/GoAround";
+import {Flying} from "./states/Flying";
+import {Taxiing} from "./states/Taxiing";
+import {FinalApproach} from "./states/FinalApproach";
+import {Holding} from "./states/Holding";
+import {GoingAround} from "./states/GoingAround";
 
 export class Aeroplane {
-    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = FLYING, finalTarget = null, fuelLevel) {
+    constructor(callSign, shortClass, x, y, speed, hdg, altitude, weight, type = ARRIVAL, state = new Flying(), finalTarget = null, fuelLevel = null) {
         this.callSign = callSign;
         this.shortClass = shortClass;
         this.weight = weight;
@@ -59,6 +64,11 @@ export class Aeroplane {
         this.hasTakeoffClearance = false
     }
 
+    transitionTo = (state) => {
+        this.state = state
+        this.state.setMachine(this)
+    }
+
     hasFinalTarget = () => {
         return !!this.finalTarget
     }
@@ -73,7 +83,7 @@ export class Aeroplane {
 
     addAction = (action) => {
         // Only Go Around overwrites Landing
-        if (this.state === LANDING) {
+        if (this.state.name === LANDING) {
             if (action.type() === 'GoAround') {
                 this.actions = [action]
                 this._update_targets()
@@ -123,7 +133,7 @@ export class Aeroplane {
         const {isValid, warnings, errors, targetValue} = newHeading.validate();
         if (isValid) {
             this.addAction(newHeading)
-            this.state = this.state === HOLDING_PATTERN ? FLYING : this.state
+            this.state = this.state.name === HOLDING_PATTERN ? new Flying() : this.state
         }
         return {isValid, warnings, errors, targetValue}
     }
@@ -143,7 +153,7 @@ export class Aeroplane {
 
         if (isValid) {
             this.addAction(newWaypoint)
-            this.state = this.state === HOLDING_PATTERN ? FLYING : this.state
+            this.state = this.state.name === HOLDING_PATTERN ? new Flying() : this.state
         }
         return {isValid, warnings, errors, targetValue}
     }
@@ -154,7 +164,7 @@ export class Aeroplane {
         if (isValid) {
             this.addAction(newLanding)
             this.aimingForRunway = runway
-            this.state = LANDING
+            this.transitionTo(new FinalApproach())
         }
         return {isValid, warnings, errors, targetValue}
     }
@@ -164,7 +174,7 @@ export class Aeroplane {
         const {isValid, warnings, errors, targetValue} = newHoldingPattern.validate();
         if (isValid) {
             this.addAction(newHoldingPattern)
-            this.state = HOLDING_PATTERN
+            this.transitionTo(new Holding())
         }
         return {isValid, warnings, errors, targetValue}
     }
@@ -174,7 +184,7 @@ export class Aeroplane {
         const {isValid, warnings, errors, targetValue} = newTaxiAndHold.validate();
         if (isValid) {
             this.addAction(newTaxiAndHold)
-            this.state = TAXIING
+            this.transitionTo(new Taxiing())
         }
         return {isValid, warnings, errors, targetValue}
     }
@@ -195,13 +205,13 @@ export class Aeroplane {
         const {isValid, warnings, errors, targetValue} = goAround.validate();
         if (isValid) {
             this.addAction(goAround)
-            this.state = GOING_AROUND
+            this.transitionTo(new GoingAround())
         }
         return {isValid, warnings, errors, targetValue}
     }
 
     is = (states) => {
-        return states.includes(this.state)
+        return states.includes(this.state.name)
     }
 
     isNot = (states) => {
@@ -215,7 +225,7 @@ export class Aeroplane {
             }
         })
 
-        if ([READY_TO_TAXI, TAXIING, HOLDING_SHORT].includes(this.state)) {
+        if ([READY_TO_TAXI, TAXIING, HOLDING_SHORT].includes(this.state.name)) {
             this._clean_actions()
             return
         }
@@ -370,11 +380,11 @@ export class Aeroplane {
     }
 
     isLanding = () => {
-        return this.state === LANDING
+        return this.state.name === LANDING
     }
 
     isInHoldingPattern = () => {
-        return this.state === HOLDING_PATTERN
+        return this.state.name === HOLDING_PATTERN
     }
 
     isChangingAltitude = () => {
@@ -504,7 +514,7 @@ export class Aeroplane {
             HOLDING_PATTERN: 0,
             GOING_AROUND: 0,
         }
-        return this.state ? consumptionRateMap[this.state] : 0
+        return this.state ? consumptionRateMap[this.state.name] : 0
     }
 
     _clear_targets = () => {

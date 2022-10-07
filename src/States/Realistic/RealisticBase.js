@@ -4,7 +4,8 @@ import {AIRCRAFT} from "../../config/aircraft";
 import {getRandomNumberBetween, roundToNearest} from "../../utils/maths";
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {ARRIVAL, DEPARTURE} from "../../config/constants";
-import {FLYING, READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
+import {FLYING} from "../../Domain/Aeroplane/aeroplaneStates";
+import {ReadyToTaxi} from "../../Domain/Aeroplane/states/ReadyToTaxi";
 
 
 export class RealisticBase extends GameState {
@@ -119,7 +120,7 @@ export class RealisticBase extends GameState {
             startAltitude,
             weight,
             DEPARTURE,
-            READY_TO_TAXI,
+            new ReadyToTaxi(),
             targetWaypoint
         )
         this.machine.aeroplanes.push(plane)

@@ -1,6 +1,7 @@
 import {getRandomNumberBetween} from "../../utils/maths";
 import {HOLDING_SHORT, READY_TO_TAXI, TAXIING} from "../Aeroplane/aeroplaneStates";
 import {Action} from "./Action";
+import {HoldingShort} from "../Aeroplane/states/HoldingShort";
 
 export class TaxiToRunway extends Action {
     constructor(map, aeroplane, targetRunway) {
@@ -51,7 +52,7 @@ export class TaxiToRunway extends Action {
         if (this.taxiTime <= 0) {
             this.aeroplane.x = this.targetX
             this.aeroplane.y = this.targetY
-            this.aeroplane.state = HOLDING_SHORT
+            this.aeroplane.transitionTo(new HoldingShort())
             this.aeroplane.heading = this.runway.heading
             this.aeroplane.positionDescription = this.targetRunway
         }

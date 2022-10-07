@@ -1,7 +1,7 @@
 import {Aeroplane} from "../../Domain/Aeroplane/Aeroplane";
 import {DEPARTURE} from "../../config/constants";
-import {READY_TO_TAXI} from "../../Domain/Aeroplane/aeroplaneStates";
 import {TutorialTargets} from "./TutorialTargets";
+import {ReadyToTaxi} from "../../Domain/Aeroplane/states/ReadyToTaxi";
 
 export class TutorialDeparting {
     constructor(map) {
@@ -149,7 +149,7 @@ export class TutorialDeparting {
             0,
             2,
             DEPARTURE,
-            READY_TO_TAXI)
+            new ReadyToTaxi())
         this.machine.machine.aeroplanes.push(plane)
     }
 
@@ -164,7 +164,7 @@ export class TutorialDeparting {
             0,
             2,
             DEPARTURE,
-            READY_TO_TAXI)
+            new ReadyToTaxi())
         this.machine.machine.aeroplanes.push(plane)
     }
 

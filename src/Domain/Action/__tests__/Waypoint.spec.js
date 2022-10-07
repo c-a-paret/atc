@@ -2,7 +2,11 @@ import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {Waypoint} from "../Waypoint";
 import {testGameMap} from "./actionTest.utils";
 import {ARRIVAL} from "../../../config/constants";
-import {HOLDING_SHORT, LANDING, READY_TO_TAXI, TAXIING} from "../../Aeroplane/aeroplaneStates";
+import {LANDING} from "../../Aeroplane/aeroplaneStates";
+import {Landing} from "../Landing";
+import {ReadyToTaxi} from "../../Aeroplane/states/ReadyToTaxi";
+import {Taxiing} from "../../Aeroplane/states/Taxiing";
+import {Holding} from "../../Aeroplane/states/Holding";
 
 describe("Waypoint", () => {
     let map;
@@ -63,8 +67,8 @@ describe("Waypoint", () => {
     })
 
     test("Is not valid if aircraft is landing", () => {
-        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 5000, 3)
-        aeroplane.state = LANDING
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 200, 90, 5000, 3, ARRIVAL, new Landing())
+        aeroplane.state.name = LANDING
 
         let desiredWaypoint = "LAM";
 
@@ -114,13 +118,13 @@ describe("Waypoint", () => {
     test("Is not actionable if aeroplane is not flying or going around", () => {
         let waypoint = "LAM";
 
-        const aeroplane1 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, READY_TO_TAXI)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, new ReadyToTaxi())
         expect(new Waypoint(map, aeroplane1, waypoint).isActionable()).toBeFalsy()
 
-        const aeroplane2 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, TAXIING)
+        const aeroplane2 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, new Taxiing())
         expect(new Waypoint(map, aeroplane2, waypoint).isActionable()).toBeFalsy()
 
-        const aeroplane3 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, HOLDING_SHORT)
+        const aeroplane3 = new Aeroplane("BA123", "A321", 200, 700, 200, 90, 5000, 3, ARRIVAL, new Holding())
         expect(new Waypoint(map, aeroplane3, waypoint).isActionable()).toBeFalsy()
 
     })

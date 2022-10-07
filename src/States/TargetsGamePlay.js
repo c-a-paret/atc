@@ -3,9 +3,11 @@ import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
 import {ARRIVAL, DEPARTURE} from "../config/constants";
-import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
+import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 import {randomChoice} from "../utils/selectors";
 import {CoreGamePlay} from "./CoreGamePlay";
+import {ReadyToTaxi} from "../Domain/Aeroplane/states/ReadyToTaxi";
+import {Flying} from "../Domain/Aeroplane/states/Flying";
 
 
 export class TargetsGamePlay extends GameState {
@@ -78,15 +80,15 @@ export class TargetsGamePlay extends GameState {
         const startSpeed = 0
         const startAltitude = this.map.features.runways[0].start.altitude
         const weight = aeroplaneConfig.weight
-        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, READY_TO_TAXI, randomChoice(this.departureWaypoints))
+        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, new ReadyToTaxi(), randomChoice(this.departureWaypoints))
         this.machine.aeroplanes.push(plane)
     }
 
     initTestAeroplanes = () => {
-        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 800, 360, 2000, 1, DEPARTURE, FLYING, "LAM")
-        const aeroplane2 = new Aeroplane("BA456", "A321", 1000, 325, 300, 30, 2000, 1, DEPARTURE, FLYING, "LAM")
-        const aeroplane3 = new Aeroplane("BA789", "A321", 1000, 325, 300, 30, 3000, 1, DEPARTURE, FLYING, "BPK")
-        const aeroplane4 = new Aeroplane("BA101", "A321", 1000, 325, 400, 30, 7000, 1, DEPARTURE, FLYING, "BPK")
+        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 800, 360, 2000, 1, DEPARTURE, new Flying(), "LAM")
+        const aeroplane2 = new Aeroplane("BA456", "A321", 1000, 325, 300, 30, 2000, 1, DEPARTURE, new Flying(), "LAM")
+        const aeroplane3 = new Aeroplane("BA789", "A321", 1000, 325, 300, 30, 3000, 1, DEPARTURE, new Flying(), "BPK")
+        const aeroplane4 = new Aeroplane("BA101", "A321", 1000, 325, 400, 30, 7000, 1, DEPARTURE, new Flying(), "BPK")
         this.machine.aeroplanes = [
             aeroplane1,
             aeroplane2,

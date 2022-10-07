@@ -7,7 +7,9 @@ import {Altitude} from "../../Action/Altitude";
 import {Waypoint} from "../../Action/Waypoint";
 import {Landing} from "../../Action/Landing";
 import {HoldingPattern} from "../../Action/HoldingPattern";
-import {FLYING, GOING_AROUND, HOLDING_PATTERN, LANDING} from "../aeroplaneStates";
+import {FLYING, GOING_AROUND, LANDING} from "../aeroplaneStates";
+import {FinalApproach} from "../states/FinalApproach";
+import {Holding} from "../states/Holding";
 
 
 const testGameMap = () => {
@@ -204,7 +206,7 @@ describe("Set Landing", () => {
 
         expect(aeroplane.actions.length).toBe(1)
         expect(aeroplane.actions[0].targetRunway).toBe(desiredRunway)
-        expect(aeroplane.state).toBe(LANDING)
+        expect(aeroplane.state.name).toBe(LANDING)
     })
 
     test("Does not set landing when not valid", () => {
@@ -213,7 +215,7 @@ describe("Set Landing", () => {
         aeroplane.clearForLanding(map, desiredRunway)
 
         expect(aeroplane.actions.length).toBe(0)
-        expect(aeroplane.state).toBe(FLYING)
+        expect(aeroplane.state.name).toBe(FLYING)
     })
 })
 
@@ -232,7 +234,7 @@ describe("Go Around", () => {
         aeroplane.goAround(map)
 
         expect(aeroplane.actions.length).toBe(1)
-        expect(aeroplane.state).toBe(GOING_AROUND)
+        expect(aeroplane.state.name).toBe(GOING_AROUND)
     })
 
     test("Does not set landing when not valid", () => {
@@ -241,7 +243,7 @@ describe("Go Around", () => {
         aeroplane.clearForLanding(map, desiredRunway)
 
         expect(aeroplane.actions.length).toBe(0)
-        expect(aeroplane.state).toBe(FLYING)
+        expect(aeroplane.state.name).toBe(FLYING)
     })
 })
 
@@ -465,7 +467,7 @@ describe("Add Actions", () => {
 
     describe('Nothing overwrites landing', () => {
         test('Hold does not overwrite Landing', () => {
-            const aeroplane = new Aeroplane("AB123", "A321", 500, 425, 300, 90, 3000, 3, ARRIVAL, LANDING)
+            const aeroplane = new Aeroplane("AB123", "A321", 500, 425, 300, 90, 3000, 3, ARRIVAL, new FinalApproach())
             aeroplane.actions = [
                 new Landing(testGameMap(), aeroplane, "9L")
             ]
@@ -999,17 +1001,17 @@ describe("Outside boundaries", () => {
 
 describe("Holding state", () => {
     test("Aeroplane is landing", () => {
-        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, HOLDING_PATTERN)
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, new Holding())
         expect(aeroplane.isInHoldingPattern()).toBeTruthy()
     })
 
     test("Aeroplane is not holding", () => {
-        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, FLYING)
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3)
         expect(aeroplane.isInHoldingPattern()).toBeFalsy()
     })
 
     test("Clears holding state when heading command issued", () => {
-        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, HOLDING_PATTERN)
+        const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, new Holding())
         aeroplane.actions.push(new HoldingPattern(testGameMap(), aeroplane, "left"))
         expect(aeroplane.isInHoldingPattern()).toBeTruthy()
 
@@ -1022,7 +1024,7 @@ describe("Landing/Landed state", () => {
 
     describe("Determines when landing", () => {
         test("Aeroplane is landing", () => {
-            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, LANDING)
+            const aeroplane = new Aeroplane("AB123", "A321", 250, 300, 150, 0, 3000, 3, ARRIVAL, new FinalApproach())
             expect(aeroplane.isLanding()).toBeTruthy()
         })
 

@@ -1,6 +1,8 @@
 import {FLYING, GOING_AROUND, HOLDING_SHORT, READY_TO_TAXI, TAKING_OFF, TAXIING} from "../Aeroplane/aeroplaneStates";
 import {MIN_GROUND_CLEARANCE, TAKEOFF_SPEED} from "../../config/constants";
 import {Action} from "./Action";
+import {TakingOff} from "../Aeroplane/states/TakingOff";
+import {Flying} from "../Aeroplane/states/Flying";
 
 export class Takeoff extends Action {
     constructor(map, aeroplane, runway = null) {
@@ -53,7 +55,7 @@ export class Takeoff extends Action {
         }
 
         this.aeroplane.hasTakeoffClearance = false
-        this.aeroplane.state = TAKING_OFF
+        this.aeroplane.transitionTo(new TakingOff())
 
         this.aeroplane.heading = this.runway.heading
 
@@ -73,7 +75,7 @@ export class Takeoff extends Action {
 
         // End takeoff sequence
         if (this.aeroplane.speed >= TAKEOFF_SPEED && this.aeroplane.altitude >= MIN_GROUND_CLEARANCE) {
-            this.aeroplane.state = FLYING
+            this.aeroplane.transitionTo(new Flying())
             this.executed = true
         }
     };

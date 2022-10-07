@@ -4,21 +4,22 @@ import {Altitude} from "../Altitude";
 import {GoAround} from "../GoAround";
 import {FLYING, GOING_AROUND, LANDING} from "../../Aeroplane/aeroplaneStates";
 import {testGameMap} from "./actionTest.utils";
+import {Flying} from "../../Aeroplane/states/Flying";
 
 
 describe("Go Around", () => {
     test("Adds relevant actions to aeroplane", () => {
         const correctRunway = '9L';
-        const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, ARRIVAL, FLYING, correctRunway)
-        expect(aeroplane.state).toBe(FLYING)
+        const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, ARRIVAL, new Flying(), correctRunway)
+        expect(aeroplane.state.name).toBe(FLYING)
 
         aeroplane.clearForLanding(testGameMap(), correctRunway)
 
-        expect(aeroplane.state).toBe(LANDING)
+        expect(aeroplane.state.name).toBe(LANDING)
 
         aeroplane.goAround(testGameMap())
 
-        expect(aeroplane.state).toBe(GOING_AROUND)
+        expect(aeroplane.state.name).toBe(GOING_AROUND)
 
         aeroplane.applyActions()
 
@@ -32,13 +33,13 @@ describe("Go Around", () => {
     test("Completes go around execution when at correct altitude", () => {
         const correctRunway = '9L';
 
-        const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, GOING_AROUND, FLYING, correctRunway)
+        const aeroplane = new Aeroplane("BA123", "A321", 350, 500, 140, 90, 1900, 3, ARRIVAL, new Flying(), correctRunway)
 
-        expect(aeroplane.state).toBe(FLYING)
+        expect(aeroplane.state.name).toBe(FLYING)
         aeroplane.clearForLanding(testGameMap(), correctRunway)
-        expect(aeroplane.state).toBe(LANDING)
+        expect(aeroplane.state.name).toBe(LANDING)
         aeroplane.goAround(testGameMap())
-        expect(aeroplane.state).toBe(GOING_AROUND)
+        expect(aeroplane.state.name).toBe(GOING_AROUND)
 
         aeroplane.applyActions()
         aeroplane.applyActions()
@@ -55,7 +56,7 @@ describe("Go Around", () => {
         expect(aeroplane.altitude).toBe(2020)
 
         // Transition to flying when 2000ft achieved
-        expect(aeroplane.state).toBe(FLYING)
+        expect(aeroplane.state.name).toBe(FLYING)
 
         aeroplane.applyActions()
         expect(aeroplane.altitude).toBe(2040)

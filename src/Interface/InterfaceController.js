@@ -35,7 +35,7 @@ export class InterfaceController {
         this.gamePaused = false
         this.unPauseCallback = undefined
         this.gameSpeed = 1
-        this.projectedPathsOn = false
+        this.projectedPathsOn = true
         this._init()
     }
 
@@ -588,7 +588,7 @@ export class InterfaceController {
             LANDING: "LANDING",
             GOING_AROUND: "G/A",
         }
-        return state_map[aeroplane.state]
+        return state_map[aeroplane.state.name]
     }
 
     _get_action_overview_values = (aeroplane) => {

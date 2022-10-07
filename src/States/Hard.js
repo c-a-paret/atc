@@ -3,8 +3,9 @@ import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
 import {ARRIVAL, DEPARTURE} from "../config/constants";
-import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 import {randomChoice} from "../utils/selectors";
+import {ReadyToTaxi} from "../Domain/Aeroplane/states/ReadyToTaxi";
+import {Flying} from "../Domain/Aeroplane/states/Flying";
 
 
 export class Hard extends GameState {
@@ -123,7 +124,7 @@ export class Hard extends GameState {
             startAltitude,
             weight,
             ARRIVAL,
-            FLYING,
+            new Flying(),
             targetWaypoint
         )
         this.machine.aeroplanes.push(plane)
@@ -149,7 +150,7 @@ export class Hard extends GameState {
             startAltitude,
             weight,
             DEPARTURE,
-            READY_TO_TAXI,
+            new ReadyToTaxi(),
             targetRunway
         )
         this.machine.aeroplanes.push(plane)

@@ -1,8 +1,10 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {HoldingPattern} from "../HoldingPattern";
 import {testGameMap} from "./actionTest.utils";
-import {FLYING, HOLDING_PATTERN, LANDING} from "../../Aeroplane/aeroplaneStates";
 import {ARRIVAL} from "../../../config/constants";
+import {Flying} from "../../Aeroplane/states/Flying";
+import {Holding} from "../../Aeroplane/states/Holding";
+import {FinalApproach} from "../../Aeroplane/states/FinalApproach";
 
 describe("Holding Pattern", () => {
     let map;
@@ -54,7 +56,7 @@ describe("Holding Pattern", () => {
         const x = 500;
         const y = 500;
 
-        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, FLYING)
+        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, new Flying())
         const hold = new HoldingPattern(map, aeroplane, holdDirection);
 
         const expected = {
@@ -75,7 +77,7 @@ describe("Holding Pattern", () => {
         const x = 500;
         const y = 500;
 
-        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, HOLDING_PATTERN)
+        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, new Holding())
         const hold = new HoldingPattern(map, aeroplane, holdDirection);
 
         const expected = {
@@ -97,7 +99,7 @@ describe("Holding Pattern", () => {
         const x = 500;
         const y = 500;
 
-        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, LANDING)
+        const aeroplane = new Aeroplane("123", "", x, y, speed, heading, 3000, weight, ARRIVAL, new FinalApproach())
         const hold = new HoldingPattern(map, aeroplane, holdDirection);
 
         const expected = {

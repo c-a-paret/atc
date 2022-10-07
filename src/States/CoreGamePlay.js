@@ -3,8 +3,9 @@ import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
 import {ARRIVAL, DEPARTURE} from "../config/constants";
-import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
 import {TargetsGamePlay} from "./TargetsGamePlay";
+import {ReadyToTaxi} from "../Domain/Aeroplane/states/ReadyToTaxi";
+import {Flying} from "../Domain/Aeroplane/states/Flying";
 
 
 export class CoreGamePlay extends GameState {
@@ -90,7 +91,7 @@ export class CoreGamePlay extends GameState {
         const startSpeed = 0
         const startAltitude = this.map.features.runways[0].start.altitude
         const weight = aeroplaneConfig.weight
-        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, READY_TO_TAXI)
+        const plane = new Aeroplane(callSign, shortClass, startX, startY, startSpeed, startHeading, startAltitude, weight, DEPARTURE, new ReadyToTaxi())
         this.machine.aeroplanes.push(plane)
     }
 
@@ -111,8 +112,8 @@ export class CoreGamePlay extends GameState {
     }
 
     initTestAeroplanes = () => {
-        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 280, 90, 3000, 1, ARRIVAL, FLYING, "9R", 0.2)
-        const aeroplane2 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "LAM")
+        const aeroplane1 = new Aeroplane("BA123", "A321", 580, 450, 280, 90, 3000, 1, ARRIVAL, new Flying(), "9R", 0.2)
+        const aeroplane2 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, new ReadyToTaxi(), "LAM")
         this.machine.aeroplanes = [
             aeroplane1,
             aeroplane2,

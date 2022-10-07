@@ -1,7 +1,7 @@
 import {Aeroplane} from "../../Aeroplane/Aeroplane";
 import {Heading} from "../Heading";
-import {LANDING} from "../../Aeroplane/aeroplaneStates";
 import {ARRIVAL} from "../../../config/constants";
+import {FinalApproach} from "../../Aeroplane/states/FinalApproach";
 
 describe("Heading", () => {
     test.each`
@@ -535,7 +535,7 @@ describe("Heading", () => {
     test("Is not valid if aircraft is landing", () => {
         let desiredHeading = 256;
 
-        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 220, 270, 5000, 1, ARRIVAL, LANDING)
+        const aeroplane = new Aeroplane("BA123", "A321", 500, 500, 220, 270, 5000, 1, ARRIVAL, new FinalApproach())
 
         const expected = {
             "errors": [],

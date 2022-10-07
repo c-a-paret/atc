@@ -3,7 +3,8 @@ import {getRandomNumberBetween, roundToNearest} from "../utils/maths";
 import {Aeroplane} from "../Domain/Aeroplane/Aeroplane";
 import {GameState} from "./GameState";
 import {ARRIVAL, DEPARTURE} from "../config/constants";
-import {FLYING, READY_TO_TAXI} from "../Domain/Aeroplane/aeroplaneStates";
+import {ReadyToTaxi} from "../Domain/Aeroplane/states/ReadyToTaxi";
+import {Flying} from "../Domain/Aeroplane/states/Flying";
 
 
 export class Easy extends GameState {
@@ -93,14 +94,14 @@ export class Easy extends GameState {
             startAltitude,
             weight,
             DEPARTURE,
-            READY_TO_TAXI
+            new ReadyToTaxi()
         )
         this.machine.aeroplanes.push(plane)
     }
 
     initTestAeroplanes = () => {
         // const aeroplane1 = new Aeroplane("BA123", "A321", 1150, 470, 200, 270, 3000, 1)
-        const aeroplane1 = new Aeroplane("BA123", "A321", 1200, 470, 200, 270, 3000, 3, ARRIVAL, FLYING, null, 100)
+        const aeroplane1 = new Aeroplane("BA123", "A321", 1200, 470, 200, 270, 3000, 3, ARRIVAL, new Flying(), null, 100)
         // const aeroplane1 = new Aeroplane("BA999", "A321", 1, 1, 0, 0, 0, 1, DEPARTURE, READY_TO_TAXI, "GWC")
         this.machine.aeroplanes = [
             aeroplane1,
