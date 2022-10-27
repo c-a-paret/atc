@@ -52,7 +52,7 @@ export class Easy extends GameState {
     }
 
     randomEmergency = () => {
-        const plane = randomChoice(this.machine.aeroplanes.flyingPlanes())
+        const plane = randomChoice(this.machine.flyingPlanes())
         plane.transitionTo(new FuelLeak())
     }
 

@@ -93,9 +93,7 @@ export class AeroplaneService {
     }
 
     flyingPlanes = () => {
-        return this.aeroplanes.filter(plane => {
-            plane.is([FLYING])
-        })
+        return this.aeroplanes.filter(plane => plane.is([FLYING]))
     }
 
     getCallSignByPosition = (x, y) => {
