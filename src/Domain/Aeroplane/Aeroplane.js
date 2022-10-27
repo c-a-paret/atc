@@ -65,6 +65,7 @@ export class Aeroplane {
     }
 
     transitionTo = (state) => {
+        this.callSign !== null && console.log(state)
         this.state = state
         this.state.setMachine(this)
     }
@@ -133,7 +134,7 @@ export class Aeroplane {
         const {isValid, warnings, errors, targetValue} = newHeading.validate();
         if (isValid) {
             this.addAction(newHeading)
-            this.state = this.state.name === HOLDING_PATTERN ? new Flying() : this.state
+            this.transitionTo(this.state.name === HOLDING_PATTERN ? new Flying() : this.state)
         }
         return {isValid, warnings, errors, targetValue}
     }
@@ -153,7 +154,7 @@ export class Aeroplane {
 
         if (isValid) {
             this.addAction(newWaypoint)
-            this.state = this.state.name === HOLDING_PATTERN ? new Flying() : this.state
+            this.transitionTo(this.state.name === HOLDING_PATTERN ? new Flying() : this.state)
         }
         return {isValid, warnings, errors, targetValue}
     }
