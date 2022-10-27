@@ -312,6 +312,10 @@ canvas {
     background-color: rgba(113, 248, 255, 0.18);
 }
 
+.emergency {
+    border: 2px solid red;
+}
+
 .aeroplane-strip:hover {
     cursor: pointer;
 }

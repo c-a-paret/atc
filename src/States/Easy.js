@@ -5,6 +5,8 @@ import {GameState} from "./GameState";
 import {ARRIVAL, DEPARTURE} from "../config/constants";
 import {ReadyToTaxi} from "../Domain/Aeroplane/states/ReadyToTaxi";
 import {Flying} from "../Domain/Aeroplane/states/Flying";
+import {randomChoice} from "../utils/selectors";
+import {FuelLeak} from "../Domain/Aeroplane/states/FuelLeak";
 
 
 export class Easy extends GameState {
@@ -39,8 +41,23 @@ export class Easy extends GameState {
         if (this.ticks !== 0 && this.ticks % this.departureSpawnInterval === 0) {
             this.initDeparture()
         }
+        if (this.ticks > 5 && this.ticks < 8 && !this.machine.hasEmergencyPlane()) {
+            this.randomEmergency()
+        }
+        if (this.ticks === 15) {
+            this.clearEmergencies()
+        }
 
         this.ticks += 1
+    }
+
+    randomEmergency = () => {
+        const plane = randomChoice(this.machine.aeroplanes.flyingPlanes())
+        plane.transitionTo(new FuelLeak())
+    }
+
+    clearEmergencies = () => {
+        this.machine.clearEmergencies()
     }
 
     arrivalSpawnLocations = () => [

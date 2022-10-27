@@ -1,4 +1,6 @@
 import {parseCommand} from "../Command/CommandParser/CommandParser";
+import {Flying} from "../Domain/Aeroplane/states/Flying";
+import {FLYING} from "../Domain/Aeroplane/aeroplaneStates";
 
 export class AeroplaneService {
     constructor(map, statsService, weather) {
@@ -76,6 +78,24 @@ export class AeroplaneService {
         })
 
         return passedCommands
+    }
+
+    hasEmergencyPlane = () => {
+        return this.aeroplanes.some(plane => plane.state.isEmergency)
+    }
+
+    clearEmergencies = () => {
+        this.aeroplanes.map(plane => {
+            if (plane.state.isEmergency) {
+                plane.transitionTo(new Flying())
+            }
+        })
+    }
+
+    flyingPlanes = () => {
+        return this.aeroplanes.filter(plane => {
+            plane.is([FLYING])
+        })
     }
 
     getCallSignByPosition = (x, y) => {

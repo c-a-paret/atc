@@ -65,7 +65,6 @@ export class Aeroplane {
     }
 
     transitionTo = (state) => {
-        this.callSign !== null && console.log(state)
         this.state = state
         this.state.setMachine(this)
     }
@@ -463,6 +462,9 @@ export class Aeroplane {
     }
 
     consumeFuel = () => {
+        if (!!this.state.fuelConsumptionRate) {
+            this.fuelLevel -= this.state.fuelConsumptionRate
+        }
         if (this.fuelLevel - BASE_FUEL_CONSUMPTION_RATE <= 0) {
             this.fuelLevel = 0
         } else {

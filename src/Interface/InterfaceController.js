@@ -414,6 +414,15 @@ export class InterfaceController {
             // State indicator
             const indicator = document.getElementById(`${plane.callSign}-state-indicator`)
             indicator.style.backgroundColor = this.determineStateIndicatorColour(plane)
+
+            // Emergency indicator
+            const strip = document.getElementById(plane.callSign)
+            if (plane.state.isEmergency)
+                strip.classList.add('emergency')
+            else {
+                strip.classList.remove('emergency')
+            }
+
         })
     }
 
