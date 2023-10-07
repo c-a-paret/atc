@@ -448,6 +448,9 @@ export class Aeroplane {
             if (this.speed <= 200) {
                 rate -= 0.005
             }
+            if (this.altitude < 5000) {
+                rate -= 0.005
+            }
             this.fuelLevel -= rate
         }
     }
@@ -465,9 +468,9 @@ export class Aeroplane {
 
     _determineStartingFuel = () => {
         if (this.isArrival()) {
-            return getRandomNumberBetween(15, 25)
+            return getRandomNumberBetween(20, 30)
         } else {
-            return getRandomNumberBetween(90, 100)
+            return getRandomNumberBetween(95, 100)
         }
     }
 

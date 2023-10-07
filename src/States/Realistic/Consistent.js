@@ -12,8 +12,8 @@ export class Consistent extends RealisticBase {
         this.speedRange = [220, 280]
         this.altitudeRange = [9000, 15000]
 
-        this.targetArrivals = 6
-        this.targetDepartures = 6
+        this.targetArrivals = 20
+        this.targetDepartures = 20
     }
 
     tick = () => {

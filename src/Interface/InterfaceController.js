@@ -766,7 +766,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("dynamic-text").classList.add('selected-red')
-        this._setGameModeIndicator('Dynamic', 'rgba(210,123,35,0.47)')
+        this._setGameModeIndicator('Dynamic', 'rgba(201,76,60,0.47)')
         this.aeroplaneService.transitionTo(new Dynamic(true))
     }
 

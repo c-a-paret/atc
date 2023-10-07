@@ -1,6 +1,6 @@
 import {randomChoice} from "../../utils/selectors";
-import {Quiet} from "./Quiet";
 import {RealisticBase} from "./RealisticBase";
+import {Consistent} from "./Consistent";
 
 
 export class RealisticStart extends RealisticBase {
@@ -34,8 +34,8 @@ export class RealisticStart extends RealisticBase {
             this.initDeparture(randomChoice(this.targetWaypoints))
         }
 
-        if (this.machine.statsService.instanceComplete() >= (this.targetArrivals + this.targetDepartures)) {
-            this.machine.transitionTo(new Quiet())
+        if (this.machine.statsService.instanceComplete() >= (this.targetArrivals + this.targetDepartures) - 2) {
+            this.machine.transitionTo(new Consistent())
         }
 
         this.ticks += 1
