@@ -730,6 +730,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("tutorial-text").classList.add('selected-green')
+        this._setGameModeIndicator('Tutorial', 'rgba(239,239,239,0.31)')
         this.aeroplaneService.transitionTo(new Tutorial(this.aeroplaneService.map, this))
     }
 
@@ -738,6 +739,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("easy-text").classList.add('selected-green')
+        this._setGameModeIndicator('Easy', 'rgba(60,201,60,0.47)')
         this.aeroplaneService.transitionTo(new Easy(true))
     }
 
@@ -746,6 +748,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("realistic-text").classList.add('selected-orange')
+        this._setGameModeIndicator('Realistic', 'rgba(60,196,201,0.47)')
         this.aeroplaneService.transitionTo(new RealisticStart(true))
     }
 
@@ -754,6 +757,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("hard-text").classList.add('selected-red')
+        this._setGameModeIndicator('Hard', 'rgba(201,76,60,0.47)')
         this.aeroplaneService.transitionTo(new Hard(true))
     }
 
@@ -762,6 +766,7 @@ export class InterfaceController {
         this.blurAttention()
         this._clearGameModeSelection()
         document.getElementById("dynamic-text").classList.add('selected-red')
+        this._setGameModeIndicator('Dynamic', 'rgba(210,123,35,0.47)')
         this.aeroplaneService.transitionTo(new Dynamic(true))
     }
 
@@ -773,6 +778,10 @@ export class InterfaceController {
         document.getElementById("dynamic-text").classList.remove('selected-red')
     }
 
+    _setGameModeIndicator = (mode, colour) => {
+        document.getElementById("mode-text").innerText = mode
+        document.getElementById("mode-indicator").style.backgroundColor = colour
+    }
     // -> Projected Paths
     _toggleProjectedPaths = () => {
         if (this.projectedPathsOn) {
