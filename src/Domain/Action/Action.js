@@ -32,11 +32,11 @@ export class Action {
 
 export const turning_change_rate = (aeroplane) => {
     if (aeroplane.weight === 1) {
-        return -0.006666 * aeroplane.speed + 5
+        return -0.006666 * aeroplane.speed + 6
     } else if (aeroplane.weight === 2) {
-        return -0.006666 * aeroplane.speed + 4
+        return -0.006666 * aeroplane.speed + 5
     } else {
-        return -0.006666 * aeroplane.speed + 3
+        return -0.006666 * aeroplane.speed + 4
     }
 }
 
